@@ -60,7 +60,7 @@ describe("admin wave 6 operational hardening", () => {
   it("has strict staging readiness mode and operational runbooks", () => {
     const script = read("scripts/admin-production-readiness.mjs");
     assert.match(script, /ADMIN_READINESS_STRICT/);
-    assert.match(script, /staging readiness estrito exige ARCHIVE_STORAGE_PROVIDER=s3/);
+    assert.match(script, /staging readiness estrito exige ARCHIVE_STORAGE_PROVIDER=gcs ou s3/);
     assert.match(script, /ADMIN_EXPORT_ALLOW_INLINE_FALLBACK/);
     assert.match(script, /ADMIN_RELEASE_REVIEW\.md/);
     const doc = read("ADMIN_PRODUCTION_READINESS.md");

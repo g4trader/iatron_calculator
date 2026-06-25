@@ -32,6 +32,10 @@ export default async function SystemPage() {
     ["EMAIL_FROM", present("EMAIL_FROM")],
     ["UPSTASH_REDIS_REST_URL", present("UPSTASH_REDIS_REST_URL")],
     ["UPSTASH_REDIS_REST_TOKEN", present("UPSTASH_REDIS_REST_TOKEN")],
+    ["RATE_LIMIT_PROVIDER", present("RATE_LIMIT_PROVIDER")],
+    ["GCP_PROJECT_ID", present("GCP_PROJECT_ID")],
+    ["GCP_SERVICE_ACCOUNT_EMAIL", present("GCP_SERVICE_ACCOUNT_EMAIL")],
+    ["GCP_PRIVATE_KEY", present("GCP_PRIVATE_KEY")],
     ["GOOGLE_CLIENT_ID", present("GOOGLE_CLIENT_ID")],
     ["GOOGLE_CLIENT_SECRET", present("GOOGLE_CLIENT_SECRET")],
     ["FACEBOOK_CLIENT_ID", present("FACEBOOK_CLIENT_ID")],
@@ -41,6 +45,8 @@ export default async function SystemPage() {
     ["ARCHIVE_S3_BUCKET", present("ARCHIVE_S3_BUCKET")],
     ["ARCHIVE_S3_ACCESS_KEY_ID", present("ARCHIVE_S3_ACCESS_KEY_ID")],
     ["ARCHIVE_S3_SECRET_ACCESS_KEY", present("ARCHIVE_S3_SECRET_ACCESS_KEY")],
+    ["ARCHIVE_GCS_BUCKET", present("ARCHIVE_GCS_BUCKET")],
+    ["ARCHIVE_GCS_PREFIX", present("ARCHIVE_GCS_PREFIX")],
     ["ADMIN_STAGING_BASE_URL", present("ADMIN_STAGING_BASE_URL")]
   ].map(([id, ok]) => ({ id: String(id), name: String(id), ok: Boolean(ok) }));
 

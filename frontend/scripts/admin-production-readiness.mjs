@@ -48,7 +48,7 @@ function checkEnv(name, required = true) {
 checkFile("prisma/schema.prisma", /ArchiveRestoreJob/);
 checkFile("prisma/migrations/20260624110000_admin_wave5_archive_restore/migration.sql", /ArchiveRestoreJob/);
 checkFile("prisma/migrations/20260624120000_admin_wave6_export_restore_hardening/migration.sql", /ExportJob_storageProvider_storageKey_idx/);
-checkFile("lib/archive-storage.ts", /class S3ArchiveStorage/);
+checkFile("lib/archive-storage.ts", /class (S3ArchiveStorage|GcsArchiveStorage)/);
 checkFile("lib/admin-archive-restore.ts", /processArchiveRestoreJob/);
 checkFile("app/admin/archive/page.tsx", /Restore controlado/);
 checkFile("ADMIN_PRODUCTION_READINESS.md", /Archive Restore/);
@@ -62,12 +62,27 @@ if (storageProvider === "s3") {
   for (const env of ["ARCHIVE_S3_ENDPOINT", "ARCHIVE_S3_BUCKET", "ARCHIVE_S3_ACCESS_KEY_ID", "ARCHIVE_S3_SECRET_ACCESS_KEY"]) checkEnv(env);
   checkEnv("ARCHIVE_S3_REGION", false);
   checkEnv("ARCHIVE_S3_PREFIX", false);
+} else if (storageProvider === "gcs") {
+  for (const env of ["GCP_PROJECT_ID", "GCP_SERVICE_ACCOUNT_EMAIL", "GCP_PRIVATE_KEY", "ARCHIVE_GCS_BUCKET"]) checkEnv(env);
+  checkEnv("ARCHIVE_GCS_PREFIX", false);
 } else if (process.env.NODE_ENV === "production") {
-  add("archive:provider", "fail", "produção exige ARCHIVE_STORAGE_PROVIDER=s3");
+  add("archive:provider", "fail", "produção exige ARCHIVE_STORAGE_PROVIDER=gcs ou s3");
 } else if (strict) {
-  add("archive:provider", "fail", "staging readiness estrito exige ARCHIVE_STORAGE_PROVIDER=s3");
+  add("archive:provider", "fail", "staging readiness estrito exige ARCHIVE_STORAGE_PROVIDER=gcs ou s3");
 } else {
   add("archive:provider", "warn", "fallback local permitido apenas em desenvolvimento/teste");
+}
+
+if (process.env.RATE_LIMIT_PROVIDER === "firestore") {
+  for (const env of ["GCP_PROJECT_ID", "GCP_SERVICE_ACCOUNT_EMAIL", "GCP_PRIVATE_KEY"]) checkEnv(env);
+  checkEnv("FIRESTORE_DATABASE_ID", false);
+  checkEnv("RATE_LIMIT_FIRESTORE_COLLECTION", false);
+} else if (hasEnv("UPSTASH_REDIS_REST_URL") && hasEnv("UPSTASH_REDIS_REST_TOKEN")) {
+  add("rate_limit:provider", "pass", "upstash");
+} else if (process.env.NODE_ENV === "production" || strict) {
+  add("rate_limit:provider", "fail", "produção/staging estrito exige RATE_LIMIT_PROVIDER=firestore com GCP_* ou Upstash Redis");
+} else {
+  add("rate_limit:provider", "warn", "fallback local permitido apenas fora de produção");
 }
 
 if (hasEnv("ADMIN_EXPORT_ALLOW_INLINE_FALLBACK") && process.env.NODE_ENV === "production") {

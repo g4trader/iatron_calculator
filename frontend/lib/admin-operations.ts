@@ -200,13 +200,18 @@ function checkStripe(): IntegrationStatus {
 }
 
 function checkRedis(): IntegrationStatus {
-  const configured = isPresent(process.env.UPSTASH_REDIS_REST_URL) && isPresent(process.env.UPSTASH_REDIS_REST_TOKEN);
+  const firestoreConfigured = process.env.RATE_LIMIT_PROVIDER?.trim().toLowerCase() === "firestore"
+    && isPresent(process.env.GCP_PROJECT_ID)
+    && isPresent(process.env.GCP_SERVICE_ACCOUNT_EMAIL)
+    && isPresent(process.env.GCP_PRIVATE_KEY);
+  const redisConfigured = isPresent(process.env.UPSTASH_REDIS_REST_URL) && isPresent(process.env.UPSTASH_REDIS_REST_TOKEN);
+  const configured = firestoreConfigured || redisConfigured;
   const failClosed = process.env.NODE_ENV === "production" && process.env.RATE_LIMIT_ALLOW_MEMORY_FALLBACK !== "true";
   return {
     id: "redis",
-    label: "Redis / rate limit",
+    label: "Rate limit",
     status: configured ? "healthy" : failClosed ? "incident" : "degraded",
-    detail: configured ? "Upstash Redis configurado." : failClosed ? "Produção sem Redis: rate limit falha fechado." : "Fallback local permitido fora de produção.",
+    detail: configured ? (firestoreConfigured ? "Firestore configurado." : "Upstash Redis configurado.") : failClosed ? "Produção sem store distribuído: rate limit falha fechado." : "Fallback local permitido fora de produção.",
     checkedAt: new Date()
   };
 }

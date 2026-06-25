@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, it, beforeEach } from "node:test";
 import { NextResponse } from "next/server";
 import { auditAuthEvent } from "../lib/audit";
@@ -15,6 +17,8 @@ import { POST as forgotPasswordPost } from "../app/api/auth/forgot-password/rout
 import { POST as resetPasswordPost } from "../app/api/auth/reset-password/route";
 import { POST as verifyEmailPost } from "../app/api/auth/verify-email/route";
 import { POST as resendVerificationPost } from "../app/api/auth/resend-verification/route";
+
+const root = resolve(process.cwd());
 
 function jsonRequest(url: string, body: unknown, ip = "203.0.113.10") {
   return new Request(url, {
@@ -76,6 +80,13 @@ describe("auth rate limiting", () => {
       if (originalToken) process.env.UPSTASH_REDIS_REST_TOKEN = originalToken;
       if (originalFallback) process.env.RATE_LIMIT_ALLOW_MEMORY_FALLBACK = originalFallback;
     }
+  });
+
+  it("supports Firestore as a distributed production rate limit store", () => {
+    const source = readFileSync(resolve(root, "lib/rate-limit.ts"), "utf8");
+    assert.match(source, /RATE_LIMIT_PROVIDER/);
+    assert.match(source, /firestore/);
+    assert.match(source, /getGoogleCloudAccessToken/);
   });
 
   it("returns a 429 response with Retry-After", async () => {

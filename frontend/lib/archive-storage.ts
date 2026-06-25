@@ -2,6 +2,7 @@ import { createHash } from "crypto";
 import { createHmac } from "crypto";
 import { mkdir, readdir, readFile, stat, writeFile } from "fs/promises";
 import { dirname, join } from "path";
+import { getGoogleCloudAccessToken, googleCloudConfigured } from "@/lib/google-cloud-auth";
 
 export type ArchiveWriteResult = {
   provider: string;
@@ -216,12 +217,96 @@ export class S3ArchiveStorage implements ArchiveStorage {
   }
 }
 
+type GcsConfig = {
+  bucket: string;
+  prefix: string;
+};
+
+function gcsConfig(): GcsConfig {
+  if (!googleCloudConfigured()) throw new Error("Storage GCS sem credenciais GCP completas.");
+  return {
+    bucket: process.env.ARCHIVE_GCS_BUCKET?.trim() || process.env.ARCHIVE_S3_BUCKET?.trim() || requiredEnv("ARCHIVE_GCS_BUCKET"),
+    prefix: (process.env.ARCHIVE_GCS_PREFIX?.trim() || process.env.ARCHIVE_S3_PREFIX?.trim() || "iatron-admin-archives").replace(/^\/|\/$/g, "")
+  };
+}
+
+function gcsObjectName(config: GcsConfig, key: string) {
+  return `${config.prefix}/${key.replace(/^\/+/, "")}`.replace(/\/+/g, "/");
+}
+
+function gcsObjectApiUrl(bucket: string, objectName: string) {
+  return `https://storage.googleapis.com/storage/v1/b/${encodeURIComponent(bucket)}/o/${encodeURIComponent(objectName)}`;
+}
+
+export class GcsArchiveStorage implements ArchiveStorage {
+  provider = "gcs_private";
+  private config: GcsConfig;
+
+  constructor(config = gcsConfig()) {
+    this.config = config;
+  }
+
+  async writeObject(key: string, content: string): Promise<ArchiveWriteResult> {
+    const token = await getGoogleCloudAccessToken("https://www.googleapis.com/auth/devstorage.read_write");
+    const objectName = gcsObjectName(this.config, key);
+    const response = await fetch(
+      `https://storage.googleapis.com/upload/storage/v1/b/${encodeURIComponent(this.config.bucket)}/o?uploadType=media&name=${encodeURIComponent(objectName)}`,
+      {
+        method: "POST",
+        headers: {
+          authorization: `Bearer ${token}`,
+          "content-type": "application/x-ndjson"
+        },
+        body: content,
+        cache: "no-store"
+      }
+    );
+    if (!response.ok) throw new Error(`Falha no upload do archive GCS: ${response.status} ${response.statusText}`);
+    return {
+      provider: this.provider,
+      storageKey: objectName,
+      checksum: sha256Hex(content),
+      byteSize: Buffer.byteLength(content, "utf8")
+    };
+  }
+
+  async readObject(key: string): Promise<string> {
+    const token = await getGoogleCloudAccessToken("https://www.googleapis.com/auth/devstorage.read_only");
+    const objectName = key.startsWith(`${this.config.prefix}/`) ? key : gcsObjectName(this.config, key);
+    const response = await fetch(`${gcsObjectApiUrl(this.config.bucket, objectName)}?alt=media`, {
+      headers: { authorization: `Bearer ${token}` },
+      cache: "no-store"
+    });
+    if (!response.ok) throw new Error(`Falha no download controlado do archive GCS: ${response.status} ${response.statusText}`);
+    return response.text();
+  }
+
+  async listObjects(prefix: string) {
+    const token = await getGoogleCloudAccessToken("https://www.googleapis.com/auth/devstorage.read_only");
+    const objectPrefix = gcsObjectName(this.config, prefix);
+    const url = new URL(`https://storage.googleapis.com/storage/v1/b/${encodeURIComponent(this.config.bucket)}/o`);
+    url.searchParams.set("prefix", objectPrefix);
+    const response = await fetch(url, {
+      headers: { authorization: `Bearer ${token}` },
+      cache: "no-store"
+    });
+    if (!response.ok) throw new Error(`Falha ao listar archive GCS: ${response.status} ${response.statusText}`);
+    const payload = (await response.json()) as { items?: Array<{ name: string; size?: string; updated?: string }> };
+    return (payload.items ?? []).map((item) => ({
+      key: item.name,
+      byteSize: item.size ? Number(item.size) : undefined,
+      updatedAt: item.updated ? new Date(item.updated) : undefined
+    }));
+  }
+}
+
 export function getArchiveStorage(): ArchiveStorage {
   const provider = process.env.ARCHIVE_STORAGE_PROVIDER?.trim().toLowerCase();
+  if (provider === "gcs") return new GcsArchiveStorage();
   if (provider === "s3") return new S3ArchiveStorage();
   if (provider === "local") return new LocalArchiveStorage();
   if (process.env.NODE_ENV === "production") {
-    throw new Error("ARCHIVE_STORAGE_PROVIDER=s3 é obrigatório em produção.");
+    throw new Error("ARCHIVE_STORAGE_PROVIDER=gcs ou s3 é obrigatório em produção.");
   }
   return new LocalArchiveStorage();
 }

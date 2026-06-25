@@ -20,10 +20,21 @@ export function getAdminReleaseReadinessItems(): ReleaseReadinessItem[] {
     && present("ARCHIVE_S3_BUCKET")
     && present("ARCHIVE_S3_ACCESS_KEY_ID")
     && present("ARCHIVE_S3_SECRET_ACCESS_KEY");
+  const gcsConfigured = archiveProvider === "gcs"
+    && present("GCP_PROJECT_ID")
+    && present("GCP_SERVICE_ACCOUNT_EMAIL")
+    && present("GCP_PRIVATE_KEY")
+    && (present("ARCHIVE_GCS_BUCKET") || present("ARCHIVE_S3_BUCKET"));
+  const archiveConfigured = s3Configured || gcsConfigured;
   const stripeConfigured = present("STRIPE_SECRET_KEY")
     && present("STRIPE_WEBHOOK_SECRET")
     && present("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY");
   const redisConfigured = present("UPSTASH_REDIS_REST_URL") && present("UPSTASH_REDIS_REST_TOKEN");
+  const firestoreConfigured = process.env.RATE_LIMIT_PROVIDER?.trim().toLowerCase() === "firestore"
+    && present("GCP_PROJECT_ID")
+    && present("GCP_SERVICE_ACCOUNT_EMAIL")
+    && present("GCP_PRIVATE_KEY");
+  const rateLimitConfigured = redisConfigured || firestoreConfigured;
   const stagingConfigured = present("ADMIN_STAGING_BASE_URL");
   const inlineFallback = present("ADMIN_EXPORT_ALLOW_INLINE_FALLBACK");
 
@@ -31,9 +42,9 @@ export function getAdminReleaseReadinessItems(): ReleaseReadinessItem[] {
     {
       id: "archive_storage",
       label: "Storage privado archive/export",
-      status: s3Configured ? "ready" : productionLike ? "blocked" : "partial",
-      detail: s3Configured ? "S3-compatible configurado." : "Sem storage S3-compatible completo. Local fallback serve apenas para dev/test.",
-      action: s3Configured ? undefined : "Configurar ARCHIVE_STORAGE_PROVIDER=s3 e ARCHIVE_S3_*."
+      status: archiveConfigured ? "ready" : productionLike ? "blocked" : "partial",
+      detail: archiveConfigured ? `${archiveProvider?.toUpperCase()} privado configurado.` : "Sem storage externo completo. Local fallback serve apenas para dev/test.",
+      action: archiveConfigured ? undefined : "Configurar ARCHIVE_STORAGE_PROVIDER=gcs com GCP_* e ARCHIVE_GCS_BUCKET, ou provider=s3 com ARCHIVE_S3_*."
     },
     {
       id: "stripe_test_mode",
@@ -44,10 +55,10 @@ export function getAdminReleaseReadinessItems(): ReleaseReadinessItem[] {
     },
     {
       id: "rate_limit_redis",
-      label: "Redis / rate limiting",
-      status: redisConfigured ? "ready" : productionLike ? "blocked" : "partial",
-      detail: redisConfigured ? "Upstash Redis configurado." : "Sem Redis distribuído. Fallback local não é aceitável para produção ampla.",
-      action: redisConfigured ? undefined : "Configurar UPSTASH_REDIS_REST_URL e UPSTASH_REDIS_REST_TOKEN."
+      label: "Rate limiting distribuído",
+      status: rateLimitConfigured ? "ready" : productionLike ? "blocked" : "partial",
+      detail: rateLimitConfigured ? (firestoreConfigured ? "Firestore configurado." : "Upstash Redis configurado.") : "Sem store distribuído. Fallback local não é aceitável para produção ampla.",
+      action: rateLimitConfigured ? undefined : "Configurar RATE_LIMIT_PROVIDER=firestore com GCP_* ou UPSTASH_REDIS_REST_URL/TOKEN."
     },
     {
       id: "staging_url",

@@ -23,13 +23,15 @@ describe("admin wave 5 production readiness", () => {
   it("ships a real private external storage provider with local fallback only", () => {
     const storage = read("lib/archive-storage.ts");
     assert.match(storage, /class S3ArchiveStorage/);
+    assert.match(storage, /class GcsArchiveStorage/);
     assert.match(storage, /ARCHIVE_STORAGE_PROVIDER/);
     assert.match(storage, /ARCHIVE_S3_ENDPOINT/);
     assert.match(storage, /ARCHIVE_S3_BUCKET/);
+    assert.match(storage, /ARCHIVE_GCS_BUCKET/);
     assert.match(storage, /AWS4-HMAC-SHA256/);
     assert.match(storage, /readObject/);
     assert.match(storage, /listObjects/);
-    assert.match(storage, /ARCHIVE_STORAGE_PROVIDER=s3 é obrigatório em produção/);
+    assert.match(storage, /ARCHIVE_STORAGE_PROVIDER=gcs ou s3 é obrigatório em produção/);
   });
 
   it("implements checksum-verified restore with duplicate protection and audit", () => {
@@ -64,7 +66,7 @@ describe("admin wave 5 production readiness", () => {
   it("adds production readiness automation and documentation", () => {
     const script = read("scripts/admin-production-readiness.mjs");
     assert.match(script, /ADMIN_STAGING_BASE_URL/);
-    assert.match(script, /ARCHIVE_STORAGE_PROVIDER=s3/);
+    assert.match(script, /ARCHIVE_STORAGE_PROVIDER=gcs ou s3/);
     assert.match(script, /ArchiveRestoreJob/);
     assert.match(read("package.json"), /admin:readiness/);
     const doc = read("ADMIN_PRODUCTION_READINESS.md");
