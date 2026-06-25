@@ -71,7 +71,8 @@ describe("admin wave 6 operational hardening", () => {
 
   it("adds a visible controlled-release surface in admin", () => {
     assert.match(read("lib/admin-release-readiness.ts"), /summarizeAdminReleaseReadiness/);
-    assert.match(read("app/admin/page.tsx"), /Liberação controlada/);
+    assert.match(read("app/admin/page.tsx"), /Visão executiva do SaaS/);
+    assert.match(read("app/admin/page.tsx"), /Prontidão operacional/);
     assert.match(read("app/admin/system/page.tsx"), /Readiness de liberação/);
     assert.match(read("ADMIN_RELEASE_REVIEW.md"), /Bloqueadores Para Produção Ampla/);
   });
