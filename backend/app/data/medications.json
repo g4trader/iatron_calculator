@@ -1,0 +1,10 @@
+{
+  "version": "2026-05-25",
+  "source": "Calculadora de Emergencia Pediatrica - Medicacoes e Via Aerea",
+  "notes": [
+    "Regras mantidas em codigo explicito para evitar eval e preservar testabilidade.",
+    "Acido tranexamico bolus: planilha original parece referenciar E2; implementado como pesoKg * 0.3 ate validacao clinica.",
+    "Adenosina 2a dose: condicao compara com 2 ml, mas limite aplicado e 4 ml; regra herdada mantida ate validacao clinica."
+  ]
+}
+

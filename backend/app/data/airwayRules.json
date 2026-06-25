@@ -1,0 +1,7 @@
+{
+  "version": "2026-05-25",
+  "source": "Calculadora de Emergencia Pediatrica - Medicacoes e Via Aerea",
+  "preparedForPostgres": true,
+  "ruleModel": "ordered conditional rules by pesoKg and idadeAnos"
+}
+
