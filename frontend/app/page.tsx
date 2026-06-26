@@ -135,7 +135,7 @@ export default function LandingPage() {
         </div>
       </Section>
 
-      <Section eyebrow="Responsável médico" title="Visão clínica conduzida por quem conhece a rotina do plantão.">
+      <Section eyebrow="Responsável médico" title="Experiência médica, tecnologia e formação aplicadas ao plantão.">
         <NeuralCard className="overflow-hidden p-0">
           <div className="grid gap-0 lg:grid-cols-[0.78fr_1.22fr]">
             <div className="relative min-h-[360px] overflow-hidden bg-[radial-gradient(circle_at_50%_24%,rgba(103,232,249,0.2),transparent_18rem),#07111F]">
@@ -159,13 +159,16 @@ export default function LandingPage() {
                 Dr. Aristóteles de Almeida Pires
               </div>
               <h3 className="text-3xl font-black tracking-tight text-white sm:text-4xl">
-                A camada clínica do Iatron parte de uma necessidade prática: consultar rápido sem perder rigor.
+                Mais de 25 anos de experiência médica conectando prática clínica, telemedicina e educação profissional.
               </h3>
               <p className="mt-5 max-w-3xl text-base leading-8 text-slate-300">
-                O produto foi estruturado para apoiar médicos em cenários pediátricos críticos, traduzindo uma Folha PCR operacional em uma interface digital mais limpa, navegável e pronta para uso em dispositivos móveis.
+                O Dr. Aristóteles de Almeida Pires é médico com trajetória dedicada à prática clínica, inovação em saúde e formação de profissionais. Doutor em telemedicina e mentor de carreira médica, conduz a visão clínica do Iatron para transformar rotinas críticas em ferramentas digitais mais claras, rápidas e úteis no atendimento real.
+              </p>
+              <p className="mt-4 max-w-3xl text-base leading-8 text-slate-400">
+                A Folha PCR nasce dessa interseção entre experiência assistencial, tecnologia aplicada e compromisso com decisões médicas mais organizadas no plantão.
               </p>
               <div className="mt-7 grid gap-3 sm:grid-cols-3">
-                {["Foco em emergência", "Padronização clínica", "Experiência mobile"].map((item) => (
+                {["25+ anos de experiência", "Doutorado em telemedicina", "Mentor de carreira médica"].map((item) => (
                   <div key={item} className="rounded-lg border border-cyan-300/10 bg-slate-950/55 p-4 text-sm font-bold text-slate-200">
                     {item}
                   </div>
