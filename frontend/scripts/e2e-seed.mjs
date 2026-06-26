@@ -98,24 +98,29 @@ async function ensurePlans() {
     }
   });
 
-  const professionalMonthly = await prisma.planPrice.upsert({
-    where: { id: "price_professional_monthly" },
+  const professionalAnnual = await prisma.planPrice.upsert({
+    where: { id: "price_professional_annual" },
     create: {
-      id: "price_professional_monthly",
+      id: "price_professional_annual",
       planCatalogId: professional.id,
-      billingCycle: "MONTHLY",
-      intervalCount: 1,
-      amountCents: 7900,
+      billingCycle: "ANNUAL",
+      intervalCount: 12,
+      amountCents: 24900,
       currency: "BRL"
     },
     update: {
       planCatalogId: professional.id,
-      billingCycle: "MONTHLY",
-      intervalCount: 1,
-      amountCents: 7900,
+      billingCycle: "ANNUAL",
+      intervalCount: 12,
+      amountCents: 24900,
       currency: "BRL",
       isActive: true
     }
+  });
+
+  await prisma.planPrice.updateMany({
+    where: { id: "price_professional_monthly" },
+    data: { isActive: false }
   });
 
   const hospitalCustom = await prisma.planPrice.upsert({
@@ -138,7 +143,7 @@ async function ensurePlans() {
     }
   });
 
-  return { professional, hospital, professionalMonthly, hospitalCustom };
+  return { professional, hospital, professionalAnnual, hospitalCustom };
 }
 
 async function resetFixtures() {
@@ -163,11 +168,11 @@ async function main() {
       userId: active.id,
       plan: "PROFESSIONAL",
       planCatalogId: plans.professional.id,
-      planPriceId: plans.professionalMonthly.id,
+      planPriceId: plans.professionalAnnual.id,
       status: "ACTIVE",
-      billingCycle: "MONTHLY",
+      billingCycle: "ANNUAL",
       seatsPurchased: 1,
-      currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+      currentPeriodEnd: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
     }
   });
   await prisma.license.create({
@@ -185,9 +190,9 @@ async function main() {
       userId: pastDue.id,
       plan: "PROFESSIONAL",
       planCatalogId: plans.professional.id,
-      planPriceId: plans.professionalMonthly.id,
+      planPriceId: plans.professionalAnnual.id,
       status: "PAST_DUE",
-      billingCycle: "MONTHLY",
+      billingCycle: "ANNUAL",
       seatsPurchased: 1
     }
   });

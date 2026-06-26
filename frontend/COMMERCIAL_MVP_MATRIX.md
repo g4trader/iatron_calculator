@@ -9,7 +9,7 @@ Live mode não faz parte desta etapa.
 O MVP comercial honesto neste momento é:
 
 - Produto atual: `Folha PCR`.
-- `Professional mensal`: self-service para acesso individual à Folha PCR, Stripe Checkout test mode, webhook, retorno, acesso, billing e portal validados.
+- `Professional anual R$249,00`: self-service para acesso individual à Folha PCR, Stripe Checkout test mode, webhook, retorno, acesso, billing e portal validados.
 - `Hospital/custom`: implantação assistida da Folha PCR, sem checkout self-service, com comunicação institucional e licenças controladas.
 - `Calculadora completa`: fora da oferta atual, oculta da UI e preservada no código atrás de feature flag.
 
@@ -40,9 +40,9 @@ Um plano/ciclo só pode aparecer na UI quando todos os itens abaixo estiverem co
 | Starter 6 meses | Modelado em `PlanPrice`, sem valor | Sem price mapeado | Oculto | Não implementado | Genérico existe, mas não validado para Starter | Não validado | Não validado | Não validada | Não implementado | Sem decisão comercial, sem valor, sem Stripe price, sem validação |
 | Starter 1 ano | Modelado em `PlanPrice`, sem valor | Sem price mapeado | Oculto | Não implementado | Genérico existe, mas não validado para Starter | Não validado | Não validado | Não validada | Não implementado | Sem decisão comercial, sem valor, sem Stripe price, sem validação |
 | Starter 2 anos | Modelado em `PlanPrice`, sem valor | Sem price mapeado | Oculto | Não implementado | Genérico existe, mas não validado para Starter | Não validado | Não validado | Não validada | Não implementado | Sem decisão comercial, sem valor, sem Stripe price, sem validação |
-| Professional mensal | `amountCents=7900`, price mapeado | `price_1Tk9B82VzAAy18mjPoDGQuRO` | Visível | Validado | Validado | Validado | Validado | Validada | Implementado | Liberado para staging review como acesso à Folha PCR |
+| Professional mensal | Legado/desativado para novas vendas | Price antigo pode existir para assinaturas históricas | Oculto | Não liberado para novas vendas | Genérico existe | Não aplicável para novo checkout | Aplicável apenas a assinaturas existentes | Histórica | Legado | Substituído por assinatura anual |
 | Professional 6 meses | Modelado em `PlanPrice`, sem valor | Sem price mapeado | Oculto | Não implementado | Genérico existe, mas não validado para o ciclo | Não validado | Não validado | Não validada | Parcialmente implementado e exposto indevidamente antes | Falta valor, Stripe price, checkout e validação ponta a ponta |
-| Professional 1 ano | Modelado em `PlanPrice`, sem valor | Sem price mapeado | Oculto | Não implementado | Genérico existe, mas não validado para o ciclo | Não validado | Não validado | Não validada | Parcialmente implementado e exposto indevidamente antes | Falta valor, Stripe price, checkout e validação ponta a ponta |
+| Professional 1 ano | `amountCents=24900`, `billingCycle=ANNUAL` | `STRIPE_PRICE_PROFESSIONAL_ANNUAL` ou `stripePriceId` anual | Visível | Implementado | Genérico validável por webhook Stripe | Validável | Validável | Validável | Implementado | Oferta comercial atual: R$249,00/ano |
 | Professional 2 anos | Modelado em `PlanPrice`, sem valor | Sem price mapeado | Oculto | Não implementado | Genérico existe, mas não validado para o ciclo | Não validado | Não validado | Não validada | Parcialmente implementado e exposto indevidamente antes | Falta valor, Stripe price, checkout e validação ponta a ponta |
 | Hospital/custom institucional | `CUSTOM`, sob consulta | Price test mode existe para cobrança assistida, não para checkout self-service | Visível como venda assistida | Checkout self-service bloqueado por decisão comercial | Webhook suporta sincronização assistida | Não aplicável para self-service | Aplicável somente após customer/subscription assistidos | Licença institucional validada por estado | Bloqueado por decisão comercial para self-service | Exige operação assistida, criação/revisão de organização e atribuição de licenças |
 
@@ -57,7 +57,7 @@ Um plano/ciclo só pode aparecer na UI quando todos os itens abaixo estiverem co
 
 O `pricing view` agora expõe somente:
 
-- Plano individual `Professional` com ciclo `MONTHLY`, valor preenchido e `stripePriceId`.
+- Plano individual `Professional` com ciclo `ANNUAL`, valor `R$249,00` e `stripePriceId`/env Stripe anual.
 - Plano institucional `Hospital` com ciclo `CUSTOM`, como venda assistida.
 
 Linhas futuras permanecem no banco para evolução, mas não aparecem na UI até cumprirem o critério de readiness comercial.

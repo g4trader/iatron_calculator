@@ -13,7 +13,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "sk_test_missing", {
 
 const appUrl = process.env.AUTH_URL ?? process.env.NEXTAUTH_URL ?? "http://127.0.0.1:3000";
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-const professionalStripePriceId = process.env.STRIPE_SMOKE_PROFESSIONAL_PRICE_ID ?? "price_iatron_smoke_professional_monthly";
+const professionalStripePriceId = process.env.STRIPE_SMOKE_PROFESSIONAL_PRICE_ID ?? "price_iatron_smoke_professional_annual";
 const hospitalStripePriceId = process.env.STRIPE_SMOKE_HOSPITAL_PRICE_ID ?? "price_iatron_smoke_hospital_monthly";
 
 const users = {
@@ -93,21 +93,21 @@ async function ensurePlans() {
   });
 
   const professionalPrice = await prisma.planPrice.upsert({
-    where: { id: "price_professional_monthly" },
+    where: { id: "price_professional_annual" },
     create: {
-      id: "price_professional_monthly",
+      id: "price_professional_annual",
       planCatalogId: professional.id,
-      billingCycle: "MONTHLY",
-      intervalCount: 1,
-      amountCents: 7900,
+      billingCycle: "ANNUAL",
+      intervalCount: 12,
+      amountCents: 24900,
       currency: "BRL",
       stripePriceId: professionalStripePriceId
     },
     update: {
       planCatalogId: professional.id,
-      billingCycle: "MONTHLY",
-      intervalCount: 1,
-      amountCents: 7900,
+      billingCycle: "ANNUAL",
+      intervalCount: 12,
+      amountCents: 24900,
       currency: "BRL",
       stripePriceId: professionalStripePriceId,
       isActive: true
@@ -233,13 +233,13 @@ function subscriptionPayload(input: {
             metadata: {},
             nickname: null,
             product: "prod_iatron_smoke",
-            recurring: { interval: "month", interval_count: 1, usage_type: "licensed", aggregate_usage: null, meter: null, trial_period_days: null },
+            recurring: { interval: "year", interval_count: 1, usage_type: "licensed", aggregate_usage: null, meter: null, trial_period_days: null },
             tax_behavior: "unspecified",
             tiers_mode: null,
             transform_quantity: null,
             type: "recurring",
-            unit_amount: 7900,
-            unit_amount_decimal: "7900"
+            unit_amount: 24900,
+            unit_amount_decimal: "24900"
           },
           quantity: input.quantity,
           subscription: input.id,

@@ -63,7 +63,7 @@ export function getMinimumInstitutionalCheckoutSeats(planMinSeats: number, organ
 }
 
 export function getDefaultPriceForPlan(plan: PricingPlanView) {
-  return plan.prices.find((price) => price.billingCycle === BillingCycle.MONTHLY) ?? plan.prices[0] ?? null;
+  return plan.prices.find((price) => price.billingCycle === BillingCycle.ANNUAL) ?? plan.prices[0] ?? null;
 }
 
 export function shouldUseBillingPortal(hasActiveAccess: boolean, planAudience: PlanAudience, currentAccountType?: string | null) {
@@ -94,9 +94,11 @@ function priceToView(price: PlanPrice, monthlyReferenceCents: number | null): Pr
 }
 
 function isVisibleCommercialMvpPrice(catalog: PricingCatalogRecord, price: PlanPrice) {
+  const fallbackStripePriceId = process.env[`STRIPE_PRICE_${catalog.code}_${price.billingCycle}`]?.trim();
+  const hasStripePrice = Boolean(price.stripePriceId || fallbackStripePriceId);
   // Commercial MVP governance: expose only cycles validated end-to-end in staging.
   if (catalog.audience === PlanAudience.INDIVIDUAL) {
-    return catalog.code === "PROFESSIONAL" && price.billingCycle === BillingCycle.MONTHLY && price.amountCents !== null && Boolean(price.stripePriceId);
+    return catalog.code === "PROFESSIONAL" && price.billingCycle === BillingCycle.ANNUAL && price.amountCents !== null && hasStripePrice;
   }
 
   if (catalog.audience === PlanAudience.INSTITUTIONAL) {

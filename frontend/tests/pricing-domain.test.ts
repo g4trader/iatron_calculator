@@ -44,7 +44,7 @@ function catalog(input: {
 }
 
 describe("pricing domain rules", () => {
-  it("exposes only validated Professional monthly and assisted Hospital in the commercial MVP", () => {
+  it("exposes only validated Professional annual and assisted Hospital in the commercial MVP", () => {
     const view = buildPricingView([
       catalog({
         id: "plan_professional",
@@ -52,7 +52,7 @@ describe("pricing domain rules", () => {
         name: "Professional",
         audience: PlanAudience.INDIVIDUAL,
         prices: [
-          { id: "annual", billingCycle: BillingCycle.ANNUAL, amountCents: 79000, intervalCount: 12, stripePriceId: "price_annual" },
+          { id: "annual", billingCycle: BillingCycle.ANNUAL, amountCents: 24900, intervalCount: 12, stripePriceId: "price_annual" },
           { id: "monthly", billingCycle: BillingCycle.MONTHLY, amountCents: 7900, intervalCount: 1, stripePriceId: "price_monthly" }
         ]
       }),
@@ -68,7 +68,7 @@ describe("pricing domain rules", () => {
 
     assert.equal(view.individualPlans.length, 1);
     assert.equal(view.institutionalPlans.length, 1);
-    assert.deepEqual(view.individualPlans[0].prices.map((price) => price.billingCycle), [BillingCycle.MONTHLY]);
+    assert.deepEqual(view.individualPlans[0].prices.map((price) => price.billingCycle), [BillingCycle.ANNUAL]);
     assert.equal(view.institutionalPlans[0].prices[0].isCustom, true);
   });
 
@@ -93,11 +93,11 @@ describe("pricing domain rules", () => {
         code: Plan.PROFESSIONAL,
         name: "Professional",
         audience: PlanAudience.INDIVIDUAL,
-        prices: [{ id: "monthly", billingCycle: BillingCycle.MONTHLY, amountCents: 7900, intervalCount: 1, stripePriceId: "price_monthly" }]
+        prices: [{ id: "annual", billingCycle: BillingCycle.ANNUAL, amountCents: 24900, intervalCount: 12, stripePriceId: "price_annual" }]
       })
     ]);
 
-    assert.equal(getDefaultPriceForPlan(view.individualPlans[0])?.id, "monthly");
+    assert.equal(getDefaultPriceForPlan(view.individualPlans[0])?.id, "annual");
   });
 
   it("enforces institutional minimum seats for UI defaults", () => {

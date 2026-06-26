@@ -166,12 +166,12 @@ async function run() {
     await page.goto(`${baseURL}/checkout`, { waitUntil: "domcontentloaded" });
     await expect(page.getByRole("heading", { name: /escolha o acesso comercial do iatron/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Professional" })).toBeVisible();
-    await expect(page.getByRole("button", { name: /assinar professional/i })).toBeEnabled();
-    record("pricing individual Professional mensal visível em /checkout", true, undefined, page.url());
+    await expect(page.getByRole("button", { name: /assinar anual/i })).toBeEnabled();
+    record("pricing individual Professional anual visível em /checkout", true, undefined, page.url());
 
     await page.waitForLoadState("networkidle");
     const individualCheckoutNavigation = page.waitForURL(/checkout\.stripe\.com/, { timeout: 60_000 });
-    await page.getByRole("button", { name: /assinar professional/i }).click();
+    await page.getByRole("button", { name: /assinar anual/i }).click();
     await individualCheckoutNavigation;
     await submitStripeCheckout(page, "4242424242424242");
     await page.waitForURL(/\/checkout\/return\?status=success/, { timeout: 60_000 });

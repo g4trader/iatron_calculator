@@ -16,11 +16,11 @@ const audiences = ["Pediatras", "Emergência", "UTI", "SAMU", "Hospitais", "Acad
 const plans = [
   {
     name: "Professional",
-    price: "R$ 79",
-    suffix: "/mês",
-    text: "Acesso individual à Folha PCR digital.",
+    price: "R$ 249",
+    suffix: "/ano",
+    text: "Assinatura anual individual da Folha PCR digital.",
     featured: true,
-    ctaLabel: "Assinar",
+    ctaLabel: "Assinar anual",
     features: ["Folha PCR digital", "Histórico de cálculos", "Impressão e PDF"]
   },
   {
@@ -107,7 +107,7 @@ export default function LandingPage() {
         </div>
       </Section>
 
-      <Section id="planos" eyebrow="Planos" title="Acesso à Folha PCR para uso individual ou implantação assistida.">
+      <Section id="planos" eyebrow="Planos" title="Assinatura anual da Folha PCR para uso individual.">
         <FunnelBeacon step="pricing_view" source="landing" scope="plans_section" />
         <div className="grid gap-4 lg:grid-cols-2">
           {plans.map((plan) => (

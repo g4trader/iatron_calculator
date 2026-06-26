@@ -83,7 +83,7 @@ NEXT_PUBLIC_API_URL=
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
-STRIPE_PRICE_PROFESSIONAL_MONTHLY=price_...
+STRIPE_PRICE_PROFESSIONAL_ANNUAL=price_...
 STRIPE_PRICE_HOSPITAL_CUSTOM=price_...
 ```
 
@@ -147,8 +147,8 @@ Depois de criar o endpoint no Stripe Dashboard, copiar o `whsec_...` para `STRIP
 ## Checklist Stripe test mode
 
 - Produto Professional criado.
-- Preço Professional mensal criado e ativo.
-- `STRIPE_PRICE_PROFESSIONAL_MONTHLY` aponta para o preço test mode.
+- Preço Professional anual de R$249,00 criado e ativo.
+- `STRIPE_PRICE_PROFESSIONAL_ANNUAL` aponta para o preço test mode.
 - Starter e ciclos Professional 6 meses/1 ano/2 anos não aparecem na UI enquanto não tiverem valor, price Stripe e validação ponta a ponta.
 - Plano Hospital permanece como `Sob consulta`.
 - `STRIPE_PRICE_HOSPITAL_CUSTOM` pode existir para sincronização assistida, mas não deve gerar checkout self-service enquanto `PlanPrice` for `CUSTOM`.
@@ -176,7 +176,7 @@ Staging deployado:
 2. Acessar `/dashboard`.
 3. Confirmar paywall.
 4. Acessar `/checkout`.
-5. Confirmar que apenas Professional mensal aparece como self-service.
+5. Confirmar que apenas Professional anual aparece como self-service.
 6. Abrir Stripe Checkout.
 7. Pagar com cartão test mode `4242 4242 4242 4242`.
 8. Confirmar retorno para `/checkout/return?status=success`.

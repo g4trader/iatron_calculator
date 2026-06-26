@@ -57,7 +57,7 @@ export default async function BillingPage() {
         ) : null}
         <div className="flex flex-col gap-3 sm:flex-row">
           <PortalButton />
-          <PremiumButton href="/checkout">Ver planos e ciclos</PremiumButton>
+          <PremiumButton href="/checkout">Ver assinatura anual</PremiumButton>
         </div>
       </section>
     </SaaSPage>

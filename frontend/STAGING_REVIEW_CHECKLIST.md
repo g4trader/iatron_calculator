@@ -19,7 +19,7 @@ Status validado:
 - Stripe: test mode
 - Banco: staging/Supabase
 - Live mode: não ativado
-- Matriz comercial: somente `Professional mensal` e `Hospital sob consulta` podem aparecer na UI. Ver `COMMERCIAL_MVP_MATRIX.md`.
+- Matriz comercial: somente `Professional anual R$249,00` e `Hospital sob consulta` podem aparecer na UI. Ver `COMMERCIAL_MVP_MATRIX.md`.
 - Escopo funcional: o produto atual expõe somente `Folha PCR`. `Calculadora completa` não deve aparecer na UI principal.
 
 ## Contas de Teste
@@ -56,8 +56,8 @@ https://frontend-two-lovat-72.vercel.app/checkout
 ```
 
 3. Conferir plano `Professional`.
-4. Conferir que `Professional` mostra apenas ciclo mensal.
-5. Conferir botão `Assinar Professional`.
+4. Conferir que `Professional` mostra apenas assinatura anual por `R$ 249`.
+5. Conferir botão `Assinar anual`.
 6. Conferir que `Starter`, `6 meses`, `1 ano` e `2 anos` não aparecem como opção comercial.
 7. Conferir plano `Hospital`.
 8. Hospital deve mostrar:
@@ -73,7 +73,7 @@ Use apenas se quiser testar pagamento em ambiente de teste.
 
 1. Entrar com `e2e+no-access@iatron.test`.
 2. Ir para `/checkout`.
-3. Clicar em `Assinar Professional`.
+3. Clicar em `Assinar anual`.
 4. No Stripe Checkout, usar cartão de teste:
 
 ```text

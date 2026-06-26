@@ -138,7 +138,7 @@ export NEXTAUTH_URL="http://localhost:3000"
 export STRIPE_SECRET_KEY="sk_test_..."
 export NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_..."
 export STRIPE_WEBHOOK_SECRET="whsec_..."
-export STRIPE_PRICE_PROFESSIONAL_MONTHLY="price_..."
+export STRIPE_PRICE_PROFESSIONAL_ANNUAL="price_..."
 
 npm run dev
 ```

@@ -28,28 +28,30 @@ function subscription(input: {
     id: input.id,
     status: input.status,
     plan: input.plan ?? Plan.PROFESSIONAL,
-    billingCycle: input.billingCycle ?? BillingCycle.MONTHLY,
+    billingCycle: input.billingCycle ?? BillingCycle.ANNUAL,
     ownerType: input.ownerType ?? SubscriptionOwnerType.USER,
     seatsPurchased: input.seatsPurchased ?? 1,
     createdAt: input.createdAt ?? now,
     updatedAt: input.updatedAt ?? now,
     planPrice: input.amountCents === undefined
-      ? { amountCents: 7900, intervalCount: input.intervalCount ?? 1, billingCycle: input.billingCycle ?? BillingCycle.MONTHLY }
+      ? { amountCents: 24900, intervalCount: input.intervalCount ?? 12, billingCycle: input.billingCycle ?? BillingCycle.ANNUAL }
       : input.amountCents === null
-        ? { amountCents: null, intervalCount: input.intervalCount ?? 1, billingCycle: input.billingCycle ?? BillingCycle.MONTHLY }
-        : { amountCents: input.amountCents, intervalCount: input.intervalCount ?? 1, billingCycle: input.billingCycle ?? BillingCycle.MONTHLY }
+        ? { amountCents: null, intervalCount: input.intervalCount ?? 12, billingCycle: input.billingCycle ?? BillingCycle.ANNUAL }
+        : { amountCents: input.amountCents, intervalCount: input.intervalCount ?? 12, billingCycle: input.billingCycle ?? BillingCycle.ANNUAL }
   };
 }
 
 describe("admin sales metrics", () => {
   it("calculates monthly equivalent revenue by interval and institutional seats", () => {
-    assert.equal(getMonthlyRevenueCents(subscription({ id: "monthly", status: SubscriptionStatus.ACTIVE, amountCents: 7900 })), 7900);
-    assert.equal(getMonthlyRevenueCents(subscription({ id: "annual", status: SubscriptionStatus.ACTIVE, amountCents: 94800, intervalCount: 12, billingCycle: BillingCycle.ANNUAL })), 7900);
+    assert.equal(getMonthlyRevenueCents(subscription({ id: "monthly", status: SubscriptionStatus.ACTIVE, amountCents: 7900, intervalCount: 1, billingCycle: BillingCycle.MONTHLY })), 7900);
+    assert.equal(getMonthlyRevenueCents(subscription({ id: "annual", status: SubscriptionStatus.ACTIVE, amountCents: 24900, intervalCount: 12, billingCycle: BillingCycle.ANNUAL })), 2075);
     assert.equal(getMonthlyRevenueCents(subscription({
       id: "org",
       status: SubscriptionStatus.ACTIVE,
       ownerType: SubscriptionOwnerType.ORGANIZATION,
       amountCents: 10000,
+      intervalCount: 1,
+      billingCycle: BillingCycle.MONTHLY,
       seatsPurchased: 3
     })), 30000);
     assert.equal(getMonthlyRevenueCents(subscription({ id: "custom", status: SubscriptionStatus.ACTIVE, amountCents: null })), null);
@@ -68,14 +70,14 @@ describe("admin sales metrics", () => {
       periodStart,
       firstUseCount: 2,
       subscriptions: [
-        subscription({ id: "active", status: SubscriptionStatus.ACTIVE, amountCents: 7900 }),
-        subscription({ id: "trial", status: SubscriptionStatus.TRIALING, amountCents: 7900 }),
-        subscription({ id: "canceled", status: SubscriptionStatus.CANCELED, amountCents: 7900, updatedAt: now }),
+        subscription({ id: "active", status: SubscriptionStatus.ACTIVE, amountCents: 24900 }),
+        subscription({ id: "trial", status: SubscriptionStatus.TRIALING, amountCents: 24900 }),
+        subscription({ id: "canceled", status: SubscriptionStatus.CANCELED, amountCents: 24900, updatedAt: now }),
         subscription({ id: "custom", status: SubscriptionStatus.ACTIVE, amountCents: null, plan: Plan.HOSPITAL, ownerType: SubscriptionOwnerType.ORGANIZATION, billingCycle: BillingCycle.CUSTOM, seatsPurchased: 3 })
       ]
     });
 
-    assert.equal(dashboard.metrics.find((metric) => metric.label === "MRR atual")?.value, "R$ 79");
+    assert.equal(dashboard.metrics.find((metric) => metric.label === "MRR atual")?.value, "R$ 21");
     assert.equal(dashboard.metrics.find((metric) => metric.label === "ARR estimado")?.precision, "estimated");
     assert.equal(dashboard.metrics.find((metric) => metric.label === "Upgrades/downgrades")?.precision, "placeholder");
     assert.equal(dashboard.funnel.find((row) => row.id === "landing")?.count, null);
@@ -95,7 +97,7 @@ describe("admin sales metrics", () => {
         first_use: 3
       },
       subscriptions: [
-        subscription({ id: "active", status: SubscriptionStatus.ACTIVE, amountCents: 7900 })
+        subscription({ id: "active", status: SubscriptionStatus.ACTIVE, amountCents: 24900 })
       ]
     });
 

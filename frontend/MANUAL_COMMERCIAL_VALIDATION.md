@@ -19,10 +19,10 @@ Observação operacional: usar o pooler Supabase `:6543` para a app local causou
 
 Registros internos em `PlanPrice`:
 
-- `price_professional_monthly` -> `price_1Tk9B82VzAAy18mjPoDGQuRO`
+- `price_professional_annual` -> `STRIPE_PRICE_PROFESSIONAL_ANNUAL`
 - `price_hospital_custom` -> `price_1Tk9B92VzAAy18mjrrmiAhIq`
 
-O checkout individual consumiu `price_professional_monthly` e criou sessão Stripe real em test mode.
+O checkout individual deve consumir `price_professional_annual` e criar sessão Stripe real em test mode.
 
 ## Fluxo individual validado
 

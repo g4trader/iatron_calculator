@@ -32,7 +32,7 @@ Use este checklist somente depois de concluir staging test mode. Não marque ite
 - [ ] `COMMERCIAL_MVP_MATRIX.md` revisado.
 - [ ] Nenhum plano/ciclo sem validação ponta a ponta aparece na UI.
 - [ ] Produto live `Iatron Professional` criado.
-- [ ] Price live Professional mensal criado.
+- [ ] Price live Professional anual criado com valor R$249,00.
 - [ ] Valor Professional aprovado comercialmente.
 - [ ] Produto live `Iatron Hospital` criado, se cobrança assistida usar Stripe.
 - [ ] Price live Hospital criado, se aplicável.
@@ -45,7 +45,7 @@ Use este checklist somente depois de concluir staging test mode. Não marque ite
 - [ ] `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...`
 - [ ] `STRIPE_SECRET_KEY=sk_live_...`
 - [ ] `STRIPE_WEBHOOK_SECRET=whsec_...` do endpoint live.
-- [ ] `STRIPE_PRICE_PROFESSIONAL_MONTHLY=price_live_...`, se usado como fallback.
+- [ ] `STRIPE_PRICE_PROFESSIONAL_ANNUAL=price_live_...`, se usado como fallback.
 - [ ] `STRIPE_PRICE_HOSPITAL_CUSTOM=price_live_...`, se usado.
 - [ ] Vercel redeployado após alterar envs.
 

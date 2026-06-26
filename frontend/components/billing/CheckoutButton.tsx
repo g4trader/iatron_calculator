@@ -4,10 +4,10 @@ import { useState } from "react";
 
 export function CheckoutButton({
   ownerType = "USER",
-  planPriceId = "price_professional_monthly",
+  planPriceId = "price_professional_annual",
   organizationId,
   seats,
-  children = "Iniciar trial"
+  children = "Assinar anual"
 }: {
   ownerType?: "USER" | "ORGANIZATION";
   planPriceId?: string;

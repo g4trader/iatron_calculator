@@ -21,7 +21,7 @@ function formatPrice(amountCents: number | null, currency: string) {
 }
 
 function initialSelectedPrices(plans: PricingPlanView[]) {
-  return Object.fromEntries(plans.map((plan) => [plan.id, plan.prices.find((price) => price.billingCycle === "MONTHLY")?.id ?? plan.prices[0]?.id ?? ""]));
+  return Object.fromEntries(plans.map((plan) => [plan.id, plan.prices.find((price) => price.billingCycle === "ANNUAL")?.id ?? plan.prices[0]?.id ?? ""]));
 }
 
 function getSelectedPrice(plan: PricingPlanView, selectedByPlan: Record<string, string>) {
@@ -93,7 +93,9 @@ function IndividualPlanCard({
 
       <div>
         <p className="text-4xl font-black text-white">{formatPrice(selectedPrice?.amountCents ?? null, selectedPrice?.currency ?? "BRL")}</p>
-        {selectedPrice?.monthlyEquivalentCents && selectedPrice.billingCycle !== "MONTHLY" ? (
+        {selectedPrice?.billingCycle === "ANNUAL" ? (
+          <p className="mt-1 text-sm text-slate-400">Assinatura anual · equivale a {formatPrice(selectedPrice.monthlyEquivalentCents, selectedPrice.currency)}/mês</p>
+        ) : selectedPrice?.monthlyEquivalentCents && selectedPrice.billingCycle !== "MONTHLY" ? (
           <p className="mt-1 text-sm text-slate-400">Equivalente a {formatPrice(selectedPrice.monthlyEquivalentCents, selectedPrice.currency)}/mês</p>
         ) : (
           <p className="mt-1 text-sm text-slate-400">{selectedPrice?.billingCycleLabel ?? "Ciclo indisponível"}</p>
@@ -108,7 +110,7 @@ function IndividualPlanCard({
       {hasIndividualAccess ? (
         <PortalButton />
       ) : selectedPrice && !selectedPrice.isCustom ? (
-        <CheckoutButton planPriceId={selectedPrice.id}>Assinar {plan.name}</CheckoutButton>
+        <CheckoutButton planPriceId={selectedPrice.id}>Assinar anual</CheckoutButton>
       ) : (
         <Link href="mailto:contato@iatron.com.br" className="inline-flex h-12 items-center justify-center rounded-md border border-cyan-300/20 bg-white/[0.03] px-5 text-sm font-bold text-slate-100 transition hover:border-cyan-300/50">
           Falar com equipe

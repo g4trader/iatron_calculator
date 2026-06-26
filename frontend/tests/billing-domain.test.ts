@@ -11,7 +11,7 @@ import {
 
 describe("billing domain rules", () => {
   it("maps PlanPrice to deterministic Stripe env fallback names", () => {
-    assert.equal(fallbackStripePriceEnvName("PROFESSIONAL", BillingCycle.MONTHLY), "STRIPE_PRICE_PROFESSIONAL_MONTHLY");
+    assert.equal(fallbackStripePriceEnvName("PROFESSIONAL", BillingCycle.ANNUAL), "STRIPE_PRICE_PROFESSIONAL_ANNUAL");
     assert.equal(fallbackStripePriceEnvName("STARTER", BillingCycle.BIENNIAL), "STRIPE_PRICE_STARTER_BIENNIAL");
     assert.equal(fallbackStripePriceEnvName("HOSPITAL", BillingCycle.CUSTOM), "STRIPE_PRICE_HOSPITAL_CUSTOM");
   });

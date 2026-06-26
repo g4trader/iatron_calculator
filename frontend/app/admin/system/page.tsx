@@ -54,7 +54,7 @@ export default async function SystemPage() {
     ["STRIPE_SECRET_KEY", present("STRIPE_SECRET_KEY")],
     ["STRIPE_WEBHOOK_SECRET", present("STRIPE_WEBHOOK_SECRET")],
     ["NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", present("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY")],
-    ["STRIPE_PRICE_PROFESSIONAL_MONTHLY", present("STRIPE_PRICE_PROFESSIONAL_MONTHLY")]
+    ["STRIPE_PRICE_PROFESSIONAL_ANNUAL", present("STRIPE_PRICE_PROFESSIONAL_ANNUAL")]
   ].map(([id, ok]) => ({ id: String(id), name: String(id), ok: Boolean(ok) }));
   const stripeOperationalChecklist = getStripeOperationalChecklist().map((item) => ({ id: item.key, ...item }));
   const releaseItems = getAdminReleaseReadinessItems();
