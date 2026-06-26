@@ -55,7 +55,7 @@ export default async function AdminPage() {
       <AdminPageHeader
         eyebrow="Business cockpit"
         title="Visão executiva do SaaS"
-        description="Painel para liderança acompanhar receita recorrente, crescimento, adoção, riscos comerciais e prontidão operacional do Iatron."
+        description="Painel para liderança acompanhar receita recorrente, crescimento, adoção, riscos comerciais e prontidão operacional do iatron.PED."
         actions={
           <>
             <Link href="/admin/sales" className="rounded-lg border border-cyan-300/20 px-4 py-2 text-sm font-black text-cyan-100 transition hover:border-cyan-300/50">
