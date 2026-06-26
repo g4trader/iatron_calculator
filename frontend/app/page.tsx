@@ -1,4 +1,5 @@
 import { Activity, ArrowRight, BadgeCheck, Check, Clock, FileCheck, Hospital, Instagram, Quote, Shield, Smartphone, Sparkles, Stethoscope, Users } from "lucide-react";
+import Image from "next/image";
 import { FunnelBeacon } from "@/components/analytics/FunnelBeacon";
 import { NeuralCard, PremiumButton, SaaSNav, SaaSPage, Section } from "@/components/saas/SaaSChrome";
 
@@ -139,12 +140,16 @@ export default function LandingPage() {
           <div className="grid gap-0 lg:grid-cols-[0.78fr_1.22fr]">
             <div className="relative min-h-[360px] overflow-hidden bg-[radial-gradient(circle_at_50%_24%,rgba(103,232,249,0.2),transparent_18rem),#07111F]">
               <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(103,232,249,0.08),transparent_42%),linear-gradient(rgba(103,232,249,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.03)_1px,transparent_1px)] bg-[auto,34px_34px,34px_34px]" aria-hidden="true" />
-              <div className="absolute inset-x-8 bottom-8 top-8 flex items-center justify-center rounded-2xl border border-cyan-300/15 bg-slate-950/45 shadow-[0_24px_80px_rgba(0,0,0,0.36)] backdrop-blur">
-                <div className="text-center">
-                  <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-full border border-cyan-200/35 bg-cyan-300/10 text-4xl font-black text-cyan-100 shadow-[0_0_60px_rgba(34,211,238,0.18)]">
-                    AP
-                  </div>
-                  <p className="mt-5 text-sm font-black tracking-[0.22em] text-cyan-200/70">MÉDICO RESPONSÁVEL</p>
+              <div className="absolute inset-x-8 bottom-8 top-8 overflow-hidden rounded-2xl border border-cyan-300/15 bg-slate-950/45 shadow-[0_24px_80px_rgba(0,0,0,0.36)] backdrop-blur">
+                <Image
+                  src="/images/dr-aristoteles-pires.png"
+                  alt="Dr. Aristóteles de Almeida Pires"
+                  fill
+                  sizes="(min-width: 1024px) 31vw, 100vw"
+                  className="object-cover object-center"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/88 via-slate-950/30 to-transparent p-5">
+                  <p className="text-sm font-black tracking-[0.22em] text-cyan-100/90">MÉDICO RESPONSÁVEL</p>
                 </div>
               </div>
             </div>
