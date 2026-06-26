@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, Check, Clock, Hospital, Shield, Smartphone, Sparkles, Users } from "lucide-react";
+import { Activity, ArrowRight, BadgeCheck, Check, Clock, FileCheck, Hospital, Instagram, Quote, Shield, Smartphone, Sparkles, Stethoscope, Users } from "lucide-react";
 import { FunnelBeacon } from "@/components/analytics/FunnelBeacon";
 import { NeuralCard, PremiumButton, SaaSNav, SaaSPage, Section } from "@/components/saas/SaaSChrome";
 
@@ -12,6 +12,24 @@ const benefits = [
 ];
 
 const audiences = ["Pediatras", "Emergência", "UTI", "SAMU", "Hospitais", "Acadêmicos"];
+
+const socialProof = [
+  {
+    title: "Nasceu da rotina real de plantão",
+    text: "A experiência digital foi desenhada a partir da lógica operacional de uma Folha PCR usada para consulta rápida em emergência pediátrica.",
+    Icon: FileCheck
+  },
+  {
+    title: "Foco clínico antes de volume de features",
+    text: "O MVP concentra a atenção em entubação, parada cardíaca, drogas úteis e desfibrilação, sem transformar o plantão em uma tela de ERP.",
+    Icon: Stethoscope
+  },
+  {
+    title: "Padronização para reduzir ruído",
+    text: "A proposta é organizar informações críticas em um fluxo único, com impressão e PDF para apoiar conferência, comunicação e registro.",
+    Icon: BadgeCheck
+  }
+];
 
 const plans = [
   {
@@ -91,6 +109,76 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      <Section eyebrow="Prova social" title="Construído para a pressão real da emergência pediátrica.">
+        <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+          <NeuralCard className="p-6">
+            <Quote className="mb-6 h-6 w-6 text-cyan-200" aria-hidden="true" />
+            <p className="text-2xl font-black leading-tight text-white">
+              A Folha PCR digital transforma uma consulta operacional crítica em uma experiência rápida, padronizada e pronta para plantão.
+            </p>
+            <p className="mt-5 text-sm leading-6 text-slate-400">
+              O objetivo do Iatron é reduzir atrito cognitivo no momento em que cada segundo importa, mantendo a conferência clínica e o protocolo institucional como parte central do uso.
+            </p>
+          </NeuralCard>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            {socialProof.map(({ title, text, Icon }) => (
+              <NeuralCard key={title} className="p-5">
+                <Icon className="mb-5 h-5 w-5 text-cyan-200" aria-hidden="true" />
+                <h3 className="font-black text-white">{title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{text}</p>
+              </NeuralCard>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      <Section eyebrow="Responsável médico" title="Visão clínica conduzida por quem conhece a rotina do plantão.">
+        <NeuralCard className="overflow-hidden p-0">
+          <div className="grid gap-0 lg:grid-cols-[0.78fr_1.22fr]">
+            <div className="relative min-h-[360px] overflow-hidden bg-[radial-gradient(circle_at_50%_24%,rgba(103,232,249,0.2),transparent_18rem),#07111F]">
+              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(103,232,249,0.08),transparent_42%),linear-gradient(rgba(103,232,249,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.03)_1px,transparent_1px)] bg-[auto,34px_34px,34px_34px]" aria-hidden="true" />
+              <div className="absolute inset-x-8 bottom-8 top-8 flex items-center justify-center rounded-2xl border border-cyan-300/15 bg-slate-950/45 shadow-[0_24px_80px_rgba(0,0,0,0.36)] backdrop-blur">
+                <div className="text-center">
+                  <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-full border border-cyan-200/35 bg-cyan-300/10 text-4xl font-black text-cyan-100 shadow-[0_0_60px_rgba(34,211,238,0.18)]">
+                    AP
+                  </div>
+                  <p className="mt-5 text-sm font-black tracking-[0.22em] text-cyan-200/70">MÉDICO RESPONSÁVEL</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 sm:p-8 lg:p-10">
+              <div className="mb-5 inline-flex rounded-full border border-cyan-300/15 bg-cyan-300/8 px-3 py-2 text-sm font-bold text-cyan-100">
+                Dr. Aristóteles de Almeida Pires
+              </div>
+              <h3 className="text-3xl font-black tracking-tight text-white sm:text-4xl">
+                A camada clínica do Iatron parte de uma necessidade prática: consultar rápido sem perder rigor.
+              </h3>
+              <p className="mt-5 max-w-3xl text-base leading-8 text-slate-300">
+                O produto foi estruturado para apoiar médicos em cenários pediátricos críticos, traduzindo uma Folha PCR operacional em uma interface digital mais limpa, navegável e pronta para uso em dispositivos móveis.
+              </p>
+              <div className="mt-7 grid gap-3 sm:grid-cols-3">
+                {["Foco em emergência", "Padronização clínica", "Experiência mobile"].map((item) => (
+                  <div key={item} className="rounded-lg border border-cyan-300/10 bg-slate-950/55 p-4 text-sm font-bold text-slate-200">
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <a
+                href="https://www.instagram.com/dr.aristotelespires?igsh=dmV6dWZ3bjhxNG0z"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-8 inline-flex items-center rounded-lg border border-cyan-300/20 bg-slate-950/60 px-4 py-3 text-sm font-black text-cyan-100 transition hover:border-cyan-200/50 hover:bg-cyan-300/10"
+              >
+                <Instagram className="mr-2 h-4 w-4" aria-hidden="true" />
+                Ver perfil no Instagram
+              </a>
+            </div>
+          </div>
+        </NeuralCard>
+      </Section>
 
       <Section id="como-funciona" eyebrow="Como funciona" title="Da identificação do paciente à Folha PCR pronta em três passos.">
         <div className="grid gap-4 md:grid-cols-3">
