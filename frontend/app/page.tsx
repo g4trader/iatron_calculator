@@ -39,38 +39,57 @@ export default function LandingPage() {
       <FunnelBeacon step="landing_view" source="landing" scope="home" />
       <SaaSNav />
 
-      <section className="mx-auto grid min-h-[calc(100vh-72px)] max-w-7xl items-center gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_0.9fr] lg:px-8">
-        <div className="max-w-3xl">
-          <div className="mb-5 inline-flex rounded-full border border-cyan-300/15 bg-cyan-300/8 px-3 py-2 text-sm font-semibold text-cyan-100">
-            Folha PCR pediátrica com experiência healthtech AI
-          </div>
-          <h1 className="text-5xl font-black tracking-tight text-white sm:text-6xl">
-            Folha PCR pediátrica em segundos para decisões críticas no plantão.
-          </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-            Um produto focado em entubação, parada cardíaca, drogas úteis e desfibrilação para médicos que precisam consultar rápido e com menos ruído.
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <PremiumButton href="/checkout">Começar agora</PremiumButton>
-            <PremiumButton href="/dashboard" variant="secondary">Testar gratuitamente</PremiumButton>
-          </div>
-        </div>
+      <section className="relative isolate overflow-hidden border-b border-cyan-300/10">
+        <div className="absolute inset-0 -z-30 bg-[url('/images/iatron-hero-hospital.png')] bg-cover bg-[62%_center] opacity-55" aria-hidden="true" />
+        <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_72%_38%,rgba(34,211,238,0.2),transparent_28rem),linear-gradient(90deg,#030712_0%,rgba(3,7,18,0.94)_34%,rgba(3,7,18,0.72)_68%,rgba(3,7,18,0.88)_100%)]" aria-hidden="true" />
+        <div className="hero-data-field absolute inset-x-0 top-0 -z-10 h-full opacity-70" aria-hidden="true" />
 
-        <NeuralCard className="p-4">
-          <div className="rounded-lg border border-cyan-300/10 bg-[#07111F] p-4">
-            <div className="mb-4 flex items-center justify-between">
-              <p className="font-black text-white">Folha PCR</p>
-              <span className="rounded-md bg-cyan-300 px-2 py-1 text-xs font-black text-slate-950">Realtime</span>
+        <div className="mx-auto grid min-h-[620px] max-w-7xl items-center gap-8 px-4 py-10 sm:min-h-[660px] sm:px-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(320px,0.58fr)] lg:px-8 lg:py-14">
+          <div className="max-w-3xl">
+            <div className="mb-5 inline-flex rounded-full border border-cyan-300/20 bg-slate-950/55 px-3 py-2 text-sm font-semibold text-cyan-100 shadow-[0_0_40px_rgba(34,211,238,0.12)] backdrop-blur">
+              Folha PCR pediátrica com experiência healthtech AI
             </div>
-            <div className="grid gap-3">
-              {["Peso 15 kg", "Doses < 1 ml: 8", "Choque inicial 30 J", "Tubo 4,5"].map((item) => (
-                <div key={item} className="rounded-md border border-cyan-300/10 bg-slate-950/70 p-4 text-lg font-black text-cyan-100">
+            <h1 className="max-w-4xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Folha PCR pediátrica em segundos para decisões críticas no plantão.
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
+              Um produto focado em entubação, parada cardíaca, drogas úteis e desfibrilação para médicos que precisam consultar rápido e com menos ruído.
+            </p>
+            <div className="mt-6 grid max-w-2xl grid-cols-3 gap-2 text-sm text-slate-300 sm:gap-3">
+              {["R$249/ano", "Folha PCR", "Mobile-first"].map((item) => (
+                <div key={item} className="rounded-lg border border-cyan-300/12 bg-slate-950/45 px-3 py-3 font-bold backdrop-blur">
                   {item}
                 </div>
               ))}
             </div>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <PremiumButton href="/checkout">Começar agora</PremiumButton>
+              <PremiumButton href="/dashboard" variant="secondary">Testar gratuitamente</PremiumButton>
+            </div>
           </div>
-        </NeuralCard>
+
+          <div className="hero-tech-panel relative hidden rounded-2xl border border-cyan-200/35 bg-slate-950/58 p-4 shadow-[0_24px_90px_rgba(0,0,0,0.48)] backdrop-blur-xl lg:block">
+            <div className="rounded-xl border border-cyan-300/10 bg-[#06101e]/90 p-4">
+              <div className="mb-5 flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-black tracking-[0.22em] text-cyan-200/70">NEURAL CLINICAL ENGINE</p>
+                  <p className="mt-1 text-xl font-black text-white">Folha PCR</p>
+                </div>
+                <span className="hero-live-dot rounded-md bg-cyan-300 px-2 py-1 text-xs font-black text-slate-950">Realtime</span>
+              </div>
+              <div className="grid gap-3">
+                {["Peso 15 kg", "Choque inicial 30 J", "Drogas críticas filtradas", "Tubo 4,5"].map((item, index) => (
+                  <div key={item} className="rounded-lg border border-cyan-300/10 bg-slate-950/72 p-4">
+                    <div className="mb-3 h-1.5 w-full overflow-hidden rounded-full bg-slate-800">
+                      <div className="hero-signal h-full rounded-full bg-cyan-300" style={{ width: `${62 + index * 9}%` }} />
+                    </div>
+                    <p className="text-lg font-black text-cyan-50">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <Section id="como-funciona" eyebrow="Como funciona" title="Da identificação do paciente à Folha PCR pronta em três passos.">

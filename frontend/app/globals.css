@@ -97,6 +97,49 @@ video {
   top: 0;
 }
 
+.hero-data-field {
+  background:
+    linear-gradient(90deg, rgba(103, 232, 249, 0.06) 1px, transparent 1px),
+    linear-gradient(rgba(103, 232, 249, 0.045) 1px, transparent 1px),
+    radial-gradient(circle at 76% 36%, rgba(103, 232, 249, 0.18), transparent 18rem);
+  background-size: 58px 58px, 58px 58px, auto;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 44%, #000 100%);
+}
+
+.hero-data-field::after {
+  animation: hero-scan 7s linear infinite;
+  background: linear-gradient(90deg, transparent, rgba(103, 232, 249, 0.32), transparent);
+  content: "";
+  height: 1px;
+  left: 44%;
+  position: absolute;
+  right: 0;
+  top: 22%;
+}
+
+.hero-tech-panel {
+  animation: hero-float 7s ease-in-out infinite;
+}
+
+.hero-tech-panel::before {
+  background: linear-gradient(180deg, transparent, rgba(103, 232, 249, 0.18), transparent);
+  content: "";
+  inset: 16px;
+  opacity: 0.75;
+  pointer-events: none;
+  position: absolute;
+  transform: translateY(-42%);
+  animation: hero-panel-scan 4.8s ease-in-out infinite;
+}
+
+.hero-live-dot {
+  animation: hero-live-pulse 2.8s ease-in-out infinite;
+}
+
+.hero-signal {
+  animation: hero-signal-pulse 3.6s ease-in-out infinite;
+}
+
 @keyframes scan {
   from {
     transform: translateY(0);
@@ -104,6 +147,76 @@ video {
 
   to {
     transform: translateY(520px);
+  }
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes hero-scan {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(420px);
+  }
+}
+
+@keyframes hero-panel-scan {
+  0% {
+    opacity: 0;
+    transform: translateY(-45%);
+  }
+
+  45%,
+  60% {
+    opacity: 0.65;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(45%);
+  }
+}
+
+@keyframes hero-live-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(103, 232, 249, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 28px rgba(103, 232, 249, 0.34);
+  }
+}
+
+@keyframes hero-signal-pulse {
+  0%,
+  100% {
+    opacity: 0.64;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-data-field::after,
+  .hero-tech-panel,
+  .hero-tech-panel::before,
+  .hero-live-dot,
+  .hero-signal {
+    animation: none;
   }
 }
 
