@@ -21,7 +21,7 @@ export function CalculatorShell({ active = "home", children }: CalculatorShellPr
       <div className="mx-auto grid min-h-screen w-full max-w-full min-w-0 lg:max-w-[1500px] lg:grid-cols-[260px_minmax(0,1fr)]">
         <aside className="no-print min-w-0 border-b border-cyan-300/10 bg-slate-950/80 px-3 py-4 backdrop-blur sm:px-4 lg:sticky lg:top-0 lg:h-screen lg:border-b-0 lg:border-r">
           <div className="flex items-center justify-between gap-3 lg:block">
-            <Link href="/dashboard" className="text-xl font-black text-cyan-200">Iatron</Link>
+            <Link href="/dashboard" className="text-xl font-black text-cyan-200">iatron.PED</Link>
             <div className="lg:mt-8">
               <LogoutButton />
             </div>

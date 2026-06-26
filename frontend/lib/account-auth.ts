@@ -43,9 +43,9 @@ export async function sendVerificationEmail(email: string, token: string) {
   const verificationUrl = buildUrl("/verify-email", token);
   await sendEmail({
     to: email,
-    subject: "Verifique seu email no Iatron",
-    text: `Acesse este link para verificar seu email no Iatron: ${verificationUrl}`,
-    html: `<p>Acesse este link para verificar seu email no Iatron:</p><p><a href="${verificationUrl}">Verificar email</a></p>`
+    subject: "Verifique seu email no iatron.PED",
+    text: `Acesse este link para verificar seu email no iatron.PED: ${verificationUrl}`,
+    html: `<p>Acesse este link para verificar seu email no iatron.PED:</p><p><a href="${verificationUrl}">Verificar email</a></p>`
   });
 }
 
@@ -129,9 +129,9 @@ export async function requestPasswordReset(emailInput: string) {
   const resetUrl = buildUrl("/reset-password", rawToken);
   await sendEmail({
     to: user.email,
-    subject: "Redefina sua senha do Iatron",
-    text: `Acesse este link para redefinir sua senha no Iatron: ${resetUrl}`,
-    html: `<p>Acesse este link para redefinir sua senha no Iatron:</p><p><a href="${resetUrl}">Redefinir senha</a></p>`
+    subject: "Redefina sua senha do iatron.PED",
+    text: `Acesse este link para redefinir sua senha no iatron.PED: ${resetUrl}`,
+    html: `<p>Acesse este link para redefinir sua senha no iatron.PED:</p><p><a href="${resetUrl}">Redefinir senha</a></p>`
   });
 
   return { ok: true as const };

@@ -33,7 +33,7 @@ export default async function CheckoutPage() {
         <div className="grid gap-5 lg:grid-cols-[1fr_0.55fr] lg:items-end">
           <div>
             <p className="text-sm font-semibold text-cyan-200">Pricing</p>
-            <h1 className="mt-3 max-w-4xl text-4xl font-black text-white md:text-5xl">Escolha o acesso comercial do Iatron.</h1>
+            <h1 className="mt-3 max-w-4xl text-4xl font-black text-white md:text-5xl">Escolha o acesso comercial do iatron.PED.</h1>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-400">
               Planos carregados do catálogo comercial versionado. A validação final de preço, seats e permissão continua no servidor.
             </p>

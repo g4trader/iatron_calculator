@@ -3,7 +3,7 @@ import { NeuralCard, PremiumButton } from "@/components/saas/SaaSChrome";
 import type { CommercialEntitlement } from "@/lib/commercial-access";
 
 const institutionalContactHref =
-  "mailto:contato@iatron.com.br?subject=Ativacao%20institucional%20Iatron&body=Preciso%20de%20apoio%20para%20ativar%20ou%20atribuir%20licencas%20institucionais%20no%20Iatron.%0A%0AInstituicao%3A%0AUsuario%20afetado%3A";
+  "mailto:contato@iatron.com.br?subject=Ativacao%20institucional%20iatron.PED&body=Preciso%20de%20apoio%20para%20ativar%20ou%20atribuir%20licencas%20institucionais%20no%20iatron.PED.%0A%0AInstituicao%3A%0AUsuario%20afetado%3A";
 
 const copyByReason = {
   NO_SUBSCRIPTION: {

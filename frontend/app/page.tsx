@@ -84,7 +84,7 @@ export default function LandingPage() {
         <div className="mx-auto grid min-h-[620px] max-w-7xl items-center gap-8 px-4 py-10 sm:min-h-[660px] sm:px-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(320px,0.58fr)] lg:px-8 lg:py-14">
           <div className="max-w-3xl">
             <div className="mb-5 inline-flex rounded-full border border-cyan-300/20 bg-slate-950/55 px-3 py-2 text-sm font-semibold text-cyan-100 shadow-[0_0_40px_rgba(34,211,238,0.12)] backdrop-blur">
-              Folha PCR pediátrica com experiência healthtech AI
+              iatron.PED · Folha PCR pediátrica com experiência healthtech AI
             </div>
             <h1 className="max-w-4xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
               Folha PCR pediátrica em segundos para decisões críticas no plantão.
@@ -137,7 +137,7 @@ export default function LandingPage() {
               A Folha PCR digital transforma uma consulta operacional crítica em uma experiência rápida, padronizada e pronta para plantão.
             </p>
             <p className="mt-5 text-sm leading-6 text-slate-400">
-              O objetivo do Iatron é reduzir atrito cognitivo no momento em que cada segundo importa, mantendo a conferência clínica e o protocolo institucional como parte central do uso.
+              O objetivo do iatron.PED é reduzir atrito cognitivo no momento em que cada segundo importa, mantendo a conferência clínica e o protocolo institucional como parte central do uso.
             </p>
           </NeuralCard>
 
@@ -180,7 +180,7 @@ export default function LandingPage() {
                 Mais de 25 anos de experiência médica conectando prática clínica, telemedicina e educação profissional.
               </h3>
               <p className="mt-5 max-w-3xl text-base leading-8 text-slate-300">
-                O Dr. Aristóteles de Almeida Pires é médico com trajetória dedicada à prática clínica, inovação em saúde e formação de profissionais. Doutor em telemedicina e mentor de carreira médica, conduz a visão clínica do Iatron para transformar rotinas críticas em ferramentas digitais mais claras, rápidas e úteis no atendimento real.
+                O Dr. Aristóteles de Almeida Pires é médico com trajetória dedicada à prática clínica, inovação em saúde e formação de profissionais. Doutor em telemedicina e mentor de carreira médica, conduz a visão clínica do iatron.PED para transformar rotinas críticas em ferramentas digitais mais claras, rápidas e úteis no atendimento real.
               </p>
               <p className="mt-4 max-w-3xl text-base leading-8 text-slate-400">
                 A Folha PCR nasce dessa interseção entre experiência assistencial, tecnologia aplicada e compromisso com decisões médicas mais organizadas no plantão.

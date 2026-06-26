@@ -11,7 +11,7 @@ export function DashboardChooser() {
           <p className="text-sm font-black text-cyan-200">MVP Folha PCR</p>
           <h1 className="mt-3 text-4xl font-black text-white md:text-5xl">Folha PCR para plantão pediátrico.</h1>
           <p className="mt-4 max-w-2xl text-base font-medium leading-7 text-slate-300">
-            A experiência atual do Iatron é focada na Folha PCR: entubação, parada cardíaca, drogas úteis, desfibrilação e dados operacionais para uso rápido.
+            A experiência atual do iatron.PED é focada na Folha PCR: entubação, parada cardíaca, drogas úteis, desfibrilação e dados operacionais para uso rápido.
           </p>
         </div>
 

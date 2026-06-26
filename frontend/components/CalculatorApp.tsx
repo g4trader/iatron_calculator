@@ -147,7 +147,7 @@ export function CalculatorApp({ initialHistory = [], subscription }: CalculatorA
               <div className="mb-3 flex flex-wrap items-center gap-2">
                 <span className="inline-flex max-w-full items-center gap-2 rounded-md border border-cyan-300/30 bg-cyan-300/10 px-3 py-2 text-[11px] font-black tracking-[0.12em] text-cyan-200 sm:h-8 sm:text-xs">
                   <BrainCircuit className="h-4 w-4" aria-hidden="true" />
-                  <span className="min-w-0 truncate">Iatron Neural Core</span>
+                  <span className="min-w-0 truncate">iatron.PED Neural Core</span>
                 </span>
                 <span className="inline-flex max-w-full items-center gap-2 rounded-md border border-emerald-300/30 bg-emerald-300/10 px-3 py-2 text-[11px] font-black tracking-[0.12em] text-emerald-200 sm:h-8 sm:text-xs">
                   <ShieldCheck className="h-4 w-4" aria-hidden="true" />

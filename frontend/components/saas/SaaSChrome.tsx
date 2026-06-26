@@ -13,7 +13,7 @@ export async function SaaSNav() {
         <span className="flex h-8 w-8 items-center justify-center rounded-md bg-cyan-300 text-slate-950">
           <BrainCircuit className="h-4 w-4" aria-hidden="true" />
         </span>
-        Iatron
+        iatron.PED
       </Link>
       <div className="hidden items-center gap-6 text-sm font-medium text-slate-400 md:flex">
         <a href="/#como-funciona" className="transition hover:text-white">Como funciona</a>

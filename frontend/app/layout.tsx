@@ -3,8 +3,8 @@ import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvider";
 
 export const metadata: Metadata = {
-  title: "Iatron Folha PCR",
-  description: "Folha PCR pediátrica para entubação, parada cardíaca e desfibrilação"
+  title: "iatron.PED",
+  description: "Produto Iatron para Folha PCR pediátrica, entubação, parada cardíaca e desfibrilação"
 };
 
 export const viewport: Viewport = {
