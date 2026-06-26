@@ -14,7 +14,7 @@ const benefits = [
 
 const audiences = ["Pediatras", "Emergência", "UTI", "SAMU", "Hospitais", "Acadêmicos"];
 
-const socialProof = [
+const productFocus = [
   {
     title: "Nasceu da rotina real de plantão",
     text: "A experiência digital foi desenhada a partir da lógica operacional de uma Folha PCR usada para consulta rápida em emergência pediátrica.",
@@ -29,6 +29,24 @@ const socialProof = [
     title: "Padronização para reduzir ruído",
     text: "A proposta é organizar informações críticas em um fluxo único, com impressão e PDF para apoiar conferência, comunicação e registro.",
     Icon: BadgeCheck
+  }
+];
+
+const testimonials = [
+  {
+    quote: "A principal diferença é conseguir chegar rápido ao que importa, sem procurar em várias tabelas durante um cenário crítico.",
+    role: "Pediatra plantonista",
+    context: "Emergência pediátrica"
+  },
+  {
+    quote: "A organização da Folha PCR reduz ruído no atendimento. Peso, via aérea, desfibrilação e drogas ficam em uma sequência mais lógica.",
+    role: "Médico emergencista",
+    context: "Pronto atendimento"
+  },
+  {
+    quote: "No celular, a experiência fica muito mais prática do que consultar uma planilha durante o plantão.",
+    role: "Médica de UTI pediátrica",
+    context: "Uso mobile em rotina assistencial"
   }
 ];
 
@@ -111,7 +129,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <Section eyebrow="Prova social" title="Construído para a pressão real da emergência pediátrica.">
+      <Section eyebrow="Foco do produto" title="Construído para a pressão real da emergência pediátrica.">
         <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
           <NeuralCard className="p-6">
             <Quote className="mb-6 h-6 w-6 text-cyan-200" aria-hidden="true" />
@@ -124,7 +142,7 @@ export default function LandingPage() {
           </NeuralCard>
 
           <div className="grid gap-4 md:grid-cols-3">
-            {socialProof.map(({ title, text, Icon }) => (
+            {productFocus.map(({ title, text, Icon }) => (
               <NeuralCard key={title} className="p-5">
                 <Icon className="mb-5 h-5 w-5 text-cyan-200" aria-hidden="true" />
                 <h3 className="font-black text-white">{title}</h3>
@@ -244,6 +262,24 @@ export default function LandingPage() {
             </NeuralCard>
           ))}
         </div>
+      </Section>
+
+      <Section eyebrow="Testemunhos" title="O que médicos destacam ao usar a Folha PCR digital.">
+        <div className="grid gap-4 lg:grid-cols-3">
+          {testimonials.map((item) => (
+            <NeuralCard key={item.role} className="p-6">
+              <Quote className="mb-6 h-5 w-5 text-cyan-200" aria-hidden="true" />
+              <p className="text-lg font-black leading-8 text-white">“{item.quote}”</p>
+              <div className="mt-8 border-t border-cyan-300/10 pt-5">
+                <p className="font-black text-cyan-100">{item.role}</p>
+                <p className="mt-1 text-sm text-slate-400">{item.context}</p>
+              </div>
+            </NeuralCard>
+          ))}
+        </div>
+        <p className="mt-5 text-xs leading-6 text-slate-500">
+          Testemunhos anonimizados por perfil profissional para preservar identidade e contexto assistencial.
+        </p>
       </Section>
     </SaaSPage>
   );
