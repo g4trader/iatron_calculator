@@ -28,10 +28,10 @@ export function InputForm({ values, errors, onChange, onCalculate, canCalculate 
           Online
         </span>
       </div>
-      <div className="grid min-w-0 gap-3 md:grid-cols-3">
-        <NeuralInput label="Peso em kg" error={errors.pesoKg} inputMode="decimal" min="0" step="0.1" type="number" value={Number.isNaN(values.pesoKg) ? "" : values.pesoKg} onChange={(event) => update("pesoKg", event.target.value)} />
-        <NeuralInput label="Idade em anos" error={errors.idadeAnos} inputMode="numeric" min="0" step="1" type="number" value={Number.isNaN(values.idadeAnos) ? "" : values.idadeAnos} onChange={(event) => update("idadeAnos", event.target.value)} />
-        <NeuralInput label="Idade em meses" error={errors.idadeMeses} inputMode="numeric" min="0" max="11" step="1" type="number" value={Number.isNaN(values.idadeMeses) ? "" : values.idadeMeses} onChange={(event) => update("idadeMeses", event.target.value)} />
+      <div className="grid min-w-0 grid-cols-3 gap-2 sm:gap-3">
+        <NeuralInput label="A" error={errors.idadeAnos} inputMode="numeric" min="0" step="1" type="number" value={Number.isNaN(values.idadeAnos) ? "" : values.idadeAnos} onChange={(event) => update("idadeAnos", event.target.value)} className="px-2 text-xl sm:px-3 sm:text-2xl" />
+        <NeuralInput label="M" error={errors.idadeMeses} inputMode="numeric" min="0" max="11" step="1" type="number" value={Number.isNaN(values.idadeMeses) ? "" : values.idadeMeses} onChange={(event) => update("idadeMeses", event.target.value)} className="px-2 text-xl sm:px-3 sm:text-2xl" />
+        <NeuralInput label="kg" error={errors.pesoKg} inputMode="decimal" min="0" step="0.1" type="number" value={Number.isNaN(values.pesoKg) ? "" : values.pesoKg} onChange={(event) => update("pesoKg", event.target.value)} className="px-2 text-xl sm:px-3 sm:text-2xl" />
       </div>
       <div className="mt-4 flex justify-end">
         <CriticalActionButton
