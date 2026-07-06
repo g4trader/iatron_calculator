@@ -139,7 +139,7 @@ export function CalculatorApp({ initialHistory = [], subscription }: CalculatorA
   }
 
   return (
-    <CalculatorShell active="complete">
+    <CalculatorShell active="pcr">
       <header className="neural-surface border-b border-cyan-300/20 text-white">
         <div className="neural-content mx-auto grid w-full max-w-7xl min-w-0 gap-5 px-4 py-5 sm:px-6 lg:px-8">
           <div className="flex min-w-0 flex-col gap-4 md:flex-row md:items-start md:justify-between">

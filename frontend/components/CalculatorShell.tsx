@@ -1,21 +1,24 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Activity, LayoutDashboard, Pill } from "lucide-react";
+import { Activity, Droplets, FileText, Pill, Syringe } from "lucide-react";
 import { LogoutButton } from "@/components/auth/LogoutButton";
-import { showCompleteCalculator } from "@/lib/features";
+
+export type ProductNavKey = "prescription" | "doses" | "fluids" | "intubation" | "pcr";
 
 type CalculatorShellProps = {
-  active?: "home" | "complete" | "pcr";
+  active?: ProductNavKey;
   children: ReactNode;
 };
 
 const links = [
-  { href: "/dashboard", label: "Início", key: "home", icon: LayoutDashboard },
-  { href: "/dashboard/pcr", label: "Folha PCR", key: "pcr", icon: Activity },
-  ...(showCompleteCalculator ? [{ href: "/dashboard/completa", label: "Calculadora completa", key: "complete", icon: Pill }] as const : [])
+  { href: "/dashboard/modelo-prescricao", label: "Modelo de prescrição", key: "prescription", icon: FileText },
+  { href: "/dashboard/doses-medicacoes", label: "Cálculo de doses de medicações (Top 100)", key: "doses", icon: Pill },
+  { href: "/dashboard/soroterapia", label: "Cálculo de soroterapia", key: "fluids", icon: Droplets },
+  { href: "/dashboard/intubacao-rapida", label: "Sequência rápida de intubação", key: "intubation", icon: Syringe },
+  { href: "/dashboard/pcr", label: "Folha de PCR", key: "pcr", icon: Activity }
 ];
 
-export function CalculatorShell({ active = "home", children }: CalculatorShellProps) {
+export function CalculatorShell({ active = "pcr", children }: CalculatorShellProps) {
   return (
     <main className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#050816] text-slate-100">
       <div className="mx-auto grid min-h-screen w-full max-w-full min-w-0 lg:max-w-[1500px] lg:grid-cols-[260px_minmax(0,1fr)]">

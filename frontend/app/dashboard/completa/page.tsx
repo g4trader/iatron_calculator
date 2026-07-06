@@ -14,7 +14,7 @@ export default async function CompleteCalculatorPage() {
   const entitlement = await getCommercialEntitlement(user.id);
   if (!entitlement.hasAccess) {
     return (
-      <CalculatorShell active="complete">
+      <CalculatorShell active="pcr">
         <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
           <CommercialBlock entitlement={entitlement} />
         </div>
