@@ -8,6 +8,7 @@ export type ProductNavKey = "prescription" | "doses" | "fluids" | "intubation" |
 type CalculatorShellProps = {
   active?: ProductNavKey;
   children: ReactNode;
+  headerActions?: ReactNode;
 };
 
 const links = [
@@ -45,7 +46,7 @@ function ProductNavLinks({ active, mobile = false }: { active: ProductNavKey; mo
   );
 }
 
-export function CalculatorShell({ active = "pcr", children }: CalculatorShellProps) {
+export function CalculatorShell({ active = "pcr", children, headerActions }: CalculatorShellProps) {
   return (
     <main className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#050816] text-slate-100">
       <div className="mx-auto grid min-h-screen w-full max-w-full min-w-0 lg:max-w-[1500px] lg:grid-cols-[260px_minmax(0,1fr)]">
@@ -53,6 +54,7 @@ export function CalculatorShell({ active = "pcr", children }: CalculatorShellPro
           <div className="flex items-center justify-between gap-3 lg:block">
             <Link href="/dashboard" className="text-xl font-black text-cyan-200">iatron.PED</Link>
             <div className="flex items-center gap-2 lg:mt-8">
+              {headerActions}
               <LogoutButton />
               <details className="group relative lg:hidden">
                 <summary className="inline-flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-md border border-cyan-300/15 bg-slate-900/70 text-cyan-100 transition hover:border-cyan-300/40 hover:text-white [&::-webkit-details-marker]:hidden">

@@ -160,7 +160,6 @@ export function PcrCalculatorApp() {
   const [calculationDate, setCalculationDate] = useState("");
   const [result, setResult] = useState<PcrCalculationResponse | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const errors = useMemo(() => validate(values), [values]);
   const canCalculate = Object.keys(errors).length === 0;
 
@@ -173,15 +172,12 @@ export function PcrCalculatorApp() {
       setResult(null);
       return;
     }
-    setIsLoading(true);
     setApiError(null);
     try {
       const response = await calculatePcr(values);
       setResult(response);
     } catch (error) {
       setApiError(error instanceof Error ? error.message : "Erro inesperado ao calcular.");
-    } finally {
-      setIsLoading(false);
     }
   }, [canCalculate, values]);
 
@@ -191,7 +187,7 @@ export function PcrCalculatorApp() {
   }, [runCalculation]);
 
   return (
-    <CalculatorShell active="pcr">
+    <CalculatorShell active="pcr" headerActions={<PrintButton iconOnlyMobile />}>
       <PcrPrintReport patientName={patientName} calculationDate={calculationDate} result={result} />
       <div className="no-print grid max-w-full min-w-0 gap-5 px-3 py-5 sm:px-6 lg:px-8">
         <header className="min-w-0 rounded-xl border border-cyan-300/15 bg-slate-950/70 p-4 shadow-2xl shadow-black/20 sm:p-5">
@@ -202,12 +198,6 @@ export function PcrCalculatorApp() {
                 Folha PCR
               </p>
               <h1 className="mt-3 max-w-full break-words text-2xl font-black leading-tight text-white sm:text-3xl md:text-4xl">Entubação e parada cardíaca pediátrica</h1>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <div className="rounded-md border border-cyan-300/15 bg-cyan-300/[0.04] px-3 py-2 text-xs font-black text-cyan-100">
-                {isLoading ? "Calculando" : result ? "Sincronizado" : "Standby"}
-              </div>
-              <PrintButton />
             </div>
           </div>
         </header>
