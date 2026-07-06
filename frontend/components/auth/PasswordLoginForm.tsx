@@ -5,6 +5,16 @@ import { useState, useTransition } from "react";
 import { signIn } from "next-auth/react";
 import { LockKeyhole } from "lucide-react";
 
+function sameDomainDestination(resultUrl: string | null | undefined, fallbackUrl: string) {
+  const rawUrl = resultUrl || fallbackUrl;
+  try {
+    const parsed = new URL(rawUrl, window.location.origin);
+    return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+  } catch {
+    return fallbackUrl || "/dashboard";
+  }
+}
+
 export function PasswordLoginForm({ callbackUrl = "/dashboard" }: { callbackUrl?: string }) {
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -32,7 +42,7 @@ export function PasswordLoginForm({ callbackUrl = "/dashboard" }: { callbackUrl?
             return;
           }
 
-          window.location.href = result?.url ?? callbackUrl;
+          window.location.href = sameDomainDestination(result?.url, callbackUrl);
         });
       }}
     >

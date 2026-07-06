@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { DashboardChooser } from "@/components/DashboardChooser";
 import { CalculatorShell } from "@/components/CalculatorShell";
 import { CommercialBlock } from "@/components/paywall/CommercialBlock";
@@ -11,7 +10,7 @@ export default async function DashboardPage() {
   const entitlement = await getCommercialEntitlement(user.id);
   if (!entitlement.hasAccess) {
     const admin = await getAdminCurrentUser();
-    if (admin && hasAdminPermission(admin, "admin.dashboard.view")) redirect("/admin");
+    if (admin && hasAdminPermission(admin, "admin.dashboard.view")) return <DashboardChooser />;
 
     return (
       <CalculatorShell active="home">
