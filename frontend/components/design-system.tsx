@@ -21,9 +21,11 @@ type MetricCardProps = {
   value: string | number;
   tone?: "default" | "warning" | "danger";
   icon?: ReactNode;
+  className?: string;
+  valueClassName?: string;
 };
 
-export function MetricCard({ label, value, tone = "default", icon }: MetricCardProps) {
+export function MetricCard({ label, value, tone = "default", icon, className = "", valueClassName = "" }: MetricCardProps) {
   const toneClass = {
     default: "border-cyan-300/15 bg-slate-950/70 text-cyan-100",
     warning: "border-amber-300/30 bg-amber-300/10 text-amber-100",
@@ -31,12 +33,12 @@ export function MetricCard({ label, value, tone = "default", icon }: MetricCardP
   }[tone];
 
   return (
-    <ClinicalCard className={`metric-card p-4 ${toneClass}`}>
+    <ClinicalCard className={`metric-card p-4 ${toneClass} ${className}`}>
       <div className="flex items-center gap-2 text-current/80">
         {icon}
         <p className="text-xs font-semibold tracking-wide text-slate-400">{label}</p>
       </div>
-      <p className="mt-3 break-words text-3xl font-black tracking-normal sm:text-4xl">{value}</p>
+      <p className={`mt-3 break-words text-3xl font-black tracking-normal sm:text-4xl ${valueClassName}`}>{value}</p>
     </ClinicalCard>
   );
 }

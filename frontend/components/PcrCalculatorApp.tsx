@@ -250,12 +250,27 @@ export function PcrCalculatorApp() {
           </div>
         </section>
 
-        <div className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-5">
-          <MetricCard label="Paciente" value={patientName.trim() || "--"} />
-          <MetricCard label="Data" value={calculationDate ? formatDate(calculationDate) : "--"} />
-          <MetricCard label="Idade e Peso" value={formatAgeWeight(result?.input ?? values)} />
-          <MetricCard label="Tubo" value={result?.airway.find((item) => item.id === "tubo")?.value ?? "--"} />
-          <MetricCard label="Choque inicial" value={result ? `${result.shock[0].value} J` : "--"} tone="danger" icon={<Zap className="h-4 w-4" aria-hidden="true" />} />
+        <div className="min-w-0 rounded-xl border border-cyan-300/15 bg-slate-950/70 p-4 shadow-2xl shadow-black/20 sm:p-5">
+          <p className="inline-flex items-center gap-2 text-sm font-black text-cyan-200">
+            <Activity className="h-4 w-4" aria-hidden="true" />
+            Folha PCR
+          </p>
+          <h2 className="mt-2 text-2xl font-black text-white sm:text-3xl">Identificação e cálculo</h2>
+          <p className="mt-2 max-w-3xl text-sm font-medium leading-6 text-slate-400">
+            Resumo calculado para consulta rápida durante o atendimento.
+          </p>
+        </div>
+
+        <div className="grid min-w-0 gap-3">
+          <div className="grid min-w-0 gap-3 lg:grid-cols-[minmax(0,4fr)_minmax(150px,1fr)]">
+            <MetricCard label="Paciente" value={patientName.trim() || "--"} />
+            <MetricCard label="Data" value={calculationDate ? formatDate(calculationDate) : "--"} valueClassName="text-2xl sm:text-3xl lg:text-2xl xl:text-3xl" />
+          </div>
+          <div className="grid min-w-0 gap-3 md:grid-cols-3">
+            <MetricCard label="Idade e Peso" value={formatAgeWeight(result?.input ?? values)} />
+            <MetricCard label="Tubo" value={result?.airway.find((item) => item.id === "tubo")?.value ?? "--"} />
+            <MetricCard label="Choque inicial" value={result ? `${result.shock[0].value} J` : "--"} tone="danger" icon={<Zap className="h-4 w-4" aria-hidden="true" />} />
+          </div>
         </div>
 
         {apiError ? <div className="rounded-lg border border-red-300/35 bg-red-400/10 p-4 text-sm font-medium text-red-100">{apiError}</div> : null}
