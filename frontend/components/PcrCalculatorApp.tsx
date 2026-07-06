@@ -45,6 +45,13 @@ function formatDate(value: string) {
   return value ? new Date(`${value}T00:00:00`).toLocaleDateString("pt-BR") : "-";
 }
 
+function formatAgeWeight(input: CalculationRequest | PcrCalculationResponse["input"]) {
+  const weight = Number.isFinite(input.pesoKg) ? `${input.pesoKg}kg` : "--kg";
+  const years = Number.isFinite(input.idadeAnos) ? `${input.idadeAnos}A` : "--A";
+  const months = Number.isFinite(input.idadeMeses) ? `${input.idadeMeses}M` : "--M";
+  return `${years} ${months} ${weight}`;
+}
+
 function PcrPrintMetricTable({ title, items }: { title: string; items: PcrMetric[] }) {
   return (
     <section className="print-report-section">
@@ -205,42 +212,50 @@ export function PcrCalculatorApp() {
           </div>
         </header>
 
-        <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+        <section className="min-w-0 rounded-xl border border-cyan-300/15 bg-slate-950/70 p-4 shadow-2xl shadow-black/20 sm:p-5">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-cyan-700">
+              <Activity className="h-5 w-5 text-cyan-300" aria-hidden="true" />
+              <h2 className="text-base font-semibold text-cyan-100">Dados do paciente</h2>
+            </div>
+            <span className="rounded-md border border-emerald-300/30 bg-emerald-300/10 px-2 py-1 text-xs font-semibold text-emerald-200">
+              Online
+            </span>
+          </div>
+
           <div className="grid min-w-0 gap-4">
-            <section className="min-w-0 rounded-xl border border-cyan-300/15 bg-slate-950/70 p-4 shadow-2xl shadow-black/20">
-              <h2 className="text-sm font-black text-white">Identificação</h2>
-              <div className="mt-4 grid min-w-0 gap-3 sm:grid-cols-[minmax(0,1fr)_180px]">
-                <label className="grid gap-2 text-sm font-semibold text-slate-300">
-                  Nome do paciente
-                  <input
-                    className="h-12 rounded-md border border-cyan-300/15 bg-slate-900/80 px-3 text-base font-semibold text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/60"
-                    value={patientName}
-                    onChange={(event) => setPatientName(event.target.value)}
-                    placeholder="Nome completo"
-                    type="text"
-                  />
-                </label>
-                <label className="grid gap-2 text-sm font-semibold text-slate-300">
-                  Data
-                  <input
-                    className="h-12 rounded-md border border-cyan-300/15 bg-slate-900/80 px-3 text-base font-semibold text-white outline-none transition focus:border-cyan-300/60"
-                    value={calculationDate}
-                    onChange={(event) => setCalculationDate(event.target.value)}
-                    type="date"
-                  />
-                </label>
-              </div>
-            </section>
-            <InputForm values={values} errors={errors} onChange={setValues} onCalculate={runCalculation} canCalculate={canCalculate} />
+            <div className="grid min-w-0 gap-3 sm:grid-cols-[minmax(0,1fr)_180px]">
+              <label className="grid gap-2 text-sm font-semibold text-slate-300">
+                Nome do paciente
+                <input
+                  className="h-12 rounded-md border border-cyan-300/15 bg-slate-900/80 px-3 text-base font-semibold text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/60"
+                  value={patientName}
+                  onChange={(event) => setPatientName(event.target.value)}
+                  placeholder="Nome completo"
+                  type="text"
+                />
+              </label>
+              <label className="grid gap-2 text-sm font-semibold text-slate-300">
+                Data
+                <input
+                  className="h-12 rounded-md border border-cyan-300/15 bg-slate-900/80 px-3 text-base font-semibold text-white outline-none transition focus:border-cyan-300/60"
+                  value={calculationDate}
+                  onChange={(event) => setCalculationDate(event.target.value)}
+                  type="date"
+                />
+              </label>
+            </div>
+
+            <InputForm values={values} errors={errors} onChange={setValues} onCalculate={runCalculation} canCalculate={canCalculate} embedded />
           </div>
-          <div className="grid min-w-0 gap-3 sm:grid-cols-2">
-            <MetricCard label="Paciente" value={patientName.trim() || "--"} />
-            <MetricCard label="Data" value={calculationDate ? formatDate(calculationDate) : "--"} />
-            <MetricCard label="Peso" value={result ? `${result.input.pesoKg} kg` : "--"} />
-            <MetricCard label="Idade total" value={result ? `${result.input.idadeTotalMeses} m` : "--"} />
-            <MetricCard label="Tubo" value={result?.airway.find((item) => item.id === "tubo")?.value ?? "--"} />
-            <MetricCard label="Choque inicial" value={result ? `${result.shock[0].value} J` : "--"} tone="danger" icon={<Zap className="h-4 w-4" aria-hidden="true" />} />
-          </div>
+        </section>
+
+        <div className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-5">
+          <MetricCard label="Paciente" value={patientName.trim() || "--"} />
+          <MetricCard label="Data" value={calculationDate ? formatDate(calculationDate) : "--"} />
+          <MetricCard label="Idade e Peso" value={formatAgeWeight(result?.input ?? values)} />
+          <MetricCard label="Tubo" value={result?.airway.find((item) => item.id === "tubo")?.value ?? "--"} />
+          <MetricCard label="Choque inicial" value={result ? `${result.shock[0].value} J` : "--"} tone="danger" icon={<Zap className="h-4 w-4" aria-hidden="true" />} />
         </div>
 
         {apiError ? <div className="rounded-lg border border-red-300/35 bg-red-400/10 p-4 text-sm font-medium text-red-100">{apiError}</div> : null}
