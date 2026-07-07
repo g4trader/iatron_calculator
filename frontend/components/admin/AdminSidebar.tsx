@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, PanelLeftClose, PanelLeftOpen, ShieldCheck } from "lucide-react";
+import { ChevronDown, PanelLeftClose, PanelLeftOpen, ShieldCheck, UserCircle } from "lucide-react";
 import { useMemo, useState } from "react";
 import { adminNavigationGroups } from "@/components/admin/adminNavigation";
+import { LogoutButton } from "@/components/auth/LogoutButton";
 import type { AdminPermission } from "@/lib/admin-permissions";
 
-export function AdminSidebar({ permissions }: { permissions: AdminPermission[] }) {
+export function AdminSidebar({ permissions, userEmail, userName }: { permissions: AdminPermission[]; userEmail: string | null; userName: string | null }) {
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(false);
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
@@ -25,9 +26,10 @@ export function AdminSidebar({ permissions }: { permissions: AdminPermission[] }
       }))
       .filter((group) => group.items.length > 0);
   }, [permissions]);
+  const identity = userEmail ?? userName ?? "admin";
 
   return (
-    <aside className={`no-print border-b border-cyan-300/10 bg-slate-950/90 transition-[width] duration-200 lg:sticky lg:top-0 lg:h-screen lg:border-b-0 lg:border-r ${expanded ? "lg:w-[292px]" : "lg:w-[76px]"}`}>
+    <aside className={`no-print border-b border-cyan-300/10 bg-slate-950/90 transition-[width] duration-200 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:border-b-0 lg:border-r ${expanded ? "lg:w-[292px]" : "lg:w-[76px]"}`}>
       <div className={`flex h-16 items-center gap-3 px-4 ${expanded ? "justify-between" : "justify-center"}`}>
         <Link href="/admin" onClick={() => setExpanded(true)} className="flex min-w-0 items-center gap-3">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-cyan-300 text-slate-950">
@@ -50,7 +52,7 @@ export function AdminSidebar({ permissions }: { permissions: AdminPermission[] }
         </button>
       </div>
 
-      <nav className="grid gap-2 px-2 pb-4 lg:pb-0">
+      <nav className="grid gap-2 px-2 pb-4 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pb-0">
         {visibleGroups.map((group) => {
           const isOpen = openGroups[group.id] ?? true;
           return (
@@ -100,6 +102,27 @@ export function AdminSidebar({ permissions }: { permissions: AdminPermission[] }
           );
         })}
       </nav>
+
+      <div className="hidden border-t border-cyan-300/10 p-2 lg:block">
+        <div className={`rounded-xl border border-cyan-300/10 bg-slate-900/55 p-3 ${expanded ? "" : "flex justify-center"}`}>
+          <div className={`flex min-w-0 items-center ${expanded ? "gap-3" : "justify-center"}`}>
+            <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-cyan-300/15 bg-slate-950 text-cyan-100">
+              <UserCircle className="h-5 w-5" aria-hidden="true" />
+            </span>
+            {expanded ? (
+              <div className="min-w-0">
+                <p className="truncate text-xs font-black text-slate-100">{identity}</p>
+                <p className="mt-0.5 text-[11px] font-semibold text-slate-500">Administrador</p>
+              </div>
+            ) : null}
+          </div>
+          {expanded ? (
+            <div className="mt-3">
+              <LogoutButton />
+            </div>
+          ) : null}
+        </div>
+      </div>
     </aside>
   );
 }
