@@ -75,11 +75,13 @@ export async function ensureSystemAdminRoles() {
       }
     });
 
-    await Promise.all(definition.permissions.map((permission) => prisma.adminRolePermission.upsert({
-      where: { roleId_permission: { roleId: role.id, permission } },
-      create: { roleId: role.id, permission },
-      update: {}
-    })));
+    for (const permission of definition.permissions) {
+      await prisma.adminRolePermission.upsert({
+        where: { roleId_permission: { roleId: role.id, permission } },
+        create: { roleId: role.id, permission },
+        update: {}
+      });
+    }
   }
 }
 
@@ -138,7 +140,6 @@ async function assertCanReduceAdminAccess(input: { actorId: string; targetUserId
 }
 
 export async function listAdminAccessUsers() {
-  await ensureSystemAdminRoles();
   const users = await prisma.user.findMany({
     where: {
       OR: [
