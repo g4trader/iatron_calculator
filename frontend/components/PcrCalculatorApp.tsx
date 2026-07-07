@@ -187,7 +187,7 @@ export function PcrCalculatorApp() {
   }, [runCalculation]);
 
   return (
-    <CalculatorShell active="pcr" headerActions={<PrintButton iconOnlyMobile />}>
+    <CalculatorShell active="pcr" headerActions={<PrintButton iconOnly />}>
       <PcrPrintReport patientName={patientName} calculationDate={calculationDate} result={result} />
       <div className="no-print grid max-w-full min-w-0 gap-5 px-3 py-5 sm:px-6 lg:px-8">
         <header className="min-w-0 rounded-xl border border-cyan-300/15 bg-slate-950/70 p-4 shadow-2xl shadow-black/20 sm:p-5">

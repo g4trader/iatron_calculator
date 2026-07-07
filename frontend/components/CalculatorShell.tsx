@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Activity, Droplets, FileText, Menu, Pill, Syringe } from "lucide-react";
-import { LogoutButton } from "@/components/auth/LogoutButton";
+import { ProductUserPanel } from "@/components/ProductUserPanel";
 
 export type ProductNavKey = "prescription" | "doses" | "fluids" | "intubation" | "pcr";
 
@@ -50,12 +50,11 @@ export function CalculatorShell({ active = "pcr", children, headerActions }: Cal
   return (
     <main className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#050816] text-slate-100">
       <div className="mx-auto grid min-h-screen w-full max-w-full min-w-0 lg:max-w-[1500px] lg:grid-cols-[260px_minmax(0,1fr)]">
-        <aside className="no-print min-w-0 border-b border-cyan-300/10 bg-slate-950/80 px-3 py-4 backdrop-blur sm:px-4 lg:sticky lg:top-0 lg:h-screen lg:border-b-0 lg:border-r">
+        <aside className="no-print min-w-0 border-b border-cyan-300/10 bg-slate-950/80 px-3 py-4 backdrop-blur sm:px-4 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:border-b-0 lg:border-r">
           <div className="flex items-center justify-between gap-3 lg:block">
             <Link href="/dashboard" className="text-xl font-black text-cyan-200">iatron.PED</Link>
-            <div className="flex items-center gap-2 lg:mt-8">
+            <div className="flex items-center gap-2 lg:hidden">
               {headerActions}
-              <LogoutButton />
               <details className="group relative lg:hidden">
                 <summary className="inline-flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-md border border-cyan-300/15 bg-slate-900/70 text-cyan-100 transition hover:border-cyan-300/40 hover:text-white [&::-webkit-details-marker]:hidden">
                   <Menu className="h-5 w-5" aria-hidden="true" />
@@ -63,17 +62,26 @@ export function CalculatorShell({ active = "pcr", children, headerActions }: Cal
                 </summary>
                 <nav className="absolute right-0 z-50 mt-3 grid w-[min(86vw,340px)] gap-2 rounded-xl border border-cyan-300/15 bg-slate-950/95 p-3 shadow-2xl shadow-black/40 backdrop-blur">
                   <ProductNavLinks active={active} mobile />
+                  <ProductUserPanel mobile />
                 </nav>
               </details>
             </div>
           </div>
 
-          <nav className="mt-8 hidden min-w-0 gap-2 lg:grid">
-            <ProductNavLinks active={active} />
-          </nav>
+          <div className="hidden min-h-0 flex-1 lg:flex lg:flex-col">
+            <div className="mt-8 flex items-center justify-end">{headerActions}</div>
 
-          <div className="mt-6 hidden rounded-md border border-red-300/20 bg-red-950/30 p-3 text-xs font-medium leading-5 text-red-100 lg:block">
-            Ferramenta de apoio. Conferir protocolo institucional e avaliação clínica antes da administração.
+            <nav className="mt-8 grid min-w-0 gap-2">
+              <ProductNavLinks active={active} />
+            </nav>
+
+            <div className="mt-6 rounded-md border border-red-300/20 bg-red-950/30 p-3 text-xs font-medium leading-5 text-red-100">
+              Ferramenta de apoio. Conferir protocolo institucional e avaliação clínica antes da administração.
+            </div>
+
+            <div className="mt-auto pt-6">
+              <ProductUserPanel />
+            </div>
           </div>
         </aside>
 
