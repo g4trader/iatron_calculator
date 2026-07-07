@@ -197,7 +197,9 @@ export async function getCommercialEntitlement(userId: string): Promise<Commerci
 
   const candidates: CommercialEntitlement[] = [];
   if (individualSubscription) {
-    candidates.push(assessIndividualAccess(individualSubscription));
+    const individualAccess = assessIndividualAccess(individualSubscription);
+    if (individualAccess.hasAccess) return individualAccess;
+    candidates.push(individualAccess);
   }
 
   const memberships = await prisma.organizationMembership.findMany({

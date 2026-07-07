@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { BillingIssueStatus, LicenseStatus, SubscriptionStatus, WebhookFailureStatus, type Prisma, type Subscription } from "@prisma/client";
 import { recordAdminAuditEvent, type AdminUser } from "@/lib/admin-permissions";
 import { syncStripeSubscription } from "@/lib/billing";
@@ -107,7 +108,7 @@ async function safelyListStripeData(filters: AdminBillingFilters) {
   };
 }
 
-export async function getAdminBillingDashboard(filters: AdminBillingFilters) {
+async function getAdminBillingDashboardUncached(filters: AdminBillingFilters) {
   const subscriptionWhere: Prisma.SubscriptionWhereInput = {
     ...(filters.status ? { status: filters.status } : {}),
     ...(filters.q
@@ -216,6 +217,15 @@ export async function getAdminBillingDashboard(filters: AdminBillingFilters) {
     stripeConfigured: stripeData.configured,
     stripeErrors: stripeData.errors
   };
+}
+
+export async function getAdminBillingDashboard(filters: AdminBillingFilters) {
+  const cacheKey = JSON.stringify(filters);
+  return unstable_cache(
+    async () => getAdminBillingDashboardUncached(filters),
+    ["admin-billing-dashboard", cacheKey],
+    { revalidate: 30, tags: ["admin-billing"] }
+  )();
 }
 
 export async function reconcileAdminBillingSubscription(input: { admin: AdminUser; subscriptionId: string; reason?: string | null }) {

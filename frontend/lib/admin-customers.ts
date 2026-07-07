@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { LicenseStatus, Plan, SubscriptionStatus, type Prisma } from "@prisma/client";
 import { recordAdminAuditEvent, type AdminUser } from "@/lib/admin-permissions";
 import { prisma } from "@/lib/prisma";
@@ -194,7 +195,7 @@ export function buildInstitutionalCustomerRow(organization: OrganizationCustomer
   };
 }
 
-export async function getAdminCustomers(filters: CustomerFilters) {
+async function getAdminCustomersUncached(filters: CustomerFilters) {
   const userWhere: Prisma.UserWhereInput = {
     ...(filters.q ? { OR: [
       { email: { contains: filters.q, mode: "insensitive" } },
@@ -247,7 +248,16 @@ export async function getAdminCustomers(filters: CustomerFilters) {
     .sort((a, b) => b.healthScore - a.healthScore || (b.lastActivityAt?.getTime() ?? 0) - (a.lastActivityAt?.getTime() ?? 0));
 }
 
-export async function getAdminCustomerDetail(id: string) {
+export async function getAdminCustomers(filters: CustomerFilters) {
+  const cacheKey = JSON.stringify(filters);
+  return unstable_cache(
+    async () => getAdminCustomersUncached(filters),
+    ["admin-customers", cacheKey],
+    { revalidate: 30, tags: ["admin-customers"] }
+  )();
+}
+
+async function getAdminCustomerDetailUncached(id: string) {
   const [user, organization] = await Promise.all([
     prisma.user.findUnique({
       where: { id },
@@ -303,6 +313,14 @@ export async function getAdminCustomerDetail(id: string) {
   }
 
   return null;
+}
+
+export async function getAdminCustomerDetail(id: string) {
+  return unstable_cache(
+    async () => getAdminCustomerDetailUncached(id),
+    ["admin-customer-detail", id],
+    { revalidate: 30, tags: ["admin-customers", `admin-customer-${id}`] }
+  )();
 }
 
 export async function addCustomerInternalNote(input: {

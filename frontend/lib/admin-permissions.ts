@@ -118,6 +118,16 @@ export async function getAdminCurrentUser(): Promise<AdminUser | null> {
   if (!user) return null;
   if (user.adminStatus !== AdminAccessStatus.ACTIVE) return null;
 
+  if (user.role === Role.ADMIN) {
+    return {
+      ...user,
+      adminPermissions: [...ADMIN_PERMISSIONS],
+      adminRoles: [{ code: "superadmin", name: "Superadmin bootstrap", source: "bootstrap" }],
+      directAdminPermissions: [],
+      roleAdminPermissions: [...ADMIN_PERMISSIONS]
+    };
+  }
+
   const [directGrants, roles] = await Promise.all([
     prisma.adminPermissionGrant.findMany({
     where: { userId: user.id, status: AdminPermissionGrantStatus.ACTIVE },

@@ -1,7 +1,20 @@
 import Stripe from "stripe";
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "sk_test_missing", {
-  apiVersion: "2026-04-22.dahlia"
+let stripeClient: Stripe | null = null;
+
+export function getStripeClient() {
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey) throw new Error("STRIPE_SECRET_KEY não configurada.");
+  stripeClient ??= new Stripe(secretKey, {
+    apiVersion: "2026-04-22.dahlia"
+  });
+  return stripeClient;
+}
+
+export const stripe = new Proxy({} as Stripe, {
+  get(_target, property) {
+    return getStripeClient()[property as keyof Stripe];
+  }
 });
 
 export function getAppUrl() {

@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdminPermission } from "@/lib/admin-permissions";
 import { addCustomerInternalNote, type CustomerType } from "@/lib/admin-customers";
@@ -31,6 +31,8 @@ export async function addCustomerNoteAction(formData: FormData) {
     redirect(`/admin/customers/${customerId}?error=${encodeURIComponent(message)}`);
   }
 
+  revalidateTag("admin-customers");
+  revalidateTag(`admin-customer-${customerId}`);
   revalidatePath(`/admin/customers/${customerId}`);
   redirect(`/admin/customers/${customerId}?message=Nota interna registrada com auditoria.`);
 }

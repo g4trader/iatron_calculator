@@ -146,7 +146,7 @@ export function AuditTimeline({
 
 export function AdminModuleLink({ href, title, description, permission }: { href: string; title: string; description: string; permission: string }) {
   return (
-    <Link href={href} className="group rounded-xl border border-cyan-300/10 bg-slate-950/75 p-5 shadow-2xl shadow-black/20 transition hover:border-cyan-300/40">
+    <Link href={href} prefetch className="group rounded-xl border border-cyan-300/10 bg-slate-950/75 p-5 shadow-2xl shadow-black/20 transition hover:border-cyan-300/40">
       <Activity className="h-5 w-5 text-cyan-200" aria-hidden="true" />
       <h2 className="mt-5 text-xl font-black text-white">{title}</h2>
       <p className="mt-2 text-sm leading-6 text-slate-400">{description}</p>

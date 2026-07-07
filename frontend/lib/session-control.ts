@@ -184,29 +184,6 @@ export async function validateCurrentUserSession(userId: string, sessionId?: str
     throw new SessionControlError("SESSION_EXPIRED");
   }
 
-  const newestActive = await prisma.userSession.findFirst({
-    where: {
-      userId,
-      status: UserSessionStatus.ACTIVE,
-      revokedAt: null,
-      expiresAt: { gt: now },
-      idleExpiresAt: { gt: now }
-    },
-    orderBy: { createdAt: "desc" },
-    select: { id: true }
-  });
-
-  const currentReason = getSessionInvalidReason({
-    status: session.status,
-    revokedAt: session.revokedAt,
-    expiresAt: session.expiresAt,
-    idleExpiresAt: session.idleExpiresAt,
-    newestActiveSessionId: newestActive?.id,
-    sessionId: session.id,
-    now
-  });
-  if (currentReason === "SESSION_NOT_CURRENT") throw new SessionControlError("SESSION_NOT_CURRENT");
-
   if (shouldTouchSession(session.lastSeenAt, now)) {
     await prisma.userSession.update({
       where: { id: session.id },

@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdminPermission } from "@/lib/admin-permissions";
 import {
@@ -38,6 +38,7 @@ export async function reconcileSubscriptionAction(formData: FormData) {
     redirectBilling({ error: errorMessage(error) });
   }
 
+  revalidateTag("admin-billing");
   revalidatePath("/admin/billing");
   redirectBilling({ message: "Reconcile executado a partir da Stripe." });
 }
@@ -56,6 +57,7 @@ export async function markBillingReviewAction(formData: FormData) {
     redirectBilling({ error: errorMessage(error) });
   }
 
+  revalidateTag("admin-billing");
   revalidatePath("/admin/billing");
   redirectBilling({ message: "Caso marcado para análise manual." });
 }
@@ -74,6 +76,7 @@ export async function requestWebhookReprocessAction(formData: FormData) {
     redirectBilling({ error: errorMessage(error) });
   }
 
+  revalidateTag("admin-billing");
   revalidatePath("/admin/billing");
   redirectBilling({ message: "Tentativa de reprocessamento registrada para análise." });
 }

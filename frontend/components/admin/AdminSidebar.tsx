@@ -31,7 +31,7 @@ export function AdminSidebar({ permissions, userEmail, userName }: { permissions
   return (
     <aside className={`no-print border-b border-cyan-300/10 bg-slate-950/90 transition-[width] duration-200 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:border-b-0 lg:border-r ${expanded ? "lg:w-[292px]" : "lg:w-[76px]"}`}>
       <div className={`flex h-16 items-center gap-3 px-4 ${expanded ? "justify-between" : "justify-center"}`}>
-        <Link href="/admin" onClick={() => setExpanded(true)} className="flex min-w-0 items-center gap-3">
+        <Link href="/admin" prefetch onClick={() => setExpanded(true)} className="flex min-w-0 items-center gap-3">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-cyan-300 text-slate-950">
             <ShieldCheck className="h-5 w-5" aria-hidden="true" />
           </span>
@@ -77,6 +77,7 @@ export function AdminSidebar({ permissions, userEmail, userName }: { permissions
                     <Link
                       key={href}
                       href={href}
+                      prefetch
                       onClick={() => setExpanded(true)}
                       title={expanded ? undefined : label}
                       className={`group flex items-center rounded-lg border px-3 py-3 transition ${
