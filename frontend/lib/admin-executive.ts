@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import { BillingCycle, LicenseStatus, OperationalEventStatus, SubscriptionOwnerType, SubscriptionStatus, type Subscription } from "@prisma/client";
 import {
   calculateCustomerChurn,
@@ -37,51 +36,37 @@ function mrrOrNull(subscription: ExecutiveSubscription) {
 }
 
 export async function getAdminExecutiveDashboard() {
-  return unstable_cache(async () => {
     const now = new Date();
     const periodStart = getPeriodStart("30d", now);
     const sevenDaysAgo = getPeriodStart("7d", now);
 
-    const [
-      subscriptions,
-      totalUsers,
-      newUsers,
-      organizations,
-      activeLicenses,
-      calculationsLast7d,
-      activeProductUsers7d,
-      checkoutFailures,
-      webhookFailures,
-      recentAuditEvents
-    ] = await Promise.all([
-      prisma.subscription.findMany({
-        orderBy: { updatedAt: "desc" },
-        take: 500,
-        include: {
-          user: { select: { email: true, name: true } },
-          organization: { select: { name: true } },
-          planPrice: true,
-          licenses: { select: { id: true, status: true } }
-        }
-      }),
-      prisma.user.count(),
-      prisma.user.count({ where: { createdAt: { gte: periodStart } } }),
-      prisma.organization.count(),
-      prisma.license.count({ where: { status: LicenseStatus.ACTIVE } }),
-      prisma.calculationHistory.count({ where: { createdAt: { gte: sevenDaysAgo } } }),
-      prisma.calculationHistory.findMany({
-        where: { createdAt: { gte: sevenDaysAgo } },
-        distinct: ["userId"],
-        select: { userId: true }
-      }),
-      prisma.checkoutEvent.count({ where: { status: OperationalEventStatus.FAILED, createdAt: { gte: periodStart } } }),
-      prisma.webhookFailure.count({ where: { status: "OPEN" } }),
-      prisma.adminAuditEvent.findMany({
-        orderBy: { createdAt: "desc" },
-        take: 5,
-        include: { actor: { select: { email: true, name: true } } }
-      })
-    ]);
+    const subscriptions = await prisma.subscription.findMany({
+      orderBy: { updatedAt: "desc" },
+      take: 500,
+      include: {
+        user: { select: { email: true, name: true } },
+        organization: { select: { name: true } },
+        planPrice: true,
+        licenses: { select: { id: true, status: true } }
+      }
+    });
+    const totalUsers = await prisma.user.count();
+    const newUsers = await prisma.user.count({ where: { createdAt: { gte: periodStart } } });
+    const organizations = await prisma.organization.count();
+    const activeLicenses = await prisma.license.count({ where: { status: LicenseStatus.ACTIVE } });
+    const calculationsLast7d = await prisma.calculationHistory.count({ where: { createdAt: { gte: sevenDaysAgo } } });
+    const activeProductUsers7d = await prisma.calculationHistory.findMany({
+      where: { createdAt: { gte: sevenDaysAgo } },
+      distinct: ["userId"],
+      select: { userId: true }
+    });
+    const checkoutFailures = await prisma.checkoutEvent.count({ where: { status: OperationalEventStatus.FAILED, createdAt: { gte: periodStart } } });
+    const webhookFailures = await prisma.webhookFailure.count({ where: { status: "OPEN" } });
+    const recentAuditEvents = await prisma.adminAuditEvent.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      include: { actor: { select: { email: true, name: true } } }
+    });
 
     const activeSubscriptions = subscriptions.filter((subscription) => subscription.status === SubscriptionStatus.ACTIVE);
     const trialingSubscriptions = subscriptions.filter((subscription) => subscription.status === SubscriptionStatus.TRIALING);
@@ -168,5 +153,4 @@ export async function getAdminExecutiveDashboard() {
       riskAccounts,
       recentAuditEvents
     };
-  }, ["admin-executive-dashboard"], { revalidate: 60 })();
 }

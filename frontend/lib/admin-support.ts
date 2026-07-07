@@ -49,9 +49,17 @@ export function hasBillingIssue(status: SubscriptionStatus) {
   return billingIssueStatuses.includes(status);
 }
 
-export function hasLackOfUse(lastActivityAt: Date | null, now = new Date()) {
-  if (!lastActivityAt) return true;
-  return now.getTime() - lastActivityAt.getTime() > 30 * 24 * 60 * 60 * 1000;
+function toDate(value: Date | string | null | undefined) {
+  if (!value) return null;
+  if (value instanceof Date) return value;
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+export function hasLackOfUse(lastActivityAt: Date | string | null, now = new Date()) {
+  const activityDate = toDate(lastActivityAt);
+  if (!activityDate) return true;
+  return now.getTime() - activityDate.getTime() > 30 * 24 * 60 * 60 * 1000;
 }
 
 export function supportPriorityScore(input: {
@@ -94,26 +102,24 @@ export async function getAdminSupportDashboard(filters: SupportFilters) {
     .sort((a, b) => b.priorityScore - a.priorityScore || a.healthScore - b.healthScore)
     .slice(0, 80);
 
-  const [recentContacts, failedAccessEvents] = await Promise.all([
-    prisma.supportTicket.findMany({
-      where: { status: { in: [SupportTicketStatus.OPEN, SupportTicketStatus.PENDING, SupportTicketStatus.ESCALATED] } },
-      orderBy: { createdAt: "desc" },
-      take: 20,
-      include: { user: true, organization: true, assignee: true }
-    }),
-    prisma.securityEvent.findMany({
-      where: {
-        OR: [
-          { type: "SESSION_INVALID" },
-          { type: "RATE_LIMITED" },
-          { type: "LICENSE_ABUSE" }
-        ]
-      },
-      orderBy: { createdAt: "desc" },
-      take: 20,
-      include: { user: true }
-    })
-  ]);
+  const recentContacts = await prisma.supportTicket.findMany({
+    where: { status: { in: [SupportTicketStatus.OPEN, SupportTicketStatus.PENDING, SupportTicketStatus.ESCALATED] } },
+    orderBy: { createdAt: "desc" },
+    take: 20,
+    include: { user: true, organization: true, assignee: true }
+  });
+  const failedAccessEvents = await prisma.securityEvent.findMany({
+    where: {
+      OR: [
+        { type: "SESSION_INVALID" },
+        { type: "RATE_LIMITED" },
+        { type: "LICENSE_ABUSE" }
+      ]
+    },
+    orderBy: { createdAt: "desc" },
+    take: 20,
+    include: { user: true }
+  });
 
   return {
     rows,

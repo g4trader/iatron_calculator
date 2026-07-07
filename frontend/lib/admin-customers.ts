@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import { LicenseStatus, Plan, SubscriptionStatus, type Prisma } from "@prisma/client";
 import { recordAdminAuditEvent, type AdminUser } from "@/lib/admin-permissions";
 import { prisma } from "@/lib/prisma";
@@ -215,31 +214,30 @@ async function getAdminCustomersUncached(filters: CustomerFilters) {
     ...(filters.organization ? { name: { contains: filters.organization, mode: "insensitive" } } : {})
   };
 
-  const [users, organizations] = await Promise.all([
-    prisma.user.findMany({
-      where: userWhere,
-      orderBy: { updatedAt: "desc" },
-      take: 80,
-      include: {
-        subscriptions: { orderBy: { updatedAt: "desc" }, take: 3, include: { planPrice: true } },
-        licenses: { orderBy: { updatedAt: "desc" }, take: 3 },
-        organizationMemberships: { where: { removedAt: null }, take: 1, include: { organization: true } },
-        calculationHistory: { orderBy: { createdAt: "desc" }, take: 10 },
-        userSessions: { orderBy: { lastSeenAt: "desc" }, take: 3 },
-        securityEvents: { orderBy: { createdAt: "desc" }, take: 10 }
-      }
-    }),
-    prisma.organization.findMany({
-      where: organizationWhere,
-      orderBy: { updatedAt: "desc" },
-      take: 40,
-      include: {
-        subscriptions: { orderBy: { updatedAt: "desc" }, take: 3, include: { planPrice: true } },
-        licenses: { orderBy: { updatedAt: "desc" }, take: 10 },
-        memberships: { where: { removedAt: null }, orderBy: { updatedAt: "desc" }, take: 10, include: { user: true } }
-      }
-    })
-  ]);
+  const users = await prisma.user.findMany({
+    where: userWhere,
+    orderBy: { updatedAt: "desc" },
+    take: 80,
+    include: {
+      subscriptions: { orderBy: { updatedAt: "desc" }, take: 3, include: { planPrice: true } },
+      licenses: { orderBy: { updatedAt: "desc" }, take: 3 },
+      organizationMemberships: { where: { removedAt: null }, take: 1, include: { organization: true } },
+      calculationHistory: { orderBy: { createdAt: "desc" }, take: 5 },
+      userSessions: { orderBy: { lastSeenAt: "desc" }, take: 2 },
+      securityEvents: { orderBy: { createdAt: "desc" }, take: 5 }
+    }
+  });
+
+  const organizations = await prisma.organization.findMany({
+    where: organizationWhere,
+    orderBy: { updatedAt: "desc" },
+    take: 40,
+    include: {
+      subscriptions: { orderBy: { updatedAt: "desc" }, take: 3, include: { planPrice: true } },
+      licenses: { orderBy: { updatedAt: "desc" }, take: 10 },
+      memberships: { where: { removedAt: null }, orderBy: { updatedAt: "desc" }, take: 10, include: { user: true } }
+    }
+  });
 
   const now = new Date();
   return [...users.map((user) => buildIndividualCustomerRow(user, now)), ...organizations.map((organization) => buildInstitutionalCustomerRow(organization, now))]
@@ -249,37 +247,31 @@ async function getAdminCustomersUncached(filters: CustomerFilters) {
 }
 
 export async function getAdminCustomers(filters: CustomerFilters) {
-  const cacheKey = JSON.stringify(filters);
-  return unstable_cache(
-    async () => getAdminCustomersUncached(filters),
-    ["admin-customers", cacheKey],
-    { revalidate: 30, tags: ["admin-customers"] }
-  )();
+  return getAdminCustomersUncached(filters);
 }
 
 async function getAdminCustomerDetailUncached(id: string) {
-  const [user, organization] = await Promise.all([
-    prisma.user.findUnique({
-      where: { id },
-      include: {
-        subscriptions: { orderBy: { updatedAt: "desc" }, include: { planPrice: true, licenses: true } },
-        licenses: { orderBy: { updatedAt: "desc" }, include: { user: true, organization: true, subscription: true } },
-        organizationMemberships: { where: { removedAt: null }, include: { organization: { include: { memberships: { where: { removedAt: null }, include: { user: true } } } } } },
-        calculationHistory: { orderBy: { createdAt: "desc" }, take: 20 },
-        userSessions: { orderBy: { lastSeenAt: "desc" }, take: 10 },
-        securityEvents: { orderBy: { createdAt: "desc" }, take: 20 },
-        targetedAdminAuditEvents: { where: { action: "admin.customer.note_added" }, orderBy: { createdAt: "desc" }, take: 20, include: { actor: true } }
-      }
-    }),
-    prisma.organization.findUnique({
-      where: { id },
-      include: {
-        memberships: { where: { removedAt: null }, orderBy: { createdAt: "asc" }, include: { user: true } },
-        subscriptions: { orderBy: { updatedAt: "desc" }, include: { planPrice: true, licenses: true } },
-        licenses: { orderBy: { updatedAt: "desc" }, include: { user: true, organization: true, subscription: true } }
-      }
-    })
-  ]);
+  const user = await prisma.user.findUnique({
+    where: { id },
+    include: {
+      subscriptions: { orderBy: { updatedAt: "desc" }, include: { planPrice: true, licenses: true } },
+      licenses: { orderBy: { updatedAt: "desc" }, include: { user: true, organization: true, subscription: true } },
+      organizationMemberships: { where: { removedAt: null }, include: { organization: { include: { memberships: { where: { removedAt: null }, include: { user: true } } } } } },
+      calculationHistory: { orderBy: { createdAt: "desc" }, take: 20 },
+      userSessions: { orderBy: { lastSeenAt: "desc" }, take: 10 },
+      securityEvents: { orderBy: { createdAt: "desc" }, take: 20 },
+      targetedAdminAuditEvents: { where: { action: "admin.customer.note_added" }, orderBy: { createdAt: "desc" }, take: 20, include: { actor: true } }
+    }
+  });
+
+  const organization = user ? null : await prisma.organization.findUnique({
+    where: { id },
+    include: {
+      memberships: { where: { removedAt: null }, orderBy: { createdAt: "asc" }, include: { user: true } },
+      subscriptions: { orderBy: { updatedAt: "desc" }, include: { planPrice: true, licenses: true } },
+      licenses: { orderBy: { updatedAt: "desc" }, include: { user: true, organization: true, subscription: true } }
+    }
+  });
 
   if (user) {
     const row = buildIndividualCustomerRow({
@@ -316,11 +308,7 @@ async function getAdminCustomerDetailUncached(id: string) {
 }
 
 export async function getAdminCustomerDetail(id: string) {
-  return unstable_cache(
-    async () => getAdminCustomerDetailUncached(id),
-    ["admin-customer-detail", id],
-    { revalidate: 30, tags: ["admin-customers", `admin-customer-${id}`] }
-  )();
+  return getAdminCustomerDetailUncached(id);
 }
 
 export async function addCustomerInternalNote(input: {

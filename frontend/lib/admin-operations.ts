@@ -54,8 +54,42 @@ export type OperationsDashboard = {
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
+async function runSerial<T extends readonly unknown[]>(tasks: { [K in keyof T]: () => Promise<T[K]> }): Promise<T> {
+  const results = [] as unknown[];
+  for (const task of tasks) {
+    results.push(await task());
+  }
+  return results as unknown as T;
+}
+
 function isPresent(value?: string | null) {
   return Boolean(value && value.trim().length > 0);
+}
+
+function countGroupedValue<T extends string>(
+  items: ReadonlyArray<{ _count?: true | { _all?: number } } & Record<string, unknown>> | undefined,
+  key: string,
+  value: T
+) {
+  for (const item of items ?? []) {
+    if (item?.[key] === value) {
+      return typeof item._count === "object" ? item._count._all ?? 0 : 0;
+    }
+  }
+  return 0;
+}
+
+function groupCount(item: { _count?: true | { _all?: number } }) {
+  return typeof item._count === "object" ? item._count._all ?? 0 : 0;
+}
+
+function findIntegration(integrations: ReadonlyArray<IntegrationStatus> | undefined, id: string) {
+  for (const integration of integrations ?? []) {
+    if (integration.id === id) {
+      return integration;
+    }
+  }
+  return undefined;
 }
 
 function percentage(part: number, total: number) {
@@ -247,55 +281,55 @@ export async function getOperationsDashboard(): Promise<OperationsDashboard> {
       failedRestores,
       failedJobRuns,
       lastJobRuns
-    ] = await Promise.all([
-      Promise.all([checkDatabase(), Promise.resolve(checkStripe()), Promise.resolve(checkRedis()), checkBackendApi()]),
-      prisma.securityEvent.groupBy({ by: ["type"], _count: { _all: true }, where: { createdAt: { gte: since } } }),
-      prisma.userSession.groupBy({ by: ["status"], _count: { _all: true } }),
-      prisma.securityEvent.groupBy({ by: ["severity"], _count: { _all: true }, where: { createdAt: { gte: since }, severity: { in: ["warning", "critical"] } } }),
-      prisma.securityEvent.count({ where: { createdAt: { gte: since } } }),
-      prisma.organizationInvite.count({ where: { status: InviteStatus.PENDING, expiresAt: { gt: now } } }),
-      prisma.subscription.count({
+    ] = await runSerial([
+      () => runSerial([checkDatabase, async () => checkStripe(), async () => checkRedis(), checkBackendApi] as const),
+      () => prisma.securityEvent.groupBy({ by: ["type"] as const, _count: { _all: true }, where: { createdAt: { gte: since } }, orderBy: { type: "asc" } }),
+      () => prisma.userSession.groupBy({ by: ["status"] as const, _count: { _all: true }, orderBy: { status: "asc" } }),
+      () => prisma.securityEvent.groupBy({ by: ["severity"] as const, _count: { _all: true }, where: { createdAt: { gte: since }, severity: { in: ["warning", "critical"] } }, orderBy: { severity: "asc" } }),
+      () => prisma.securityEvent.count({ where: { createdAt: { gte: since } } }),
+      () => prisma.organizationInvite.count({ where: { status: InviteStatus.PENDING, expiresAt: { gt: now } } }),
+      () => prisma.subscription.count({
         where: {
           status: { in: [SubscriptionStatus.ACTIVE, SubscriptionStatus.TRIALING] },
           licenses: { none: { status: LicenseStatus.ACTIVE } }
         }
       }),
-      prisma.stripeWebhookEvent.findMany({ orderBy: { processedAt: "desc" }, take: 5 }),
-      prisma.securityEvent.findFirst({ where: { type: SecurityEventType.BILLING_RECONCILED }, orderBy: { createdAt: "desc" } }),
-      prisma.securityEvent.findMany({
+      () => prisma.stripeWebhookEvent.findMany({ orderBy: { processedAt: "desc" }, take: 5 }),
+      () => prisma.securityEvent.findFirst({ where: { type: SecurityEventType.BILLING_RECONCILED }, orderBy: { createdAt: "desc" } }),
+      () => prisma.securityEvent.findMany({
         where: { severity: { in: ["warning", "critical"] }, createdAt: { gte: since } },
         orderBy: { createdAt: "desc" },
         take: 8
       }),
-      prisma.operationalIncident.findMany({ where: { status: { in: [OperationalIncidentStatus.OPEN, OperationalIncidentStatus.MONITORING] } }, orderBy: { updatedAt: "desc" }, take: 8 }),
-      prisma.operationalIncident.count({ where: { status: { in: [OperationalIncidentStatus.OPEN, OperationalIncidentStatus.MONITORING] }, severity: OperationalIncidentSeverity.CRITICAL } }),
-      prisma.operationalIncident.count({ where: { status: { in: [OperationalIncidentStatus.OPEN, OperationalIncidentStatus.MONITORING] }, severity: OperationalIncidentSeverity.WARNING } }),
-      prisma.webhookFailure.count({ where: { status: { in: [WebhookFailureStatus.OPEN, WebhookFailureStatus.RETRYING] } } }),
-      prisma.supportTicket.count({ where: { status: { in: [SupportTicketStatus.OPEN, SupportTicketStatus.PENDING, SupportTicketStatus.ESCALATED] } } }),
-      prisma.billingIssue.count({ where: { status: { in: [BillingIssueStatus.OPEN, BillingIssueStatus.INVESTIGATING] } } }),
-      prisma.checkoutEvent.count({ where: { status: { in: [OperationalEventStatus.FAILED, OperationalEventStatus.PENDING] }, createdAt: { gte: since } } }),
-      prisma.exportJob.count({ where: { status: { in: [ExportJobStatus.QUEUED, ExportJobStatus.RUNNING] }, createdAt: { lt: new Date(now.getTime() - 30 * 60 * 1000) } } }),
-      prisma.exportJob.count({ where: { status: ExportJobStatus.FAILED, createdAt: { gte: since } } }),
-      prisma.exportJob.count({ where: { status: ExportJobStatus.COMPLETED, storageProvider: null, createdAt: { gte: since } } }),
-      prisma.retentionRun.count({ where: { status: RetentionRunStatus.FAILED, createdAt: { gte: since } } }),
-      prisma.archiveJob.count({ where: { status: { in: [ArchiveJobStatus.QUEUED, ArchiveJobStatus.RUNNING] }, createdAt: { lt: new Date(now.getTime() - 30 * 60 * 1000) } } }),
-      prisma.archiveJob.count({ where: { status: ArchiveJobStatus.FAILED, createdAt: { gte: since } } }),
-      prisma.archiveRestoreJob.count({ where: { status: { in: [ArchiveRestoreStatus.REQUESTED, ArchiveRestoreStatus.RUNNING] }, createdAt: { lt: new Date(now.getTime() - 30 * 60 * 1000) } } }),
-      prisma.archiveRestoreJob.count({ where: { status: { in: [ArchiveRestoreStatus.FAILED, ArchiveRestoreStatus.BLOCKED] }, createdAt: { gte: since } } }),
-      prisma.jobRun.count({ where: { status: JobRunStatus.FAILURE, startedAt: { gte: since } } }),
-      prisma.jobRun.findMany({ orderBy: { startedAt: "desc" }, take: 8 })
-    ]);
+      () => prisma.operationalIncident.findMany({ where: { status: { in: [OperationalIncidentStatus.OPEN, OperationalIncidentStatus.MONITORING] } }, orderBy: { updatedAt: "desc" }, take: 8 }),
+      () => prisma.operationalIncident.count({ where: { status: { in: [OperationalIncidentStatus.OPEN, OperationalIncidentStatus.MONITORING] }, severity: OperationalIncidentSeverity.CRITICAL } }),
+      () => prisma.operationalIncident.count({ where: { status: { in: [OperationalIncidentStatus.OPEN, OperationalIncidentStatus.MONITORING] }, severity: OperationalIncidentSeverity.WARNING } }),
+      () => prisma.webhookFailure.count({ where: { status: { in: [WebhookFailureStatus.OPEN, WebhookFailureStatus.RETRYING] } } }),
+      () => prisma.supportTicket.count({ where: { status: { in: [SupportTicketStatus.OPEN, SupportTicketStatus.PENDING, SupportTicketStatus.ESCALATED] } } }),
+      () => prisma.billingIssue.count({ where: { status: { in: [BillingIssueStatus.OPEN, BillingIssueStatus.INVESTIGATING] } } }),
+      () => prisma.checkoutEvent.count({ where: { status: { in: [OperationalEventStatus.FAILED, OperationalEventStatus.PENDING] }, createdAt: { gte: since } } }),
+      () => prisma.exportJob.count({ where: { status: { in: [ExportJobStatus.QUEUED, ExportJobStatus.RUNNING] }, createdAt: { lt: new Date(now.getTime() - 30 * 60 * 1000) } } }),
+      () => prisma.exportJob.count({ where: { status: ExportJobStatus.FAILED, createdAt: { gte: since } } }),
+      () => prisma.exportJob.count({ where: { status: ExportJobStatus.COMPLETED, storageProvider: null, createdAt: { gte: since } } }),
+      () => prisma.retentionRun.count({ where: { status: RetentionRunStatus.FAILED, createdAt: { gte: since } } }),
+      () => prisma.archiveJob.count({ where: { status: { in: [ArchiveJobStatus.QUEUED, ArchiveJobStatus.RUNNING] }, createdAt: { lt: new Date(now.getTime() - 30 * 60 * 1000) } } }),
+      () => prisma.archiveJob.count({ where: { status: ArchiveJobStatus.FAILED, createdAt: { gte: since } } }),
+      () => prisma.archiveRestoreJob.count({ where: { status: { in: [ArchiveRestoreStatus.REQUESTED, ArchiveRestoreStatus.RUNNING] }, createdAt: { lt: new Date(now.getTime() - 30 * 60 * 1000) } } }),
+      () => prisma.archiveRestoreJob.count({ where: { status: { in: [ArchiveRestoreStatus.FAILED, ArchiveRestoreStatus.BLOCKED] }, createdAt: { gte: since } } }),
+      () => prisma.jobRun.count({ where: { status: JobRunStatus.FAILURE, startedAt: { gte: since } } }),
+      () => prisma.jobRun.findMany({ orderBy: { startedAt: "desc" }, take: 8 })
+    ] as const);
 
-    const activeSessions = sessionsByStatus.find((item) => item.status === UserSessionStatus.ACTIVE)?._count._all ?? 0;
-    const revokedSessions = sessionsByStatus.find((item) => item.status === UserSessionStatus.REVOKED)?._count._all ?? 0;
-    const expiredSessions = sessionsByStatus.find((item) => item.status === UserSessionStatus.EXPIRED)?._count._all ?? 0;
-    const loginRateLimited = securityEventsByType.find((item) => item.type === SecurityEventType.RATE_LIMITED)?._count._all ?? 0;
-    const sessionInvalid = securityEventsByType.find((item) => item.type === SecurityEventType.SESSION_INVALID)?._count._all ?? 0;
-    const criticalIncidents = criticalOperationalIncidents + (warningEvents.find((item) => item.severity === "critical")?._count._all ?? 0);
-    const warningIncidents = warningOperationalIncidents + (warningEvents.find((item) => item.severity === "warning")?._count._all ?? 0);
-    const database = integrations.find((item) => item.id === "database");
-    const stripe = integrations.find((item) => item.id === "stripe");
-    const redis = integrations.find((item) => item.id === "redis");
+    const activeSessions = countGroupedValue(sessionsByStatus, "status", UserSessionStatus.ACTIVE);
+    const revokedSessions = countGroupedValue(sessionsByStatus, "status", UserSessionStatus.REVOKED);
+    const expiredSessions = countGroupedValue(sessionsByStatus, "status", UserSessionStatus.EXPIRED);
+    const loginRateLimited = countGroupedValue(securityEventsByType, "type", SecurityEventType.RATE_LIMITED);
+    const sessionInvalid = countGroupedValue(securityEventsByType, "type", SecurityEventType.SESSION_INVALID);
+    const criticalIncidents = criticalOperationalIncidents + countGroupedValue(warningEvents, "severity", "critical");
+    const warningIncidents = warningOperationalIncidents + countGroupedValue(warningEvents, "severity", "warning");
+    const database = findIntegration(integrations, "database");
+    const stripe = findIntegration(integrations, "stripe");
+    const redis = findIntegration(integrations, "redis");
 
     return {
       summary: summarizeOperationalStatus({
@@ -315,7 +349,7 @@ export async function getOperationsDashboard(): Promise<OperationsDashboard> {
         expiredSessions,
         totalSecurityEvents
       }),
-      integrations,
+      integrations: [...integrations],
       incidents: [
         ...openOperationalIncidents.map((incident) => ({
           id: incident.id,
@@ -345,8 +379,8 @@ export async function getOperationsDashboard(): Promise<OperationsDashboard> {
         { id: "archive_jobs", label: "Archive travado/falho", value: String(stuckArchives + failedArchives), status: stuckArchives + failedArchives > 0 ? "degraded" : "healthy", note: "Fonte: ArchiveJob QUEUED/RUNNING > 30min ou FAILED em 24h." },
         { id: "archive_restores", label: "Restore travado/falho", value: String(stuckRestores + failedRestores), status: stuckRestores + failedRestores > 0 ? "incident" : "healthy", note: "Fonte: ArchiveRestoreJob REQUESTED/RUNNING > 30min ou FAILED/BLOCKED em 24h." }
       ],
-      securityEventsByType: securityEventsByType.map((item) => ({ id: item.type, type: item.type, count: item._count._all })),
-      sessionsByStatus: sessionsByStatus.map((item) => ({ id: item.status, status: item.status, count: item._count._all })),
+      securityEventsByType: securityEventsByType.map((item) => ({ id: item.type, type: item.type, count: groupCount(item) })),
+      sessionsByStatus: sessionsByStatus.map((item) => ({ id: item.status, status: item.status, count: groupCount(item) })),
       jobs: lastJobRuns.length > 0
         ? lastJobRuns.map((job) => ({
             id: job.id,

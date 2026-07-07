@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import { BillingCycle, Plan, SubscriptionOwnerType, SubscriptionStatus, type Subscription } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
@@ -237,44 +236,39 @@ export const buildSalesDashboardForTests = buildSalesDashboardFromSubscriptions;
 
 export async function getAdminSalesDashboard(filters: SalesFilters) {
   const periodStart = getPeriodStart(filters.period);
-  const cacheKey = JSON.stringify(filters);
-  return unstable_cache(async () => {
-    const where = {
-      ...(filters.plan ? { plan: filters.plan } : {}),
-      ...(filters.ownerType ? { ownerType: filters.ownerType } : {}),
-      ...(filters.status ? { status: filters.status } : {})
-    };
+  const where = {
+    ...(filters.plan ? { plan: filters.plan } : {}),
+    ...(filters.ownerType ? { ownerType: filters.ownerType } : {}),
+    ...(filters.status ? { status: filters.status } : {})
+  };
 
-    const [subscriptions, firstUseUsers, funnelEvents] = await Promise.all([
-      prisma.subscription.findMany({
-        where,
-        orderBy: { updatedAt: "desc" },
-        take: 500,
-        include: {
-          planPrice: true,
-          licenses: { select: { id: true } }
-        }
-      }),
-      prisma.calculationHistory.findMany({
-        where: { createdAt: { gte: periodStart } },
-        distinct: ["userId"],
-        select: { userId: true }
-      }),
-      prisma.funnelEvent.groupBy({
-        by: ["step"],
-        where: { createdAt: { gte: periodStart } },
-        _count: { _all: true }
-      })
-    ]);
-    const funnelCounts = Object.fromEntries(funnelEvents.map((event) => [event.step, event._count._all]));
+  const subscriptions = await prisma.subscription.findMany({
+    where,
+    orderBy: { updatedAt: "desc" },
+    take: 500,
+    include: {
+      planPrice: true,
+      licenses: { select: { id: true } }
+    }
+  });
+  const firstUseUsers = await prisma.calculationHistory.findMany({
+    where: { createdAt: { gte: periodStart } },
+    distinct: ["userId"],
+    select: { userId: true }
+  });
+  const funnelEvents = await prisma.funnelEvent.groupBy({
+    by: ["step"],
+    where: { createdAt: { gte: periodStart } },
+    _count: { _all: true }
+  });
+  const funnelCounts = Object.fromEntries(funnelEvents.map((event) => [event.step, event._count._all]));
 
-    return buildSalesDashboardFromSubscriptions({
-      subscriptions,
-      periodStart,
-      firstUseCount: firstUseUsers.length,
-      funnelCounts
-    });
-  }, ["admin-sales-dashboard", cacheKey], { revalidate: 60 })();
+  return buildSalesDashboardFromSubscriptions({
+    subscriptions,
+    periodStart,
+    firstUseCount: firstUseUsers.length,
+    funnelCounts
+  });
 }
 
 export function parseSalesFilters(input?: { period?: string; plan?: string; ownerType?: string; status?: string }): SalesFilters {

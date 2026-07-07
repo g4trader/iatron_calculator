@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import { BillingIssueStatus, LicenseStatus, SubscriptionStatus, WebhookFailureStatus, type Prisma, type Subscription } from "@prisma/client";
 import { recordAdminAuditEvent, type AdminUser } from "@/lib/admin-permissions";
 import { syncStripeSubscription } from "@/lib/billing";
@@ -86,13 +85,37 @@ async function safelyListStripeData(filters: AdminBillingFilters) {
     };
   }
 
+  if (process.env.ADMIN_BILLING_FETCH_STRIPE !== "true") {
+    return {
+      configured: true,
+      invoices: [],
+      paymentFailures: [],
+      refunds: [],
+      stripeSubscriptionById: new Map<string, Stripe.Subscription & { cancel_at_period_end?: boolean }>(),
+      errors: ["Consulta Stripe sob demanda desativada para manter o painel responsivo."]
+    };
+  }
+
   const errors: string[] = [];
   const customer = filters.q?.startsWith("cus_") ? filters.q : undefined;
-  const [invoicesResult, refundsResult] = await Promise.allSettled([
+  const stripeFetch = Promise.allSettled([
     stripe.invoices.list({ limit: 10, ...(customer ? { customer } : {}) }),
     stripe.refunds.list({ limit: 10 })
   ]);
+  const timeout = new Promise<"timeout">((resolve) => setTimeout(() => resolve("timeout"), 2500));
+  const result = await Promise.race([stripeFetch, timeout]);
+  if (result === "timeout") {
+    return {
+      configured: true,
+      invoices: [],
+      paymentFailures: [],
+      refunds: [],
+      stripeSubscriptionById: new Map<string, Stripe.Subscription & { cancel_at_period_end?: boolean }>(),
+      errors: ["Consulta Stripe excedeu 2,5s; exibindo cache local."]
+    };
+  }
 
+  const [invoicesResult, refundsResult] = result;
   const invoices = invoicesResult.status === "fulfilled" ? invoicesResult.value.data : [];
   const refunds = refundsResult.status === "fulfilled" ? refundsResult.value.data : [];
   if (invoicesResult.status === "rejected") errors.push("Falha ao consultar invoices na Stripe.");
@@ -125,26 +148,24 @@ async function getAdminBillingDashboardUncached(filters: AdminBillingFilters) {
       : {})
   };
 
-  const [subscriptions, webhookEvents, adminReviews, webhookFailures, billingIssues, stripeData] = await Promise.all([
-    prisma.subscription.findMany({
-      where: subscriptionWhere,
-      orderBy: { updatedAt: "desc" },
-      take: 80,
-      include: { user: true, organization: true, licenses: true, planPrice: true }
-    }),
-    prisma.stripeWebhookEvent.findMany({ orderBy: { processedAt: "desc" }, take: 30 }),
-    prisma.adminAuditEvent.findMany({
-      where: { action: "admin.billing.manual_review_marked" },
-      orderBy: { createdAt: "desc" },
-      take: 10,
-      include: { actor: true }
-    }),
-    prisma.webhookFailure.findMany({ where: { status: { in: [WebhookFailureStatus.OPEN, WebhookFailureStatus.RETRYING] } }, orderBy: { updatedAt: "desc" }, take: 20 }),
-    prisma.billingIssue.findMany({ where: { status: { in: [BillingIssueStatus.OPEN, BillingIssueStatus.INVESTIGATING] } }, orderBy: { updatedAt: "desc" }, take: 20, include: { user: true, organization: true } }),
-    safelyListStripeData(filters)
-  ]);
+  const subscriptions = await prisma.subscription.findMany({
+    where: subscriptionWhere,
+    orderBy: { updatedAt: "desc" },
+    take: 80,
+    include: { user: true, organization: true, licenses: true, planPrice: true }
+  });
+  const webhookEvents = await prisma.stripeWebhookEvent.findMany({ orderBy: { processedAt: "desc" }, take: 30 });
+  const adminReviews = await prisma.adminAuditEvent.findMany({
+    where: { action: "admin.billing.manual_review_marked" },
+    orderBy: { createdAt: "desc" },
+    take: 10,
+    include: { actor: true }
+  });
+  const webhookFailures = await prisma.webhookFailure.findMany({ where: { status: { in: [WebhookFailureStatus.OPEN, WebhookFailureStatus.RETRYING] } }, orderBy: { updatedAt: "desc" }, take: 20 });
+  const billingIssues = await prisma.billingIssue.findMany({ where: { status: { in: [BillingIssueStatus.OPEN, BillingIssueStatus.INVESTIGATING] } }, orderBy: { updatedAt: "desc" }, take: 20, include: { user: true, organization: true } });
+  const stripeData = await safelyListStripeData(filters);
 
-  if (stripeData.configured) {
+  if (stripeData.configured && process.env.ADMIN_BILLING_FETCH_STRIPE === "true") {
     const stripeSubscriptions = await Promise.allSettled(
       subscriptions
         .filter((subscription) => subscription.stripeSubscriptionId)
@@ -220,12 +241,7 @@ async function getAdminBillingDashboardUncached(filters: AdminBillingFilters) {
 }
 
 export async function getAdminBillingDashboard(filters: AdminBillingFilters) {
-  const cacheKey = JSON.stringify(filters);
-  return unstable_cache(
-    async () => getAdminBillingDashboardUncached(filters),
-    ["admin-billing-dashboard", cacheKey],
-    { revalidate: 30, tags: ["admin-billing"] }
-  )();
+  return getAdminBillingDashboardUncached(filters);
 }
 
 export async function reconcileAdminBillingSubscription(input: { admin: AdminUser; subscriptionId: string; reason?: string | null }) {
