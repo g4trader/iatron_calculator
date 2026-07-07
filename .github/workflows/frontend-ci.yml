@@ -1,0 +1,65 @@
+name: Frontend CI
+
+on:
+  pull_request:
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend-ci.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend-ci.yml"
+
+jobs:
+  validate:
+    name: Validate frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    env:
+      IATRON_ENV: ci
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/iatron_ci
+      DIRECT_URL: postgresql://postgres:postgres@localhost:5432/iatron_ci
+      AUTH_SECRET: ci-auth-secret-change-me-only-for-ci
+      AUTH_URL: http://localhost:3000
+      NEXTAUTH_URL: http://localhost:3000
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+      TEMP_LOGIN_ENABLED: "false"
+      RATE_LIMIT_ALLOW_MEMORY_FALLBACK: "true"
+      ADMIN_READINESS_STRICT: "false"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate Prisma schema
+        run: npx prisma validate
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Run critical unit suites
+        run: |
+          npm run test:auth
+          npm run test:session
+          npm run test:security
+          npm run test:commercial
+          npm run test:billing
+          npm run test:pricing
+          npm run test:admin
+          npm run test:admin-operations
+
+      - name: Build
+        run: npm run build

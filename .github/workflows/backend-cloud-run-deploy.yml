@@ -1,0 +1,49 @@
+name: Backend Cloud Run Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Target environment"
+        type: choice
+        required: true
+        options:
+          - staging
+          - production
+      service:
+        description: "Cloud Run service name"
+        required: true
+        default: iatron-calculator-api
+      region:
+        description: "Cloud Run region"
+        required: true
+        default: us-central1
+
+jobs:
+  deploy:
+    name: Deploy backend
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.target }}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOY_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to Cloud Run from source
+        run: |
+          gcloud run deploy "${{ inputs.service }}" \
+            --source backend \
+            --region "${{ inputs.region }}" \
+            --allow-unauthenticated \
+            --set-env-vars "CORS_ORIGINS=${{ vars.CORS_ORIGINS }}"
