@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, PanelLeftClose, PanelLeftOpen, ShieldCheck, UserCircle } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { adminNavigationGroups } from "@/components/admin/adminNavigation";
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import type { AdminPermission } from "@/lib/admin-permissions";
@@ -11,6 +11,7 @@ import type { AdminPermission } from "@/lib/admin-permissions";
 export function AdminSidebar({ permissions, userEmail, userName }: { permissions: AdminPermission[]; userEmail: string | null; userName: string | null }) {
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(false);
+  const [loadingLabel, setLoadingLabel] = useState<string | null>(null);
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
     executive: true,
     administration: true,
@@ -28,10 +29,33 @@ export function AdminSidebar({ permissions, userEmail, userName }: { permissions
   }, [permissions]);
   const identity = userEmail ?? userName ?? "admin";
 
+  useEffect(() => {
+    setLoadingLabel(null);
+  }, [pathname]);
+
   return (
     <aside className={`no-print border-b border-cyan-300/10 bg-slate-950/90 transition-[width] duration-200 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:border-b-0 lg:border-r ${expanded ? "lg:w-[292px]" : "lg:w-[76px]"}`}>
+      {loadingLabel ? (
+        <div className="fixed inset-0 z-[100] grid place-items-center bg-slate-950/65 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl border border-cyan-300/20 bg-slate-950 p-5 shadow-2xl shadow-cyan-950/40">
+            <div className="flex items-center gap-3">
+              <span className="h-3 w-3 animate-pulse rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(103,232,249,0.9)]" />
+              <div>
+                <p className="text-sm font-black text-white">Carregando módulo</p>
+                <p className="mt-1 text-xs font-semibold text-slate-400">{loadingLabel}</p>
+              </div>
+            </div>
+            <div className="mt-4 h-1 overflow-hidden rounded-full bg-slate-800">
+              <div className="h-full w-1/2 animate-[pulse_0.8s_ease-in-out_infinite] rounded-full bg-cyan-300" />
+            </div>
+          </div>
+        </div>
+      ) : null}
       <div className={`flex h-16 items-center gap-3 px-4 ${expanded ? "justify-between" : "justify-center"}`}>
-        <Link href="/admin" prefetch onClick={() => setExpanded(true)} className="flex min-w-0 items-center gap-3">
+        <Link href="/admin" prefetch onClick={() => {
+          setExpanded(true);
+          if (pathname !== "/admin") setLoadingLabel("Cockpit administrativo");
+        }} className="flex min-w-0 items-center gap-3">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-cyan-300 text-slate-950">
             <ShieldCheck className="h-5 w-5" aria-hidden="true" />
           </span>
@@ -78,7 +102,10 @@ export function AdminSidebar({ permissions, userEmail, userName }: { permissions
                       key={href}
                       href={href}
                       prefetch
-                      onClick={() => setExpanded(true)}
+                      onClick={() => {
+                        setExpanded(true);
+                        if (!selected) setLoadingLabel(label);
+                      }}
                       title={expanded ? undefined : label}
                       className={`group flex items-center rounded-lg border px-3 py-3 transition ${
                         expanded ? "gap-3" : "justify-center"

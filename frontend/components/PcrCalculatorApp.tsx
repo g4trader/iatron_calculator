@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AlertTriangle, Activity, Zap } from "lucide-react";
 import { CalculatorShell } from "@/components/CalculatorShell";
 import { InputForm } from "@/components/InputForm";
@@ -160,6 +160,9 @@ export function PcrCalculatorApp() {
   const [calculationDate, setCalculationDate] = useState("");
   const [result, setResult] = useState<PcrCalculationResponse | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [showCalculating, setShowCalculating] = useState(false);
+  const requestIdRef = useRef(0);
   const errors = useMemo(() => validate(values), [values]);
   const canCalculate = Object.keys(errors).length === 0;
 
@@ -167,17 +170,36 @@ export function PcrCalculatorApp() {
     setCalculationDate(new Date().toISOString().slice(0, 10));
   }, []);
 
+  useEffect(() => {
+    if (!isCalculating) {
+      setShowCalculating(false);
+      return;
+    }
+
+    const timeout = window.setTimeout(() => setShowCalculating(true), 350);
+    return () => window.clearTimeout(timeout);
+  }, [isCalculating]);
+
   const runCalculation = useCallback(async () => {
+    const requestId = requestIdRef.current + 1;
+    requestIdRef.current = requestId;
+
     if (!canCalculate) {
       setResult(null);
+      setIsCalculating(false);
       return;
     }
     setApiError(null);
+    setIsCalculating(true);
     try {
       const response = await calculatePcr(values);
-      setResult(response);
+      if (requestIdRef.current === requestId) setResult(response);
     } catch (error) {
-      setApiError(error instanceof Error ? error.message : "Erro inesperado ao calcular.");
+      if (requestIdRef.current === requestId) {
+        setApiError(error instanceof Error ? error.message : "Erro inesperado ao calcular.");
+      }
+    } finally {
+      if (requestIdRef.current === requestId) setIsCalculating(false);
     }
   }, [canCalculate, values]);
 
@@ -188,6 +210,24 @@ export function PcrCalculatorApp() {
 
   return (
     <CalculatorShell active="pcr" headerActions={<PrintButton iconOnly />}>
+      {showCalculating ? (
+        <div className="fixed inset-0 z-[100] grid place-items-center bg-slate-950/65 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl border border-cyan-300/20 bg-slate-950 p-5 shadow-2xl shadow-cyan-950/40">
+            <div className="flex items-center gap-3">
+              <span className="h-3 w-3 animate-pulse rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(103,232,249,0.9)]" />
+              <div>
+                <p className="text-sm font-black text-white">Calculando Folha PCR</p>
+                <p className="mt-1 text-xs font-semibold text-slate-400">
+                  Processando idade, peso, via aérea, choque e medicações.
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 h-1 overflow-hidden rounded-full bg-slate-800">
+              <div className="h-full w-1/2 animate-[pulse_0.8s_ease-in-out_infinite] rounded-full bg-cyan-300" />
+            </div>
+          </div>
+        </div>
+      ) : null}
       <PcrPrintReport patientName={patientName} calculationDate={calculationDate} result={result} />
       <div className="no-print grid max-w-full min-w-0 gap-5 px-3 py-5 sm:px-6 lg:px-8">
         <header className="min-w-0 rounded-xl border border-cyan-300/15 bg-slate-950/70 p-4 shadow-2xl shadow-black/20 sm:p-5">

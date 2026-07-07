@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { Activity, Droplets, FileText, Menu, Pill, Syringe } from "lucide-react";
 import { ProductUserPanel } from "@/components/ProductUserPanel";
 
@@ -19,7 +23,15 @@ const links = [
   { href: "/dashboard/pcr", label: "Folha de PCR", key: "pcr", icon: Activity }
 ];
 
-function ProductNavLinks({ active, mobile = false }: { active: ProductNavKey; mobile?: boolean }) {
+function ProductNavLinks({
+  active,
+  mobile = false,
+  onNavigate
+}: {
+  active: ProductNavKey;
+  mobile?: boolean;
+  onNavigate: (label: string, href: string) => void;
+}) {
   return (
     <>
       {links.map((item) => {
@@ -29,6 +41,8 @@ function ProductNavLinks({ active, mobile = false }: { active: ProductNavKey; mo
           <Link
             key={item.href}
             href={item.href}
+            prefetch
+            onClick={() => onNavigate(item.label, item.href)}
             className={`inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-bold transition ${
               mobile ? "w-full justify-start" : "min-w-0 shrink"
             } ${
@@ -47,8 +61,35 @@ function ProductNavLinks({ active, mobile = false }: { active: ProductNavKey; mo
 }
 
 export function CalculatorShell({ active = "pcr", children, headerActions }: CalculatorShellProps) {
+  const pathname = usePathname();
+  const [loadingLabel, setLoadingLabel] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLoadingLabel(null);
+  }, [pathname]);
+
+  function handleNavigate(label: string, href: string) {
+    if (pathname !== href) setLoadingLabel(label);
+  }
+
   return (
     <main className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#050816] text-slate-100">
+      {loadingLabel ? (
+        <div className="fixed inset-0 z-[100] grid place-items-center bg-slate-950/65 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl border border-cyan-300/20 bg-slate-950 p-5 shadow-2xl shadow-cyan-950/40">
+            <div className="flex items-center gap-3">
+              <span className="h-3 w-3 animate-pulse rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(103,232,249,0.9)]" />
+              <div>
+                <p className="text-sm font-black text-white">Carregando produto</p>
+                <p className="mt-1 text-xs font-semibold text-slate-400">{loadingLabel}</p>
+              </div>
+            </div>
+            <div className="mt-4 h-1 overflow-hidden rounded-full bg-slate-800">
+              <div className="h-full w-1/2 animate-[pulse_0.8s_ease-in-out_infinite] rounded-full bg-cyan-300" />
+            </div>
+          </div>
+        </div>
+      ) : null}
       <div className="mx-auto grid min-h-screen w-full max-w-full min-w-0 lg:max-w-[1500px] lg:grid-cols-[260px_minmax(0,1fr)]">
         <aside className="no-print min-w-0 border-b border-cyan-300/10 bg-slate-950/80 px-3 py-4 backdrop-blur sm:px-4 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:border-b-0 lg:border-r">
           <div className="flex items-center justify-between gap-3 lg:block">
@@ -61,7 +102,7 @@ export function CalculatorShell({ active = "pcr", children, headerActions }: Cal
                   <span className="sr-only">Abrir menu</span>
                 </summary>
                 <nav className="absolute right-0 z-50 mt-3 grid w-[min(86vw,340px)] gap-2 rounded-xl border border-cyan-300/15 bg-slate-950/95 p-3 shadow-2xl shadow-black/40 backdrop-blur">
-                  <ProductNavLinks active={active} mobile />
+                  <ProductNavLinks active={active} mobile onNavigate={handleNavigate} />
                   <ProductUserPanel mobile />
                 </nav>
               </details>
@@ -72,7 +113,7 @@ export function CalculatorShell({ active = "pcr", children, headerActions }: Cal
             <div className="mt-8 flex items-center justify-end">{headerActions}</div>
 
             <nav className="mt-8 grid min-w-0 gap-2">
-              <ProductNavLinks active={active} />
+              <ProductNavLinks active={active} onNavigate={handleNavigate} />
             </nav>
 
             <div className="mt-6 rounded-md border border-red-300/20 bg-red-950/30 p-3 text-xs font-medium leading-5 text-red-100">

@@ -17,7 +17,7 @@ export async function calculateEmergency(payload: CalculationRequest): Promise<C
 }
 
 export async function calculatePcr(payload: CalculationRequest): Promise<PcrCalculationResponse> {
-  const response = await fetch(`${API_URL}/calculate/pcr`, {
+  const response = await fetch("/api/calculate/pcr", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
