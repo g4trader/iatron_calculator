@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import { ArchiveJobStatus, ArchiveRestoreStatus, BillingIssueStatus, ExportJobStatus, InviteStatus, JobRunStatus, LicenseStatus, OperationalEventStatus, OperationalIncidentSeverity, OperationalIncidentStatus, RetentionRunStatus, SecurityEventType, SubscriptionStatus, SupportTicketStatus, UserSessionStatus, WebhookFailureStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
@@ -216,8 +215,7 @@ function checkRedis(): IntegrationStatus {
   };
 }
 
-export async function getOperationsDashboard() {
-  return unstable_cache(async (): Promise<OperationsDashboard> => {
+export async function getOperationsDashboard(): Promise<OperationsDashboard> {
     const now = new Date();
     const since = new Date(now.getTime() - ONE_DAY_MS);
 
@@ -374,5 +372,4 @@ export async function getOperationsDashboard() {
             }
           ]
     };
-  }, ["admin-operations-dashboard"], { revalidate: 30 })();
 }
