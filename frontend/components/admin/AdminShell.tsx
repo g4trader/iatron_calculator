@@ -4,7 +4,10 @@ import type { AdminUser } from "@/lib/admin-permissions";
 export { adminNavigation, adminNavigationGroups } from "@/components/admin/adminNavigation";
 
 function environmentLabel() {
-  return process.env.IATRON_ENV ?? process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? "local";
+  if (process.env.VERCEL_ENV === "production") return "produção";
+  const raw = process.env.IATRON_ENV ?? process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? "local";
+  if (raw === "production") return "produção";
+  return raw;
 }
 
 export function AdminShell({ user, children, breadcrumb = "Admin" }: { user: AdminUser; children: ReactNode; breadcrumb?: string }) {
