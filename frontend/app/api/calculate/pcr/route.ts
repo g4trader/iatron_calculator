@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { calculatePcrLocally } from "@/lib/pcr-calculation-engine";
 
 export const runtime = "nodejs";
 
@@ -32,15 +33,32 @@ export async function POST(request: Request) {
     });
 
     const body = await response.text();
+    if (!response.ok) {
+      return NextResponse.json(calculatePcrLocally(payload.data), {
+        status: 200,
+        headers: {
+          "cache-control": "no-store",
+          "x-pcr-calculation-source": "local-fallback"
+        }
+      });
+    }
+
     return new NextResponse(body, {
       status: response.status,
       headers: {
         "content-type": response.headers.get("content-type") ?? "application/json",
-        "cache-control": "no-store"
+        "cache-control": "no-store",
+        "x-pcr-calculation-source": "backend"
       }
     });
   } catch {
-    return NextResponse.json({ error: "Backend clínico indisponível no momento." }, { status: 502 });
+    return NextResponse.json(calculatePcrLocally(payload.data), {
+      status: 200,
+      headers: {
+        "cache-control": "no-store",
+        "x-pcr-calculation-source": "local-fallback"
+      }
+    });
   } finally {
     clearTimeout(timeout);
   }
