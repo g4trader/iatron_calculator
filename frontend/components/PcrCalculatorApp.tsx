@@ -47,8 +47,8 @@ function formatDate(value: string) {
 
 function formatAgeWeight(input: CalculationRequest | PcrCalculationResponse["input"]) {
   const weight = Number.isFinite(input.pesoKg) ? `${input.pesoKg}kg` : "--kg";
-  const years = Number.isFinite(input.idadeAnos) ? `${input.idadeAnos}A` : "--A";
-  const months = Number.isFinite(input.idadeMeses) ? `${input.idadeMeses}M` : "--M";
+  const years = Number.isFinite(input.idadeAnos) ? `${input.idadeAnos}a` : "--a";
+  const months = Number.isFinite(input.idadeMeses) ? `${input.idadeMeses}m` : "--m";
   return `${years} ${months} ${weight}`;
 }
 
@@ -121,7 +121,7 @@ function PcrPrintReport({
   return (
     <div className="print-only print-report">
       <header className="print-report-section">
-        <h1>Folha PCR - Entubação e Parada Cardíaca Pediátrica</h1>
+        <h1>Folha PCR - Entubação e PCR</h1>
         <table>
           <tbody>
             <tr>
@@ -237,7 +237,7 @@ export function PcrCalculatorApp() {
                 <Activity className="h-4 w-4" aria-hidden="true" />
                 Folha PCR
               </p>
-              <h1 className="mt-3 max-w-full break-words text-2xl font-black leading-tight text-white sm:text-3xl md:text-4xl">Entubação e parada cardíaca pediátrica</h1>
+              <h1 className="mt-3 max-w-full break-words text-2xl font-black leading-tight text-white sm:text-3xl md:text-4xl">Entubação e PCR</h1>
             </div>
           </div>
         </header>
