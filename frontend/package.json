@@ -24,6 +24,7 @@
     "test:admin-contingency": "node --test --import tsx tests/admin-contingency.test.ts",
     "test:admin-customers": "node --test --import tsx tests/admin-customers.test.ts",
     "test:admin-licenses": "node --test --import tsx tests/admin-licenses.test.ts",
+    "test:admin-manual-payments": "node --test --import tsx tests/admin-manual-payments.test.ts",
     "test:admin-sales": "node --test --import tsx tests/admin-sales.test.ts",
     "test:admin-operations": "node --test --import tsx tests/admin-operations.test.ts",
     "test:admin-operational": "node --test --import tsx tests/admin-operational-data.test.ts",

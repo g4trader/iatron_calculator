@@ -209,6 +209,22 @@ enum LicenseOrigin {
   INSTITUTIONAL_GRANT
 }
 
+enum ManualPaymentMethod {
+  PIX
+  BANK_TRANSFER
+  EXTERNAL_CHECKOUT_LINK
+  BOLETO
+  COURTESY
+  OTHER
+}
+
+enum ManualPaymentStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+  RECONCILED
+}
+
 enum OrganizationRole {
   OWNER
   ADMIN
@@ -287,6 +303,10 @@ model User {
   archiveJobs         ArchiveJob[]
   archiveRestoreJobs  ArchiveRestoreJob[]
   archiveRestoreEvents ArchiveRestoreEvent[]
+  manualPayments      ManualPayment[]     @relation("ManualPaymentUser")
+  manualPaymentsCreated ManualPayment[]   @relation("ManualPaymentCreatedBy")
+  manualPaymentsConfirmed ManualPayment[] @relation("ManualPaymentConfirmedBy")
+  manualPaymentsReconciled ManualPayment[] @relation("ManualPaymentReconciledBy")
 }
 
 model PasswordCredential {
@@ -459,6 +479,7 @@ model Organization {
   licenses      License[]
   supportTickets SupportTicket[]
   billingIssues BillingIssue[]
+  manualPayments ManualPayment[]
 }
 
 model PlanCatalog {
@@ -552,6 +573,7 @@ model License {
   subscription   Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
   organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   user           User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  manualPayments ManualPayment[]
 
   @@index([subscriptionId])
   @@index([organizationId])
@@ -559,6 +581,45 @@ model License {
   @@index([status])
   @@index([origin])
   @@index([endsAt])
+}
+
+model ManualPayment {
+  id                 String              @id @default(cuid())
+  userId             String?
+  organizationId     String?
+  licenseId          String?
+  method             ManualPaymentMethod
+  status             ManualPaymentStatus @default(PENDING)
+  amountCents        Int
+  currency           String              @default("BRL")
+  paidAt             DateTime
+  proofReference     String?
+  externalReference  String?
+  reason             String
+  internalNote       String?
+  createdByUserId    String
+  confirmedByUserId  String?
+  reconciledByUserId String?
+  confirmedAt        DateTime?
+  reconciledAt       DateTime?
+  rejectedAt         DateTime?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  user               User?               @relation("ManualPaymentUser", fields: [userId], references: [id], onDelete: SetNull)
+  organization       Organization?       @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  license            License?            @relation(fields: [licenseId], references: [id], onDelete: SetNull)
+  createdBy          User                @relation("ManualPaymentCreatedBy", fields: [createdByUserId], references: [id], onDelete: Restrict)
+  confirmedBy        User?               @relation("ManualPaymentConfirmedBy", fields: [confirmedByUserId], references: [id], onDelete: SetNull)
+  reconciledBy       User?               @relation("ManualPaymentReconciledBy", fields: [reconciledByUserId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([licenseId])
+  @@index([status])
+  @@index([method])
+  @@index([paidAt])
+  @@index([createdAt])
+  @@index([createdByUserId])
 }
 
 model StripeWebhookEvent {

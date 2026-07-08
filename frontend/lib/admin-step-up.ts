@@ -27,7 +27,11 @@ export const CRITICAL_ADMIN_ACTIONS = {
   contingency: "admin.contingency.execute",
   auditExport: "admin.audit.export",
   billingReconcile: "admin.billing.reconcile_executed",
-  billingWebhookReprocess: "admin.billing.webhook_reprocess_requested"
+  billingWebhookReprocess: "admin.billing.webhook_reprocess_requested",
+  manualPaymentConfirm: "admin.manual_payment.confirmed",
+  manualPaymentReject: "admin.manual_payment.rejected",
+  manualPaymentReconcile: "admin.manual_payment.reconciled",
+  manualPaymentReleaseLicense: "admin.manual_payment.license_released"
 } as const;
 
 function expiresAt(now = new Date()) {

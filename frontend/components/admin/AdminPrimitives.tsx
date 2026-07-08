@@ -98,9 +98,9 @@ export function EmptyState({ title, description, action }: { title: string; desc
 
 export function StatusBadge({ status }: { status: string }) {
   const normalized = status.toLowerCase();
-  const positive = ["active", "success", "configured", "ok", "trialing", "ready"].includes(normalized);
-  const warning = ["pending", "past_due", "unpaid", "incomplete", "partial"].includes(normalized);
-  const negative = ["blocked", "failed", "failure", "denied", "incident", "critical"].includes(normalized);
+  const positive = ["active", "success", "configured", "ok", "trialing", "ready", "confirmado", "conciliado"].includes(normalized);
+  const warning = ["pending", "past_due", "unpaid", "incomplete", "partial", "pendente"].includes(normalized);
+  const negative = ["blocked", "failed", "failure", "denied", "incident", "critical", "recusado"].includes(normalized);
   return (
     <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-black ${
       positive
