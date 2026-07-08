@@ -62,9 +62,9 @@ export function getAdminReleaseReadinessItems(): ReleaseReadinessItem[] {
     },
     {
       id: "staging_url",
-      label: "Staging navegável",
+      label: "Produção navegável",
       status: stagingConfigured ? "ready" : "partial",
-      detail: stagingConfigured ? "ADMIN_STAGING_BASE_URL configurado para smoke." : "Readiness não consegue provar rotas públicas/admin sem URL de staging.",
+      detail: stagingConfigured ? "URL administrativa configurada para smoke." : "Readiness não consegue provar rotas públicas/admin sem URL de produção.",
       action: stagingConfigured ? undefined : "Definir ADMIN_STAGING_BASE_URL no ambiente de validação."
     },
     {
@@ -72,7 +72,7 @@ export function getAdminReleaseReadinessItems(): ReleaseReadinessItem[] {
       label: "Fallback inline de export",
       status: inlineFallback && productionLike ? "blocked" : inlineFallback ? "partial" : "ready",
       detail: inlineFallback ? "ADMIN_EXPORT_ALLOW_INLINE_FALLBACK está ativo. Use só para compatibilidade local/dev." : "Fallback inline desativado.",
-      action: inlineFallback ? "Remover ADMIN_EXPORT_ALLOW_INLINE_FALLBACK antes de staging final/produção." : undefined
+      action: inlineFallback ? "Remover ADMIN_EXPORT_ALLOW_INLINE_FALLBACK antes de produção." : undefined
     }
   ];
 }
@@ -81,6 +81,6 @@ export function summarizeAdminReleaseReadiness(items = getAdminReleaseReadinessI
   const blocked = items.filter((item) => item.status === "blocked").length;
   const partial = items.filter((item) => item.status === "partial").length;
   if (blocked > 0) return { status: "blocked" as const, label: "Bloqueado", detail: `${blocked} bloqueio(s) real(is) para produção ampla.` };
-  if (partial > 0) return { status: "partial" as const, label: "Parcial", detail: `${partial} item(ns) dependem de infraestrutura externa ou validação de staging.` };
-  return { status: "ready" as const, label: "Pronto para staging final", detail: "Checklist técnico essencial configurado." };
+  if (partial > 0) return { status: "partial" as const, label: "Parcial", detail: `${partial} item(ns) dependem de infraestrutura externa ou validação de produção.` };
+  return { status: "ready" as const, label: "Pronto para produção", detail: "Checklist técnico essencial configurado." };
 }
