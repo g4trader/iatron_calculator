@@ -109,7 +109,7 @@ export default function LandingPage() {
             <div className="hero-clinical-panel rounded-xl border border-cyan-300/10 bg-[#06101e]/90 p-4">
               <div className="mb-5 flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-black tracking-[0.22em] text-cyan-200/70">NEURAL CLINICAL ENGINE</p>
+                  <p className="hero-engine-label text-xs font-black tracking-[0.22em] text-cyan-200/70">NEURAL CLINICAL ENGINE</p>
                   <p className="mt-1 text-xl font-black text-white">Folha PCR</p>
                 </div>
                 <span className="hero-live-dot rounded-md bg-cyan-300 px-2 py-1 text-xs font-black text-slate-950">Realtime</span>

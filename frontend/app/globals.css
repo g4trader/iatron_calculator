@@ -391,6 +391,10 @@ body[data-skin="light"] .preserve-dark-surface .hero-clinical-panel {
   color: #0f172a !important;
 }
 
+body[data-skin="light"] .preserve-dark-surface .hero-engine-label {
+  color: #075985 !important;
+}
+
 body[data-skin="light"] .preserve-dark-surface .hero-clinical-panel [class*="text-white"],
 body[data-skin="light"] .preserve-dark-surface .hero-clinical-panel [class*="text-slate-50"],
 body[data-skin="light"] .preserve-dark-surface .hero-clinical-panel [class*="text-cyan-50"] {
@@ -408,6 +412,45 @@ body[data-skin="light"] .preserve-dark-surface .hero-metric-card [class*="bg-sla
 
 body[data-skin="light"] .preserve-dark-surface .hero-metric-text {
   color: #0f172a !important;
+}
+
+body[data-skin="light"] .pcr-calculator-surface [class*="bg-amber-300/"],
+body[data-skin="light"] .pcr-calculator-surface [class*="bg-amber-400/"],
+body[data-skin="light"] .pcr-calculator-surface [class*="bg-rose-300/"],
+body[data-skin="light"] .pcr-calculator-surface [class*="bg-rose-400/"],
+body[data-skin="light"] .pcr-calculator-surface [class*="bg-red-300/"],
+body[data-skin="light"] .pcr-calculator-surface [class*="bg-red-400/"] {
+  background-color: rgba(8, 145, 178, 0.08) !important;
+}
+
+body[data-skin="light"] .pcr-calculator-surface [class*="bg-amber-500"],
+body[data-skin="light"] .pcr-calculator-surface [class*="bg-rose-500"],
+body[data-skin="light"] .pcr-calculator-surface [class*="bg-red-500"] {
+  background-color: #0e7490 !important;
+}
+
+body[data-skin="light"] .pcr-calculator-surface [class*="text-amber-100"],
+body[data-skin="light"] .pcr-calculator-surface [class*="text-amber-200"],
+body[data-skin="light"] .pcr-calculator-surface [class*="text-amber-300"],
+body[data-skin="light"] .pcr-calculator-surface [class*="text-rose-100"],
+body[data-skin="light"] .pcr-calculator-surface [class*="text-rose-200"],
+body[data-skin="light"] .pcr-calculator-surface [class*="text-rose-300"],
+body[data-skin="light"] .pcr-calculator-surface [class*="text-red-100"],
+body[data-skin="light"] .pcr-calculator-surface [class*="text-red-200"],
+body[data-skin="light"] .pcr-calculator-surface [class*="text-red-300"] {
+  color: #075985 !important;
+}
+
+body[data-skin="light"] .pcr-calculator-surface [class*="border-amber-300/"],
+body[data-skin="light"] .pcr-calculator-surface [class*="border-rose-300/"],
+body[data-skin="light"] .pcr-calculator-surface [class*="border-red-300/"] {
+  border-color: rgba(8, 145, 178, 0.24) !important;
+}
+
+body[data-skin="light"] .pcr-calculator-surface [class*="shadow-amber"],
+body[data-skin="light"] .pcr-calculator-surface [class*="shadow-red"],
+body[data-skin="light"] .pcr-calculator-surface [class*="shadow-rose"] {
+  box-shadow: 0 14px 40px rgba(14, 116, 144, 0.12) !important;
 }
 
 .neural-surface {
