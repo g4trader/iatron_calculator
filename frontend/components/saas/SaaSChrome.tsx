@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { BrainCircuit } from "lucide-react";
 import { LogoutButton } from "@/components/auth/LogoutButton";
+import { SkinSelector } from "@/components/skin/SkinSelector";
 import { getCurrentUser } from "@/lib/authz";
+import { getServerSkin } from "@/lib/skin";
 export { NeuralCard, PremiumButton, SaaSPage, Section } from "@/components/saas/SaaSPrimitives";
 
 export async function SaaSNav() {
   const user = await getCurrentUser();
+  const skin = await getServerSkin();
 
   return (
     <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
@@ -21,6 +24,9 @@ export async function SaaSNav() {
         <a href="/#planos" className="transition hover:text-white">Planos</a>
       </div>
       <div className="flex items-center gap-2">
+        <div className="hidden w-32 sm:block">
+          <SkinSelector currentSkin={skin} compact />
+        </div>
         {user ? (
           <>
             <Link href="/dashboard" className="hidden rounded-md px-3 py-2 text-sm font-semibold text-slate-300 transition hover:text-white sm:inline-flex">

@@ -25,6 +25,58 @@ body {
   color: #e5edf7;
 }
 
+html[data-skin="light"],
+body[data-skin="light"] {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(34, 211, 238, 0.13), transparent 30rem),
+    radial-gradient(circle at 100% 18%, rgba(16, 185, 129, 0.08), transparent 26rem),
+    #f7fbff;
+  color: #0f172a;
+  color-scheme: light;
+}
+
+body[data-skin="light"] [class*="bg-[#050816]"],
+body[data-skin="light"] [class*="bg-[#030712]"],
+body[data-skin="light"] [class*="bg-[#06101e]"],
+body[data-skin="light"] [class*="bg-slate-950"],
+body[data-skin="light"] [class*="bg-slate-900"] {
+  background-color: rgba(255, 255, 255, 0.86) !important;
+}
+
+body[data-skin="light"] [class*="text-white"],
+body[data-skin="light"] [class*="text-slate-100"],
+body[data-skin="light"] [class*="text-slate-200"] {
+  color: #0f172a !important;
+}
+
+body[data-skin="light"] [class*="text-slate-300"],
+body[data-skin="light"] [class*="text-slate-400"] {
+  color: #334155 !important;
+}
+
+body[data-skin="light"] [class*="text-slate-500"],
+body[data-skin="light"] [class*="text-slate-600"] {
+  color: #64748b !important;
+}
+
+body[data-skin="light"] [class*="border-cyan-300/10"],
+body[data-skin="light"] [class*="border-cyan-300/12"],
+body[data-skin="light"] [class*="border-cyan-300/15"],
+body[data-skin="light"] [class*="border-cyan-300/20"] {
+  border-color: rgba(8, 145, 178, 0.18) !important;
+}
+
+body[data-skin="light"] [class*="shadow-black"] {
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08) !important;
+}
+
+body[data-skin="light"] input,
+body[data-skin="light"] select,
+body[data-skin="light"] textarea {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  color: #0f172a !important;
+}
+
 body > * {
   min-width: 0;
 }

@@ -38,6 +38,7 @@
     "test:organization": "node --test --import tsx tests/organization-domain.test.ts",
     "test:commercial": "node --test --import tsx tests/commercial-access.test.ts",
     "test:pricing": "node --test --import tsx tests/pricing-domain.test.ts",
+    "test:skin": "node --test --import tsx tests/skin-preferences.test.ts",
     "test:onboarding": "node --test --import tsx tests/checkout-onboarding.test.ts",
     "test:billing": "node --test --import tsx tests/billing-domain.test.ts",
     "test:e2e": "playwright test",

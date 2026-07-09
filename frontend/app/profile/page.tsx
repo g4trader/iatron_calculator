@@ -2,10 +2,12 @@ import { UserRound } from "lucide-react";
 import { NeuralCard, SaaSNav, SaaSPage } from "@/components/saas/SaaSChrome";
 import { getSubscriptionStatus, requireAuth } from "@/lib/authz";
 import { ProfileForm } from "@/components/profile/ProfileForm";
+import { getServerSkin, skinFromPrisma } from "@/lib/skin";
 
 export default async function ProfilePage() {
   const user = await requireAuth();
   const subscription = await getSubscriptionStatus(user.id);
+  const skinPreference = skinFromPrisma(user.skinPreference) ?? await getServerSkin();
 
   return (
     <SaaSPage>
@@ -15,7 +17,7 @@ export default async function ProfilePage() {
           <UserRound className="mb-6 h-6 w-6 text-cyan-200" aria-hidden="true" />
           <h1 className="text-3xl font-black text-white">Perfil clínico</h1>
           <div className="mt-8 grid gap-4">
-            <ProfileForm name={user.name ?? ""} clinicalName={user.clinicalName ?? ""} />
+            <ProfileForm name={user.name ?? ""} clinicalName={user.clinicalName ?? ""} skinPreference={skinPreference} />
             <ProfileField label="Email" value={user.email ?? ""} readOnly />
             <ProfileField label="Plano" value={`${subscription.plan} · ${subscription.status}`} readOnly />
             <ProfileField label="Role" value={user.role} readOnly />

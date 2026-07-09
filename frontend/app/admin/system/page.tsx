@@ -3,7 +3,9 @@ import { AdminPageHeader, DataTable, KpiCard, StatusBadge } from "@/components/a
 import { getStripeOperationalChecklist } from "@/lib/checkout-onboarding";
 import { requireAdminPermission } from "@/lib/admin-permissions";
 import { getAdminReleaseReadinessItems, summarizeAdminReleaseReadiness } from "@/lib/admin-release-readiness";
+import { getGlobalDefaultSkin } from "@/lib/skin";
 import { prisma } from "@/lib/prisma";
+import { updateDefaultSkinAction } from "./actions";
 
 export const runtime = "nodejs";
 
@@ -11,8 +13,14 @@ function present(name: string) {
   return Boolean(process.env[name] && process.env[name]?.trim());
 }
 
-export default async function SystemPage() {
+export default async function SystemPage({
+  searchParams
+}: {
+  searchParams?: Promise<{ message?: string; error?: string }>;
+}) {
   await requireAdminPermission("admin.operations.view");
+  const params = await searchParams;
+  const defaultSkin = await getGlobalDefaultSkin();
 
   let database = "disconnected";
   try {
@@ -68,11 +76,39 @@ export default async function SystemPage() {
         description="Valores booleanos apenas. Nenhum secret é exibido."
       />
 
+      {params?.message ? <div className="rounded-xl border border-emerald-300/20 bg-emerald-300/10 p-4 text-sm font-bold text-emerald-100">{params.message}</div> : null}
+      {params?.error ? <div className="rounded-xl border border-rose-300/20 bg-rose-300/10 p-4 text-sm font-bold text-rose-100">{params.error}</div> : null}
+
       <div className="grid gap-4 md:grid-cols-3">
         <KpiCard label="Banco" value={database} />
         <KpiCard label="Ambiente" value={process.env.IATRON_ENV ?? process.env.NODE_ENV} />
         <KpiCard label="Stripe" value={stripeChecks.every((item) => item.ok) ? "configured" : "pending"} />
       </div>
+
+      <section className="grid gap-4 rounded-xl border border-cyan-300/10 bg-slate-950/75 p-5">
+        <div>
+          <h2 className="text-xl font-black text-white">Skin padrão do SaaS</h2>
+          <p className="mt-2 text-sm leading-6 text-slate-400">
+            Define a skin aplicada para visitantes e usuários sem preferência individual. A skin escura segue como padrão de identidade.
+          </p>
+        </div>
+        <form action={updateDefaultSkinAction} className="grid gap-3 md:grid-cols-[1fr_auto] md:items-end">
+          <label className="grid gap-1 text-xs font-bold text-slate-500">
+            Skin global
+            <select
+              name="skin"
+              defaultValue={defaultSkin}
+              className="h-10 rounded-md border border-cyan-300/10 bg-slate-950 px-3 text-sm font-semibold text-slate-200 outline-none transition focus:border-cyan-300/50"
+            >
+              <option value="dark">Escura</option>
+              <option value="light">Branca</option>
+            </select>
+          </label>
+          <button type="submit" className="h-10 rounded-md bg-cyan-300 px-4 text-sm font-black text-slate-950 transition hover:bg-cyan-200">
+            Salvar padrão
+          </button>
+        </form>
+      </section>
 
       <section className="grid gap-4 rounded-xl border border-cyan-300/10 bg-slate-950/75 p-5">
         <div>
