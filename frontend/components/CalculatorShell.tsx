@@ -116,10 +116,6 @@ export function CalculatorShell({ active = "pcr", children, headerActions }: Cal
               <ProductNavLinks active={active} onNavigate={handleNavigate} />
             </nav>
 
-            <div className="mt-6 rounded-md border border-red-300/20 bg-red-950/30 p-3 text-xs font-medium leading-5 text-red-100">
-              Ferramenta de apoio. Conferir protocolo institucional e avaliação clínica antes da administração.
-            </div>
-
             <div className="mt-auto pt-6">
               <ProductUserPanel />
             </div>
