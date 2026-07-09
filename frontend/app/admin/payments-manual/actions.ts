@@ -81,7 +81,9 @@ export async function updateManualPaymentStatusAction(formData: FormData) {
       admin,
       paymentId,
       status,
-      reason: getString(formData, "reason")
+      reason: getString(formData, "reason"),
+      reconciliationReference: getString(formData, "reconciliationReference"),
+      reconciliationNote: getString(formData, "reconciliationNote")
     });
   } catch (error) {
     handlePaymentError(error, paymentId);

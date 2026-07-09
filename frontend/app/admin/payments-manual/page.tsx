@@ -99,7 +99,7 @@ export default async function AdminManualPaymentsPage({
         <div>
           <h2 className="text-xl font-black text-white">Registrar pagamento recebido</h2>
           <p className="mt-2 text-sm leading-6 text-slate-400">
-            Use para PIX, transferência, boleto, link externo ou cortesia. O registro nasce pendente; confirmação, conciliação e licença são ações separadas e auditadas.
+            Use para PIX, transferência, boleto, link externo ou cortesia. O registro nasce pendente; anexe o arquivo do comprovante no detalhe e mantenha confirmação, conciliação e licença como ações separadas e auditadas.
           </p>
         </div>
         <form action={createManualPaymentAction} className="grid gap-3 md:grid-cols-3 xl:grid-cols-6">
@@ -109,7 +109,7 @@ export default async function AdminManualPaymentsPage({
           {selectInput("method", "Método", Object.entries(MANUAL_PAYMENT_METHOD_LABELS).map(([value, label]) => ({ value, label })), ManualPaymentMethod.PIX, false)}
           {textInput("amount", "Valor recebido", "249,00", true)}
           {textInput("paidAt", "Data/hora", "", true, "datetime-local", nowDatetimeLocal())}
-          {textInput("proofReference", "Comprovante/referência", "ID PIX, URL ou descrição", false)}
+          {textInput("proofReference", "Comprovante/referência", "ID PIX, URL, descrição ou 'anexo no detalhe'", false)}
           {textInput("externalReference", "Referência externa", "txid, boleto, link...", false)}
           {textInput("reason", "Motivo operacional", "Pagamento recebido pelo suporte", true)}
           <label className="grid gap-1 text-xs font-bold text-slate-500 md:col-span-3">

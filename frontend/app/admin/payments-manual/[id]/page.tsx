@@ -7,6 +7,7 @@ import { LICENSE_DURATION_PRESETS } from "@/lib/admin-licenses";
 import { formatCentsBRL, MANUAL_PAYMENT_METHOD_LABELS, MANUAL_PAYMENT_STATUS_LABELS } from "@/lib/admin-manual-payments";
 import { prisma } from "@/lib/prisma";
 import { releaseManualPaymentLicenseAction, updateManualPaymentStatusAction } from "../actions";
+import { ManualPaymentAttachmentUploader } from "./ManualPaymentAttachmentUploader";
 
 export const runtime = "nodejs";
 
@@ -66,6 +67,28 @@ function StatusActionForm({ paymentId, status, label, tone }: { paymentId: strin
   );
 }
 
+function ReconciliationForm({ paymentId }: { paymentId: string }) {
+  return (
+    <form action={updateManualPaymentStatusAction} className="grid gap-3 rounded-lg border border-cyan-300/20 bg-cyan-300/5 p-3 md:grid-cols-2 xl:grid-cols-5">
+      <input type="hidden" name="paymentId" value={paymentId} />
+      <input type="hidden" name="status" value={ManualPaymentStatus.RECONCILED} />
+      {reasonInput()}
+      {stepUpInput()}
+      <input
+        name="reconciliationReference"
+        placeholder="Referência interna"
+        className="h-9 rounded-md border border-cyan-300/10 bg-slate-950 px-3 text-xs font-semibold text-slate-200 outline-none transition placeholder:text-slate-700 focus:border-cyan-300/50"
+      />
+      <input
+        name="reconciliationNote"
+        placeholder="Observação de conciliação"
+        className="h-9 rounded-md border border-cyan-300/10 bg-slate-950 px-3 text-xs font-semibold text-slate-200 outline-none transition placeholder:text-slate-700 focus:border-cyan-300/50"
+      />
+      <button type="submit" className="h-9 rounded-md border border-cyan-300/20 px-3 text-xs font-black text-cyan-100 transition hover:bg-cyan-300/10">Marcar conciliado</button>
+    </form>
+  );
+}
+
 export default async function AdminManualPaymentDetailPage({
   params,
   searchParams
@@ -85,7 +108,11 @@ export default async function AdminManualPaymentDetailPage({
       license: { select: { id: true, licenseKey: true, status: true, origin: true, endsAt: true } },
       createdBy: { select: { email: true, name: true } },
       confirmedBy: { select: { email: true, name: true } },
-      reconciledBy: { select: { email: true, name: true } }
+      reconciledBy: { select: { email: true, name: true } },
+      attachments: {
+        orderBy: { createdAt: "desc" },
+        select: { id: true, fileName: true, contentType: true, byteSize: true, status: true, uploadedAt: true }
+      }
     }
   });
   if (!payment) notFound();
@@ -102,7 +129,7 @@ export default async function AdminManualPaymentDetailPage({
     include: { actor: { select: { email: true, name: true } } }
   });
 
-  const canReleaseLicense = (payment.status === ManualPaymentStatus.CONFIRMED || payment.status === ManualPaymentStatus.RECONCILED) && !payment.licenseId && Boolean(payment.userId);
+  const canReleaseLicense = payment.status === ManualPaymentStatus.CONFIRMED && !payment.licenseId && Boolean(payment.userId);
 
   return (
     <div className="grid gap-6">
@@ -139,7 +166,7 @@ export default async function AdminManualPaymentDetailPage({
           <div>
             <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-600">Comprovante</p>
             <p className="mt-2 font-bold text-slate-200">{payment.proofReference ?? "Sem referência textual"}</p>
-            <p className="mt-1 text-xs text-slate-500">{payment.externalReference ?? "Sem referência externa"}</p>
+            <p className="mt-1 text-xs text-slate-500">{payment.externalReference ?? "Sem referência externa"} · {payment.attachments.length} anexo(s)</p>
           </div>
           <div>
             <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-600">Motivo</p>
@@ -157,7 +184,26 @@ export default async function AdminManualPaymentDetailPage({
             <p className="text-slate-500">Confirmado: {formatDate(payment.confirmedAt)}</p>
             <p className="text-slate-500">Conciliado: {formatDate(payment.reconciledAt)}</p>
           </div>
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-600">Conciliação</p>
+            <p className="mt-2 text-slate-300">{payment.reconciliationReference ?? "Sem referência interna"}</p>
+            <p className="text-slate-500">{payment.reconciliationNote ?? "Sem observação de conciliação"}</p>
+          </div>
         </div>
+      </section>
+
+      <section className="grid gap-4 rounded-xl border border-cyan-300/10 bg-slate-950/75 p-5">
+        <div>
+          <h2 className="text-xl font-black text-white">Comprovante privado</h2>
+          <p className="mt-2 text-sm leading-6 text-slate-400">Anexe evidências sem expor arquivo publicamente. O acesso de abertura gera URL temporária e evento de auditoria.</p>
+        </div>
+        <ManualPaymentAttachmentUploader
+          paymentId={payment.id}
+          attachments={payment.attachments.map((attachment) => ({
+            ...attachment,
+            uploadedAt: attachment.uploadedAt?.toISOString() ?? null
+          }))}
+        />
       </section>
 
       <section className="grid gap-4 rounded-xl border border-cyan-300/10 bg-slate-950/75 p-5">
@@ -183,7 +229,7 @@ export default async function AdminManualPaymentDetailPage({
             </form>
           ) : null}
           {payment.status === ManualPaymentStatus.CONFIRMED && payment.licenseId ? (
-            <StatusActionForm paymentId={payment.id} status={ManualPaymentStatus.RECONCILED} label="Marcar conciliado" tone="cyan" />
+            <ReconciliationForm paymentId={payment.id} />
           ) : null}
           {!canReleaseLicense && !payment.licenseId && payment.status !== ManualPaymentStatus.PENDING ? (
             <div className="rounded-lg border border-amber-300/20 bg-amber-300/10 p-4 text-sm font-bold text-amber-100">

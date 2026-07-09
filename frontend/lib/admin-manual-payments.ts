@@ -144,15 +144,32 @@ export async function updateManualPaymentStatus(input: {
   paymentId: string;
   status: Extract<ManualPaymentStatus, "CONFIRMED" | "REJECTED" | "RECONCILED">;
   reason?: string | null;
+  reconciliationReference?: string | null;
+  reconciliationNote?: string | null;
 }) {
   const reason = requireLicenseReason(input.reason);
   const current = await prisma.manualPayment.findUnique({ where: { id: input.paymentId } });
   if (!current) throw new AdminManualPaymentError("Pagamento manual não encontrado.", "PAYMENT_NOT_FOUND");
-  if (current.status === ManualPaymentStatus.REJECTED && input.status !== ManualPaymentStatus.REJECTED) {
+
+  if (current.status === ManualPaymentStatus.RECONCILED) {
+    throw new AdminManualPaymentError("Pagamento já conciliado não pode ser alterado.", "ALREADY_RECONCILED");
+  }
+  if (current.status === ManualPaymentStatus.REJECTED) {
     throw new AdminManualPaymentError("Pagamento recusado não pode ser reativado. Registre um novo pagamento.", "REJECTED_LOCKED");
   }
-  if (input.status === ManualPaymentStatus.RECONCILED && current.status !== ManualPaymentStatus.CONFIRMED && current.status !== ManualPaymentStatus.RECONCILED) {
-    throw new AdminManualPaymentError("Somente pagamentos confirmados podem ser conciliados.", "CONFIRMATION_REQUIRED");
+  if (input.status === ManualPaymentStatus.CONFIRMED && current.status !== ManualPaymentStatus.PENDING) {
+    throw new AdminManualPaymentError("Somente pagamentos pendentes podem ser confirmados.", "INVALID_CONFIRM_TRANSITION");
+  }
+  if (input.status === ManualPaymentStatus.REJECTED && current.status !== ManualPaymentStatus.PENDING) {
+    throw new AdminManualPaymentError("Somente pagamentos pendentes podem ser recusados.", "INVALID_REJECT_TRANSITION");
+  }
+  if (input.status === ManualPaymentStatus.RECONCILED) {
+    if (current.status !== ManualPaymentStatus.CONFIRMED) {
+      throw new AdminManualPaymentError("Somente pagamentos confirmados podem ser conciliados.", "CONFIRMATION_REQUIRED");
+    }
+    if (!current.licenseId) {
+      throw new AdminManualPaymentError("Conciliação exige licença vinculada ao pagamento.", "LICENSE_REQUIRED_FOR_RECONCILIATION");
+    }
   }
 
   const now = new Date();
@@ -164,7 +181,9 @@ export async function updateManualPaymentStatus(input: {
       confirmedAt: input.status === ManualPaymentStatus.CONFIRMED ? now : current.confirmedAt,
       reconciledByUserId: input.status === ManualPaymentStatus.RECONCILED ? input.admin.id : current.reconciledByUserId,
       reconciledAt: input.status === ManualPaymentStatus.RECONCILED ? now : current.reconciledAt,
-      rejectedAt: input.status === ManualPaymentStatus.REJECTED ? now : current.rejectedAt
+      rejectedAt: input.status === ManualPaymentStatus.REJECTED ? now : current.rejectedAt,
+      reconciliationReference: input.status === ManualPaymentStatus.RECONCILED ? input.reconciliationReference?.trim() || current.reconciliationReference : current.reconciliationReference,
+      reconciliationNote: input.status === ManualPaymentStatus.RECONCILED ? input.reconciliationNote?.trim() || current.reconciliationNote : current.reconciliationNote
     }
   });
 
@@ -176,7 +195,13 @@ export async function updateManualPaymentStatus(input: {
     organizationId: payment.organizationId,
     targetUserId: payment.userId,
     outcome: "success",
-    metadata: { reason, previousStatus: current.status, status: payment.status }
+    metadata: {
+      reason,
+      previousStatus: current.status,
+      status: payment.status,
+      reconciliationReference: payment.reconciliationReference,
+      reconciliationNote: payment.reconciliationNote
+    }
   });
 
   return payment;
@@ -195,7 +220,7 @@ export async function releaseLicenseFromManualPayment(input: {
     include: { user: true, organization: true, license: true }
   });
   if (!payment) throw new AdminManualPaymentError("Pagamento manual não encontrado.", "PAYMENT_NOT_FOUND");
-  if (payment.status !== ManualPaymentStatus.CONFIRMED && payment.status !== ManualPaymentStatus.RECONCILED) {
+  if (payment.status !== ManualPaymentStatus.CONFIRMED) {
     throw new AdminManualPaymentError("Confirme o pagamento antes de liberar a licença.", "PAYMENT_NOT_CONFIRMED");
   }
   if (payment.licenseId) throw new AdminManualPaymentError("Este pagamento já está vinculado a uma licença.", "LICENSE_ALREADY_LINKED");
@@ -217,7 +242,9 @@ export async function releaseLicenseFromManualPayment(input: {
       licenseId: license.id,
       status: ManualPaymentStatus.RECONCILED,
       reconciledByUserId: input.admin.id,
-      reconciledAt: new Date()
+      reconciledAt: new Date(),
+      reconciliationReference: `license:${license.id}`,
+      reconciliationNote: input.note?.trim() || `Licença liberada a partir do pagamento manual ${payment.id}`
     }
   });
 
@@ -229,7 +256,14 @@ export async function releaseLicenseFromManualPayment(input: {
     organizationId: payment.organizationId,
     targetUserId: payment.userId,
     outcome: "success",
-    metadata: { reason, licenseId: license.id, previousStatus: payment.status, status: updated.status }
+    metadata: {
+      reason,
+      licenseId: license.id,
+      previousStatus: payment.status,
+      status: updated.status,
+      reconciliationReference: updated.reconciliationReference,
+      reconciliationNote: updated.reconciliationNote
+    }
   });
 
   return { payment: updated, license };
