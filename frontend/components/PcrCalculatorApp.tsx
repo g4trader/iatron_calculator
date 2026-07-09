@@ -155,7 +155,7 @@ function PcrPrintReport({
 }
 
 export function PcrCalculatorApp() {
-  const [values, setValues] = useState<CalculationRequest>({ pesoKg: 15, idadeAnos: 5, idadeMeses: 2 });
+  const [values, setValues] = useState<CalculationRequest>({ pesoKg: Number.NaN, idadeAnos: Number.NaN, idadeMeses: Number.NaN });
   const [patientName, setPatientName] = useState("");
   const [calculationDate, setCalculationDate] = useState("");
   const [result, setResult] = useState<PcrCalculationResponse | null>(null);
@@ -165,6 +165,7 @@ export function PcrCalculatorApp() {
   const requestIdRef = useRef(0);
   const errors = useMemo(() => validate(values), [values]);
   const canCalculate = Object.keys(errors).length === 0;
+  const calculationStatus = isCalculating || (canCalculate && !result) ? "calculating" : result && canCalculate ? "calculated" : "fill";
 
   useEffect(() => {
     setCalculationDate(new Date().toISOString().slice(0, 10));
@@ -276,7 +277,7 @@ export function PcrCalculatorApp() {
               </label>
             </div>
 
-            <InputForm values={values} errors={errors} onChange={setValues} onCalculate={runCalculation} canCalculate={canCalculate} embedded />
+            <InputForm values={values} errors={errors} onChange={setValues} calculationStatus={calculationStatus} embedded />
           </div>
         </section>
 
