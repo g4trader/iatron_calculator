@@ -15,10 +15,10 @@ export function AdminShell({ user, children, breadcrumb = "Admin" }: { user: Adm
 
   return (
     <div className="min-h-screen bg-[#050816] text-slate-100">
-      <div className="min-h-screen lg:flex">
+      <div className="min-h-screen">
         <AdminSidebar permissions={user.adminPermissions} userEmail={user.email ?? null} userName={user.name ?? null} />
 
-        <main className="min-w-0 flex-1">
+        <main className="min-w-0 transition-[margin] duration-200 lg:ml-[var(--admin-sidebar-width,76px)]">
           <header className="sticky top-0 z-20 border-b border-cyan-300/10 bg-slate-950/90 backdrop-blur">
             <div className="flex min-h-16 flex-col gap-3 px-4 py-3 md:flex-row md:items-center md:justify-between lg:px-6">
               <div>

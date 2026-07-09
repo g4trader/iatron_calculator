@@ -33,8 +33,15 @@ export function AdminSidebar({ permissions, userEmail, userName }: { permissions
     setLoadingLabel(null);
   }, [pathname]);
 
+  useEffect(() => {
+    document.documentElement.style.setProperty("--admin-sidebar-width", expanded ? "292px" : "76px");
+    return () => {
+      document.documentElement.style.removeProperty("--admin-sidebar-width");
+    };
+  }, [expanded]);
+
   return (
-    <aside className={`no-print border-b border-cyan-300/10 bg-slate-950/90 transition-[width] duration-200 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:border-b-0 lg:border-r ${expanded ? "lg:w-[292px]" : "lg:w-[76px]"}`}>
+    <aside className={`no-print border-b border-cyan-300/10 bg-slate-950/90 transition-[width] duration-200 lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:flex lg:h-dvh lg:flex-col lg:border-b-0 lg:border-r ${expanded ? "lg:w-[292px]" : "lg:w-[76px]"}`}>
       {loadingLabel ? (
         <div className="fixed inset-0 z-[100] grid place-items-center bg-slate-950/65 px-4 backdrop-blur-sm">
           <div className="w-full max-w-sm rounded-2xl border border-cyan-300/20 bg-slate-950 p-5 shadow-2xl shadow-cyan-950/40">
@@ -76,7 +83,7 @@ export function AdminSidebar({ permissions, userEmail, userName }: { permissions
         </button>
       </div>
 
-      <nav className="grid gap-2 px-2 pb-4 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pb-0">
+      <nav className="grid gap-2 px-2 pb-4 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pb-3">
         {visibleGroups.map((group) => {
           const isOpen = openGroups[group.id] ?? true;
           return (
@@ -133,7 +140,13 @@ export function AdminSidebar({ permissions, userEmail, userName }: { permissions
 
       <div className="hidden border-t border-cyan-300/10 p-2 lg:block">
         <div className={`rounded-xl border border-cyan-300/10 bg-slate-900/55 p-3 ${expanded ? "" : "flex justify-center"}`}>
-          <div className={`flex min-w-0 items-center ${expanded ? "gap-3" : "justify-center"}`}>
+          <Link
+            href="/profile"
+            prefetch
+            onClick={() => setExpanded(true)}
+            title="Acessar perfil"
+            className={`flex min-w-0 items-center rounded-lg transition hover:bg-cyan-300/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/40 ${expanded ? "gap-3" : "justify-center"}`}
+          >
             <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-cyan-300/15 bg-slate-950 text-cyan-100">
               <UserCircle className="h-5 w-5" aria-hidden="true" />
             </span>
@@ -143,7 +156,7 @@ export function AdminSidebar({ permissions, userEmail, userName }: { permissions
                 <p className="mt-0.5 text-[11px] font-semibold text-slate-500">Administrador</p>
               </div>
             ) : null}
-          </div>
+          </Link>
           {expanded ? (
             <div className="mt-3">
               <LogoutButton />
