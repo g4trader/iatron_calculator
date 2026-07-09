@@ -9,6 +9,24 @@ const layoutSource = readFileSync(new URL("../app/layout.tsx", import.meta.url),
 const profileRouteSource = readFileSync(new URL("../app/api/profile/route.ts", import.meta.url), "utf8");
 const systemPageSource = readFileSync(new URL("../app/admin/system/page.tsx", import.meta.url), "utf8");
 const systemActionsSource = readFileSync(new URL("../app/admin/system/actions.ts", import.meta.url), "utf8");
+const globalsSource = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
+
+function contrastRatio(foreground: string, background: string) {
+  function rgb(hex: string) {
+    const value = hex.replace("#", "");
+    return [0, 2, 4].map((index) => Number.parseInt(value.slice(index, index + 2), 16) / 255);
+  }
+  function linear(value: number) {
+    return value <= 0.03928 ? value / 12.92 : Math.pow((value + 0.055) / 1.055, 2.4);
+  }
+  function luminance(hex: string) {
+    const [r, g, b] = rgb(hex).map(linear);
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  }
+  const a = luminance(foreground);
+  const b = luminance(background);
+  return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+}
 
 describe("skin preferences", () => {
   it("normalizes supported skins", () => {
@@ -39,5 +57,28 @@ describe("skin preferences", () => {
     assert.match(systemPageSource, /Skin padrão do SaaS/);
     assert.match(systemActionsSource, /admin\.system\.default_skin_updated/);
     assert.match(systemActionsSource, /recordAdminAuditEvent/);
+  });
+
+  it("defines complete light skin tokens with accessible primary contrast", () => {
+    for (const token of [
+      "--iatron-bg",
+      "--iatron-surface",
+      "--iatron-border",
+      "--iatron-text-primary",
+      "--iatron-text-secondary",
+      "--iatron-text-muted",
+      "--iatron-primary",
+      "--iatron-success-bg",
+      "--iatron-warning-bg",
+      "--iatron-danger-bg",
+      "--iatron-info-bg",
+      "--iatron-focus"
+    ]) {
+      assert.match(globalsSource, new RegExp(token));
+    }
+    assert.match(globalsSource, /body\[data-skin="light"\] input/);
+    assert.match(globalsSource, /body\[data-skin="light"\] thead/);
+    assert.match(globalsSource, /body\[data-skin="light"\] :focus-visible/);
+    assert.ok(contrastRatio("#ffffff", "#0e7490") >= 4.5);
   });
 });

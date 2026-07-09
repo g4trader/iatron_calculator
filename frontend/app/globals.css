@@ -2,6 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --iatron-bg: #030712;
+  --iatron-bg-elevated: #050816;
+  --iatron-surface: rgba(2, 6, 23, 0.75);
+  --iatron-surface-strong: rgba(2, 6, 23, 0.9);
+  --iatron-surface-muted: rgba(15, 23, 42, 0.7);
+  --iatron-border: rgba(103, 232, 249, 0.14);
+  --iatron-border-strong: rgba(103, 232, 249, 0.34);
+  --iatron-text-primary: #f8fafc;
+  --iatron-text-secondary: #cbd5e1;
+  --iatron-text-muted: #94a3b8;
+  --iatron-text-subtle: #64748b;
+  --iatron-primary: #67e8f9;
+  --iatron-primary-strong: #22d3ee;
+  --iatron-primary-text: #020617;
+  --iatron-focus: #67e8f9;
+  --iatron-hover: rgba(103, 232, 249, 0.1);
+  --iatron-success-bg: rgba(52, 211, 153, 0.1);
+  --iatron-success-text: #a7f3d0;
+  --iatron-success-border: rgba(52, 211, 153, 0.28);
+  --iatron-warning-bg: rgba(251, 191, 36, 0.12);
+  --iatron-warning-text: #fde68a;
+  --iatron-warning-border: rgba(251, 191, 36, 0.32);
+  --iatron-danger-bg: rgba(251, 113, 133, 0.1);
+  --iatron-danger-text: #fecdd3;
+  --iatron-danger-border: rgba(251, 113, 133, 0.32);
+  --iatron-info-bg: rgba(103, 232, 249, 0.1);
+  --iatron-info-text: #cffafe;
+  --iatron-info-border: rgba(103, 232, 249, 0.28);
+}
+
+html[data-skin="light"],
+body[data-skin="light"] {
+  --iatron-bg: #f6f9fc;
+  --iatron-bg-elevated: #ffffff;
+  --iatron-surface: rgba(255, 255, 255, 0.94);
+  --iatron-surface-strong: #ffffff;
+  --iatron-surface-muted: #eef5fb;
+  --iatron-border: rgba(15, 82, 113, 0.18);
+  --iatron-border-strong: rgba(8, 145, 178, 0.42);
+  --iatron-text-primary: #0f172a;
+  --iatron-text-secondary: #334155;
+  --iatron-text-muted: #475569;
+  --iatron-text-subtle: #64748b;
+  --iatron-primary: #0e7490;
+  --iatron-primary-strong: #155e75;
+  --iatron-primary-text: #ffffff;
+  --iatron-focus: #0891b2;
+  --iatron-hover: rgba(8, 145, 178, 0.08);
+  --iatron-success-bg: #dcfce7;
+  --iatron-success-text: #166534;
+  --iatron-success-border: #86efac;
+  --iatron-warning-bg: #fef3c7;
+  --iatron-warning-text: #92400e;
+  --iatron-warning-border: #facc15;
+  --iatron-danger-bg: #fee2e2;
+  --iatron-danger-text: #991b1b;
+  --iatron-danger-border: #fca5a5;
+  --iatron-info-bg: #e0f2fe;
+  --iatron-info-text: #075985;
+  --iatron-info-border: #7dd3fc;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -35,48 +98,6 @@ body[data-skin="light"] {
   color-scheme: light;
 }
 
-body[data-skin="light"] [class*="bg-[#050816]"],
-body[data-skin="light"] [class*="bg-[#030712]"],
-body[data-skin="light"] [class*="bg-[#06101e]"],
-body[data-skin="light"] [class*="bg-slate-950"],
-body[data-skin="light"] [class*="bg-slate-900"] {
-  background-color: rgba(255, 255, 255, 0.86) !important;
-}
-
-body[data-skin="light"] [class*="text-white"],
-body[data-skin="light"] [class*="text-slate-100"],
-body[data-skin="light"] [class*="text-slate-200"] {
-  color: #0f172a !important;
-}
-
-body[data-skin="light"] [class*="text-slate-300"],
-body[data-skin="light"] [class*="text-slate-400"] {
-  color: #334155 !important;
-}
-
-body[data-skin="light"] [class*="text-slate-500"],
-body[data-skin="light"] [class*="text-slate-600"] {
-  color: #64748b !important;
-}
-
-body[data-skin="light"] [class*="border-cyan-300/10"],
-body[data-skin="light"] [class*="border-cyan-300/12"],
-body[data-skin="light"] [class*="border-cyan-300/15"],
-body[data-skin="light"] [class*="border-cyan-300/20"] {
-  border-color: rgba(8, 145, 178, 0.18) !important;
-}
-
-body[data-skin="light"] [class*="shadow-black"] {
-  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08) !important;
-}
-
-body[data-skin="light"] input,
-body[data-skin="light"] select,
-body[data-skin="light"] textarea {
-  background-color: rgba(255, 255, 255, 0.9) !important;
-  color: #0f172a !important;
-}
-
 body > * {
   min-width: 0;
 }
@@ -91,6 +112,213 @@ video {
 ::selection {
   background: #9fe8df;
   color: #0f172a;
+}
+
+body[data-skin="light"] :focus-visible {
+  outline: 3px solid var(--iatron-focus);
+  outline-offset: 2px;
+}
+
+body[data-skin="light"] a {
+  text-decoration-color: rgba(8, 145, 178, 0.4);
+}
+
+body[data-skin="light"] [class*="bg-[#050816]"],
+body[data-skin="light"] [class*="bg-[#030712]"],
+body[data-skin="light"] [class*="bg-[#06101e]"],
+body[data-skin="light"] [class*="bg-[#07111f]"],
+body[data-skin="light"] [class*="bg-slate-950"] {
+  background-color: var(--iatron-surface-strong) !important;
+}
+
+body[data-skin="light"] [class*="bg-slate-900"],
+body[data-skin="light"] [class*="bg-slate-800"],
+body[data-skin="light"] [class*="bg-white/["] {
+  background-color: var(--iatron-surface-muted) !important;
+}
+
+body[data-skin="light"] [class~="bg-cyan-300"],
+body[data-skin="light"] [class~="bg-cyan-400"] {
+  background-color: var(--iatron-primary) !important;
+  color: var(--iatron-primary-text) !important;
+}
+
+body[data-skin="light"] [class~="hover:bg-cyan-200"]:hover,
+body[data-skin="light"] [class~="hover:bg-cyan-300"]:hover,
+body[data-skin="light"] [class~="hover:bg-cyan-400"]:hover {
+  background-color: var(--iatron-primary-strong) !important;
+  color: var(--iatron-primary-text) !important;
+}
+
+body[data-skin="light"] [class*="bg-cyan-300/"],
+body[data-skin="light"] [class*="bg-cyan-400/"],
+body[data-skin="light"] [class*="bg-cyan-300\\/\["],
+body[data-skin="light"] [class*="bg-cyan-300["] {
+  background-color: var(--iatron-info-bg) !important;
+}
+
+body[data-skin="light"] [class*="bg-emerald-300/"],
+body[data-skin="light"] [class*="bg-emerald-400/"] {
+  background-color: var(--iatron-success-bg) !important;
+}
+
+body[data-skin="light"] [class*="bg-amber-300/"],
+body[data-skin="light"] [class*="bg-amber-400/"] {
+  background-color: var(--iatron-warning-bg) !important;
+}
+
+body[data-skin="light"] [class*="bg-rose-300/"],
+body[data-skin="light"] [class*="bg-rose-400/"],
+body[data-skin="light"] [class*="bg-red-300/"],
+body[data-skin="light"] [class*="bg-red-400/"] {
+  background-color: var(--iatron-danger-bg) !important;
+}
+
+body[data-skin="light"] [class*="text-white"],
+body[data-skin="light"] [class*="text-slate-50"],
+body[data-skin="light"] [class*="text-slate-100"],
+body[data-skin="light"] [class*="text-slate-200"] {
+  color: var(--iatron-text-primary) !important;
+}
+
+body[data-skin="light"] [class*="text-slate-300"],
+body[data-skin="light"] [class*="text-slate-400"] {
+  color: var(--iatron-text-secondary) !important;
+}
+
+body[data-skin="light"] [class*="text-slate-500"],
+body[data-skin="light"] [class*="text-slate-600"],
+body[data-skin="light"] [class*="text-slate-700"] {
+  color: var(--iatron-text-muted) !important;
+}
+
+body[data-skin="light"] [class*="text-cyan-100"],
+body[data-skin="light"] [class*="text-cyan-200"],
+body[data-skin="light"] [class*="text-cyan-300"],
+body[data-skin="light"] [class*="text-cyan-400"] {
+  color: var(--iatron-info-text) !important;
+}
+
+body[data-skin="light"] [class*="text-emerald-100"],
+body[data-skin="light"] [class*="text-emerald-200"],
+body[data-skin="light"] [class*="text-emerald-300"] {
+  color: var(--iatron-success-text) !important;
+}
+
+body[data-skin="light"] [class*="text-amber-100"],
+body[data-skin="light"] [class*="text-amber-200"],
+body[data-skin="light"] [class*="text-amber-300"] {
+  color: var(--iatron-warning-text) !important;
+}
+
+body[data-skin="light"] [class*="text-rose-100"],
+body[data-skin="light"] [class*="text-rose-200"],
+body[data-skin="light"] [class*="text-rose-300"],
+body[data-skin="light"] [class*="text-red-100"],
+body[data-skin="light"] [class*="text-red-200"],
+body[data-skin="light"] [class*="text-red-300"] {
+  color: var(--iatron-danger-text) !important;
+}
+
+body[data-skin="light"] [class*="border-cyan-300/"],
+body[data-skin="light"] [class*="divide-cyan-300/"],
+body[data-skin="light"] [class*="border-slate-300/"],
+body[data-skin="light"] [class*="border-slate-600"] {
+  border-color: var(--iatron-border) !important;
+}
+
+body[data-skin="light"] [class*="border-emerald-300/"] {
+  border-color: var(--iatron-success-border) !important;
+}
+
+body[data-skin="light"] [class*="border-amber-300/"] {
+  border-color: var(--iatron-warning-border) !important;
+}
+
+body[data-skin="light"] [class*="border-rose-300/"],
+body[data-skin="light"] [class*="border-red-300/"] {
+  border-color: var(--iatron-danger-border) !important;
+}
+
+body[data-skin="light"] [class*="hover:border-cyan-300/"]:hover,
+body[data-skin="light"] [class*="hover:border-cyan-200/"]:hover {
+  border-color: var(--iatron-border-strong) !important;
+}
+
+body[data-skin="light"] [class*="hover:bg-cyan-300/"]:hover,
+body[data-skin="light"] [class*="hover:bg-slate-900/"]:hover {
+  background-color: var(--iatron-hover) !important;
+}
+
+body[data-skin="light"] [class*="shadow-black"],
+body[data-skin="light"] [class*="shadow-cyan-950"] {
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.1) !important;
+}
+
+body[data-skin="light"] input,
+body[data-skin="light"] select,
+body[data-skin="light"] textarea {
+  background-color: #ffffff !important;
+  border-color: var(--iatron-border) !important;
+  color: var(--iatron-text-primary) !important;
+}
+
+body[data-skin="light"] input::placeholder,
+body[data-skin="light"] textarea::placeholder {
+  color: #64748b !important;
+  opacity: 1;
+}
+
+body[data-skin="light"] input:focus,
+body[data-skin="light"] select:focus,
+body[data-skin="light"] textarea:focus {
+  border-color: var(--iatron-border-strong) !important;
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.16) !important;
+}
+
+body[data-skin="light"] button:disabled,
+body[data-skin="light"] input:disabled,
+body[data-skin="light"] select:disabled,
+body[data-skin="light"] textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+body[data-skin="light"] table {
+  color: var(--iatron-text-secondary);
+}
+
+body[data-skin="light"] thead {
+  background-color: #eaf2f8 !important;
+  color: var(--iatron-text-muted) !important;
+}
+
+body[data-skin="light"] tbody tr {
+  color: var(--iatron-text-secondary) !important;
+}
+
+body[data-skin="light"] tbody tr:nth-child(even) {
+  background-color: rgba(241, 245, 249, 0.62);
+}
+
+body[data-skin="light"] tbody tr:hover {
+  background-color: rgba(224, 242, 254, 0.55);
+}
+
+body[data-skin="light"] .neural-surface {
+  background:
+    linear-gradient(115deg, rgba(8, 145, 178, 0.1), transparent 30%),
+    linear-gradient(245deg, rgba(16, 185, 129, 0.08), transparent 34%),
+    #ffffff;
+  border-color: var(--iatron-border) !important;
+}
+
+body[data-skin="light"] .neural-surface::before {
+  opacity: 0.18;
+}
+
+body[data-skin="light"] .metric-card::after {
+  background: linear-gradient(90deg, transparent, rgba(8, 145, 178, 0.38), transparent);
 }
 
 .neural-surface {
