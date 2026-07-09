@@ -379,6 +379,37 @@ body[data-skin="light"] .preserve-dark-surface [class*="shadow-black"] {
   box-shadow: 0 24px 90px rgba(0, 0, 0, 0.48) !important;
 }
 
+body[data-skin="light"] .preserve-dark-surface .hero-copy-title,
+body[data-skin="light"] .preserve-dark-surface .hero-copy-subtitle {
+  color: #ffffff !important;
+  text-shadow: 0 3px 28px rgba(0, 0, 0, 0.56);
+}
+
+body[data-skin="light"] .preserve-dark-surface .hero-clinical-panel {
+  background-color: #ffffff !important;
+  border-color: rgba(8, 145, 178, 0.18) !important;
+  color: #0f172a !important;
+}
+
+body[data-skin="light"] .preserve-dark-surface .hero-clinical-panel [class*="text-white"],
+body[data-skin="light"] .preserve-dark-surface .hero-clinical-panel [class*="text-slate-50"],
+body[data-skin="light"] .preserve-dark-surface .hero-clinical-panel [class*="text-cyan-50"] {
+  color: #0f172a !important;
+}
+
+body[data-skin="light"] .preserve-dark-surface .hero-metric-card {
+  background-color: #ffffff !important;
+  border-color: rgba(8, 145, 178, 0.18) !important;
+}
+
+body[data-skin="light"] .preserve-dark-surface .hero-metric-card [class*="bg-slate-800"] {
+  background-color: rgba(226, 232, 240, 0.82) !important;
+}
+
+body[data-skin="light"] .preserve-dark-surface .hero-metric-text {
+  color: #0f172a !important;
+}
+
 .neural-surface {
   position: relative;
   overflow: hidden;

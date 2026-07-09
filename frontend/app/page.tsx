@@ -86,10 +86,10 @@ export default function LandingPage() {
             <div className="mb-5 inline-flex rounded-full border border-cyan-300/20 bg-slate-950/55 px-3 py-2 text-sm font-semibold text-cyan-100 shadow-[0_0_40px_rgba(34,211,238,0.12)] backdrop-blur">
               iatron.PED · Folha PCR pediátrica com experiência healthtech AI
             </div>
-            <h1 className="max-w-4xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="hero-copy-title max-w-4xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
               Folha PCR pediátrica em segundos para decisões críticas no plantão.
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
+            <p className="hero-copy-subtitle mt-5 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
               Um produto focado em entubação, parada cardíaca, drogas úteis e desfibrilação para médicos que precisam consultar rápido e com menos ruído.
             </p>
             <div className="mt-6 grid max-w-2xl grid-cols-3 gap-2 text-sm text-slate-300 sm:gap-3">
@@ -106,7 +106,7 @@ export default function LandingPage() {
           </div>
 
           <div className="hero-tech-panel relative hidden rounded-2xl border border-cyan-200/35 bg-slate-950/58 p-4 shadow-[0_24px_90px_rgba(0,0,0,0.48)] backdrop-blur-xl lg:block">
-            <div className="rounded-xl border border-cyan-300/10 bg-[#06101e]/90 p-4">
+            <div className="hero-clinical-panel rounded-xl border border-cyan-300/10 bg-[#06101e]/90 p-4">
               <div className="mb-5 flex items-center justify-between">
                 <div>
                   <p className="text-xs font-black tracking-[0.22em] text-cyan-200/70">NEURAL CLINICAL ENGINE</p>
@@ -116,11 +116,11 @@ export default function LandingPage() {
               </div>
               <div className="grid gap-3">
                 {["Peso 15 kg", "Choque inicial 30 J", "Drogas críticas filtradas", "Tubo 4,5"].map((item, index) => (
-                  <div key={item} className="rounded-lg border border-cyan-300/10 bg-slate-950/72 p-4">
+                  <div key={item} className="hero-metric-card rounded-lg border border-cyan-300/10 bg-slate-950/72 p-4">
                     <div className="mb-3 h-1.5 w-full overflow-hidden rounded-full bg-slate-800">
                       <div className="hero-signal h-full rounded-full bg-cyan-300" style={{ width: `${62 + index * 9}%` }} />
                     </div>
-                    <p className="text-lg font-black text-cyan-50">{item}</p>
+                    <p className="hero-metric-text text-lg font-black text-cyan-50">{item}</p>
                   </div>
                 ))}
               </div>
