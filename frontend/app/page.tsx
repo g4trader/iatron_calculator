@@ -76,7 +76,7 @@ export default function LandingPage() {
       <FunnelBeacon step="landing_view" source="landing" scope="home" />
       <SaaSNav />
 
-      <section className="relative isolate overflow-hidden border-b border-cyan-300/10">
+      <section className="preserve-dark-surface relative isolate overflow-hidden border-b border-cyan-300/10">
         <div className="absolute inset-0 -z-30 bg-[url('/images/iatron-hero-hospital.png')] bg-cover bg-[62%_center] opacity-55" aria-hidden="true" />
         <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_72%_38%,rgba(34,211,238,0.2),transparent_28rem),linear-gradient(90deg,#030712_0%,rgba(3,7,18,0.94)_34%,rgba(3,7,18,0.72)_68%,rgba(3,7,18,0.88)_100%)]" aria-hidden="true" />
         <div className="hero-data-field absolute inset-x-0 top-0 -z-10 h-full opacity-70" aria-hidden="true" />

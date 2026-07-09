@@ -193,6 +193,7 @@ body[data-skin="light"] [class*="text-slate-700"] {
 }
 
 body[data-skin="light"] [class*="text-cyan-100"],
+body[data-skin="light"] [class*="text-cyan-50"],
 body[data-skin="light"] [class*="text-cyan-200"],
 body[data-skin="light"] [class*="text-cyan-300"],
 body[data-skin="light"] [class*="text-cyan-400"] {
@@ -319,6 +320,63 @@ body[data-skin="light"] .neural-surface::before {
 
 body[data-skin="light"] .metric-card::after {
   background: linear-gradient(90deg, transparent, rgba(8, 145, 178, 0.38), transparent);
+}
+
+body[data-skin="light"] .preserve-dark-surface {
+  color: #e5edf7 !important;
+}
+
+body[data-skin="light"] .preserve-dark-surface [class*="bg-[#050816]"],
+body[data-skin="light"] .preserve-dark-surface [class*="bg-[#030712]"],
+body[data-skin="light"] .preserve-dark-surface [class*="bg-[#06101e]"],
+body[data-skin="light"] .preserve-dark-surface [class*="bg-[#07111f]"] {
+  background-color: rgba(6, 16, 30, 0.9) !important;
+}
+
+body[data-skin="light"] .preserve-dark-surface [class*="bg-slate-950"] {
+  background-color: rgba(2, 6, 23, 0.72) !important;
+}
+
+body[data-skin="light"] .preserve-dark-surface [class*="bg-slate-900"],
+body[data-skin="light"] .preserve-dark-surface [class*="bg-slate-800"],
+body[data-skin="light"] .preserve-dark-surface [class*="bg-white/["] {
+  background-color: rgba(15, 23, 42, 0.62) !important;
+}
+
+body[data-skin="light"] .preserve-dark-surface [class*="text-white"],
+body[data-skin="light"] .preserve-dark-surface [class*="text-slate-50"],
+body[data-skin="light"] .preserve-dark-surface [class*="text-slate-100"],
+body[data-skin="light"] .preserve-dark-surface [class*="text-slate-200"] {
+  color: #f8fafc !important;
+}
+
+body[data-skin="light"] .preserve-dark-surface [class*="text-slate-300"],
+body[data-skin="light"] .preserve-dark-surface [class*="text-slate-400"] {
+  color: #cbd5e1 !important;
+}
+
+body[data-skin="light"] .preserve-dark-surface [class*="text-slate-500"],
+body[data-skin="light"] .preserve-dark-surface [class*="text-slate-600"],
+body[data-skin="light"] .preserve-dark-surface [class*="text-slate-700"] {
+  color: #94a3b8 !important;
+}
+
+body[data-skin="light"] .preserve-dark-surface [class*="text-cyan-50"],
+body[data-skin="light"] .preserve-dark-surface [class*="text-cyan-100"],
+body[data-skin="light"] .preserve-dark-surface [class*="text-cyan-200"],
+body[data-skin="light"] .preserve-dark-surface [class*="text-cyan-300"],
+body[data-skin="light"] .preserve-dark-surface [class*="text-cyan-400"] {
+  color: #cffafe !important;
+}
+
+body[data-skin="light"] .preserve-dark-surface [class*="border-cyan-300/"],
+body[data-skin="light"] .preserve-dark-surface [class*="border-cyan-200/"],
+body[data-skin="light"] .preserve-dark-surface [class*="divide-cyan-300/"] {
+  border-color: rgba(103, 232, 249, 0.24) !important;
+}
+
+body[data-skin="light"] .preserve-dark-surface [class*="shadow-black"] {
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.48) !important;
 }
 
 .neural-surface {
