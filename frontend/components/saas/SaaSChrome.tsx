@@ -24,7 +24,7 @@ export async function SaaSNav() {
         {user ? (
           <>
             <Link href="/dashboard" className="hidden rounded-md px-3 py-2 text-sm font-semibold text-slate-300 transition hover:text-white sm:inline-flex">
-              Dashboard
+              Folha PCR
             </Link>
             <Link href="/organization" className="hidden rounded-md px-3 py-2 text-sm font-semibold text-slate-300 transition hover:text-white sm:inline-flex">
               Organização

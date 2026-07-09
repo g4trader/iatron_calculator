@@ -91,7 +91,7 @@ export function CalculatorShell({ active = "pcr", children, headerActions }: Cal
         </div>
       ) : null}
       <div className="mx-auto grid min-h-screen w-full max-w-full min-w-0 lg:max-w-[1500px] lg:grid-cols-[260px_minmax(0,1fr)]">
-        <aside className="no-print min-w-0 border-b border-cyan-300/10 bg-slate-950/80 px-3 py-4 backdrop-blur sm:px-4 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:border-b-0 lg:border-r">
+        <aside className="no-print min-w-0 border-b border-cyan-300/10 bg-slate-950/80 px-3 py-4 backdrop-blur sm:px-4 lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:flex lg:h-dvh lg:w-[260px] lg:flex-col lg:border-b-0 lg:border-r">
           <div className="flex items-center justify-between gap-3 lg:block">
             <Link href="/dashboard" className="text-xl font-black text-cyan-200">iatron.PED</Link>
             <div className="flex items-center gap-2 lg:hidden">
@@ -122,7 +122,7 @@ export function CalculatorShell({ active = "pcr", children, headerActions }: Cal
           </div>
         </aside>
 
-        <section className="min-w-0 max-w-full overflow-x-hidden">{children}</section>
+        <section className="min-w-0 max-w-full overflow-x-hidden lg:col-start-2">{children}</section>
       </div>
     </main>
   );
