@@ -27,14 +27,6 @@ export function ProductUserPanel({ mobile = false }: { mobile?: boolean }) {
       </Link>
 
       <div className="mt-3 flex items-center gap-2">
-        <Link
-          href="/profile"
-          className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-cyan-300/15 bg-slate-950 text-cyan-100 transition hover:border-cyan-300/40 hover:text-white"
-          title="Acessar perfil"
-        >
-          <UserCircle className="h-4 w-4" aria-hidden="true" />
-          <span className="sr-only">Acessar perfil</span>
-        </Link>
         {isAdmin ? (
           <Link
             href="/admin"
