@@ -6,7 +6,7 @@ As alterações documentais e o workflow anteriores de reconexão GCP serão ver
 
 ## Publicação
 
-- Testes já concluídos: build/typecheck/lint, 197 frontend, 5 backend, 11 importador, 60 E2E, 55 verificações visuais e rollback em clone local. Quatro testes adicionais cobrem o guard da migration desta publicação.
+- Testes já concluídos: build/typecheck/lint, 197 frontend, 5 backend, 11 importador, 60 E2E, 55 verificações visuais e rollback em clone local. Sete testes adicionais cobrem o guard da migration desta publicação.
 - Commit de fontes, testes, migration, planilhas originais rastreáveis e documentação. Excluir credenciais/configuração local, ZIPs, screenshots e protótipos independentes do pacote de runtime.
 - Pacote isolado a partir do frontend V3 e fontes versionados; verificar todos os arquivos contra o índice do commit.
 - `frontend/vercel.json` utiliza um wrapper que só executa a migration com a flag de build `ALLOW_PRODUCTION_MIGRATIONS=true`; sem ela mantém o build normal. O build remoto usa as credenciais sensíveis já existentes na Vercel; elas não são extraídas nem exibidas.
