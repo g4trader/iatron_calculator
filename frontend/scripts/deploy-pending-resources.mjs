@@ -16,6 +16,21 @@ export function redactError(error, env) {
   for (const value of secrets.sort((a, b) => b.length - a.length)) message = message.split(value).join('[redacted]');
   return message.replace(/(?:postgres(?:ql)?|https?):\/\/[^\s"'`]+/g, '[redacted-url]').slice(0, 2500);
 }
+export function migrationConnection(env) {
+  const direct = new URL(env.DIRECT_URL);
+  const runtime = new URL(env.DATABASE_URL);
+  const project = /^db\.([a-z0-9]+)\.supabase\.co$/.exec(direct.hostname)?.[1];
+  if (!project) return direct.toString();
+  if (!runtime.hostname.endsWith('.pooler.supabase.com') || !['5432', '6543'].includes(runtime.port)
+      || decodeURIComponent(runtime.username) !== `${decodeURIComponent(direct.username)}.${project}`
+      || runtime.pathname !== direct.pathname || !runtime.password) {
+    throw new Error('Cannot verify a session pooler for the configured Supabase project.');
+  }
+  runtime.port = '5432';
+  runtime.searchParams.delete('pgbouncer');
+  runtime.searchParams.set('connection_limit', '1');
+  return runtime.toString();
+}
 export function inspectHistory(files, history) {
   if (files[migration] !== expectedChecksum) throw new Error('Migration Mentory differs from audited SQL.');
   const applied = new Set();
@@ -34,7 +49,9 @@ async function main() {
   if (!process.env.DIRECT_URL || !process.env.DATABASE_URL) throw new Error('Production database configuration unavailable.');
   if (process.env.MENTORY_PUBLICATION_APPROVAL || process.env.MENTORY_STREAM_APPROVED === 'true') throw new Error('This release must preserve closed publication/provider gates.');
   stage = 'client-initialization';
-  const db = new PrismaClient({ datasourceUrl: process.env.DIRECT_URL });
+  const migrationUrl = migrationConnection(process.env);
+  const migrationEnv = { ...process.env, DIRECT_URL: migrationUrl };
+  const db = new PrismaClient({ datasourceUrl: migrationUrl });
   try {
     stage = 'migration-files';
     const files = {};
@@ -53,12 +70,17 @@ async function main() {
     const before = await fingerprint();
     console.log(JSON.stringify({ releasePreflight: 'PASS', pending, existingSchemaSha256: before, existingArtifactRollback: 'dpl_9WrRqyTpse91ZSRSvNyfgf9sdrDx', mutationScope: 'additive Mentory tables only; existing rows untouched' }));
     stage = 'apply-migration';
-    if (pending.length) execFileSync(process.execPath, ['node_modules/prisma/build/index.js', 'migrate', 'deploy'], { env: process.env, stdio: 'inherit' });
+    if (pending.length) execFileSync(process.execPath, ['node_modules/prisma/build/index.js', 'migrate', 'deploy'], { env: migrationEnv, stdio: 'inherit' });
     stage = 'post-migration-check';
     const after = await fingerprint();
     if (before !== after) throw new Error('Unexpected modification of existing database columns; do not promote deployment.');
     const tables = await db.$queryRawUnsafe("SELECT tablename FROM pg_tables WHERE schemaname='public' AND tablename LIKE 'mentory_%' ORDER BY tablename");
     if (tables.length !== 10) throw new Error('Incomplete Mentory schema.');
+    const runtime = new PrismaClient();
+    try {
+      const visible = await runtime.$queryRawUnsafe("SELECT tablename FROM pg_tables WHERE schemaname='public' AND tablename LIKE 'mentory_%' ORDER BY tablename");
+      if (JSON.stringify(visible) !== JSON.stringify(tables)) throw new Error('Runtime database schema differs from migrated database.');
+    } finally { await runtime.$disconnect(); }
     console.log(JSON.stringify({ releaseMigration: 'PASS', existingSchemaPreserved: true, mentoryTables: tables.length, clinicalPublication: 'blocked', realCharges: 'blocked' }));
   } finally { await db.$disconnect(); }
 }
