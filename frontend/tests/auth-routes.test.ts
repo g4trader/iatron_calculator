@@ -65,7 +65,7 @@ describe("auth rate limiting", () => {
     const originalUrl = process.env.UPSTASH_REDIS_REST_URL;
     const originalToken = process.env.UPSTASH_REDIS_REST_TOKEN;
     const originalFallback = process.env.RATE_LIMIT_ALLOW_MEMORY_FALLBACK;
-    process.env.NODE_ENV = "production";
+    Object.assign(process.env, { NODE_ENV: "production" });
     delete process.env.UPSTASH_REDIS_REST_URL;
     delete process.env.UPSTASH_REDIS_REST_TOKEN;
     delete process.env.RATE_LIMIT_ALLOW_MEMORY_FALLBACK;
@@ -75,7 +75,8 @@ describe("auth rate limiting", () => {
       assert.equal(result.allowed, false);
       assert.equal(result.remaining, 0);
     } finally {
-      process.env.NODE_ENV = originalNodeEnv;
+      if (originalNodeEnv === undefined) Reflect.deleteProperty(process.env, "NODE_ENV");
+      else Object.assign(process.env, { NODE_ENV: originalNodeEnv });
       if (originalUrl) process.env.UPSTASH_REDIS_REST_URL = originalUrl;
       if (originalToken) process.env.UPSTASH_REDIS_REST_TOKEN = originalToken;
       if (originalFallback) process.env.RATE_LIMIT_ALLOW_MEMORY_FALLBACK = originalFallback;

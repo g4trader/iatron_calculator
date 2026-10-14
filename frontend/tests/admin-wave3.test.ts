@@ -24,8 +24,8 @@ describe("admin wave 3 operational maturity", () => {
   });
 
   it("instruments critical public and commercial paths", () => {
-    assert.match(read("app/page.tsx"), /FunnelBeacon step="landing_view"/);
-    assert.match(read("app/page.tsx"), /FunnelBeacon step="pricing_view"/);
+    assert.match(read("app/page.tsx"), /FunnelBeacon\s+step="landing_view"/);
+    assert.match(read("app/page.tsx"), /FunnelBeacon\s+step="pricing_view"/);
     assert.match(read("app/checkout/page.tsx"), /pricing_view/);
     assert.match(read("lib/account-auth.ts"), /account_created/);
     assert.match(read("auth.ts"), /first_login/);

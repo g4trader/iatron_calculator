@@ -11,7 +11,6 @@ function read(relativePath: string) {
 
 describe("protected route security contracts", () => {
   const protectedServerEntries = [
-    "app/dashboard/page.tsx",
     "app/dashboard/pcr/page.tsx",
     "app/dashboard/completa/page.tsx",
     "app/billing/page.tsx",
@@ -61,6 +60,13 @@ describe("protected route security contracts", () => {
       assert.doesNotMatch(source, /\bauth\(\)/);
     });
   }
+
+  it("dashboard redirects exclusively to the server-protected PCR page", () => {
+    const source = read("app/dashboard/page.tsx");
+    assert.match(source, /redirect\("\/dashboard\/pcr"\)/);
+    assert.doesNotMatch(source, /return\s*</);
+    assert.match(read("app/dashboard/pcr/page.tsx"), /await requireAuth\(\)/);
+  });
 
   it("the global SaaS navigation does not trust cookie-only auth state", () => {
     const source = read("components/saas/SaaSChrome.tsx");

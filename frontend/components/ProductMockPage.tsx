@@ -25,7 +25,7 @@ function MockCard({ title, description, items }: ProductMockPageProps["sections"
           <p className="mt-2 text-sm leading-6 text-slate-300">{description}</p>
         </div>
         <span className="rounded-md border border-cyan-300/20 bg-cyan-300/10 px-2 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-cyan-100">
-          Preview
+          Prévia
         </span>
       </div>
       <div className="mt-4 grid gap-2">
@@ -65,7 +65,7 @@ export function ProductMockPage({ active, eyebrow, title, description, primaryMe
               <p className="mt-4 max-w-3xl text-sm font-medium leading-7 text-slate-300 sm:text-base">{description}</p>
             </div>
             <div className="inline-flex items-center gap-2 rounded-md border border-cyan-300/15 bg-cyan-300/[0.04] px-3 py-2 text-xs font-black text-cyan-100">
-              Fluxo em validação
+              Em preparação · prévia sem cálculo
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </div>
           </div>

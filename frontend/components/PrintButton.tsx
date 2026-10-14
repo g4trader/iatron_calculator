@@ -9,8 +9,8 @@ export function PrintButton({ iconOnlyMobile = false, iconOnly = false }: { icon
       <button
         type="button"
         onClick={() => window.print()}
-        className={`inline-flex h-10 min-w-0 flex-1 items-center justify-center gap-2 rounded-md bg-cyan-400 text-sm font-bold text-slate-950 shadow-sm transition hover:bg-cyan-300 sm:flex-none ${
-          iconOnly ? "w-10 flex-none px-0" : iconOnlyMobile ? "w-10 flex-none px-0 sm:w-auto sm:px-4" : "px-3 sm:px-4"
+        className={`inline-flex h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-md bg-cyan-400 text-sm font-bold text-slate-950 shadow-sm transition hover:bg-cyan-300 sm:flex-none ${
+          iconOnly ? "w-11 flex-none px-0" : iconOnlyMobile ? "w-11 flex-none px-0 sm:w-auto sm:px-4" : "px-3 sm:px-4"
         }`}
         title="Imprimir"
       >
@@ -20,8 +20,8 @@ export function PrintButton({ iconOnlyMobile = false, iconOnly = false }: { icon
       <button
         type="button"
         onClick={() => window.print()}
-        className={`inline-flex h-10 min-w-0 flex-1 items-center justify-center gap-2 rounded-md border border-slate-600 bg-slate-900 text-sm font-bold text-slate-100 transition hover:border-cyan-300 sm:flex-none ${
-          iconOnly ? "w-10 flex-none px-0" : iconOnlyMobile ? "w-10 flex-none px-0 sm:w-auto sm:px-4" : "px-3 sm:px-4"
+        className={`inline-flex h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-md border border-slate-600 bg-slate-900 text-sm font-bold text-slate-100 transition hover:border-cyan-300 sm:flex-none ${
+          iconOnly ? "w-11 flex-none px-0" : iconOnlyMobile ? "w-11 flex-none px-0 sm:w-auto sm:px-4" : "px-3 sm:px-4"
         }`}
         title="Exportar PDF"
       >

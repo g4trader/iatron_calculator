@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./redesign.css";
 import { AuthProvider } from "@/components/AuthProvider";
 import { getServerSkin } from "@/lib/skin";
 
@@ -10,8 +11,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   width: "device-width",
-  initialScale: 1,
-  maximumScale: 1
+  initialScale: 1
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
