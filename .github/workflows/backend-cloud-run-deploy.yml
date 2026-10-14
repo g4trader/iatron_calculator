@@ -24,6 +24,11 @@ jobs:
     name: Deploy backend
     runs-on: ubuntu-latest
     environment: ${{ inputs.target }}
+    env:
+      GCP_PROJECT_ID: stg1-508713
+      CLOUD_RUN_SERVICE: ${{ inputs.service }}
+      CLOUD_RUN_REGION: ${{ inputs.region }}
+      CORS_ORIGINS: ${{ vars.CORS_ORIGINS }}
     permissions:
       contents: read
       id-token: write
@@ -34,6 +39,7 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
+          project_id: ${{ env.GCP_PROJECT_ID }}
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_DEPLOY_SERVICE_ACCOUNT }}
 
@@ -42,8 +48,23 @@ jobs:
 
       - name: Deploy to Cloud Run from source
         run: |
-          gcloud run deploy "${{ inputs.service }}" \
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          origins = os.environ.get("CORS_ORIGINS", "").strip()
+          if not origins:
+              raise SystemExit("Configure CORS_ORIGINS in the GitHub environment before deploying.")
+          Path(os.environ["RUNNER_TEMP"], "iatron-cloud-run-env.json").write_text(
+              json.dumps({"CORS_ORIGINS": origins})
+          )
+          PY
+          gcloud run deploy "$CLOUD_RUN_SERVICE" \
+            --project "$GCP_PROJECT_ID" \
             --source backend \
-            --region "${{ inputs.region }}" \
-            --allow-unauthenticated \
-            --set-env-vars "CORS_ORIGINS=${{ vars.CORS_ORIGINS }}"
+            --region "$CLOUD_RUN_REGION" \
+            --port 8080 \
+            --cpu 1 --memory 512Mi \
+            --min-instances 0 --max-instances 20 \
+            --service-account "iatron-api-runtime@$GCP_PROJECT_ID.iam.gserviceaccount.com" \
+            --no-invoker-iam-check \
+            --env-vars-file "$RUNNER_TEMP/iatron-cloud-run-env.json"

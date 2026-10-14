@@ -25,7 +25,8 @@ const users = {
   active: "e2e+active@iatron.test",
   pastDue: "e2e+past-due@iatron.test",
   orgNoLicense: "e2e+org-no-license@iatron.test",
-  orgLicensed: "e2e+org-licensed@iatron.test"
+  orgLicensed: "e2e+org-licensed@iatron.test",
+  admin: "e2e+admin@iatron.test"
 };
 
 async function hashPassword(value) {
@@ -161,6 +162,8 @@ async function main() {
   const pastDue = await upsertUser(users.pastDue, "E2E Past Due");
   const orgNoLicense = await upsertUser(users.orgNoLicense, "E2E Org Sem Licença");
   const orgLicensed = await upsertUser(users.orgLicensed, "E2E Org Licenciado");
+  const admin = await upsertUser(users.admin, "E2E Admin");
+  await prisma.user.update({ where: { id: admin.id }, data: { role: "ADMIN", adminStatus: "ACTIVE" } });
 
   const activeSubscription = await prisma.subscription.create({
     data: {

@@ -17,9 +17,11 @@ import { MobileMenu } from "@/components/MobileMenu";
 import { Brand } from "@/components/Brand";
 
 export type ProductNavKey =
-  "prescription" | "doses" | "fluids" | "intubation" | "pcr";
+  "prescription" | "doses" | "fluids" | "intubation" | "pcr" | "library" | "infusion";
 const links = [
   { href: "/dashboard/pcr", label: "Folha PCR", key: "pcr", icon: Activity },
+  { href: "/dashboard/biblioteca-medicamentos", label: "Biblioteca de medicamentos", key: "library", icon: Pill },
+  { href: "/dashboard/infusao-continua", label: "Infusão contínua", key: "infusion", icon: Droplets },
   {
     href: "/dashboard/modelo-prescricao",
     label: "Modelo de prescrição",

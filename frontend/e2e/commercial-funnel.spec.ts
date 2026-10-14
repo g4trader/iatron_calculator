@@ -17,8 +17,8 @@ test.describe("funil comercial SaaS", () => {
   test("usuário individual ativo acessa Folha PCR", async ({ page }) => {
     await login(page, e2eUsers.active);
 
-    await expect(page.getByRole("heading", { name: /folha pcr para plantão pediátrico/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Folha PCR", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /entubação e pcr/i })).toBeVisible();
+    await expect(page.getByRole("spinbutton", { name: /^Peso \(kg\)/ })).toBeVisible();
     await expect(page.getByRole("link", { name: "Calculadora completa", exact: true })).toHaveCount(0);
   });
 
@@ -48,8 +48,8 @@ test.describe("funil comercial SaaS", () => {
   test("usuário institucional licenciado obtém acesso à Folha PCR", async ({ page }) => {
     await login(page, e2eUsers.orgLicensed);
 
-    await expect(page.getByRole("heading", { name: /folha pcr para plantão pediátrico/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Folha PCR", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /entubação e pcr/i })).toBeVisible();
+    await expect(page.getByRole("spinbutton", { name: /^Peso \(kg\)/ })).toBeVisible();
     await expect(page.getByRole("link", { name: "Calculadora completa", exact: true })).toHaveCount(0);
   });
 });

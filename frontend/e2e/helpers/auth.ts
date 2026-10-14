@@ -17,6 +17,7 @@ export async function login(page: Page, email: string, callbackUrl = "/dashboard
     maxRedirects: 0
   });
   await page.goto(callbackUrl);
-  const expected = new URL(callbackUrl, "http://localhost");
-  await page.waitForURL((url) => url.pathname === expected.pathname, { timeout: 15_000 });
+  // The app may redirect /dashboard to /dashboard/pcr or deny an admin route.
+  // Each test asserts the destination appropriate to that user's permissions.
+  await page.waitForURL((url) => url.pathname !== "/login", { timeout: 15_000 });
 }

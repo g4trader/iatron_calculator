@@ -5,5 +5,6 @@ export const e2eUsers = {
   active: "e2e+active@iatron.test",
   pastDue: "e2e+past-due@iatron.test",
   orgNoLicense: "e2e+org-no-license@iatron.test",
-  orgLicensed: "e2e+org-licensed@iatron.test"
+  orgLicensed: "e2e+org-licensed@iatron.test",
+  admin: "e2e+admin@iatron.test"
 } as const;

@@ -1,0 +1,1 @@
+export default function Loading(){return <main className="container section" aria-busy="true"><p role="status">Carregando sua Mentory…</p></main>}

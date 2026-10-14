@@ -11,13 +11,13 @@ test.describe("segurança de sessão e rotas protegidas", () => {
 
     try {
       await login(pageA, e2eUsers.active, "/dashboard/pcr");
-      await expect(pageA.getByRole("heading", { name: /folha pcr para plantão pediátrico/i })).toBeVisible();
+      await expect(pageA.getByRole("heading", { name: /entubação e pcr/i })).toBeVisible();
 
       await login(pageB, e2eUsers.active, "/dashboard/pcr");
-      await expect(pageB.getByRole("heading", { name: /folha pcr para plantão pediátrico/i })).toBeVisible();
+      await expect(pageB.getByRole("heading", { name: /entubação e pcr/i })).toBeVisible();
 
       await pageA.goto("/dashboard/pcr");
-      await expect(pageA).toHaveURL(/\/login$/);
+      await expect(pageA).toHaveURL(/\/login(?:\?|$)/);
       await expect(pageA.getByRole("heading", { name: /acesse sua plataforma clínica/i })).toBeVisible();
     } finally {
       await contextA.close();
@@ -25,7 +25,7 @@ test.describe("segurança de sessão e rotas protegidas", () => {
     }
   });
 
-  test("logout em uma aba revoga a sessão usada por outra aba", async ({ browser }) => {
+  test("logout em uma aba revoga a sessão usada por outra aba", async ({ browser, isMobile }) => {
     const context = await browser.newContext();
     const pageA = await context.newPage();
     const pageB = await context.newPage();
@@ -33,13 +33,14 @@ test.describe("segurança de sessão e rotas protegidas", () => {
     try {
       await login(pageA, e2eUsers.active, "/dashboard/pcr");
       await pageB.goto("/dashboard/pcr");
-      await expect(pageB.getByRole("heading", { name: /folha pcr para plantão pediátrico/i })).toBeVisible();
+      await expect(pageB.getByRole("heading", { name: /entubação e pcr/i })).toBeVisible();
 
+      if (isMobile) await pageA.getByLabel("Abrir menu").click();
       await pageA.getByRole("button", { name: "Sair" }).click();
       await expect(pageA).toHaveURL(/\/$/);
 
       await pageB.goto("/dashboard/pcr");
-      await expect(pageB).toHaveURL(/\/login$/);
+      await expect(pageB).toHaveURL(/\/login(?:\?|$)/);
       await expect(pageB.getByRole("heading", { name: /acesse sua plataforma clínica/i })).toBeVisible();
     } finally {
       await context.close();
@@ -56,7 +57,7 @@ test.describe("segurança de sessão e rotas protegidas", () => {
   test("usuário comum não acessa admin", async ({ page }) => {
     await login(page, e2eUsers.active, "/admin");
 
-    await expect(page).toHaveURL(/\/dashboard$/);
-    await expect(page.getByRole("heading", { name: /folha pcr para plantão pediátrico/i })).toBeVisible();
+    await expect(page).toHaveURL(/\/dashboard\/pcr$/);
+    await expect(page.getByRole("heading", { name: /entubação e pcr/i })).toBeVisible();
   });
 });

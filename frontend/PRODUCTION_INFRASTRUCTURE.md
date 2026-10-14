@@ -1,5 +1,7 @@
 # iatron.PED Production Infrastructure
 
+> Atualização de 15/09/2026: o destino GCP solicitado passou a ser `stg1-508713`, na conta `operacional@southmedia.com.br`. Billing ativo e backend implantado/validado; Vercel atualizada e deployment de produção validado com a infraestrutura nova. Para executar a migração e consultar o inventário atual, seguir [MIGRACAO_GCP.md](../MIGRACAO_GCP.md) e [ativarinfra.md](../ativarinfra.md). Os comandos e bloqueadores abaixo registram o planejamento anterior e não substituem o plano de migração.
+
 Este documento define o desenho operacional recomendado para produção e staging. Ele não ativa live mode sozinho; ele descreve a infra-alvo e os comandos seguros.
 
 ## Decisão Recomendada

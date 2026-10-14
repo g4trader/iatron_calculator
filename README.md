@@ -1,5 +1,7 @@
 # Calculadora de Emergência Pediátrica
 
+Para retomar o projeto e reconectar os serviços, leia [ativarinfra.md](./ativarinfra.md), com os identificadores da infraestrutura, comandos de verificação e pendências atuais.
+
 Sistema web para cálculo de medicações, volumes, diluições, infusões contínuas, materiais de via aérea/acesso e desfibrilação/cardioversão pediátrica.
 
 Disclaimer fixo do sistema:
@@ -80,6 +82,8 @@ NEXT_PUBLIC_API_URL=https://SUA-API-GOOGLE-CLOUD-RUN
 
 ## Deploy Backend no Google Cloud Run
 
+Destino solicitado: `stg1-508713`, conta `operacional@southmedia.com.br`. Backend implantado e validado; Vercel atualizada e deployment de produção validado com a infraestrutura nova. Seguir [MIGRACAO_GCP.md](./MIGRACAO_GCP.md) antes de implantar ou trocar a URL na Vercel.
+
 O backend expõe `GET /health` e usa a porta `8080`.
 
 Configure CORS para o domínio da Vercel:
@@ -93,11 +97,14 @@ Deploy:
 ```bash
 cd backend
 gcloud run deploy iatron-calculator-api \
+  --project stg1-508713 \
+  --account operacional@southmedia.com.br \
   --source . \
   --region us-central1 \
-  --allow-unauthenticated \
+  --no-invoker-iam-check \
   --port 8080 \
-  --set-env-vars CORS_ORIGINS=https://SEU-PROJETO.vercel.app
+  --service-account iatron-api-runtime@stg1-508713.iam.gserviceaccount.com \
+  --env-vars-file cloud-run.env.yaml
 ```
 
 Também é possível construir via Dockerfile:

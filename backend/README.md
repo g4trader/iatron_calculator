@@ -16,13 +16,16 @@ Endpoints:
 - `POST /calculate`
 - `POST /calculate/pcr`
 
-Deploy Cloud Run:
+Deploy Cloud Run a partir de `backend/`, após reautenticar, confirmar o billing e preparar a identidade de execução conforme [MIGRACAO_GCP.md](../MIGRACAO_GCP.md):
 
 ```bash
 gcloud run deploy iatron-calculator-api \
+  --project stg1-508713 \
+  --account operacional@southmedia.com.br \
   --source . \
   --region us-central1 \
-  --allow-unauthenticated \
+  --no-invoker-iam-check \
   --port 8080 \
-  --set-env-vars CORS_ORIGINS=https://SEU-PROJETO.vercel.app
+  --service-account iatron-api-runtime@stg1-508713.iam.gserviceaccount.com \
+  --env-vars-file cloud-run.env.yaml
 ```

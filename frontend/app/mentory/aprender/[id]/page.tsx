@@ -1,0 +1,15 @@
+import Link from 'next/link';
+import Shell from '@/components/mentory/Shell';
+import { MaterialAccess, ProgressControl, VideoPlayer } from '@/components/mentory/Actions';
+import { pageIdentity, lessonFor } from '@/lib/mentory/server';
+import { MentoryError } from '@/lib/mentory/domain';
+import { prisma } from '@/lib/prisma';
+export const dynamic = 'force-dynamic';
+export default async function Lesson({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ preview?: string }> }) {
+  const actor = await pageIdentity(); const { id } = await params; const preview = (await searchParams).preview === '1';
+  let lesson; try { lesson = await lessonFor(actor, id, preview); } catch(e) { if (!(e instanceof MentoryError)) throw e; return <Shell editor={actor.editor} name={actor.name}><h1>Aula indisponível</h1><p>{e.message}</p><Link className="btn btn-primary" href="/mentory/assinatura">Consultar meu acesso</Link></Shell>; }
+  const progress = await prisma.mentoryLessonProgress.findUnique({ where: { userId_lessonId: { userId: actor.id, lessonId: id } } });
+  const siblings = await prisma.mentoryLesson.findMany({ where: { moduleId: lesson.moduleId, ...(preview ? {} : { status: 'PUBLISHED' }) }, select: { id: true, title: true }, orderBy: [{ position: 'asc' }, { id: 'asc' }] });
+  const next = siblings[siblings.findIndex(l => l.id === id) + 1];
+  return <Shell editor={actor.editor} name={actor.name}>{preview && <p className="preview-label">Preview editorial · conteúdo não homologado para alunos</p>}<Link className="back-link" href={preview ? '/mentory/admin/conteudo' : '/mentory/modulos'}>← Voltar aos módulos</Link><div className="page-heading"><span className="eyebrow">{lesson.module.title}</span><h1>{lesson.title}</h1></div><div className="learning-layout"><div><VideoPlayer id={id} preview={preview} position={progress?.lastPositionSeconds || 0}/><section className="lesson-heading"><h2>Sobre esta aula</h2><p className="text-body">{lesson.description}</p></section><section className="panel"><h3>Materiais da aula</h3>{lesson.materials.length ? lesson.materials.map(m => <div className="material-row" key={m.id}><div><strong>{m.title}</strong><span>{m.type}</span></div><MaterialAccess id={m.id} preview={preview}/></div>) : <p>Nenhum material disponível nesta aula.</p>}</section><div className="section-row"/>{!preview && <ProgressControl id={id} duration={lesson.duration} completed={!!progress?.completedAt} position={progress?.lastPositionSeconds || 0}/>}<div className="lesson-actions"><Link className="btn btn-outline" href="/mentory/modulos">Lista de aulas</Link>{next && <Link className="btn btn-primary" href={`/mentory/aprender/${next.id}${preview ? '?preview=1' : ''}`}>Próxima aula →</Link>}</div></div><aside className="panel lesson-side"><h2>Neste módulo</h2>{siblings.map((l, i) => <Link className={'lesson-nav ' + (l.id === id ? 'selected' : '')} aria-current={l.id === id ? 'page' : undefined} href={`/mentory/aprender/${l.id}${preview ? '?preview=1' : ''}`} key={l.id}><span>{i + 1}</span><strong>{l.title}</strong></Link>)}</aside></div></Shell>;
+}
