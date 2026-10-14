@@ -7,6 +7,15 @@ import { PrismaClient } from '@prisma/client';
 let stage = 'configuration';
 const migration = '20261015000100_mentory';
 const expectedChecksum = '0ff45e12af2c4eda6af050a577e318409cf06436535e63169750c517bb2b35ee';
+export function redactError(error, env) {
+  let message = String(error.message || error);
+  const secrets = Object.values(env).filter(value => typeof value === 'string' && value.length >= 8);
+  for (const key of ['DATABASE_URL', 'DIRECT_URL']) {
+    try { const url = new URL(env[key]); if (url.password) secrets.push(url.password, decodeURIComponent(url.password)); } catch {}
+  }
+  for (const value of secrets.sort((a, b) => b.length - a.length)) message = message.split(value).join('[redacted]');
+  return message.replace(/(?:postgres(?:ql)?|https?):\/\/[^\s"'`]+/g, '[redacted-url]').slice(0, 2500);
+}
 export function inspectHistory(files, history) {
   if (files[migration] !== expectedChecksum) throw new Error('Migration Mentory differs from audited SQL.');
   const applied = new Set();
@@ -53,4 +62,4 @@ async function main() {
     console.log(JSON.stringify({ releaseMigration: 'PASS', existingSchemaPreserved: true, mentoryTables: tables.length, clinicalPublication: 'blocked', realCharges: 'blocked' }));
   } finally { await db.$disconnect(); }
 }
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main().catch(error => { console.error(JSON.stringify({ migrationFailureStage: stage, errorType: error.constructor?.name, code: error.code, databaseCode: error.meta?.code })); if (/^(Migration |Unrelated |Unresolved |Explicit |Incomplete |Unexpected |Production database |This release)/.test(error.message)) console.error(error.message); console.error('Release migration failed. Inspect sanitized preflight and Prisma migration status before promotion.'); process.exitCode = 1; });
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main().catch(error => { console.error(JSON.stringify({ migrationFailureStage: stage, errorType: error.constructor?.name, code: error.code || error.errorCode, databaseCode: error.meta?.code })); console.error(redactError(error, process.env)); console.error('Release migration failed. Inspect sanitized preflight and Prisma migration status before promotion.'); process.exitCode = 1; });
