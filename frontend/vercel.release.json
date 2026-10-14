@@ -1,3 +1,0 @@
-{
-  "buildCommand": "node scripts/deploy-pending-resources.mjs && npm run build"
-}

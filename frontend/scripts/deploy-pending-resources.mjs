@@ -45,4 +45,4 @@ async function main() {
     console.log(JSON.stringify({ releaseMigration: 'PASS', existingSchemaPreserved: true, mentoryTables: tables.length, clinicalPublication: 'blocked', realCharges: 'blocked' }));
   } finally { await db.$disconnect(); }
 }
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main().catch(() => { console.error('Release migration failed. Inspect sanitized preflight and Prisma migration status before promotion.'); process.exitCode = 1; });
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main().catch(error => { if (/^(Migration |Unrelated |Unresolved |Explicit |Incomplete |Unexpected |Production database |This release)/.test(error.message)) console.error(error.message); console.error('Release migration failed. Inspect sanitized preflight and Prisma migration status before promotion.'); process.exitCode = 1; });

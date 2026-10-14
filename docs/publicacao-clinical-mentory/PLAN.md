@@ -9,7 +9,7 @@ As alterações documentais e o workflow anteriores de reconexão GCP serão ver
 - Testes já concluídos: build/typecheck/lint, 197 frontend, 5 backend, 11 importador, 60 E2E, 55 verificações visuais e rollback em clone local. Quatro testes adicionais cobrem o guard da migration desta publicação.
 - Commit de fontes, testes, migration, planilhas originais rastreáveis e documentação. Excluir credenciais/configuração local, ZIPs, screenshots e protótipos independentes do pacote de runtime.
 - Pacote isolado a partir do frontend V3 e fontes versionados; verificar todos os arquivos contra o índice do commit.
-- `vercel.release.json` é um perfil explícito de publicação. O build remoto usa as credenciais sensíveis já existentes na Vercel; elas não são extraídas nem exibidas.
+- `frontend/vercel.json` utiliza um wrapper que só executa a migration com a flag de build `ALLOW_PRODUCTION_MIGRATIONS=true`; sem ela mantém o build normal. O build remoto usa as credenciais sensíveis já existentes na Vercel; elas não são extraídas nem exibidas.
 - O guard compara checksums/histórico, recusa migrations pendentes não relacionadas, aplica apenas `20261015000100_mentory`, compara fingerprint das colunas existentes e verifica dez tabelas Mentory. SQL aditivo e transacional, sem UPDATE/DELETE em dados existentes e sem seed.
 - Criar deployment de produção com `--skip-domain`, mantendo o domínio no artefato anterior. Promover somente após build/migration e verificações do novo artefato. Não configurar gateway, contas de teste ou permissões administrativas automáticas em produção.
 
