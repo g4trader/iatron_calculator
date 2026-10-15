@@ -1,0 +1,7 @@
+{
+  "deployment": "dpl_Axq1D31tHMhzmhpW8gNW74oBU6Qi",
+  "commit": "ce95ef717a6be7fe4a56d82f24cee05e83d79417",
+  "promotedAt": "2026-10-15T18:13:12.579961+00:00",
+  "url": "https://ped.iatron.com.br/mentory/admin/demonstracao",
+  "rollback": "dpl_4pp5LbFz6KRKgWMmhzzZy23jkUGx"
+}

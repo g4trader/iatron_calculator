@@ -179,3 +179,11 @@ Relatório de escopo, resultados, limitações e reprodução em [RELATORIO_E2E.
 - Equipe sem matrícula agora entra na gestão em vez de receber aviso de acesso premium inativo. Regras de matrícula/aluno e permissões preservadas.
 - 16 E2E, typecheck, lint, build e 30 smoke checks aprovados. Relatório: [docs/mentory-admin-access-fix/REPORT.md](docs/mentory-admin-access-fix/REPORT.md).
 - Rollback disponível para `dpl_HrNmYiua1RMWHi63xgrriYMenZQ5`. Sem alterações de banco, infraestrutura ou pagamentos.
+
+
+## Mockup do curso Mentory — 15/10/2026
+
+- Rota protegida `/mentory/admin/demonstracao`, link Curso demonstrativo no painel, exclusiva para equipe Mentory. 6 módulos, 24 aulas e 48 materiais fictícios, com simulação de progresso sem gravação no banco.
+- Commit `ce95ef717a6be7fe4a56d82f24cee05e83d79417`, deployment `dpl_Axq1D31tHMhzmhpW8gNW74oBU6Qi`, promovido em 15/10/2026 às 15:13:12 de Brasília. 6 E2E, typecheck, lint, build e 31 smoke checks aprovados.
+- Relatório: [docs/mentory-course-mockup/REPORT.md](docs/mentory-course-mockup/REPORT.md). Sem mudança de banco, infraestrutura, cálculos ou pagamentos.
+- Rollback: `dpl_4pp5LbFz6KRKgWMmhzzZy23jkUGx`.
