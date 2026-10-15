@@ -96,3 +96,24 @@ test('Mentory: upload de mídia exige editor, mesma origem e tamanho válido', a
   expect((await page.request.post('/api/mentory/media/start', { headers: { origin: base }, data: { kind: 'video', size: 2000000001 } })).status()).toBe(400);
   expect((await page.request.post('/api/mentory/media/finish', { headers: { origin: base }, data: { id: '../../private' } })).status()).toBe(400);
 });
+
+
+test('Mentory: equipe sem matrícula entra na gestão e mantém preview sem acesso premium', async ({ page }) => {
+  for (const role of ['admin', 'editor']) {
+    const userId = `mentory-test-${role}`;
+    expect(await db.mentorySubscription.count({ where: { userId } })).toBe(0);
+    await login(page, email(role), '/mentory/aprender');
+    await expect(page).toHaveURL(/\/mentory\/admin$/);
+    await expect(page.getByText('Seu acesso premium ainda não está ativo ou expirou.', { exact: false })).toHaveCount(0);
+    for (const section of ['modulos', 'materiais', 'assinatura']) {
+      await page.goto(`/mentory/${section}`);
+      await expect(page).toHaveURL(section === 'assinatura' ? /\/mentory\/admin$/ : /\/mentory\/admin\/conteudo$/);
+    }
+    await page.goto(`/mentory/aprender/${lesson}?preview=1`);
+    await expect(page.getByText('Preview editorial · conteúdo não homologado para alunos')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Marcar como concluída', exact: true })).toHaveCount(0);
+    expect((await page.request.get(`/api/mentory/materials/${lesson}-text?preview=1`)).status()).toBe(200);
+    expect((await page.request.get(`/api/mentory/lessons/${lesson}/video`)).status()).toBe(403);
+    expect(await db.mentorySubscription.count({ where: { userId } })).toBe(0);
+  }
+});

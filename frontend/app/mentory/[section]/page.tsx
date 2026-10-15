@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { BookOpen, ArrowRight } from 'lucide-react';
 import Shell from '@/components/mentory/Shell';
 import { MaterialAccess } from '@/components/mentory/Actions';
@@ -12,6 +12,9 @@ export default async function Student({ params }: { params: Promise<{ section: s
   const { section } = await params;
   if (!['aprender', 'modulos', 'materiais', 'assinatura'].includes(section)) notFound();
   const actor = await pageIdentity(); const data = await studentData(actor);
+  // Staff use the editorial workspace without requiring a student subscription.
+  // Staff with an active enrollment retain their normal student experience.
+  if (actor.editor && !data.hasAccess) redirect(section === 'modulos' || section === 'materiais' ? '/mentory/admin/conteudo' : '/mentory/admin');
   const lessons = data.modules.flatMap(m => m.lessons);
   const completed = lessons.filter(l => data.progress.some(p => p.lessonId === l.id && p.completedAt)).length;
   const resume = data.progress.find(p => !p.completedAt && lessons.some(l => l.id === p.lessonId));
