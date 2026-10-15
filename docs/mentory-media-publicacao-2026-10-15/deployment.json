@@ -1,0 +1,32 @@
+{
+  "id": "dpl_HrNmYiua1RMWHi63xgrriYMenZQ5",
+  "url": "frontend-m291xvnp6-luciano-terres-projects.vercel.app",
+  "readyState": "READY",
+  "target": "production",
+  "createdAt": 1792085997702,
+  "ready": 1792086130837,
+  "meta": {
+    "githubCommitSha": "634204f2035da3d9b3f753b6b3594b4bf379fbc2",
+    "release": "mentory-private-media",
+    "lambdaRuntimeStats": "{\"nodejs\":4}"
+  },
+  "projectSettings": {
+    "buildCommand": "node scripts/vercel-build.mjs",
+    "devCommand": null,
+    "framework": "nextjs",
+    "commandForIgnoringBuildStep": null,
+    "installCommand": "npm ci",
+    "outputDirectory": null,
+    "speedInsights": {
+      "id": "b1Qmkn1a0dfVclmPLABBI4MBACd",
+      "hasData": false
+    },
+    "webAnalytics": {
+      "id": "cLiGkFsm1idQ7H5K7LYgBzlPm"
+    },
+    "nodeVersion": "24.x"
+  },
+  "alias": [
+    "frontend-luciano-terres-projects.vercel.app"
+  ]
+}

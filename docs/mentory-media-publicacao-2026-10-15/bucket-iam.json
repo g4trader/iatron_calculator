@@ -1,0 +1,37 @@
+{
+  "bindings": [
+    {
+      "members": [
+        "projectEditor:stg1-508713",
+        "projectOwner:stg1-508713"
+      ],
+      "role": "roles/storage.legacyBucketOwner"
+    },
+    {
+      "members": [
+        "projectViewer:stg1-508713"
+      ],
+      "role": "roles/storage.legacyBucketReader"
+    },
+    {
+      "members": [
+        "projectEditor:stg1-508713",
+        "projectOwner:stg1-508713"
+      ],
+      "role": "roles/storage.legacyObjectOwner"
+    },
+    {
+      "members": [
+        "projectViewer:stg1-508713"
+      ],
+      "role": "roles/storage.legacyObjectReader"
+    },
+    {
+      "members": [
+        "serviceAccount:iatron-vercel-admin@stg1-508713.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectAdmin"
+    }
+  ],
+  "etag": "CAM="
+}

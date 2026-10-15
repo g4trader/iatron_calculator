@@ -1,5 +1,7 @@
 # Vídeos privados — implementação de 15/10/2026
 
+> Atualização: bucket exclusivo autorizado e integração publicada em 15/10/2026 às 14:42:52 de Brasília. Preflight real e 30 smoke checks aprovados. Estado atual em [relatório de publicação](../mentory-media-publicacao-2026-10-15/REPORT.md). O texto abaixo registra o estado anterior à autorização.
+
 Alternativa ao Cloudflare: Google Cloud Storage privado, com prefixo fixo `iatron-mentory-media/` e bucket exclusivo configurado por `MENTORY_VIDEO_BUCKET`. Nenhuma chave é exposta ao navegador. A autorização de criação desse bucket está pendente após rejeição automática da tentativa de reutilizar o bucket de arquivos. A conta GCP operacional também exige reautenticação para criar/configurar infraestrutura.
 
 ## Implementado

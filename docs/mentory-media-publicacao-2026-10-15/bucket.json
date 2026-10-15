@@ -1,0 +1,37 @@
+{
+  "cors_config": [
+    {
+      "maxAgeSeconds": 3600,
+      "method": [
+        "GET",
+        "HEAD",
+        "PUT"
+      ],
+      "origin": [
+        "https://ped.iatron.com.br"
+      ],
+      "responseHeader": [
+        "Content-Type",
+        "Content-Range",
+        "Range",
+        "Content-Length"
+      ]
+    }
+  ],
+  "creation_time": "2026-10-15T17:33:31+0000",
+  "default_storage_class": "STANDARD",
+  "generation": 1792085610967134932,
+  "location": "SOUTHAMERICA-EAST1",
+  "location_type": "region",
+  "metageneration": 3,
+  "name": "iatron-mentory-media-stg1-508713",
+  "public_access_prevention": "enforced",
+  "satisfies_pzs": true,
+  "soft_delete_policy": {
+    "effectiveTime": "2026-10-15T17:33:31.484000+00:00",
+    "retentionDurationSeconds": "604800"
+  },
+  "storage_url": "gs://iatron-mentory-media-stg1-508713/",
+  "uniform_bucket_level_access": true,
+  "update_time": "2026-10-15T17:33:45+0000"
+}

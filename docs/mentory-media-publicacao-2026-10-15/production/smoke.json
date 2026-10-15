@@ -1,0 +1,130 @@
+{
+  "base": "https://ped.iatron.com.br",
+  "started": "2026-10-15T17:43:07.631Z",
+  "checks": [
+    {
+      "name": "frontend/database/auth health",
+      "status": "PASS"
+    },
+    {
+      "name": "existing backend health",
+      "status": "PASS"
+    },
+    {
+      "name": "PCR synthetic response identical to audited V3 and clinical engine",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid PCR input rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "/ 390px no overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "/ 1440px no overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "/mentory 390px no overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "/mentory 1440px no overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "/login 390px no overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "/login 1440px no overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "/mentory/login 390px no overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "/mentory/login 1440px no overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "/dashboard/pcr authentication required",
+      "status": "PASS"
+    },
+    {
+      "name": "/dashboard/biblioteca-medicamentos authentication required",
+      "status": "PASS"
+    },
+    {
+      "name": "/dashboard/infusao-continua authentication required",
+      "status": "PASS"
+    },
+    {
+      "name": "/admin authentication required",
+      "status": "PASS"
+    },
+    {
+      "name": "/mentory/admin authentication required",
+      "status": "PASS"
+    },
+    {
+      "name": "/mentory/admin/conteudo authentication required",
+      "status": "PASS"
+    },
+    {
+      "name": "/mentory/aprender authentication required",
+      "status": "PASS"
+    },
+    {
+      "name": "/mentory/assinatura authentication required",
+      "status": "PASS"
+    },
+    {
+      "name": "/api/mentory/subscription unauthorized denied",
+      "status": "PASS"
+    },
+    {
+      "name": "/api/mentory/progress unauthorized denied",
+      "status": "PASS"
+    },
+    {
+      "name": "/api/mentory/materials/unknown unauthorized denied",
+      "status": "PASS"
+    },
+    {
+      "name": "/api/mentory/lessons/unknown/video unauthorized denied",
+      "status": "PASS"
+    },
+    {
+      "name": "/api/mentory/lessons/unknown/captions unauthorized denied",
+      "status": "PASS"
+    },
+    {
+      "name": "/api/mentory/admin anonymous mutation denied",
+      "status": "PASS"
+    },
+    {
+      "name": "/api/mentory/upload anonymous mutation denied",
+      "status": "PASS"
+    },
+    {
+      "name": "/api/mentory/checkout anonymous mutation denied",
+      "status": "PASS"
+    },
+    {
+      "name": "/api/mentory/media/start anonymous mutation denied",
+      "status": "PASS"
+    },
+    {
+      "name": "/api/mentory/media/finish anonymous mutation denied",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "authenticatedChecks": "User will perform; no test credentials supplied; no production test users created",
+  "status": "PASS",
+  "finished": "2026-10-15T17:43:26.303Z"
+}

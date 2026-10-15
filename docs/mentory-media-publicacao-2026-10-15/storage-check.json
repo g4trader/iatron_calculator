@@ -1,0 +1,8 @@
+{
+  "bucket": "iatron-mentory-media-stg1-508713",
+  "publicAccessPrevention": "enforced",
+  "uniformAccess": true,
+  "publicIamBindings": false,
+  "activeProbeObjectsAfterCleanup": 0,
+  "preflight": "PASS"
+}

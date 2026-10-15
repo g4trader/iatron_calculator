@@ -161,3 +161,13 @@ Relatório de escopo, resultados, limitações e reprodução em [RELATORIO_E2E.
 - Backend, banco, migrations, variáveis, autenticação e pagamentos não foram alterados. `AUTH_URL`/`NEXTAUTH_URL` preservam o alias adicional existente.
 - Login efetivo, área autenticada, medicamentos/alertas e impressão no domínio ficam para conferência do usuário. Nenhum dado real de paciente utilizado.
 - Rollback pronto para `dpl_BGHSxM32hzfQ5g8U9eZZa7nbBaD9`; não necessário durante os smoke tests. Relatório, logs, manifesto, screenshots e comandos: [docs/publicacao-v3/REPORT.md](docs/publicacao-v3/REPORT.md) e [rollback](docs/publicacao-v3/ROLLBACK.md).
+
+
+## Mentory — mídia privada publicada em 15/10/2026
+
+- Conta GCP `operacional@southmedia.com.br` reautenticada. Bucket exclusivo autorizado e criado: `iatron-mentory-media-stg1-508713`, Standard, `southamerica-east1`, acesso uniforme e bloqueio público enforced. Bucket de arquivos existente preservado.
+- Identidade Vercel existente com `roles/storage.objectAdmin` no novo bucket. `MENTORY_VIDEO_BUCKET` configurada e `MENTORY_STREAM_APPROVED=true`; sem novas chaves.
+- Commit publicado `634204f2035da3d9b3f753b6b3594b4bf379fbc2`, branch `feat/clinical-resources`, deployment `dpl_HrNmYiua1RMWHi63xgrriYMenZQ5`, domínio `ped.iatron.com.br`, promoção em 15/10/2026 às 14:42:52 de Brasília.
+- Preflight real de upload, assinatura, Range, CORS, bloqueio anônimo e cleanup aprovado; build Ready; 30 smoke checks aprovados. Sem migration, push ou merge. Testes autenticados em produção seguem com o usuário.
+- Admin Mentory: `aristoteles.pires@hmv.org.br`, senha existente. Cobranças reais aguardam provedor; novos cálculos com protocolos ainda ambíguos continuam bloqueados.
+- Relatório/evidências: [docs/mentory-media-publicacao-2026-10-15/REPORT.md](docs/mentory-media-publicacao-2026-10-15/REPORT.md). Rollback: `dpl_6DnonYnupReXhccZpHg3pVgjq1e3`.
