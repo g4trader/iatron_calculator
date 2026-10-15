@@ -6,9 +6,11 @@ const route = '/mentory/admin/demonstracao';
 test.afterAll(() => db.$disconnect());
 test('Demonstração: sessão e papel editorial obrigatórios', async ({ page }) => {
   await page.goto(route); await expect(page).toHaveURL(/\/mentory\/login/);
+  for (const asset of ['video', 'poster', 'captions']) expect((await page.request.get(`/api/mentory/demo-video?asset=${asset}`)).status()).toBe(401);
   await login(page, 'mentory-test-student-b@iatron.test', route);
   await expect(page).toHaveURL(/\/mentory\/aprender/);
   await expect(page.getByText('Curso demonstrativo · acesso exclusivo à equipe')).toHaveCount(0);
+  for (const asset of ['video', 'poster', 'captions']) expect((await page.request.get(`/api/mentory/demo-video?asset=${asset}`)).status()).toBe(403);
 });
 test('Demonstração: curso completo, materiais e progresso isolados', async ({ page }, info) => {
   test.setTimeout(60000);
@@ -23,10 +25,31 @@ test('Demonstração: curso completo, materiais e progresso isolados', async ({ 
   await expect(page.locator('.demo-lesson-row')).toHaveCount(24);
   await page.screenshot({ path: info.outputPath('modules.png'), fullPage: true });
   await nav.getByRole('button', { name: 'Sala de aula', exact: true }).click();
-  await page.getByRole('button', { name: 'Iniciar prévia da aula' }).click();
-  await expect(page.getByText('Slide 1 de 4')).toBeVisible();
-  await page.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect(page.getByText('Slide 2 de 4')).toBeVisible();
+  const video = page.locator('video');
+  await expect.poll(() => video.evaluate(v => (v as HTMLVideoElement).readyState)).toBeGreaterThanOrEqual(1);
+  await page.getByRole('button', { name: 'Reproduzir vídeo', exact: true }).click();
+  await expect.poll(() => video.evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThan(0.4);
+  await page.getByLabel('Velocidade').selectOption('1.5');
+  expect(await video.evaluate(v => (v as HTMLVideoElement).playbackRate)).toBe(1.5);
+  await page.getByRole('button', { name: 'Pausar vídeo', exact: true }).click();
+  await page.getByRole('button', { name: 'Avançar 10 segundos' }).click();
+  await expect.poll(() => video.evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThan(10);
+  const savedPosition = await video.evaluate(v => (v as HTMLVideoElement).currentTime);
+  await nav.getByRole('button', { name: 'Visão geral', exact: true }).click();
+  await nav.getByRole('button', { name: 'Sala de aula', exact: true }).click();
+  await expect.poll(() => video.evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThan(savedPosition - 0.2);
+  await expect.poll(() => video.evaluate(v => (v as HTMLVideoElement).textTracks[0]?.cues?.length || 0)).toBeGreaterThan(0);
+  const range = await page.request.get('/api/mentory/demo-video', { headers: { range: 'bytes=0-11' } });
+  expect(range.status()).toBe(206); expect((await range.body()).subarray(4, 8).toString()).toBe('ftyp');
+  expect(range.headers()['cache-control']).toBe('private, no-store');
+  expect((await page.request.get('/api/mentory/demo-video', { headers: { range: 'bytes=999999999-' } })).status()).toBe(416);
+  expect((await page.request.head('/api/mentory/demo-video')).status()).toBe(200);
+  expect((await page.request.get('/api/mentory/demo-video?asset=../../secret')).status()).toBe(404);
+  await page.getByRole('button', { name: 'Reproduzir vídeo', exact: true }).click();
+  await expect.poll(() => video.evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThan(savedPosition + 0.3);
+  await page.getByRole('button', { name: 'Pausar vídeo', exact: true }).click();
+  await expect.poll(() => video.evaluate(v => !(v as HTMLVideoElement).seeking && (v as HTMLVideoElement).readyState >= 2)).toBe(true);
+  await page.locator('.demo-video').screenshot({ path: info.outputPath('video-player.png') });
   await page.getByLabel('Minha anotação de exemplo').fill('Pergunta de estudo sintética.');
   await page.getByLabel('Fonte, versão e revisão pelo responsável habilitado').check();
   await expect(page.getByText('Isso mesmo.', { exact: false })).toBeVisible();
@@ -63,4 +86,17 @@ test('Demonstração: editor e larguras responsivas', async ({ page }, info) => 
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.screenshot({ path: info.outputPath(`responsive-${width}.png`), fullPage: true });
   }
+});
+
+
+test('Demonstração: falha de vídeo permite tentar novamente', async ({ page }) => {
+  await login(page, 'mentory-test-admin@iatron.test', route);
+  await page.route('**/api/mentory/demo-video', r => r.fulfill({ status: 503, body: 'Unavailable' }));
+  await page.getByRole('navigation', { name: 'Navegação da demonstração' }).getByRole('button', { name: 'Sala de aula' }).click();
+  await expect(page.getByRole('button', { name: 'Tentar carregar novamente' })).toBeVisible();
+  await page.unroute('**/api/mentory/demo-video');
+  await page.getByRole('button', { name: 'Tentar carregar novamente' }).click();
+  await expect.poll(() => page.locator('video').evaluate(v => (v as HTMLVideoElement).readyState)).toBeGreaterThanOrEqual(1);
+  await page.getByRole('button', { name: 'Reproduzir vídeo', exact: true }).click();
+  await expect.poll(() => page.locator('video').evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThan(0.3);
 });
