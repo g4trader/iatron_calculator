@@ -7,3 +7,5 @@
 .mentory .material-row .status{color:#39566e}
 .mentory .topbar a{text-decoration:underline;text-underline-offset:3px}
 .mentory .player-inner .btn{color:#102741}
+
+.mentory .player video { width: 100%; height: 100%; display: block; background: #102b42; }

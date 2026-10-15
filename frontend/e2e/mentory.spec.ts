@@ -86,3 +86,13 @@ test('Mentory: CRUD, revisão, publicação, ordem completa e material privado',
   expect(await db.mentoryLesson.findUnique({ where: { id: l.id } })).toBeNull();
   expect(await db.mentoryAuditLog.count({ where: { actorId: 'mentory-test-admin' } })).toBeGreaterThan(5);
 });
+
+test('Mentory: upload de mídia exige editor, mesma origem e tamanho válido', async ({ page }) => {
+  for (const endpoint of ['start', 'finish']) expect((await page.request.post(`/api/mentory/media/${endpoint}`, { data: {} })).status()).toBe(401);
+  await login(page, email('student-b'), '/mentory/aprender');
+  expect((await page.request.post('/api/mentory/media/start', { headers: { origin: base }, data: { kind: 'video', size: 100 } })).status()).toBe(403);
+  await login(page, email('editor'), '/mentory/admin/conteudo');
+  expect((await page.request.post('/api/mentory/media/start', { headers: { origin: 'https://invalid.example' }, data: { kind: 'video', size: 100 } })).status()).toBe(403);
+  expect((await page.request.post('/api/mentory/media/start', { headers: { origin: base }, data: { kind: 'video', size: 2000000001 } })).status()).toBe(400);
+  expect((await page.request.post('/api/mentory/media/finish', { headers: { origin: base }, data: { id: '../../private' } })).status()).toBe(400);
+});

@@ -1,3 +1,4 @@
+import { gcsPlayback } from './gcs-video';
 import 'server-only';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { MentoryError } from './domain';
@@ -11,6 +12,7 @@ export function verifyAssetSignature(userId: string, materialId: string, expiry:
 }
 // Optional adapter; no provider account is created or enabled by this implementation.
 export async function videoPlayback(assetId: string | null, expiresAt: Date) {
+  if (assetId?.startsWith('gcs_')) return gcsPlayback(assetId, expiresAt);
   const account = process.env.MENTORY_STREAM_ACCOUNT_ID;
   const token = process.env.MENTORY_STREAM_API_TOKEN;
   const customer = process.env.MENTORY_STREAM_CUSTOMER_CODE;

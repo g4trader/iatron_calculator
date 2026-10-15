@@ -1,3 +1,4 @@
+import { verifiedMedia } from './gcs-video';
 import 'server-only';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
@@ -20,6 +21,10 @@ export async function mutate(actor: Identity, input: unknown) {
   const parsed = schema.safeParse(input);
   if (!parsed.success) throw new MentoryError(400, 'Dados inválidos. Verifique os campos.');
   const v = parsed.data;
+  if (v.action === 'lesson.save') {
+    if (v.videoAssetId.startsWith('gcs_')) await verifiedMedia(v.videoAssetId, 'video');
+    if (v.captionsAssetId.startsWith('gcs_')) await verifiedMedia(v.captionsAssetId, 'captions');
+  }
   if (['review', 'publication', 'role'].includes(v.action) && !actor.admin) throw new MentoryError(403, 'Ação restrita ao administrador Mentory.');
   return prisma.$transaction(async tx => {
     // Serialize editorial writes, including complete-list reorder and review invalidation.

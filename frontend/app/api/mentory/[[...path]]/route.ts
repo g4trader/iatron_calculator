@@ -1,3 +1,4 @@
+import { beginMediaUpload, finishMediaUpload, readCaptions } from '@/lib/mentory/gcs-video';
 import { NextRequest, NextResponse } from 'next/server';
 import { createHash } from 'node:crypto';
 import { prisma } from '@/lib/prisma';
@@ -31,6 +32,19 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
     if (req.nextUrl.searchParams.has('userId')) throw new MentoryError(403, 'Consulta restrita ao titular autenticado.');
     if (write && path.join('/') === 'admin') return json(await mutate(actor, await req.json()));
     if (write && path.join('/') === 'checkout') return json(await mentoryPayment.checkout());
+    if (write && ['media/start', 'media/finish'].includes(path.join('/'))) {
+      if (!actor.editor) throw new MentoryError(403, 'Permissão editorial necessária.');
+      const body = await req.json();
+      if (path[1] === 'start') {
+        const result = await beginMediaUpload(actor.id, body.kind, body.size, req.headers.get('origin')!);
+        await prisma.mentoryAuditLog.create({ data: { actorId: actor.id, action: 'media.upload.start', entityId: result.id, metadata: { kind: body.kind, byteSize: body.size } } });
+        return json(result);
+      }
+      if (typeof body.id !== 'string') throw new MentoryError(400, 'Identificador de mídia obrigatório.');
+      const result = await finishMediaUpload(actor.id, body.id);
+      await prisma.mentoryAuditLog.create({ data: { actorId: actor.id, action: 'media.upload.verified', entityId: result.id, metadata: { kind: result.kind, byteSize: result.byteSize } } });
+      return json(result);
+    }
     if (write && path.join('/') === 'upload') {
       if (!actor.editor) throw new MentoryError(403, 'Permissão editorial necessária.');
       if (Number(req.headers.get('content-length') || 0) > 3_200_000) throw new MentoryError(413, 'O limite é 3 MB por PDF.');
@@ -50,7 +64,11 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
       const lesson = await lessonFor(actor, path[1], preview);
       if (!write && path[2] === 'video') {
         const subscription = await subscriptionFor(actor.id);
-        return json({ url: await videoPlayback(lesson.videoAssetId, preview ? new Date(Date.now() + 300000) : subscription!.expiresAt) });
+        return json({ url: await videoPlayback(lesson.videoAssetId, preview ? new Date(Date.now() + 300000) : subscription!.expiresAt), kind: lesson.videoAssetId?.startsWith('gcs_') ? 'mp4' : 'iframe', captions: lesson.captionsAssetId?.startsWith('gcs_') ? `/api/mentory/lessons/${lesson.id}/captions?preview=${preview ? '1' : '0'}` : null });
+      }
+      if (!write && path[2] === 'captions') {
+        if (!lesson.captionsAssetId?.startsWith('gcs_')) throw new MentoryError(404, 'Legendas não cadastradas.');
+        return new NextResponse(await readCaptions(lesson.captionsAssetId), { headers: { ...headers, 'Content-Type': 'text/vtt; charset=utf-8', 'Content-Security-Policy': "default-src 'none'" } });
       }
       if (write && path[2] === 'progress') {
         if (preview) throw new MentoryError(403, 'Preview não altera progresso.');
