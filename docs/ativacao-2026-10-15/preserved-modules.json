@@ -1,0 +1,13 @@
+{
+  "baseline": "b7e217c",
+  "checked": [
+    "frontend/lib/pcr-calculation-engine.ts",
+    "frontend/data/clinical-resources.json",
+    "frontend/prisma/schema.prisma",
+    "frontend/lib/auth.ts",
+    "frontend/lib/billing.ts",
+    "backend/app"
+  ],
+  "unchanged": true,
+  "note": "Reference corrections are a separate display layer; imported snapshot and PCR engine untouched."
+}

@@ -1,0 +1,7 @@
+{
+  "commit": "546c4cc7eb6d4324d1cf6e3c391b49732cb09ae8",
+  "files": 362,
+  "source": "git archive HEAD frontend",
+  "allMatchCommittedBlobs": true,
+  "mediaImplementationIncluded": false
+}
