@@ -1,0 +1,29 @@
+// Editorial mockup only. Never seed these records into the production learning tables.
+const outlines = [
+  { title: 'Fundamentos da emergência pediátrica', description: 'Um ponto de partida para organizar o estudo, formular perguntas e acompanhar sua evolução.', focus: 'organização do atendimento e aprendizagem', lessons: ['Boas-vindas e plano de aprendizagem', 'Avaliação inicial: construindo uma visão geral', 'Comunicação e organização da equipe', 'Síntese do módulo e diário de aprendizagem'] },
+  { title: 'Vias aéreas e ventilação', description: 'Uma trilha editorial para conectar conceitos, recursos de estudo e discussão com o mentor.', focus: 'vias aéreas e ventilação', lessons: ['Mapa do módulo: conceitos e perguntas', 'Anatomia e fisiologia: roteiro de revisão', 'Equipamentos: organização do estudo', 'Discussão orientada e pontos para revisão'] },
+  { title: 'Circulação e monitorização', description: 'Estruture a leitura das referências e registre os pontos que precisam de aprofundamento.', focus: 'circulação e monitorização', lessons: ['Visão geral e objetivos de estudo', 'Monitorização: leitura crítica das referências', 'Trabalho em equipe e registro de informações', 'Revisão integrada do módulo'] },
+  { title: 'Segurança no cuidado pediátrico', description: 'Um espaço para explorar rastreabilidade, comunicação e revisão de fontes.', focus: 'segurança e rastreabilidade', lessons: ['Fontes, versões e responsabilidade editorial', 'Organização de informações sobre medicamentos', 'Comunicação de dúvidas e limites', 'Oficina: revisão de um material de estudo'] },
+  { title: 'Discussões e raciocínio clínico', description: 'Prepare perguntas, diferencie informações disponíveis de lacunas e organize a discussão.', focus: 'discussão orientada e raciocínio', lessons: ['Como preparar uma discussão com o mentor', 'Informações disponíveis e lacunas do caso', 'Comparando argumentos e referências', 'Debriefing: o que aprendemos com a discussão'] },
+  { title: 'Integração e continuidade', description: 'Retome sua trajetória e transforme anotações em um plano pessoal de estudo.', focus: 'revisão e continuidade da aprendizagem', lessons: ['Revisão dos mapas de aprendizagem', 'Encontro de síntese com o mentor', 'Plano pessoal para os próximos estudos', 'Encerramento e próximos passos'] },
+];
+export const demoModules = outlines.map((module, m) => ({
+  id: `demo-module-${m + 1}`, title: module.title, description: module.description,
+  lessons: module.lessons.map((title, l) => ({
+    id: `demo-lesson-${m + 1}-${l + 1}`, title, minutes: [12, 18, 22, 16][l],
+    introduction: `Nesta etapa de “${module.title}”, o percurso começa por uma pergunta: o que você deseja compreender melhor sobre ${module.focus}? O objetivo deste roteiro demonstrativo é mostrar como uma aula conecta apresentação, leitura, reflexão e conversa com o mentor.`,
+    objectives: [`Organizar as perguntas relacionadas a “${title}”.`, 'Distinguir o que já está claro dos pontos que precisam de referência e revisão.', 'Preparar uma síntese curta para a próxima conversa com o mentor.'],
+    sections: [
+      { title: 'Antes de começar', body: `Reserve um momento para registrar sua expectativa para esta aula. Na sua folha de estudo, escreva uma pergunta sobre ${module.focus} e indique por que ela é relevante para sua formação. Não é necessário responder agora: a pergunta orientará sua leitura.` },
+      { title: 'Durante o estudo', body: `Organize suas anotações em três partes: conceito que deseja compreender, fonte a consultar e dúvida a discutir. Ao estudar “${title}”, diferencie uma observação pessoal de uma afirmação sustentada por referência. Este mockup apresenta a organização da experiência; o conteúdo médico será inserido após revisão.` },
+      { title: 'Conversa com o mentor', body: 'Apresente uma síntese em suas próprias palavras. Indique quais informações você conseguiu confirmar e quais ainda precisam ser esclarecidas. Use o encontro para discutir o processo de aprendizagem, sem transformar este roteiro demonstrativo em protocolo de atendimento.' },
+      { title: 'Ao concluir', body: `Retorne à pergunta inicial sobre ${module.focus}. Registre o que mudou na sua compreensão e escolha um ponto para aprofundar na próxima etapa. A ficha de reflexão mantém esse registro organizado ao longo da trilha.` },
+    ],
+    reflection: `Qual pergunta sobre “${title}” você levaria ao próximo encontro? Que fonte e qual versão precisariam ser consultadas antes de sustentar uma conclusão?`,
+    materials: [
+      { id: `demo-guide-${m + 1}-${l + 1}`, title: `Roteiro de estudo · ${title}`, kind: 'Roteiro', body: `DEMONSTRAÇÃO — SEM VALIDADE CLÍNICA\n\n${title}\n\n1. Pergunta inicial\nEscreva a pergunta que orientará seu estudo.\n\n2. Mapa de leitura\nRegistre conceito, referência, versão e ponto a esclarecer. Nenhuma referência clínica é indicada neste mockup.\n\n3. Síntese pessoal\nResuma o que foi compreendido e diferencie suas hipóteses das informações confirmadas.\n\n4. Próxima conversa\nSelecione uma pergunta para discutir com o mentor.\n\nEste documento exemplifica um material complementar; não contém protocolo, prescrição ou orientação de atendimento.` },
+      { id: `demo-reflection-${m + 1}-${l + 1}`, title: `Ficha de reflexão · ${title}`, kind: 'Ficha', body: `DEMONSTRAÇÃO — SEM VALIDADE CLÍNICA\n\nMódulo: ${module.title}\nAula: ${title}\n\nMeu objetivo nesta aula:\n\nO que consegui organizar:\n\nO que ainda preciso esclarecer:\n\nFonte e versão que pretendo consultar:\n\nPergunta para o mentor:\n\nPróxima etapa de estudo:\n\nNão registre dados de pacientes. Esta ficha é um exemplo editorial, não um instrumento clínico validado.` },
+    ],
+  })),
+}));
+export const demoLessons = demoModules.flatMap(module => module.lessons.map(lesson => ({ ...lesson, moduleId: module.id, moduleTitle: module.title })));

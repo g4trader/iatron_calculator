@@ -1,0 +1,66 @@
+import { test, expect } from '@playwright/test';
+import { login } from './helpers/auth';
+import { PrismaClient } from '@prisma/client';
+const db = new PrismaClient();
+const route = '/mentory/admin/demonstracao';
+test.afterAll(() => db.$disconnect());
+test('Demonstração: sessão e papel editorial obrigatórios', async ({ page }) => {
+  await page.goto(route); await expect(page).toHaveURL(/\/mentory\/login/);
+  await login(page, 'mentory-test-student-b@iatron.test', route);
+  await expect(page).toHaveURL(/\/mentory\/aprender/);
+  await expect(page.getByText('Curso demonstrativo · acesso exclusivo à equipe')).toHaveCount(0);
+});
+test('Demonstração: curso completo, materiais e progresso isolados', async ({ page }, info) => {
+  test.setTimeout(60000);
+  const before = await db.mentoryLessonProgress.count({ where: { userId: 'mentory-test-admin' } });
+  const writes: string[] = [];
+  await login(page, 'mentory-test-admin@iatron.test', route);
+  page.on('request', r => { if (r.url().includes('/api/mentory') && r.method() !== 'GET') writes.push(r.url()); });
+  const nav = page.getByRole('navigation', { name: 'Navegação da demonstração' });
+  await expect(page.getByRole('progressbar', { name: 'Progresso demonstrativo' })).toHaveAttribute('aria-valuenow', '5');
+  await page.screenshot({ path: info.outputPath('overview.png'), fullPage: true });
+  await nav.getByRole('button', { name: 'Módulos', exact: true }).click();
+  await expect(page.locator('.demo-lesson-row')).toHaveCount(24);
+  await page.screenshot({ path: info.outputPath('modules.png'), fullPage: true });
+  await nav.getByRole('button', { name: 'Sala de aula', exact: true }).click();
+  await page.getByRole('button', { name: 'Iniciar prévia da aula' }).click();
+  await expect(page.getByText('Slide 1 de 4')).toBeVisible();
+  await page.getByRole('button', { name: 'Próximo slide' }).click();
+  await expect(page.getByText('Slide 2 de 4')).toBeVisible();
+  await page.getByLabel('Minha anotação de exemplo').fill('Pergunta de estudo sintética.');
+  await page.getByLabel('Fonte, versão e revisão pelo responsável habilitado').check();
+  await expect(page.getByText('Isso mesmo.', { exact: false })).toBeVisible();
+  await page.getByRole('button', { name: 'Concluir aula na demonstração', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Desmarcar conclusão simulada' })).toBeVisible();
+  await page.screenshot({ path: info.outputPath('lesson.png'), fullPage: true });
+  await nav.getByRole('button', { name: 'Visão geral', exact: true }).click();
+  await expect(page.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '6');
+  await nav.getByRole('button', { name: 'Materiais', exact: true }).click();
+  await expect(page.getByRole('button', { name: /^Abrir (Roteiro|Ficha)/ })).toHaveCount(48);
+  await page.getByLabel('Buscar material').fill('Boas-vindas');
+  await expect(page.getByRole('button', { name: /^Abrir (Roteiro|Ficha)/ })).toHaveCount(2);
+  await page.getByRole('button', { name: /^Abrir Roteiro/ }).click();
+  await expect(page.getByRole('region', { name: 'Leitor de material' })).toContainText('SEM VALIDADE CLÍNICA');
+  await expect(page.getByRole('region', { name: 'Leitor de material' })).toBeFocused();
+  const download = page.waitForEvent('download');
+  await page.getByRole('link', { name: 'Baixar exemplo em texto' }).click();
+  expect((await download).suggestedFilename()).toBe('demo-guide-1-1.txt');
+  await page.screenshot({ path: info.outputPath('materials.png'), fullPage: true });
+  await nav.getByRole('button', { name: 'Assinatura', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Cobrança não habilitada' })).toBeDisabled();
+  await page.screenshot({ path: info.outputPath('subscription.png'), fullPage: true });
+  await page.getByRole('button', { name: 'Reiniciar demonstração' }).click();
+  await expect(page.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '5');
+  expect(writes).toEqual([]);
+  expect(await db.mentoryLessonProgress.count({ where: { userId: 'mentory-test-admin' } })).toBe(before);
+  expect(await db.mentorySubscription.count({ where: { userId: 'mentory-test-admin' } })).toBe(0);
+});
+test('Demonstração: editor e larguras responsivas', async ({ page }, info) => {
+  await login(page, 'mentory-test-editor@iatron.test', route);
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Emergência pediátrica');
+  for (const width of [360, 390, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.screenshot({ path: info.outputPath(`responsive-${width}.png`), fullPage: true });
+  }
+});
