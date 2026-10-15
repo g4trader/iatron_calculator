@@ -1,0 +1,7 @@
+{
+  "deployment": "dpl_4pp5LbFz6KRKgWMmhzzZy23jkUGx",
+  "commit": "8d6763e251e647a2fc242f0743834ed031c0a486",
+  "promotedAt": "2026-10-15T17:55:52.086038+00:00",
+  "url": "https://ped.iatron.com.br",
+  "rollback": "dpl_HrNmYiua1RMWHi63xgrriYMenZQ5"
+}

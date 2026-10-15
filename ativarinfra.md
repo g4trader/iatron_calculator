@@ -171,3 +171,11 @@ Relatório de escopo, resultados, limitações e reprodução em [RELATORIO_E2E.
 - Preflight real de upload, assinatura, Range, CORS, bloqueio anônimo e cleanup aprovado; build Ready; 30 smoke checks aprovados. Sem migration, push ou merge. Testes autenticados em produção seguem com o usuário.
 - Admin Mentory: `aristoteles.pires@hmv.org.br`, senha existente. Cobranças reais aguardam provedor; novos cálculos com protocolos ainda ambíguos continuam bloqueados.
 - Relatório/evidências: [docs/mentory-media-publicacao-2026-10-15/REPORT.md](docs/mentory-media-publicacao-2026-10-15/REPORT.md). Rollback: `dpl_6DnonYnupReXhccZpHg3pVgjq1e3`.
+
+
+## Correção de entrada do administrador Mentory — 15/10/2026
+
+- Commit `8d6763e251e647a2fc242f0743834ed031c0a486`, deployment `dpl_4pp5LbFz6KRKgWMmhzzZy23jkUGx`, produção promovida em 15/10/2026 às 14:55:52 de Brasília. Alias `ped.iatron.com.br` confirmado.
+- Equipe sem matrícula agora entra na gestão em vez de receber aviso de acesso premium inativo. Regras de matrícula/aluno e permissões preservadas.
+- 16 E2E, typecheck, lint, build e 30 smoke checks aprovados. Relatório: [docs/mentory-admin-access-fix/REPORT.md](docs/mentory-admin-access-fix/REPORT.md).
+- Rollback disponível para `dpl_HrNmYiua1RMWHi63xgrriYMenZQ5`. Sem alterações de banco, infraestrutura ou pagamentos.
