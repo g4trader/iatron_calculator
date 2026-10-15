@@ -187,3 +187,11 @@ Relatório de escopo, resultados, limitações e reprodução em [RELATORIO_E2E.
 - Commit `ce95ef717a6be7fe4a56d82f24cee05e83d79417`, deployment `dpl_Axq1D31tHMhzmhpW8gNW74oBU6Qi`, promovido em 15/10/2026 às 15:13:12 de Brasília. 6 E2E, typecheck, lint, build e 31 smoke checks aprovados.
 - Relatório: [docs/mentory-course-mockup/REPORT.md](docs/mentory-course-mockup/REPORT.md). Sem mudança de banco, infraestrutura, cálculos ou pagamentos.
 - Rollback: `dpl_4pp5LbFz6KRKgWMmhzzZy23jkUGx`.
+
+
+## Player de vídeo da demonstração Mentory — 15/10/2026
+
+- Demonstração em `/mentory/admin/demonstracao` agora possui player HTML5 funcional com vídeo original de 56 segundos, narração sintética, legendas, capítulos, velocidade e retomada em memória por aula.
+- Ativos fora de public/, servidos por `/api/mentory/demo-video` exclusivamente à equipe autenticada; Range/HEAD suportados. Sem alterações de GCS, banco ou regras de acesso das aulas reais.
+- Commit `b688f017e27e94a9afe21290580bbae49fe13f41`, deployment `dpl_249W8sEPGVEB7q53MAVs4mSBuyCa`, promovido em 15/10/2026 às 15:51:55 de Brasília. Build local/remoto, 2 testes unitários, 8 E2E e 34 smoke checks aprovados.
+- Relatório: [docs/mentory-demo-video/REPORT.md](docs/mentory-demo-video/REPORT.md). Rollback: `dpl_Axq1D31tHMhzmhpW8gNW74oBU6Qi`.

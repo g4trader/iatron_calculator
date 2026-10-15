@@ -1,0 +1,43 @@
+{
+  "duration": 56.178684000000004,
+  "chapters": [
+    {
+      "title": "Sua sala de aula",
+      "start": 0
+    },
+    {
+      "title": "Você controla o ritmo",
+      "start": 12.517
+    },
+    {
+      "title": "Tudo conectado à aula",
+      "start": 27.259
+    },
+    {
+      "title": "Continue sua jornada",
+      "start": 41.156
+    }
+  ],
+  "files": [
+    {
+      "name": "captions.vtt",
+      "bytes": 1149,
+      "sha256": "f27a976b04911bebb2ed7591ca80fbb31505f81b872bfc479d88cbb81bce64c8"
+    },
+    {
+      "name": "poster.jpg",
+      "bytes": 29223,
+      "sha256": "c11c7a399e3dfcef0d06b98686b29a6afeeae4ed9731027cc5ecaf5eded94f1f"
+    },
+    {
+      "name": "README.md",
+      "bytes": 275,
+      "sha256": "daf2f2abc68bda1decd4515f3f28ef6ba951de4757d017236790b482e76c44e4"
+    },
+    {
+      "name": "lesson.mp4",
+      "bytes": 898608,
+      "sha256": "d997725497624794694b1060c32b63a282b463087d35659fe3b793b69264ea91"
+    }
+  ]
+}

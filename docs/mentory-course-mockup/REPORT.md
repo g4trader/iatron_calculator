@@ -1,5 +1,7 @@
 # Curso demonstrativo completo — Mentory
 
+> Atualização: a prévia em slides foi substituída por player de vídeo funcional. Consulte [a entrega do player](../mentory-demo-video/REPORT.md). Este relatório registra a primeira versão do mockup.
+
 Disponível em https://ped.iatron.com.br/mentory/admin/demonstracao, ou Administração → Curso demonstrativo. Requer conta com papel `mentory_admin` ou `mentory_editor` verificado no servidor.
 
 Publicado em **15/10/2026 às 15:13:12 de Brasília**, commit `ce95ef717a6be7fe4a56d82f24cee05e83d79417`, deployment `dpl_Axq1D31tHMhzmhpW8gNW74oBU6Qi`. Alias confirmado. Sem push ou merge.

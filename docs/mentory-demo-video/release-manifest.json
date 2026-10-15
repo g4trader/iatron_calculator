@@ -1,0 +1,1521 @@
+{
+  "commit": "b688f017e27e94a9afe21290580bbae49fe13f41",
+  "files": [
+    {
+      "path": "frontend/.env.example",
+      "gitBlob": "56bd3389333926d617c6f44c88e382254b0c84aa"
+    },
+    {
+      "path": "frontend/.eslintrc.json",
+      "gitBlob": "957cd1545e307e26099a37413ec28183204daf88"
+    },
+    {
+      "path": "frontend/.gitignore",
+      "gitBlob": "e985853ed84acf10f62f639a4733083229c5a55d"
+    },
+    {
+      "path": "frontend/ADMIN_AUDIT.md",
+      "gitBlob": "46c0f94a1c95139a02cf9ce0d8611e12531583b9"
+    },
+    {
+      "path": "frontend/ADMIN_AUTHORIZATION.md",
+      "gitBlob": "bbf70a0222b3d9fe5da06170c06db3dd8a414d4b"
+    },
+    {
+      "path": "frontend/ADMIN_BILLING.md",
+      "gitBlob": "3d9c41e0cb1d95f6c4027a1a6d1dbdbe59376142"
+    },
+    {
+      "path": "frontend/ADMIN_CONTINGENCY.md",
+      "gitBlob": "a140b670fad3c9b203132ea0c3962fb72e35d9a5"
+    },
+    {
+      "path": "frontend/ADMIN_CUSTOMERS.md",
+      "gitBlob": "8e172942e55b0082eec3d2cc46dcb99425615b93"
+    },
+    {
+      "path": "frontend/ADMIN_HARDENING_WAVE_1.md",
+      "gitBlob": "8744c7b43a79f4ab1562e06c789464d77767aac5"
+    },
+    {
+      "path": "frontend/ADMIN_LICENSES.md",
+      "gitBlob": "222a481dd664ebbe656623f8a66dcee1c7a1c01c"
+    },
+    {
+      "path": "frontend/ADMIN_OPERATIONAL_DATA.md",
+      "gitBlob": "a56605c453eceddb022b87ffb90740cc433df290"
+    },
+    {
+      "path": "frontend/ADMIN_PRODUCTION_READINESS.md",
+      "gitBlob": "5b3a2f4f43560ceab4c4e411a7290d23d3ace1dc"
+    },
+    {
+      "path": "frontend/ADMIN_RBAC.md",
+      "gitBlob": "88e2e31e80de665027521082d5bcfb481ebf90f1"
+    },
+    {
+      "path": "frontend/ADMIN_RELEASE_REVIEW.md",
+      "gitBlob": "1acd3b1fa1e3d02b6324aa5839cb4223dfed644f"
+    },
+    {
+      "path": "frontend/ADMIN_SALES_METRICS.md",
+      "gitBlob": "4230c9cc72e2ff96d765584c6cd6086ca17d39a1"
+    },
+    {
+      "path": "frontend/ADMIN_SUPPORT.md",
+      "gitBlob": "47c86057b126c85bf7c9a4605b16f94c3485592e"
+    },
+    {
+      "path": "frontend/COMMERCIAL_MVP_MATRIX.md",
+      "gitBlob": "6fb4e3e6d7bf4f3d701f394a50e75f7fdecc47b7"
+    },
+    {
+      "path": "frontend/DEPLOYMENT.md",
+      "gitBlob": "6f69fcb51970fd193cc488863e21fe2bb3d30c96"
+    },
+    {
+      "path": "frontend/GO_LIVE_CHECKLIST.md",
+      "gitBlob": "b75a832a575e539fc572b42b45d66ea8c562f613"
+    },
+    {
+      "path": "frontend/GO_LIVE_READINESS.md",
+      "gitBlob": "e3a85cc303873bb5650ba8eabee1df8ccf37477b"
+    },
+    {
+      "path": "frontend/INSTITUTIONAL_COMMERCIAL_DECISION.md",
+      "gitBlob": "e4d83a5bc4218e1a4d7de605541e1395dc0bbd84"
+    },
+    {
+      "path": "frontend/LIVE_MODE_RUNBOOK.md",
+      "gitBlob": "01928849fdb8634356d1d55e53e03e754c696251"
+    },
+    {
+      "path": "frontend/MANUAL_COMMERCIAL_VALIDATION.md",
+      "gitBlob": "5627dbbe52be9ad95d8706c7179392bea10e32c8"
+    },
+    {
+      "path": "frontend/MANUAL_PAYMENTS_OPERATION.md",
+      "gitBlob": "94d912db28ebfdda3898b026b6fe4237840313ef"
+    },
+    {
+      "path": "frontend/PRODUCTION_DOMAIN.md",
+      "gitBlob": "663e825aa35fde4291cf840e1c046cb72cd9dbe2"
+    },
+    {
+      "path": "frontend/PRODUCTION_INFRASTRUCTURE.md",
+      "gitBlob": "4b37bcf5f1f9372107ec7a152730a4c4c88604c4"
+    },
+    {
+      "path": "frontend/README.md",
+      "gitBlob": "81f3c2e750a9a8aae2eaa0dde29d670c40546ed7"
+    },
+    {
+      "path": "frontend/SECURITY_PERFORMANCE_ARCHITECTURE.md",
+      "gitBlob": "e0dd00e152a0621cb92ce3e818ca713500b1d8ae"
+    },
+    {
+      "path": "frontend/SECURITY_TEST_PLAN.md",
+      "gitBlob": "4a8055a1ed1c77f5f2d77a569bf918217db451c5"
+    },
+    {
+      "path": "frontend/STAGING_DEPLOYED_VALIDATION.md",
+      "gitBlob": "ca9612a7f30df2e655349adf8fdfebf6ec3a72d2"
+    },
+    {
+      "path": "frontend/STAGING_REVIEW_CHECKLIST.md",
+      "gitBlob": "87de6b4a15082e86f6c8fdc8adf6310a92d68864"
+    },
+    {
+      "path": "frontend/STRIPE_TEST_GO_LIVE.md",
+      "gitBlob": "07b70d0f24fa5dd40dec0bd4e9185a2ca3d70b0a"
+    },
+    {
+      "path": "frontend/SUPABASE_STAGING_E2E.md",
+      "gitBlob": "ec5bfe68ffee9970c3d6cafb52967eb3c9ecab0b"
+    },
+    {
+      "path": "frontend/VERCEL_DEPLOYS_UNKNOWN.md",
+      "gitBlob": "b0e7c1c5647200a70d1ad998bf01c2581c453b35"
+    },
+    {
+      "path": "frontend/app/admin/admin-users/actions.ts",
+      "gitBlob": "f897ad0b914e7f182f7761351362cff16b9badd1"
+    },
+    {
+      "path": "frontend/app/admin/admin-users/page.tsx",
+      "gitBlob": "a20924b60c7e7a3db726acb0f19a45352bb54520"
+    },
+    {
+      "path": "frontend/app/admin/archive/actions.ts",
+      "gitBlob": "74ecaa4e0e9cbda7171c99cb95e6c915238d8ec8"
+    },
+    {
+      "path": "frontend/app/admin/archive/page.tsx",
+      "gitBlob": "04e7765bdf052f2f929f826ebd59f39793275d63"
+    },
+    {
+      "path": "frontend/app/admin/audit/[id]/page.tsx",
+      "gitBlob": "8c48a592bbd1bcd4a484fcc9b09859ca652a227b"
+    },
+    {
+      "path": "frontend/app/admin/audit/export/route.ts",
+      "gitBlob": "b9711f7e43eb345e431ff7985c3c0a904af19547"
+    },
+    {
+      "path": "frontend/app/admin/audit/page.tsx",
+      "gitBlob": "5319078c802c11ab12cd621d5bf41ce0ed30eabc"
+    },
+    {
+      "path": "frontend/app/admin/billing/actions.ts",
+      "gitBlob": "40dd3b18ca54d16c1a11421a80fe5df279bda4f5"
+    },
+    {
+      "path": "frontend/app/admin/billing/page.tsx",
+      "gitBlob": "bb75d17be2ec25ea323651e67d9f088c2070691f"
+    },
+    {
+      "path": "frontend/app/admin/contingency/actions.ts",
+      "gitBlob": "2d8ea47360e852dbaadbbd4e08098c85ab05fd81"
+    },
+    {
+      "path": "frontend/app/admin/contingency/page.tsx",
+      "gitBlob": "1d684033e471268a3ff948ed4ccc44bb3408da60"
+    },
+    {
+      "path": "frontend/app/admin/customers/[id]/page.tsx",
+      "gitBlob": "bba59ac886767754922f9186d0e1bd17c4aa290f"
+    },
+    {
+      "path": "frontend/app/admin/customers/actions.ts",
+      "gitBlob": "f292b613e650807b78de8a1376487803d01d0e44"
+    },
+    {
+      "path": "frontend/app/admin/customers/page.tsx",
+      "gitBlob": "bb2a9a4c127ba417b390a20e9d5333e1b2950b2c"
+    },
+    {
+      "path": "frontend/app/admin/exports/[id]/download/route.ts",
+      "gitBlob": "5eac931d90caf8656d4f11bf56fb97e18525b1da"
+    },
+    {
+      "path": "frontend/app/admin/exports/actions.ts",
+      "gitBlob": "2b54213538cb39fae01efc70d963b79df0b17ec9"
+    },
+    {
+      "path": "frontend/app/admin/exports/page.tsx",
+      "gitBlob": "4b02f6846522531a95144a4e1c3fd83f7027f036"
+    },
+    {
+      "path": "frontend/app/admin/layout.tsx",
+      "gitBlob": "25f72299693f4293be08bd527caacf60a16cfc5f"
+    },
+    {
+      "path": "frontend/app/admin/licenses/actions.ts",
+      "gitBlob": "d6a6ea7f4db3ec1d523fc854e5a109e753620252"
+    },
+    {
+      "path": "frontend/app/admin/licenses/page.tsx",
+      "gitBlob": "c3dc931e4407b134da0fbd6c5d6bf6fe79927d06"
+    },
+    {
+      "path": "frontend/app/admin/loading.tsx",
+      "gitBlob": "542cf716683cefc37da62fea82d00631e53fe892"
+    },
+    {
+      "path": "frontend/app/admin/operations/actions.ts",
+      "gitBlob": "a3079805f29778e87682f11582e9fb334e5441ef"
+    },
+    {
+      "path": "frontend/app/admin/operations/loading.tsx",
+      "gitBlob": "3ba052dd95756548a17396d447123b034cdd96db"
+    },
+    {
+      "path": "frontend/app/admin/operations/page.tsx",
+      "gitBlob": "fa43eb84f4dbf39e3724e8d20c0fc6338fd801a6"
+    },
+    {
+      "path": "frontend/app/admin/page.tsx",
+      "gitBlob": "7564bf732721a7ba002cc38b4a9b5b97d84346e3"
+    },
+    {
+      "path": "frontend/app/admin/payments-manual/[id]/ManualPaymentAttachmentUploader.tsx",
+      "gitBlob": "90b51044f2f2bfde99f2d93c7209cc6493313db2"
+    },
+    {
+      "path": "frontend/app/admin/payments-manual/[id]/page.tsx",
+      "gitBlob": "891adb44895a7b8bf4b3fafed0dac9a6390652e7"
+    },
+    {
+      "path": "frontend/app/admin/payments-manual/actions.ts",
+      "gitBlob": "dabecb97c8f2cdbb015313825968615dee7c7fa1"
+    },
+    {
+      "path": "frontend/app/admin/payments-manual/page.tsx",
+      "gitBlob": "429daace1d6190666bd76d1b6d14606015cdeb1b"
+    },
+    {
+      "path": "frontend/app/admin/retention/actions.ts",
+      "gitBlob": "9f61ef3d238d8778ec9f096c262a1db6aa215bdb"
+    },
+    {
+      "path": "frontend/app/admin/retention/page.tsx",
+      "gitBlob": "a558b35e13fe17b84744629ba16134adfa63b03f"
+    },
+    {
+      "path": "frontend/app/admin/sales/loading.tsx",
+      "gitBlob": "9f1bc7e165fcd208bcf94bd76eea2ed27344a855"
+    },
+    {
+      "path": "frontend/app/admin/sales/page.tsx",
+      "gitBlob": "d90f104bcfecf3469921be33a031e3db08523eee"
+    },
+    {
+      "path": "frontend/app/admin/support/actions.ts",
+      "gitBlob": "0fc380b50b44273675fbbe7a438eef0abe1ea7a6"
+    },
+    {
+      "path": "frontend/app/admin/support/page.tsx",
+      "gitBlob": "995d6f00726ddd51bab2d93a7b066897ff6d28bd"
+    },
+    {
+      "path": "frontend/app/admin/system/actions.ts",
+      "gitBlob": "60776c244fdb4b530493ae4be864f7d72fb46144"
+    },
+    {
+      "path": "frontend/app/admin/system/page.tsx",
+      "gitBlob": "5480a91f789b8c502a67242c5e741d9aef52b9b9"
+    },
+    {
+      "path": "frontend/app/admin/users/page.tsx",
+      "gitBlob": "b9f46e61e0a171d3dde0190320fe2ba8572c303e"
+    },
+    {
+      "path": "frontend/app/api/admin/payments-manual/[id]/attachments/[attachmentId]/complete/route.ts",
+      "gitBlob": "368f88c79ebef83c8dbd1de119e32aa84f93a8b0"
+    },
+    {
+      "path": "frontend/app/api/admin/payments-manual/[id]/attachments/[attachmentId]/download-url/route.ts",
+      "gitBlob": "e9c1d37917939a073f5cb3fe2c04e93c238e8c6f"
+    },
+    {
+      "path": "frontend/app/api/admin/payments-manual/[id]/attachments/upload-url/route.ts",
+      "gitBlob": "282ae58c540afde25790d939b2f17680c988bbdc"
+    },
+    {
+      "path": "frontend/app/api/auth/[...nextauth]/route.ts",
+      "gitBlob": "8e022bdf6637c5ee235cea0647bb8a920e9f26a5"
+    },
+    {
+      "path": "frontend/app/api/auth/forgot-password/route.ts",
+      "gitBlob": "e4ba610e2ffd969381f57c427c0eb4e8ee41882b"
+    },
+    {
+      "path": "frontend/app/api/auth/register/route.ts",
+      "gitBlob": "d47e9a4785719cdc55df8f6c72d74589e0cc4629"
+    },
+    {
+      "path": "frontend/app/api/auth/resend-verification/route.ts",
+      "gitBlob": "69380c7edd14d83a2f6df12757314c61056fe1ad"
+    },
+    {
+      "path": "frontend/app/api/auth/reset-password/route.ts",
+      "gitBlob": "ad1dab3439dd6375f56979fa59ff735b8e3e8b3d"
+    },
+    {
+      "path": "frontend/app/api/auth/verify-email/route.ts",
+      "gitBlob": "34bcd5b3005d2177b5d98e1d6cba491dfb7af401"
+    },
+    {
+      "path": "frontend/app/api/calculate/pcr/route.ts",
+      "gitBlob": "4ec1c4dce0f391874fb28e5d1051998e83c844d3"
+    },
+    {
+      "path": "frontend/app/api/calculation-history/route.ts",
+      "gitBlob": "a03e0876dc387166dff975e75200b349a8cef175"
+    },
+    {
+      "path": "frontend/app/api/funnel/route.ts",
+      "gitBlob": "74b806861c6788c22d955ab9dd6f2a704aaf726e"
+    },
+    {
+      "path": "frontend/app/api/health/route.ts",
+      "gitBlob": "ef1b64ac436907e07879f2054a8deeb682a5f011"
+    },
+    {
+      "path": "frontend/app/api/mentory/[[...path]]/route.ts",
+      "gitBlob": "445a1f734a73fced059c033748617cf41bd3c33e"
+    },
+    {
+      "path": "frontend/app/api/mentory/demo-video/route.ts",
+      "gitBlob": "ab963b9f1367a076417f736c0ed5e90d700c33c3"
+    },
+    {
+      "path": "frontend/app/api/organization-invites/accept/route.ts",
+      "gitBlob": "8ba2cf8f4421b530d34fc86d877d97585e4eb1df"
+    },
+    {
+      "path": "frontend/app/api/organizations/[organizationId]/invites/route.ts",
+      "gitBlob": "16adb432df24663419db9d785661023483b4c409"
+    },
+    {
+      "path": "frontend/app/api/organizations/[organizationId]/licenses/assign/route.ts",
+      "gitBlob": "e5843bb439b427f628e7c4bf63125ab8d42c3a8c"
+    },
+    {
+      "path": "frontend/app/api/organizations/[organizationId]/memberships/route.ts",
+      "gitBlob": "8993e83757c1c9729d1a590bffae9e933fc00147"
+    },
+    {
+      "path": "frontend/app/api/organizations/[organizationId]/route.ts",
+      "gitBlob": "3938524fbc4756aa71d9f44607e285f057e2e9f5"
+    },
+    {
+      "path": "frontend/app/api/organizations/route.ts",
+      "gitBlob": "b457702eccad02c333748967abbdb7e9d925d45c"
+    },
+    {
+      "path": "frontend/app/api/profile/route.ts",
+      "gitBlob": "eb1c1092155e9a58675367418b9163b0836ed9b2"
+    },
+    {
+      "path": "frontend/app/api/skin/route.ts",
+      "gitBlob": "3f6ead148e0c6b8c05918e9651c7f9d90cb698b6"
+    },
+    {
+      "path": "frontend/app/api/stripe/create-checkout-session/route.ts",
+      "gitBlob": "781e5a5baf3f69fd56e00e9443608dcd11b8bd5e"
+    },
+    {
+      "path": "frontend/app/api/stripe/create-portal-session/route.ts",
+      "gitBlob": "6fbfe9121ebc7a6e2cf334cf33c76dd1f0f832d5"
+    },
+    {
+      "path": "frontend/app/api/stripe/webhook/route.ts",
+      "gitBlob": "4d3eb73bcc6797108c198402e039a260fd58432d"
+    },
+    {
+      "path": "frontend/app/billing/page.tsx",
+      "gitBlob": "e61b468ce83f4c397f393537281113e92bf084fc"
+    },
+    {
+      "path": "frontend/app/checkout/page.tsx",
+      "gitBlob": "6f2692922206203b6f1c47af15548a44c4cbbcd3"
+    },
+    {
+      "path": "frontend/app/checkout/return/page.tsx",
+      "gitBlob": "6081675f30279e9deeead86f7e9da4b52041aae6"
+    },
+    {
+      "path": "frontend/app/dashboard/biblioteca-medicamentos/[id]/page.tsx",
+      "gitBlob": "78847de38823987652cb5085833f6192f534625c"
+    },
+    {
+      "path": "frontend/app/dashboard/biblioteca-medicamentos/error.tsx",
+      "gitBlob": "7cbc97033064b26318facabffca3d0584338826f"
+    },
+    {
+      "path": "frontend/app/dashboard/biblioteca-medicamentos/loading.tsx",
+      "gitBlob": "8e01c8b08c830fdf89743e0be3452ac8749d26a8"
+    },
+    {
+      "path": "frontend/app/dashboard/biblioteca-medicamentos/page.tsx",
+      "gitBlob": "ab403ecbf2e137153cca89c1503ff28f8756f262"
+    },
+    {
+      "path": "frontend/app/dashboard/completa/page.tsx",
+      "gitBlob": "1ab7a439f4ac82d1a93f098053e3eb2e8739aaa0"
+    },
+    {
+      "path": "frontend/app/dashboard/doses-medicacoes/page.tsx",
+      "gitBlob": "f73ea7eb06299b4e2cbf7b1127a79961242ac626"
+    },
+    {
+      "path": "frontend/app/dashboard/infusao-continua/error.tsx",
+      "gitBlob": "7cbc97033064b26318facabffca3d0584338826f"
+    },
+    {
+      "path": "frontend/app/dashboard/infusao-continua/loading.tsx",
+      "gitBlob": "8e01c8b08c830fdf89743e0be3452ac8749d26a8"
+    },
+    {
+      "path": "frontend/app/dashboard/infusao-continua/page.tsx",
+      "gitBlob": "b77037db54a5e9c6df29fd331b60c9bc265fa1dd"
+    },
+    {
+      "path": "frontend/app/dashboard/intubacao-rapida/page.tsx",
+      "gitBlob": "a2958618d3c000fcaf21edecaabd9e07ccc7ca11"
+    },
+    {
+      "path": "frontend/app/dashboard/layout.tsx",
+      "gitBlob": "ce69e7b46e71b013d8f6bf0eeb63b7d51b230de2"
+    },
+    {
+      "path": "frontend/app/dashboard/modelo-prescricao/page.tsx",
+      "gitBlob": "6dad89495460909ac4df3e45cdfb2e7a1713ba65"
+    },
+    {
+      "path": "frontend/app/dashboard/page.tsx",
+      "gitBlob": "e0094354e9556febcdc474a0bb569431aa1bb560"
+    },
+    {
+      "path": "frontend/app/dashboard/pcr/page.tsx",
+      "gitBlob": "9e1ce259955db41cffd0d1c49a84b64ec459156c"
+    },
+    {
+      "path": "frontend/app/dashboard/soroterapia/page.tsx",
+      "gitBlob": "23ff00cfdfd64aeb03d5b29bd13abe18c816b0ef"
+    },
+    {
+      "path": "frontend/app/forgot-password/page.tsx",
+      "gitBlob": "77a3a2634240432463ea8e0fc55f341815d76277"
+    },
+    {
+      "path": "frontend/app/globals.css",
+      "gitBlob": "1d70d0629204acf054d479f1b67b2161d0e7db6d"
+    },
+    {
+      "path": "frontend/app/layout.tsx",
+      "gitBlob": "ab0f2e5143488d80c0e558c9050219cd73ed2fa1"
+    },
+    {
+      "path": "frontend/app/login/page.tsx",
+      "gitBlob": "109db55f4908fa9380873a408d482e49f220ceea"
+    },
+    {
+      "path": "frontend/app/mentory/[section]/page.tsx",
+      "gitBlob": "f38ca1193d14e05a6ae422111a964312f6eca618"
+    },
+    {
+      "path": "frontend/app/mentory/admin/[[...section]]/page.tsx",
+      "gitBlob": "9caba2090d621633ceee0cfc177ad4a7ec9786e1"
+    },
+    {
+      "path": "frontend/app/mentory/admin/demonstracao/page.tsx",
+      "gitBlob": "00e205b8c092d8333fc0c1ae4e05fe954ec9c514"
+    },
+    {
+      "path": "frontend/app/mentory/aprender/[id]/page.tsx",
+      "gitBlob": "ad05b1085157ff2a99a5a2ddd25208443ad75cca"
+    },
+    {
+      "path": "frontend/app/mentory/error.tsx",
+      "gitBlob": "08b07f5330bdf39c6295e2dacf8d0069a8d9bcfd"
+    },
+    {
+      "path": "frontend/app/mentory/layout.tsx",
+      "gitBlob": "36105ddab69cb185e2f9665592216ecd53813294"
+    },
+    {
+      "path": "frontend/app/mentory/loading.tsx",
+      "gitBlob": "2e524950d5c5b958719da9f0a057945f7fcdac9a"
+    },
+    {
+      "path": "frontend/app/mentory/login/page.tsx",
+      "gitBlob": "cc29a3114afa5d04b7308247e0a625dbb39844a6"
+    },
+    {
+      "path": "frontend/app/mentory/mentory.css",
+      "gitBlob": "025ba425919f248dc988145e07944f4e1576c036"
+    },
+    {
+      "path": "frontend/app/mentory/page.tsx",
+      "gitBlob": "1be2a8e57ef880fbc6dd47e97ae333bb9f83a011"
+    },
+    {
+      "path": "frontend/app/mentory/privacidade/page.tsx",
+      "gitBlob": "2540c542801f60b682dadbe24c34deccac13dc19"
+    },
+    {
+      "path": "frontend/app/mentory/termos/page.tsx",
+      "gitBlob": "5cccb9b84a49903443ea4e61e9c3a53b1b7ea22f"
+    },
+    {
+      "path": "frontend/app/organization/invites/accept/page.tsx",
+      "gitBlob": "a12e9c1bdce657054de3db76f47f3360181f6974"
+    },
+    {
+      "path": "frontend/app/organization/page.tsx",
+      "gitBlob": "2145f529d93d99efdd497141644be417162bc8b7"
+    },
+    {
+      "path": "frontend/app/page.tsx",
+      "gitBlob": "7a1e8e292d6dd1d48f4a91cef6b4812916344d48"
+    },
+    {
+      "path": "frontend/app/profile/page.tsx",
+      "gitBlob": "e18079c2d2894345278e5c1d8662cf4c7915f572"
+    },
+    {
+      "path": "frontend/app/redesign.css",
+      "gitBlob": "bf8472adf4a77d283f31a6eb211b1aaafeb9c2cb"
+    },
+    {
+      "path": "frontend/app/register/page.tsx",
+      "gitBlob": "e839b73cd0b9d2a45acc56dcf5a312ec6b6257b2"
+    },
+    {
+      "path": "frontend/app/resend-verification/page.tsx",
+      "gitBlob": "20a283864c2474623007f6df0f750cde600d38cc"
+    },
+    {
+      "path": "frontend/app/reset-password/page.tsx",
+      "gitBlob": "61362b6fe507a6d4358536e185052de7faf07bd0"
+    },
+    {
+      "path": "frontend/app/verify-email/page.tsx",
+      "gitBlob": "b305e87dab70aff6c1f1a06dcbd4f67fe92761ba"
+    },
+    {
+      "path": "frontend/assets/mentory-demo/README.md",
+      "gitBlob": "6645a22a7b035a5c275b8db1fc65e4dc5318694b"
+    },
+    {
+      "path": "frontend/assets/mentory-demo/captions.vtt",
+      "gitBlob": "7cbf1eb4d27fc895ad3b23734f3f8a1db94a78e2"
+    },
+    {
+      "path": "frontend/assets/mentory-demo/lesson.mp4",
+      "gitBlob": "bbf0df72b03656bf844eea4750b3fc75c0afe485"
+    },
+    {
+      "path": "frontend/assets/mentory-demo/poster.jpg",
+      "gitBlob": "49cbe5808a59ebdba76858607bd1412263233251"
+    },
+    {
+      "path": "frontend/auth.ts",
+      "gitBlob": "012644a2a73f4d7f194f495a3f1cc0096d332d2a"
+    },
+    {
+      "path": "frontend/components/AirwayMaterials.tsx",
+      "gitBlob": "1470e5a5f056aa5210aeb9c569b109b52d82d85f"
+    },
+    {
+      "path": "frontend/components/AlertDose.tsx",
+      "gitBlob": "7b2b0fbb8001f4f456535a7da2f34134311e8830"
+    },
+    {
+      "path": "frontend/components/AuthProvider.tsx",
+      "gitBlob": "e7e728f55bf6179893ce7aeece0f2e7316eaa58e"
+    },
+    {
+      "path": "frontend/components/Brand.tsx",
+      "gitBlob": "47b388d937e12edb5ee1f78146e5a9afb86e3995"
+    },
+    {
+      "path": "frontend/components/CalculatorApp.tsx",
+      "gitBlob": "c4c2aaefb669e1be22ef1c37448f6c0d5fba1e35"
+    },
+    {
+      "path": "frontend/components/CalculatorShell.tsx",
+      "gitBlob": "1c5b1f37c0b319806b2cf72088d2b12299c09010"
+    },
+    {
+      "path": "frontend/components/DashboardChooser.tsx",
+      "gitBlob": "e5ef606f415ffa812ba3807d10196d3d53b8a51b"
+    },
+    {
+      "path": "frontend/components/InputForm.tsx",
+      "gitBlob": "53e6076b7b9095585c94a926b40ac06ce11cf47e"
+    },
+    {
+      "path": "frontend/components/MedicationTable.tsx",
+      "gitBlob": "656cf1d24f2781641884df2a145deb50c7969ed1"
+    },
+    {
+      "path": "frontend/components/MobileMenu.tsx",
+      "gitBlob": "094d305b27ff0987102d4316adebaa33f82c60d6"
+    },
+    {
+      "path": "frontend/components/PcrCalculatorApp.tsx",
+      "gitBlob": "d21c01c8bfba3d824182c1ac495fb015150d922e"
+    },
+    {
+      "path": "frontend/components/PrintButton.tsx",
+      "gitBlob": "c1024e2e5a54c7196c77bbea6f19bd72bd4a4460"
+    },
+    {
+      "path": "frontend/components/ProductAccessGate.tsx",
+      "gitBlob": "f98949ecc1188ad85f17be33f2fa0d7eb9bf87cb"
+    },
+    {
+      "path": "frontend/components/ProductMockPage.tsx",
+      "gitBlob": "57964b0489798da3972ec26a81a09ddfcc1244f5"
+    },
+    {
+      "path": "frontend/components/ProductUserPanel.tsx",
+      "gitBlob": "726c4e9ccac493c83a28d77222b23bb373f1b910"
+    },
+    {
+      "path": "frontend/components/ResultSection.tsx",
+      "gitBlob": "53a426bd19a5cb4d9276d0ddce5e47bf4ea07a17"
+    },
+    {
+      "path": "frontend/components/ShockCard.tsx",
+      "gitBlob": "a18779fa824718c0b311fcddba61227b6e9855a0"
+    },
+    {
+      "path": "frontend/components/admin/AdminPrimitives.tsx",
+      "gitBlob": "f5a414e46297c37de94e27b5a0f1deef86789e26"
+    },
+    {
+      "path": "frontend/components/admin/AdminShell.tsx",
+      "gitBlob": "b847fe362429199fc94efa4d1fde596aeda27705"
+    },
+    {
+      "path": "frontend/components/admin/AdminSidebar.tsx",
+      "gitBlob": "6cd861985512876d53e58aafb59818c6da379233"
+    },
+    {
+      "path": "frontend/components/admin/OperationsStatus.tsx",
+      "gitBlob": "d05f6044b0395a1000da4033043e9b62593c3292"
+    },
+    {
+      "path": "frontend/components/admin/SalesCharts.tsx",
+      "gitBlob": "df018aa406a74fd6f926c9aec8ce4bb8c8a5435b"
+    },
+    {
+      "path": "frontend/components/admin/adminNavigation.ts",
+      "gitBlob": "03b939982a97e25a534ddcacacaf9be25ba37ff2"
+    },
+    {
+      "path": "frontend/components/analytics/FunnelBeacon.tsx",
+      "gitBlob": "e665a20f88e2cd12e0b1e0ec8a36a02bcaf98f54"
+    },
+    {
+      "path": "frontend/components/auth/ForgotPasswordForm.tsx",
+      "gitBlob": "c1d290a7253129a8436034da3f71320f7f3a224e"
+    },
+    {
+      "path": "frontend/components/auth/LogoutButton.tsx",
+      "gitBlob": "20cf8e791eccad4e822e833a3b3f9d56e82427f3"
+    },
+    {
+      "path": "frontend/components/auth/PasswordLoginForm.tsx",
+      "gitBlob": "ec5bba12dd862bf9863b18e29e4cb250ba35bac0"
+    },
+    {
+      "path": "frontend/components/auth/RegisterForm.tsx",
+      "gitBlob": "d54087bf39eb0f64c5a00232eaebef2ad890641b"
+    },
+    {
+      "path": "frontend/components/auth/ResendVerificationForm.tsx",
+      "gitBlob": "8e7243ddd4a572edd21334730e78882a8d6da516"
+    },
+    {
+      "path": "frontend/components/auth/ResetPasswordForm.tsx",
+      "gitBlob": "7002f08dfc463a9b9aef2212a354078b7902deef"
+    },
+    {
+      "path": "frontend/components/auth/SocialLoginButtons.tsx",
+      "gitBlob": "d148a900fe20139029f3ff1d59902f60d62c674b"
+    },
+    {
+      "path": "frontend/components/auth/TemporaryLoginForm.tsx",
+      "gitBlob": "9c31bf2331eb3998ca21dd7d2823cf3290f09e4b"
+    },
+    {
+      "path": "frontend/components/billing/CheckoutButton.tsx",
+      "gitBlob": "59b98831f45ab1be83e92b3a6a33717136b1f5ac"
+    },
+    {
+      "path": "frontend/components/billing/PortalButton.tsx",
+      "gitBlob": "0e262efc8937a9886ce1bb17aa36f966dd42f6f4"
+    },
+    {
+      "path": "frontend/components/clinical-resources/DocumentDetail.tsx",
+      "gitBlob": "45517551e2c433ad147ac2ccf681b7b728df006b"
+    },
+    {
+      "path": "frontend/components/clinical-resources/InfusionCatalog.tsx",
+      "gitBlob": "894867110a8e49031d7ad0bb6620278d6ba6d37d"
+    },
+    {
+      "path": "frontend/components/clinical-resources/MedicationLibrary.tsx",
+      "gitBlob": "785d549fe843969ea08325c2c4696185eb596062"
+    },
+    {
+      "path": "frontend/components/clinical-resources/ResourceAccess.tsx",
+      "gitBlob": "eb53272732a0445f7d777002db3cf84f24766d1c"
+    },
+    {
+      "path": "frontend/components/clinical-resources/ResourceFrame.tsx",
+      "gitBlob": "376a3d5f274bad0ccad734c3b18f79e7fcb4adf7"
+    },
+    {
+      "path": "frontend/components/clinical-resources/resources.css",
+      "gitBlob": "dcdb6bd26cb8ce1f3edca07d5016d6e0d4cd0a96"
+    },
+    {
+      "path": "frontend/components/design-system.tsx",
+      "gitBlob": "476e5336f4b6bdc1fd66ddb2fbef68c4958fb999"
+    },
+    {
+      "path": "frontend/components/mentory/Actions.tsx",
+      "gitBlob": "859991d874ebf18d1c638d5efa0de5710656ba40"
+    },
+    {
+      "path": "frontend/components/mentory/Admin.tsx",
+      "gitBlob": "aaf22250fcae4cb287a70df8f27f0bbbfff43ff5"
+    },
+    {
+      "path": "frontend/components/mentory/CourseDemo.tsx",
+      "gitBlob": "d5904847d3838b9a1c15be0e791203a67e303515"
+    },
+    {
+      "path": "frontend/components/mentory/DemoVideoPlayer.tsx",
+      "gitBlob": "e2ba57441a1a0a353ffbc7710b497e8e608cf60a"
+    },
+    {
+      "path": "frontend/components/mentory/MediaUpload.tsx",
+      "gitBlob": "e957f98c09d132e2f2a754f3e03102de803b6bdd"
+    },
+    {
+      "path": "frontend/components/mentory/Shell.tsx",
+      "gitBlob": "a774245f50e4eba3ed39069bb90baa9c28ab7de2"
+    },
+    {
+      "path": "frontend/components/onboarding/CheckoutReturnPanel.tsx",
+      "gitBlob": "8207bd5ebf2bedb8baa1a67c82405ca58ee876e6"
+    },
+    {
+      "path": "frontend/components/organization/OrganizationCreateForm.tsx",
+      "gitBlob": "21fce6333f7573e11bee34b1b6bba3e1a1660742"
+    },
+    {
+      "path": "frontend/components/organization/OrganizationInviteForm.tsx",
+      "gitBlob": "a8c0095c2f8d7c7693ba2f01353d3edd33bf5082"
+    },
+    {
+      "path": "frontend/components/organization/OrganizationLicenseAssignForm.tsx",
+      "gitBlob": "39ea8639c785d7ed9a83a522fde779b173008ba5"
+    },
+    {
+      "path": "frontend/components/paywall/CommercialBlock.tsx",
+      "gitBlob": "4ad6ff19dba69adb69ec615176580e71face0f1d"
+    },
+    {
+      "path": "frontend/components/pricing/PricingSelector.tsx",
+      "gitBlob": "1090bb9237083929afd4d9eb26adeba6711637aa"
+    },
+    {
+      "path": "frontend/components/profile/ProfileForm.tsx",
+      "gitBlob": "2d6a128cbbe7c3b14c9920321a80b9c54077f2a0"
+    },
+    {
+      "path": "frontend/components/saas/SaaSChrome.tsx",
+      "gitBlob": "68f1d955763658de73fb531780d5723d23942eab"
+    },
+    {
+      "path": "frontend/components/saas/SaaSPrimitives.tsx",
+      "gitBlob": "fcff4f322f91e80c32d51af4dfa30e450f1ee618"
+    },
+    {
+      "path": "frontend/components/skin/SkinSelector.tsx",
+      "gitBlob": "6cd4f707c793ffb310d12511e9c0b4b60c65ca12"
+    },
+    {
+      "path": "frontend/data/clinical-reference-corrections.json",
+      "gitBlob": "52cfc28bcec302143fe88d3d57e7013151b67c74"
+    },
+    {
+      "path": "frontend/data/clinical-resources.json",
+      "gitBlob": "b28cfcd081c66ca761c4ebe3cea807d14e00c905"
+    },
+    {
+      "path": "frontend/e2e/clinical-resources.spec.ts",
+      "gitBlob": "bb78f8107c0a4f3774bdb6a02091b65942a28aa5"
+    },
+    {
+      "path": "frontend/e2e/commercial-funnel.spec.ts",
+      "gitBlob": "f0cb6521cb68091ad77d67a9afa0e9d329ca14d5"
+    },
+    {
+      "path": "frontend/e2e/global-setup.ts",
+      "gitBlob": "3a089120af2f42de00e42aa0bc952659a1235f71"
+    },
+    {
+      "path": "frontend/e2e/helpers/auth.ts",
+      "gitBlob": "3036113cba146ee648679ec1ebbb8bff945efb05"
+    },
+    {
+      "path": "frontend/e2e/helpers/db.ts",
+      "gitBlob": "8348b837bc7821994df331175eb462d3f7d713a6"
+    },
+    {
+      "path": "frontend/e2e/load-env.ts",
+      "gitBlob": "8b1a458920cb21fd179d9c60f8e8661e0b45d9a1"
+    },
+    {
+      "path": "frontend/e2e/mentory-demo.spec.ts",
+      "gitBlob": "74a4f566c4f477d43af6ff7e93e911df587e6b5f"
+    },
+    {
+      "path": "frontend/e2e/mentory.spec.ts",
+      "gitBlob": "e2154f905195542b129791f8af80f6bbe7d2a973"
+    },
+    {
+      "path": "frontend/e2e/security-session.spec.ts",
+      "gitBlob": "d394feb037c32a1550f1844cc4651a6cbf625447"
+    },
+    {
+      "path": "frontend/e2e/system-flow.spec.ts",
+      "gitBlob": "0721451ce2283f7738b1ea150d48d02cc21868fb"
+    },
+    {
+      "path": "frontend/lib/account-auth.ts",
+      "gitBlob": "21d633ae6666d93850f160ea75704f629cf22751"
+    },
+    {
+      "path": "frontend/lib/admin-admin-users.ts",
+      "gitBlob": "612ce6cd7eefc1d1a49c840f27769d2e3939d785"
+    },
+    {
+      "path": "frontend/lib/admin-archive-restore.ts",
+      "gitBlob": "bed62f281fe0160f6047539a82b0204a01b85424"
+    },
+    {
+      "path": "frontend/lib/admin-archive.ts",
+      "gitBlob": "c26464004916fa6d8e4276cc5299adfa4269d506"
+    },
+    {
+      "path": "frontend/lib/admin-audit.ts",
+      "gitBlob": "c991748db6547aa80372b4f7571590462d781c11"
+    },
+    {
+      "path": "frontend/lib/admin-billing.ts",
+      "gitBlob": "585b07cf9b879d7a5d22b35eff2127c4dee0baed"
+    },
+    {
+      "path": "frontend/lib/admin-contingency.ts",
+      "gitBlob": "6bf92352e2c1b78035376e5d69fb2833571e9fe6"
+    },
+    {
+      "path": "frontend/lib/admin-customers.ts",
+      "gitBlob": "b4c094da0dbe9f15e62df71c2e4e1bf916f96352"
+    },
+    {
+      "path": "frontend/lib/admin-executive.ts",
+      "gitBlob": "8811198fc24aec71927d3329fecdd540b5137359"
+    },
+    {
+      "path": "frontend/lib/admin-exports.ts",
+      "gitBlob": "8db9abcef8d3b1c864c0c6452524a02ce8e234d7"
+    },
+    {
+      "path": "frontend/lib/admin-licenses.ts",
+      "gitBlob": "8e0b9b3221720c96f24e411b7b318b563e092afd"
+    },
+    {
+      "path": "frontend/lib/admin-manual-payments.ts",
+      "gitBlob": "cf7d37f0382213a4880d6769ec1e55c2d6851b5f"
+    },
+    {
+      "path": "frontend/lib/admin-operational-data.ts",
+      "gitBlob": "da50cc63f3bf162e1489b0247543e7dbd24e2b0d"
+    },
+    {
+      "path": "frontend/lib/admin-operations.ts",
+      "gitBlob": "99091e4e8b5aca13591eae25acd92ce62f3753e6"
+    },
+    {
+      "path": "frontend/lib/admin-permissions.ts",
+      "gitBlob": "8b38cd03f458062ae7431f847f255d79e637216a"
+    },
+    {
+      "path": "frontend/lib/admin-release-readiness.ts",
+      "gitBlob": "7d08603e7d61c22c6378c197911e17c1aebc7916"
+    },
+    {
+      "path": "frontend/lib/admin-retention.ts",
+      "gitBlob": "9f5c6fafe5e3a668a9ab04d40b47f39b68cd8f55"
+    },
+    {
+      "path": "frontend/lib/admin-sales.ts",
+      "gitBlob": "bfd8ec3a20d9ad306e759d3caa2fb2084ce99f6e"
+    },
+    {
+      "path": "frontend/lib/admin-step-up.ts",
+      "gitBlob": "eadb43008e3649de482477c57eb0153818900849"
+    },
+    {
+      "path": "frontend/lib/admin-support.ts",
+      "gitBlob": "351aad5c265251ca92314fb764bb932d41f095a7"
+    },
+    {
+      "path": "frontend/lib/api.ts",
+      "gitBlob": "24724e54cb659cef28888b1b52d8212967e53c56"
+    },
+    {
+      "path": "frontend/lib/archive-storage.ts",
+      "gitBlob": "b1d74a4836241fa42272496685559d0568984a12"
+    },
+    {
+      "path": "frontend/lib/audit.ts",
+      "gitBlob": "c962ea2e48ca0fce940ade84f1486f37c34f3143"
+    },
+    {
+      "path": "frontend/lib/auth-request.ts",
+      "gitBlob": "335036e0d331d50c277153c02ddd4f84f5c8cc4c"
+    },
+    {
+      "path": "frontend/lib/authz.ts",
+      "gitBlob": "0f135461518506cc1b8d4384bc5facc42b0deb86"
+    },
+    {
+      "path": "frontend/lib/billing-audit.ts",
+      "gitBlob": "44566ec0e39511df65e97086e473a27e8b7732f2"
+    },
+    {
+      "path": "frontend/lib/billing-reconciliation.ts",
+      "gitBlob": "accccab449f0add8b3a2497334fe9cf44b4b0cae"
+    },
+    {
+      "path": "frontend/lib/billing.ts",
+      "gitBlob": "4d48c7f2eb58aabbe7d76058b1eac29d98a1c85e"
+    },
+    {
+      "path": "frontend/lib/checkout-onboarding.ts",
+      "gitBlob": "ff318c9016da1dec6621086dd6f1fe42578a062e"
+    },
+    {
+      "path": "frontend/lib/clinical-resources-server.ts",
+      "gitBlob": "d8b52b4b085780eef34572da1f6bafe938406b6e"
+    },
+    {
+      "path": "frontend/lib/clinical-resources.ts",
+      "gitBlob": "6ac88ca95a38871e9ce992768b4d963eac78c779"
+    },
+    {
+      "path": "frontend/lib/commercial-access.ts",
+      "gitBlob": "fc86a03c370e240b9d4a951cd1180071203ccac0"
+    },
+    {
+      "path": "frontend/lib/commercial-audit.ts",
+      "gitBlob": "a860b4c262f933463cdb8fa5388e4d204db14cbb"
+    },
+    {
+      "path": "frontend/lib/email.ts",
+      "gitBlob": "574fcc621d0bd8fea9d84a43da81db5cb1d3bcb1"
+    },
+    {
+      "path": "frontend/lib/entitlements.ts",
+      "gitBlob": "b63dd6da34bd945e7a81b1bc015686c8a534bd89"
+    },
+    {
+      "path": "frontend/lib/features.ts",
+      "gitBlob": "37d07cf22a6880f33110b978e4dae34444443d4f"
+    },
+    {
+      "path": "frontend/lib/format.ts",
+      "gitBlob": "0dc154167ba6a99823bcbfebfe1826a1a2e63cb6"
+    },
+    {
+      "path": "frontend/lib/funnel.ts",
+      "gitBlob": "2734247d4f11b9d98e00793125ca6720ac8bbedf"
+    },
+    {
+      "path": "frontend/lib/google-cloud-auth.ts",
+      "gitBlob": "5249ca18af491156e25e79bc32861e79abb24d0c"
+    },
+    {
+      "path": "frontend/lib/manual-payment-attachments.ts",
+      "gitBlob": "83a92943f5f37411069ebedb770e141290398994"
+    },
+    {
+      "path": "frontend/lib/mentory/assets.ts",
+      "gitBlob": "933c064a08f1fd0e56948d36e800fcc52a9040dd"
+    },
+    {
+      "path": "frontend/lib/mentory/demo-course.ts",
+      "gitBlob": "2a0bd197c42338aba1a53102b4e29a567bf67c19"
+    },
+    {
+      "path": "frontend/lib/mentory/demo-video-chapters.json",
+      "gitBlob": "a0872d52517b467cff408c6a72780457230b3806"
+    },
+    {
+      "path": "frontend/lib/mentory/domain.ts",
+      "gitBlob": "116e3f448c50465d00183b3b2af7358be326f6e3"
+    },
+    {
+      "path": "frontend/lib/mentory/gcs-video.ts",
+      "gitBlob": "bc548555a0b302fbe1f03cd98b627f338a27fef4"
+    },
+    {
+      "path": "frontend/lib/mentory/media-range.ts",
+      "gitBlob": "37321c985af4f6ebbe97fcb08f76940df00be3b5"
+    },
+    {
+      "path": "frontend/lib/mentory/mutations.ts",
+      "gitBlob": "ffc6efa0e540179a0cd1d972d97c4ec0e61ab355"
+    },
+    {
+      "path": "frontend/lib/mentory/server.ts",
+      "gitBlob": "31c45332c6098da6e61f49e3df4b2dc8d21ae136"
+    },
+    {
+      "path": "frontend/lib/observability.ts",
+      "gitBlob": "d7869222409a7ebc1d942eb137fd9b1ebabb8349"
+    },
+    {
+      "path": "frontend/lib/organization-audit.ts",
+      "gitBlob": "d9d628657445802d19968290c4e3c8613085637c"
+    },
+    {
+      "path": "frontend/lib/organization-authz.ts",
+      "gitBlob": "ae7bb6d01eec92c342bf80d393d905d099434044"
+    },
+    {
+      "path": "frontend/lib/organizations.ts",
+      "gitBlob": "fdf3826054dc317820eff826ba98ad807ac9d109"
+    },
+    {
+      "path": "frontend/lib/password.ts",
+      "gitBlob": "e320e83afb53c49fb01c2da746261961087a9afc"
+    },
+    {
+      "path": "frontend/lib/pcr-calculation-engine.ts",
+      "gitBlob": "a0587cccba5cfe1fa72cd5d3103aefae3c2b0e92"
+    },
+    {
+      "path": "frontend/lib/pricing.ts",
+      "gitBlob": "63249e6435c77052424aa0b4cc795e6202e50a3c"
+    },
+    {
+      "path": "frontend/lib/prisma.ts",
+      "gitBlob": "f34ca79cf123a56b34dbbda41e65532d18851373"
+    },
+    {
+      "path": "frontend/lib/rate-limit.ts",
+      "gitBlob": "769469587bf4355ff5cde7526c04eba455cbecc2"
+    },
+    {
+      "path": "frontend/lib/security-audit.ts",
+      "gitBlob": "a539d27627204c6ff78217bcc9ca8dde54b74c4d"
+    },
+    {
+      "path": "frontend/lib/session-control.ts",
+      "gitBlob": "f309c025d9edaed10622d0dc24315656fdc0b7a6"
+    },
+    {
+      "path": "frontend/lib/skin.ts",
+      "gitBlob": "b251ef54040eaebad76b553be46c7375a53d9ee0"
+    },
+    {
+      "path": "frontend/lib/stripe.ts",
+      "gitBlob": "b0ff49104cc4819d6aebe1563b25981227939303"
+    },
+    {
+      "path": "frontend/lib/token.ts",
+      "gitBlob": "5659e31689e97dd9b88479c99d925c745bb8321c"
+    },
+    {
+      "path": "frontend/middleware.ts",
+      "gitBlob": "dfa401bec27b470d9dd0a3e9c399f77fad54aed0"
+    },
+    {
+      "path": "frontend/next-env.d.ts",
+      "gitBlob": "830fb594ca2970a827555c28a253b097367e08d8"
+    },
+    {
+      "path": "frontend/next.config.mjs",
+      "gitBlob": "41902df88b8370389d977824c62d752347805ed7"
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "gitBlob": "6bea4d4912d606d549a34c887d5fed0067aa6f2e"
+    },
+    {
+      "path": "frontend/package.json",
+      "gitBlob": "81bae170cd33e14288518cd13726f2b91c8a87cc"
+    },
+    {
+      "path": "frontend/playwright.config.ts",
+      "gitBlob": "36c6dbfd69151674982097df15f6763647bf8473"
+    },
+    {
+      "path": "frontend/postcss.config.js",
+      "gitBlob": "c21c0763565b546f63508cc915438b3e2b68a2de"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260527120000_init/migration.sql",
+      "gitBlob": "d2f81c21d4995fcc0bfbf1dd3434b832ee4e9a99"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260618120000_add_password_auth/migration.sql",
+      "gitBlob": "36b22bb2beb88c23ad0816f11af3604c29e438fa"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260618133000_saas_commercial_domain/migration.sql",
+      "gitBlob": "884cde13f627e14e1d384a287bfb46096d9fe73c"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260618150000_stripe_webhook_events/migration.sql",
+      "gitBlob": "0d5560730c222eb6c92763350545b72f53f3793f"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260623100000_user_sessions_security_events/migration.sql",
+      "gitBlob": "af6c3fe9c5de2ad89b0a5dfe39758bedd0286301"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260623120000_admin_audit_events/migration.sql",
+      "gitBlob": "84f0348cf6696de8045c6f5e94f647c585d2df6b"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260623123000_license_contingency/migration.sql",
+      "gitBlob": "6b284f06ccbbb482d857d5dfcfb17d6cfd50124b"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260623124000_admin_permission_grants/migration.sql",
+      "gitBlob": "c3e7597708b60ec98dc4892a2a6e2b06dc4c301e"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260623133000_admin_rbac_step_up/migration.sql",
+      "gitBlob": "181a7c99e07091df28ef85b716b95c94bf9d42b6"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260623143000_admin_operational_models/migration.sql",
+      "gitBlob": "f4cf996606a3316a98931924024ad4333bb461d9"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260623170000_admin_wave3_operational_maturity/migration.sql",
+      "gitBlob": "f2ddbeb026d4ed84b4a1a88eee244a3f5f3dc138"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260624100000_admin_wave4_archive_readiness/migration.sql",
+      "gitBlob": "211f96af6e1a5f0e999b513a63e622d26969d766"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260624110000_admin_wave5_archive_restore/migration.sql",
+      "gitBlob": "195ea326985cd9cb3287db652350910044f7b389"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260624120000_admin_wave6_export_restore_hardening/migration.sql",
+      "gitBlob": "75ed4307713eff0a4ce5f87d359228f0f76ecf26"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260625210000_professional_annual_price/migration.sql",
+      "gitBlob": "e414027cae3a778dc4e1f937e75debee0fc5852d"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260708150000_manual_payments/migration.sql",
+      "gitBlob": "76a7bfd44c18bc4059ed33b6d0aa0f295c92cf3e"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260708180000_skin_preferences/migration.sql",
+      "gitBlob": "64ff0be7966601ec6fe3724fd9fbd23fcbde0d50"
+    },
+    {
+      "path": "frontend/prisma/migrations/20260709113000_manual_payment_attachments/migration.sql",
+      "gitBlob": "8b416170b6d193405dc7d1fc454c08beb6f5ec33"
+    },
+    {
+      "path": "frontend/prisma/migrations/20261015000100_mentory/migration.sql",
+      "gitBlob": "81df885b9d73f6513bba13bbe5de9ea5ba1a1e76"
+    },
+    {
+      "path": "frontend/prisma/schema.prisma",
+      "gitBlob": "db283483f31480fda206642f0968cce72470926e"
+    },
+    {
+      "path": "frontend/public/fonts/Inter-LICENSE.txt",
+      "gitBlob": "9b2ca37b3ffc77391d8b2ebef4a974ef32bf46ea"
+    },
+    {
+      "path": "frontend/public/fonts/InterVariable.woff2",
+      "gitBlob": "5a8d3e72ad7ffb62af3b146e1b1f54ab5813a212"
+    },
+    {
+      "path": "frontend/public/images/dr-aristoteles-pires.png",
+      "gitBlob": "e4e5d4cfcbb321b38ce5d33c87d44a8108861751"
+    },
+    {
+      "path": "frontend/public/images/iatron-hero-hospital.png",
+      "gitBlob": "f04a2499644f453edd4ee46c0a56da0f69428b95"
+    },
+    {
+      "path": "frontend/scripts/admin-production-readiness.mjs",
+      "gitBlob": "fab2d9e3cc59298087c30011e8aded1a1f04c501"
+    },
+    {
+      "path": "frontend/scripts/check-e2e-env.mjs",
+      "gitBlob": "af4b4ae662d611ba134d46e839b0c1aea541cc1b"
+    },
+    {
+      "path": "frontend/scripts/check-env.mjs",
+      "gitBlob": "a1026b095cec3bd0affe9e9c2ac479b99349f493"
+    },
+    {
+      "path": "frontend/scripts/cleanup-operational-data.ts",
+      "gitBlob": "c359b63139d146c082b198678fdd62b9c03db843"
+    },
+    {
+      "path": "frontend/scripts/cleanup-security-data.ts",
+      "gitBlob": "b68abc1fdc34e08d51ad30e13e5e209ace0ad9d7"
+    },
+    {
+      "path": "frontend/scripts/clinical-resources-review.mjs",
+      "gitBlob": "daf34e61e061cec79e34d9426f6d56b250b3d213"
+    },
+    {
+      "path": "frontend/scripts/deploy-pending-resources.mjs",
+      "gitBlob": "27d9219f8c473e048fb09211d1a9a63c3af15ae3"
+    },
+    {
+      "path": "frontend/scripts/e2e-seed.mjs",
+      "gitBlob": "fd9e64eb0ad82579ab7be0c6816cc7c0df0c5087"
+    },
+    {
+      "path": "frontend/scripts/load-env.d.mts",
+      "gitBlob": "4b1fcfc1f72cd615ea5d524ac0fab542a70206b3"
+    },
+    {
+      "path": "frontend/scripts/load-env.mjs",
+      "gitBlob": "afcebfd7160d65ed0941ed2c611adcde13dc3485"
+    },
+    {
+      "path": "frontend/scripts/manual-commercial-flow.ts",
+      "gitBlob": "18eb8c039f614e5fae1b7e3596831c76acc4fa6b"
+    },
+    {
+      "path": "frontend/scripts/mentory-gates-review.mjs",
+      "gitBlob": "7e7c59ae80e38280235d51de6e8ee35cb06f2ec3"
+    },
+    {
+      "path": "frontend/scripts/mentory-grant-role.ts",
+      "gitBlob": "99dcd770b41faa59ce5371335b0344e7e93d5f31"
+    },
+    {
+      "path": "frontend/scripts/mentory-media-preflight.ts",
+      "gitBlob": "47f02347dcdc2891435a8aa4d65fa36e7a3a135e"
+    },
+    {
+      "path": "frontend/scripts/mentory-regression.mjs",
+      "gitBlob": "df837d6925ed29338e646f6d34bda44ca2e72fa9"
+    },
+    {
+      "path": "frontend/scripts/mentory-review.mjs",
+      "gitBlob": "92f81fc25f78de1521838f99431bfa5e46720bd4"
+    },
+    {
+      "path": "frontend/scripts/mentory-seed-test.ts",
+      "gitBlob": "5042a0711d37efca5ab52211fd5fb07c3c7899ea"
+    },
+    {
+      "path": "frontend/scripts/prisma-deploy.mjs",
+      "gitBlob": "ddc61768b41564f83095867837b21ceffb535530"
+    },
+    {
+      "path": "frontend/scripts/promote-admin.mjs",
+      "gitBlob": "75dde859636d2ceb8f8867b028b9f1a75842dfef"
+    },
+    {
+      "path": "frontend/scripts/reconcile-billing.ts",
+      "gitBlob": "be4774e72bdf3800454c970e48b06f85f04aa890"
+    },
+    {
+      "path": "frontend/scripts/redesign-a11y.mjs",
+      "gitBlob": "e7d29bfa3be298514a4b3675a02f7ea0ece839d3"
+    },
+    {
+      "path": "frontend/scripts/redesign-review.mjs",
+      "gitBlob": "d712fb678a27235474d4a339243b259ab1669720"
+    },
+    {
+      "path": "frontend/scripts/redesign-v2-quality.mjs",
+      "gitBlob": "add67dfedf83df616fd1ecca44ce6c272aaaa540"
+    },
+    {
+      "path": "frontend/scripts/redesign-v2-review.mjs",
+      "gitBlob": "caa97d5a65688db7d82e17da9327d41a25e91db3"
+    },
+    {
+      "path": "frontend/scripts/redesign-v2-webkit.mjs",
+      "gitBlob": "6d270c5805831c07dd03e3c4bfe1f85ffd10e86a"
+    },
+    {
+      "path": "frontend/scripts/redesign-v3-integrity.py",
+      "gitBlob": "3b84f6d799efd2b4fbcb2d95e1a7c8cc4b2f150c"
+    },
+    {
+      "path": "frontend/scripts/redesign-v3-quality.mjs",
+      "gitBlob": "166de4082253935dd9883fc98d529e1e74b9435f"
+    },
+    {
+      "path": "frontend/scripts/redesign-v3-review.mjs",
+      "gitBlob": "412d6303085534dfce789b39ed2db60f550c0466"
+    },
+    {
+      "path": "frontend/scripts/redesign-v3-stage.mjs",
+      "gitBlob": "a1de4ea6bf59b39cc38588e668b398badd5ac568"
+    },
+    {
+      "path": "frontend/scripts/redesign-v3-webkit.mjs",
+      "gitBlob": "a78af78e47eec8dc100534e102ed26dbaa6c0b00"
+    },
+    {
+      "path": "frontend/scripts/redesign-webkit.mjs",
+      "gitBlob": "5cab0cbef32d31a0695d4b5a66015a95286a4138"
+    },
+    {
+      "path": "frontend/scripts/stripe-webhook-smoke.ts",
+      "gitBlob": "87b2bd792f87031bdfc36dea4fe57f1141441be3"
+    },
+    {
+      "path": "frontend/scripts/vercel-build.mjs",
+      "gitBlob": "fda749e1c31e738f044966e227fbefd384e9cc6f"
+    },
+    {
+      "path": "frontend/tailwind.config.ts",
+      "gitBlob": "5d145886fd2de56ee517bd21bccde93c14e63672"
+    },
+    {
+      "path": "frontend/tests/admin-admin-users.test.ts",
+      "gitBlob": "0d92a9e6e8abf56f6656cfb2cd068a4aa9c488d5"
+    },
+    {
+      "path": "frontend/tests/admin-audit.test.ts",
+      "gitBlob": "65c2e30a87e421a3c8e66350b77fce3e180ed70b"
+    },
+    {
+      "path": "frontend/tests/admin-billing.test.ts",
+      "gitBlob": "ac34b10817237a637c1ab204870e49dc0d4b2dd5"
+    },
+    {
+      "path": "frontend/tests/admin-contingency.test.ts",
+      "gitBlob": "e71482d8c8c32b5d4144dc2bda10dbbbbd300a50"
+    },
+    {
+      "path": "frontend/tests/admin-customers.test.ts",
+      "gitBlob": "72fcf9b81850889c3a209780e38e63d98a12af71"
+    },
+    {
+      "path": "frontend/tests/admin-licenses.test.ts",
+      "gitBlob": "634478ea7b67db6e148bc45e741221836cdf9db6"
+    },
+    {
+      "path": "frontend/tests/admin-manual-payments.test.ts",
+      "gitBlob": "6bf7ce641be7724b9f6232bf0d605ad67e15841e"
+    },
+    {
+      "path": "frontend/tests/admin-operational-data.test.ts",
+      "gitBlob": "3aa94743037dad71fe2a4a3bc628cfb9a629f6bd"
+    },
+    {
+      "path": "frontend/tests/admin-operations.test.ts",
+      "gitBlob": "fb9cf36e204be99d37f0b37606b233e3ae885d97"
+    },
+    {
+      "path": "frontend/tests/admin-permissions.test.ts",
+      "gitBlob": "59ec269babde959e5b2c215bb3717c8af1979f18"
+    },
+    {
+      "path": "frontend/tests/admin-sales.test.ts",
+      "gitBlob": "c5a10c483663160f0a9686777c8a7a1afd15b25e"
+    },
+    {
+      "path": "frontend/tests/admin-step-up.test.ts",
+      "gitBlob": "6070d26a441e95803640283d5d184846a35fe8c9"
+    },
+    {
+      "path": "frontend/tests/admin-support.test.ts",
+      "gitBlob": "d78ee7b912da6cd1aa09678e336f10a5edfa6662"
+    },
+    {
+      "path": "frontend/tests/admin-wave3.test.ts",
+      "gitBlob": "21c1ef219ac6c6bc2d1a0b75f2bd7bd686040a4b"
+    },
+    {
+      "path": "frontend/tests/admin-wave4.test.ts",
+      "gitBlob": "788edabd65a41089032f966cb7863b870f570093"
+    },
+    {
+      "path": "frontend/tests/admin-wave5.test.ts",
+      "gitBlob": "048cbfd901ef333f51065f82180ee83104c696a1"
+    },
+    {
+      "path": "frontend/tests/admin-wave6.test.ts",
+      "gitBlob": "e6d9d817ad02b845662f676a9ebd5dd440870477"
+    },
+    {
+      "path": "frontend/tests/auth-routes.test.ts",
+      "gitBlob": "d985169bf1968ecb1c0193776c19c9f11c7a5d86"
+    },
+    {
+      "path": "frontend/tests/billing-domain.test.ts",
+      "gitBlob": "333dbd42b2fee5e0dc6346dc8e8fa66075bc77bb"
+    },
+    {
+      "path": "frontend/tests/checkout-onboarding.test.ts",
+      "gitBlob": "8cb80cd092ee70ab5bcc7c559f65044780657e9f"
+    },
+    {
+      "path": "frontend/tests/clinical-reference-corrections.test.ts",
+      "gitBlob": "9c73e37969ab0ae6e3183cb75cc2e7ac002be194"
+    },
+    {
+      "path": "frontend/tests/clinical-resources.test.ts",
+      "gitBlob": "d5ff884b02f64ac1f8839f5c39c78ffed758250e"
+    },
+    {
+      "path": "frontend/tests/commercial-access.test.ts",
+      "gitBlob": "966511dd33a90201589f21d871508039f719a6d8"
+    },
+    {
+      "path": "frontend/tests/mentory-domain.test.ts",
+      "gitBlob": "c6645b04d1cf9b353fbcb890ba6ad6f716e4d6db"
+    },
+    {
+      "path": "frontend/tests/mentory-media-range.test.ts",
+      "gitBlob": "7e12390ab76c8554b4375fc7d67708d49707cf10"
+    },
+    {
+      "path": "frontend/tests/mentory-release.test.mjs",
+      "gitBlob": "5e33531cdc62f4d20359d58457c08314a88f50b1"
+    },
+    {
+      "path": "frontend/tests/mentory-video.test.ts",
+      "gitBlob": "77b498b776242ac713789ef310455cb6f093e79c"
+    },
+    {
+      "path": "frontend/tests/organization-domain.test.ts",
+      "gitBlob": "3d08f00ca728b3d73f686adaee2ebe9c9347ad2c"
+    },
+    {
+      "path": "frontend/tests/pcr-fallback.test.ts",
+      "gitBlob": "21cb0142419abdcc71a3b949d0020e60e24bd45e"
+    },
+    {
+      "path": "frontend/tests/pricing-domain.test.ts",
+      "gitBlob": "99528476e7763bef7e2838a7697d92dfa82f73ba"
+    },
+    {
+      "path": "frontend/tests/security-contracts.test.ts",
+      "gitBlob": "d62d2f2f4954055fe6bc8f188296581fb682bea3"
+    },
+    {
+      "path": "frontend/tests/session-control.test.ts",
+      "gitBlob": "b874119fc8cbdcdd6fe846ee1cefd9400a2c803b"
+    },
+    {
+      "path": "frontend/tests/skin-preferences.test.ts",
+      "gitBlob": "13bb0e853d408de1abe52336c9f27efdb269f7be"
+    },
+    {
+      "path": "frontend/tsconfig.json",
+      "gitBlob": "b9cc3b5592937d5a582944a2ce1c2d4d329198e6"
+    },
+    {
+      "path": "frontend/types/calculations.ts",
+      "gitBlob": "45f9d7c372ce73d1c6309bdb418a59ff38ac809c"
+    },
+    {
+      "path": "frontend/types/next-auth.d.ts",
+      "gitBlob": "6bb8ffe009398d12a27f42a89faee201c975e3e1"
+    },
+    {
+      "path": "frontend/vercel.json",
+      "gitBlob": "8814dc4863492584c505732927ab7bd46141fa7a"
+    }
+  ]
+}

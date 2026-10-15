@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "tracedAssets": [
+    "../../../../../../assets/mentory-demo/captions.vtt",
+    "../../../../../../assets/mentory-demo/lesson.mp4",
+    "../../../../../../assets/mentory-demo/poster.jpg",
+    "../../../../../../assets/mentory-demo/README.md"
+  ]
+}
