@@ -15,8 +15,9 @@ export type ValidationIssue = {
   id: string; entryId: string | null; sourceId: string; file: string; sheet: string; row: number;
   cells: string[]; code: string; severity: string; message: string; status: string;
 };
+export type ReferenceCorrection = { entryId: string; version: string; reviewedAt: string; sourceHash: string; status: string; notes: string[]; references: { title: string; url: string }[]; displayCorrections: Record<string, string | undefined> };
 export type ClinicalCatalog = {
-  sources: ClinicalSource[]; entries: ClinicalEntry[]; issues: ValidationIssue[];
+  sources: ClinicalSource[]; entries: ClinicalEntry[]; issues: ValidationIssue[]; corrections?: ReferenceCorrection[];
 };
 export function normalizeSearch(value: string) {
   return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, " ").trim();

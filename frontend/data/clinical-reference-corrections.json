@@ -1,0 +1,193 @@
+[
+  {
+    "entryId": "medications-002",
+    "version": "reference-review-2026-10-15",
+    "reviewedAt": "2026-10-15",
+    "sourceHash": "54e81afad928e9944cb180e4ffa8b3165a1cf27a1ebd1b67e4c9abea7d484f3e",
+    "status": "reference_checked_not_clinically_approved",
+    "notes": [
+      "A bula desta apresentação informa 20 gotas/mL e 25 mg/gota. Portanto, 20 gotas são 500 mg; a equivalência original com 200 mg está incorreta.",
+      "Conferência dimensional da dose escrita na planilha (não escolha de dose): 10–12 mg/kg divididos por 500 mg/mL resultam em 0,02–0,024 mL/kg. O fator 0,4 corresponde a gotas/kg para 10 mg/kg, não a mL/kg.",
+      "A bula usa faixas de peso e limites por faixa. Não é correto usar 200 mg como teto pediátrico universal. Não administrar a menores de 3 meses ou abaixo de 5 kg conforme a bula."
+    ],
+    "references": [
+      {
+        "title": "Bula oficial Novalgina gotas 500 mg/mL",
+        "url": "https://www.novalgina.com.br/produtos/infantil/gotas/bula"
+      }
+    ],
+    "displayCorrections": {
+      "mnemonic": "Macete original retirado por erro de unidade: não usar peso × 0,4 mL.",
+      "maximumDose": "Limite original inconsistente; consultar a tabela por faixa de peso da bula vinculada."
+    }
+  },
+  {
+    "entryId": "medications-003",
+    "version": "reference-review-2026-10-15",
+    "reviewedAt": "2026-10-15",
+    "sourceHash": "54e81afad928e9944cb180e4ffa8b3165a1cf27a1ebd1b67e4c9abea7d484f3e",
+    "status": "reference_checked_not_clinically_approved",
+    "notes": [
+      "Conferência dimensional da dose original: 10–12 mg/kg divididos por 50 mg/mL resultam em 0,20–0,24 mL/kg. O fator 0,2 contempla somente 10 mg/kg.",
+      "A bula desta apresentação usa faixas de peso, com limites próprios; 200 mg/dose não é um teto universal. Esta revisão não escolhe a dose ou o limite para um paciente."
+    ],
+    "references": [
+      {
+        "title": "Bula oficial Novalgina solução oral 50 mg/mL",
+        "url": "https://www.novalgina.com.br/produtos/infantil/solucao-oral/bula"
+      }
+    ],
+    "displayCorrections": {
+      "mnemonic": "O fator original representa apenas o limite inferior da dose escrita; não usar como regra para toda a faixa.",
+      "maximumDose": "Teto universal de 200 mg não sustentado pela bula; consultar faixa de peso e apresentação."
+    }
+  },
+  {
+    "entryId": "infusions-004",
+    "version": "reference-review-2026-10-15",
+    "reviewedAt": "2026-10-15",
+    "sourceHash": "f149f420ecbc461711a50c0717c70e082378cc356e00bd829c29b48263024839",
+    "status": "reference_checked_not_clinically_approved",
+    "notes": [
+      "Análise da transcrição, não instrução de preparo: 2 mL de fármaco + 100 mL de diluente totalizam 102 mL (sem considerar sobre-enchimento). A concentração aritmética seria 19,6078 mcg/mL. Se 100 mL fossem o volume FINAL, seria 20 mcg/mL. São preparos diferentes.",
+      "A fórmula original dose × peso × 1440 ÷ 1000 expressa quantidade por dia (mg/dia), quando a dose está em mcg/kg/min; não expressa volume por dia nem taxa de bomba.",
+      "Para análise dimensional, taxa em mL/h = dose por kg/min × peso × 60 ÷ concentração na mesma unidade por mL. É necessário definir o preparo real, limites e protocolo antes de executar cálculo clínico."
+    ],
+    "references": [
+      {
+        "title": "CHEO — Adrenalina",
+        "url": "https://outreach.cheo.on.ca/manual/1563"
+      }
+    ],
+    "displayCorrections": {
+      "formula": "Quantidade/dia, não volume/24h. A expressão original não calcula a taxa de infusão.",
+      "dilution": "Preparo original ambíguo quanto ao volume final; não utilizar como instrução de mistura.",
+      "concentration": "Concentração declarada incompatível com a leitura literal do preparo. Ver análise dimensional abaixo.",
+      "mnemonic": "Macete retirado do uso operacional: depende de concentração final não confirmada."
+    }
+  },
+  {
+    "entryId": "infusions-005",
+    "version": "reference-review-2026-10-15",
+    "reviewedAt": "2026-10-15",
+    "sourceHash": "f149f420ecbc461711a50c0717c70e082378cc356e00bd829c29b48263024839",
+    "status": "reference_checked_not_clinically_approved",
+    "notes": [
+      "Análise da transcrição, não instrução de preparo: 4 mL de fármaco + 250 mL de diluente totalizam 254 mL (sem considerar sobre-enchimento). A concentração aritmética seria 15,748 mcg/mL. Se 250 mL fossem o volume FINAL, seria 16 mcg/mL. São preparos diferentes.",
+      "A fórmula original dose × peso × 1440 ÷ 1000 expressa quantidade por dia (mg/dia), quando a dose está em mcg/kg/min; não expressa volume por dia nem taxa de bomba.",
+      "Para análise dimensional, taxa em mL/h = dose por kg/min × peso × 60 ÷ concentração na mesma unidade por mL. É necessário definir o preparo real, limites e protocolo antes de executar cálculo clínico.",
+      "O CHEO expressa a dose em noradrenalina base. Corrigido o sinal de igualdade duplicado; a equivalência base/sal depende do produto."
+    ],
+    "references": [
+      {
+        "title": "CHEO — Noradrenalina",
+        "url": "https://outreach.cheo.on.ca/manual/1658"
+      }
+    ],
+    "displayCorrections": {
+      "formula": "Quantidade/dia, não volume/24h. A expressão original não calcula a taxa de infusão.",
+      "dilution": "Preparo original ambíguo quanto ao volume final; não utilizar como instrução de mistura.",
+      "concentration": "Concentração declarada incompatível com a leitura literal do preparo. Ver análise dimensional abaixo.",
+      "mnemonic": "Macete retirado do uso operacional: depende de concentração final não confirmada.",
+      "presentation": "1 mg/mL = 1.000 mcg/mL de noradrenalina base; conferir equivalência do sal na apresentação utilizada."
+    }
+  },
+  {
+    "entryId": "infusions-006",
+    "version": "reference-review-2026-10-15",
+    "reviewedAt": "2026-10-15",
+    "sourceHash": "f149f420ecbc461711a50c0717c70e082378cc356e00bd829c29b48263024839",
+    "status": "reference_checked_not_clinically_approved",
+    "notes": [
+      "Análise da transcrição, não instrução de preparo: 10 mL de fármaco + 100 mL de diluente totalizam 110 mL (sem considerar sobre-enchimento). A concentração aritmética seria 454,5455 mcg/mL. Se 100 mL fossem o volume FINAL, seria 500 mcg/mL. São preparos diferentes.",
+      "A fórmula original dose × peso × 1440 ÷ 1000 expressa quantidade por dia (mg/dia), quando a dose está em mcg/kg/min; não expressa volume por dia nem taxa de bomba.",
+      "Para análise dimensional, taxa em mL/h = dose por kg/min × peso × 60 ÷ concentração na mesma unidade por mL. É necessário definir o preparo real, limites e protocolo antes de executar cálculo clínico."
+    ],
+    "references": [
+      {
+        "title": "CHEO — Dopamina",
+        "url": "https://outreach.cheo.on.ca/manual/1555"
+      }
+    ],
+    "displayCorrections": {
+      "formula": "Quantidade/dia, não volume/24h. A expressão original não calcula a taxa de infusão.",
+      "dilution": "Preparo original ambíguo quanto ao volume final; não utilizar como instrução de mistura.",
+      "concentration": "Concentração declarada incompatível com a leitura literal do preparo. Ver análise dimensional abaixo.",
+      "mnemonic": "Macete retirado do uso operacional: depende de concentração final não confirmada."
+    }
+  },
+  {
+    "entryId": "infusions-007",
+    "version": "reference-review-2026-10-15",
+    "reviewedAt": "2026-10-15",
+    "sourceHash": "f149f420ecbc461711a50c0717c70e082378cc356e00bd829c29b48263024839",
+    "status": "reference_checked_not_clinically_approved",
+    "notes": [
+      "Análise da transcrição, não instrução de preparo: 20 mL de fármaco + 170 mL de diluente totalizam 190 mL (sem considerar sobre-enchimento). A concentração aritmética seria 1315,7895 mcg/mL. Se 170 mL fossem o volume FINAL, seria 1470,5882 mcg/mL. São preparos diferentes.",
+      "A fórmula original dose × peso × 1440 ÷ 1000 expressa quantidade por dia (mg/dia), quando a dose está em mcg/kg/min; não expressa volume por dia nem taxa de bomba.",
+      "Para análise dimensional, taxa em mL/h = dose por kg/min × peso × 60 ÷ concentração na mesma unidade por mL. É necessário definir o preparo real, limites e protocolo antes de executar cálculo clínico.",
+      "O valor de 1.470 mcg/mL é arredondamento de uma hipótese de volume final de 170 mL; não corresponde à soma literal 20 + 170 mL."
+    ],
+    "references": [
+      {
+        "title": "CHEO — Dobutamina",
+        "url": "https://outreach.cheo.on.ca/manual/1553"
+      }
+    ],
+    "displayCorrections": {
+      "formula": "Quantidade/dia, não volume/24h. A expressão original não calcula a taxa de infusão.",
+      "dilution": "Preparo original ambíguo quanto ao volume final; não utilizar como instrução de mistura.",
+      "concentration": "Concentração declarada incompatível com a leitura literal do preparo. Ver análise dimensional abaixo.",
+      "mnemonic": "Macete retirado do uso operacional: depende de concentração final não confirmada."
+    }
+  },
+  {
+    "entryId": "infusions-008",
+    "version": "reference-review-2026-10-15",
+    "reviewedAt": "2026-10-15",
+    "sourceHash": "f149f420ecbc461711a50c0717c70e082378cc356e00bd829c29b48263024839",
+    "status": "reference_checked_not_clinically_approved",
+    "notes": [
+      "Análise da transcrição, não instrução de preparo: 10 mL de fármaco + 100 mL de diluente totalizam 110 mL (sem considerar sobre-enchimento). A concentração aritmética seria 90,9091 mcg/mL. Se 100 mL fossem o volume FINAL, seria 100 mcg/mL. São preparos diferentes.",
+      "A fórmula original dose × peso × 1440 ÷ 1000 expressa quantidade por dia (mg/dia), quando a dose está em mcg/kg/min; não expressa volume por dia nem taxa de bomba.",
+      "Para análise dimensional, taxa em mL/h = dose por kg/min × peso × 60 ÷ concentração na mesma unidade por mL. É necessário definir o preparo real, limites e protocolo antes de executar cálculo clínico."
+    ],
+    "references": [
+      {
+        "title": "CHEO — Milrinona",
+        "url": "https://outreach.cheo.on.ca/manual/1646"
+      }
+    ],
+    "displayCorrections": {
+      "formula": "Quantidade/dia, não volume/24h. A expressão original não calcula a taxa de infusão.",
+      "dilution": "Preparo original ambíguo quanto ao volume final; não utilizar como instrução de mistura.",
+      "concentration": "Concentração declarada incompatível com a leitura literal do preparo. Ver análise dimensional abaixo.",
+      "mnemonic": "Macete retirado do uso operacional: depende de concentração final não confirmada."
+    }
+  },
+  {
+    "entryId": "infusions-009",
+    "version": "reference-review-2026-10-15",
+    "reviewedAt": "2026-10-15",
+    "sourceHash": "f149f420ecbc461711a50c0717c70e082378cc356e00bd829c29b48263024839",
+    "status": "reference_checked_not_clinically_approved",
+    "notes": [
+      "Análise da transcrição, não instrução de preparo: 1 mL de fármaco + 250 mL de diluente totalizam 251 mL (sem considerar sobre-enchimento). A concentração aritmética seria 79,6813 mUI/mL. Se 250 mL fossem o volume FINAL, seria 80 mUI/mL. São preparos diferentes.",
+      "A fórmula original dose × peso × 1440 ÷ 1000 expressa quantidade por dia (UI/dia), quando a dose está em mUI/kg/min; não expressa volume por dia nem taxa de bomba.",
+      "Para análise dimensional, taxa em mL/h = dose por kg/min × peso × 60 ÷ concentração na mesma unidade por mL. É necessário definir o preparo real, limites e protocolo antes de executar cálculo clínico.",
+      "1 UI = 1.000 mUI. Não há conversão entre UI e mcg. O CHEO diferencia doses por indicação e tempo; a faixa original 0,2–8 mUI/kg/min não deve ser tratada como faixa universal para choque."
+    ],
+    "references": [
+      {
+        "title": "CHEO — Vasopressina",
+        "url": "https://outreach.cheo.on.ca/manual/1731"
+      }
+    ],
+    "displayCorrections": {
+      "formula": "Quantidade/dia, não volume/24h. A expressão original não calcula a taxa de infusão.",
+      "dilution": "Preparo original ambíguo quanto ao volume final; não utilizar como instrução de mistura.",
+      "concentration": "Concentração declarada incompatível com a leitura literal do preparo. Ver análise dimensional abaixo.",
+      "mnemonic": "Macete retirado do uso operacional: depende de concentração final não confirmada."
+    }
+  }
+]

@@ -1,4 +1,5 @@
 import "server-only";
+import corrections from "@/data/clinical-reference-corrections.json";
 import snapshot from "@/data/clinical-resources.json";
 import type { ClinicalCatalog } from "@/lib/clinical-resources";
 
@@ -10,6 +11,7 @@ export function getClinicalCatalog(kind: "medications" | "infusions"): ClinicalC
     throw new Error("Clinical resource snapshot requires external review; execution remains unavailable.");
   }
   return {
+    corrections: corrections.filter(c => entries.some(e => e.id === c.entryId && e.sourceHash === c.sourceHash)),
     sources: snapshot.clinicalSources.filter(source => source.id === kind),
     entries,
     issues: snapshot.validationIssues.filter(issue => issue.sourceId === kind),

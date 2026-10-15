@@ -14,7 +14,7 @@ const medicationFields = [
   ["route", "Via"], ["preparation", "Preparo / diluição"], ["mnemonic", "Macete original"], ["warnings", "Alertas / restrições"], ["reference", "Referência declarada na fonte"],
 ];
 const infusionFields = [
-  ["dose", "Faixa de dose original"], ["formula", "Fórmula textual original · volume/24h"],
+  ["dose", "Faixa de dose original"], ["formula", "Fórmula da fonte · unidade em revisão"],
   ["dilution", "Diluição textual original"], ["concentration", "Concentração textual original"], ["mnemonic", "Macete textual original · ml/h"],
 ];
 
@@ -22,6 +22,7 @@ export function DocumentDetail({ entry, catalog, infusion = false, heading = "h2
   entry: ClinicalEntry; catalog: ClinicalCatalog; infusion?: boolean; heading?: "h1" | "h2";
 }) {
   const Heading = heading;
+  const correction = catalog.corrections?.find(c => c.entryId === entry.id && c.sourceHash === entry.sourceHash);
   const source = catalog.sources.find(s => s.id === entry.sourceId)!;
   const peers = infusion ? [] : sameMedication(catalog.entries, entry);
   const issues = catalog.issues.filter(i => i.entryId === entry.id && i.code !== "HOMOLOGATION_REQUIRED" && i.code !== "MISSING_SOURCE_FIELDS");
@@ -30,7 +31,7 @@ export function DocumentDetail({ entry, catalog, infusion = false, heading = "h2
     <header className="cr-detail-header">
       <p className="cr-eyebrow">{infusion ? "Drogas de choque / infusão contínua" : entry.raw.category}</p>
       <Heading tabIndex={-1} className="cr-detail-title">{entry.raw.name}</Heading>
-      <p className="cr-presentation">{sourceText(entry.raw.presentation)}</p>
+      <p className="cr-presentation">{sourceText(correction?.displayCorrections.presentation || entry.raw.presentation)}</p>
       <ReviewBadge />
       {!infusion && <p className="cr-route">Via: <strong>{sourceText(entry.raw.route)}</strong></p>}
     </header>
@@ -43,9 +44,10 @@ export function DocumentDetail({ entry, catalog, infusion = false, heading = "h2
     <dl className="cr-fields">
       {fields.map(([field, label]) => <div key={field}>
         <dt>{label}<span className="cr-cell">{entry.sheet} · {entry.cells[field]}</span></dt>
-        <dd>{sourceText(entry.raw[field])}</dd>
+        <dd>{sourceText(correction?.displayCorrections[field] || entry.raw[field])}{correction?.displayCorrections[field] && <small className="cr-cell">Correção de referência · original preservado em Fonte e rastreabilidade</small>}</dd>
       </div>)}
     </dl>
+    {correction && <section className="cr-issues" aria-label="Correções fundamentadas em referências"><h3>Revisão de referências · 15/10/2026</h3><p>Erros de unidade e ambiguidades identificados. Esta análise não define um protocolo institucional nem substitui a revisão médica da versão corrigida.</p><ul>{correction.notes.map(note => <li key={note}>{note}</li>)}</ul><p>{correction.references.map(ref => <a className="cr-text-button" key={ref.url} href={ref.url} target="_blank" rel="noopener noreferrer">{ref.title}</a>)}</p><p>Versão: {correction.version}</p></section>}
     {issues.length > 0 && <section className="cr-issues" aria-label="Pendências de revisão">
       <h3><AlertTriangle aria-hidden="true" />Pendências de revisão</h3>
       <ul>{issues.map(issue => <li key={issue.id}><strong>{issue.sheet} · {issue.cells.join(", ")}: </strong>{issue.message}</li>)}</ul>

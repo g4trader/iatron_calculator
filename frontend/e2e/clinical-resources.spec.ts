@@ -53,10 +53,13 @@ test("each presentation opens an original, pending and traceable detail", async 
   await expect(page.getByRole("heading", { name: "Dipirona", exact: true })).toBeVisible();
   await expect(page.locator(".cr-detail .cr-badge")).toHaveText("Pendente de validação");
   await expect(page.locator(".cr-fields")).toContainText("10-12mg/kg/dose");
-  await expect(page.locator(".cr-fields")).toContainText("peso × 0,4 (ml)");
+  await expect(page.locator(".cr-fields")).toContainText("Macete original retirado por erro de unidade");
+  await expect(page.getByRole("region", { name: "Correções fundamentadas em referências" })).toContainText("20 gotas são 500 mg");
   await expect(page.locator(".cr-fields")).toContainText("Não informado na fonte");
-  await expect(page.locator(".cr-issues")).toContainText("Aparente incompatibilidade dimensional");
+  await expect(page.getByRole("region", { name: "Pendências de revisão" })).toContainText("Aparente incompatibilidade dimensional");
   await page.getByText("Fonte e rastreabilidade · linha 2", { exact: true }).click();
+  await page.getByText("Texto bruto de cada célula", { exact: true }).click();
+  await expect(page.locator(".cr-provenance")).toContainText("peso × 0,4 (ml)");
   await expect(page.locator(".cr-provenance")).toContainText("54e81afad928e9944cb180e4ffa8b3165a1cf27a1ebd1b67e4c9abea7d484f3e");
   await page.getByRole("navigation", { name: "Apresentações deste medicamento" }).getByRole("link", { name: "Solução 50mg/ml" }).click();
   await expect(page).toHaveURL(/medications-003$/);
