@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import type { Skin } from "@/lib/skin";
 
 const options: Array<{ value: Skin; label: string; description: string }> = [
-  { value: "dark", label: "Escura", description: "Identidade atual do iatron.PED." },
+  { value: "dark", label: "Escura", description: "Identidade atual do PED.iatron." },
   { value: "light", label: "Branca", description: "Experiência clara para leitura e campanhas." }
 ];
 

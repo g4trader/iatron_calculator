@@ -3,10 +3,10 @@ import { HeartPulse } from "lucide-react";
 
 export function Brand({ href = "/" }: { href?: string }) {
   return (
-    <Link href={href} className="ped-brand" aria-label="iatron.PED — início">
+    <Link href={href} className="ped-brand" aria-label="PED.iatron — início">
       <HeartPulse aria-hidden="true" />
       <span>
-        iatron<span className="ped-brand-dot">.</span>PED
+        PED<span className="ped-brand-dot">.</span>iatron
       </span>
     </Link>
   );

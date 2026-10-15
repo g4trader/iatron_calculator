@@ -94,7 +94,7 @@ export function CalculatorShell({
         <nav aria-label="Módulos clínicos">{navigation()}</nav>
         <div className="ped-sidebar-bottom">
           <p>
-            iatron.PED<span>Apoio ao atendimento pediátrico</span>
+            PED.iatron<span>Apoio ao atendimento pediátrico</span>
           </p>
           <ProductUserPanel />
         </div>

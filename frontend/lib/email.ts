@@ -6,7 +6,7 @@ type SendEmailInput = {
 };
 
 function getFromAddress() {
-  return process.env.EMAIL_FROM ?? "Iatron <no-reply@iatron.app>";
+  return process.env.EMAIL_FROM ?? "PED.iatron <no-reply@iatron.app>";
 }
 
 export async function sendEmail(input: SendEmailInput) {

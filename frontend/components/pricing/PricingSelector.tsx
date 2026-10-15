@@ -9,7 +9,7 @@ import { NeuralCard } from "@/components/saas/SaaSPrimitives";
 import type { PricingPlanView, PricingPriceView } from "@/lib/pricing";
 
 const institutionalContactHref =
-  "mailto:contato@iatron.com.br?subject=Implantacao%20institucional%20iatron.PED&body=Quero%20avaliar%20o%20plano%20Hospital%20do%20iatron.PED.%0A%0AInstituicao%3A%0ANumero%20estimado%20de%20licencas%3A%0AResponsavel%3A";
+  "mailto:contato@iatron.com.br?subject=Implantacao%20institucional%20PED.iatron&body=Quero%20avaliar%20o%20plano%20Hospital%20do%20PED.iatron.%0A%0AInstituicao%3A%0ANumero%20estimado%20de%20licencas%3A%0AResponsavel%3A";
 
 function formatPrice(amountCents: number | null, currency: string) {
   if (amountCents === null) return "Sob consulta";
@@ -29,9 +29,9 @@ function getSelectedPrice(plan: PricingPlanView, selectedByPlan: Record<string, 
 }
 
 function getPlanDescription(plan: PricingPlanView) {
-  if (plan.code === "PROFESSIONAL") return "Acesso individual à Folha PCR digital do iatron.PED.";
+  if (plan.code === "PROFESSIONAL") return "Acesso individual à Folha PCR digital do PED.iatron.";
   if (plan.code === "HOSPITAL") return "Implantação assistida da Folha PCR para equipes clínicas.";
-  return plan.description ?? "Acesso ao iatron.PED.";
+  return plan.description ?? "Acesso ao PED.iatron.";
 }
 
 function PriceCycleSelector({

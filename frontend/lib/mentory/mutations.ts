@@ -17,7 +17,7 @@ const schema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('role'), userId: id, role: z.enum(['mentory_admin', 'mentory_editor', 'mentory_student']), grant: z.boolean() })
 ]);
 export async function mutate(actor: Identity, input: unknown) {
-  if (!actor.editor) throw new MentoryError(403, 'Permissão Mentory necessária.');
+  if (!actor.editor) throw new MentoryError(403, 'Permissão MENTOR.iatron necessária.');
   const parsed = schema.safeParse(input);
   if (!parsed.success) throw new MentoryError(400, 'Dados inválidos. Verifique os campos.');
   const v = parsed.data;
@@ -25,7 +25,7 @@ export async function mutate(actor: Identity, input: unknown) {
     if (v.videoAssetId.startsWith('gcs_')) await verifiedMedia(v.videoAssetId, 'video');
     if (v.captionsAssetId.startsWith('gcs_')) await verifiedMedia(v.captionsAssetId, 'captions');
   }
-  if (['review', 'publication', 'role'].includes(v.action) && !actor.admin) throw new MentoryError(403, 'Ação restrita ao administrador Mentory.');
+  if (['review', 'publication', 'role'].includes(v.action) && !actor.admin) throw new MentoryError(403, 'Ação restrita ao administrador MENTOR.iatron.');
   return prisma.$transaction(async tx => {
     // Serialize editorial writes, including complete-list reorder and review invalidation.
     await tx.$executeRaw`SELECT pg_advisory_xact_lock(72419831)`;

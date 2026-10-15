@@ -5,8 +5,8 @@ import { AuthProvider } from "@/components/AuthProvider";
 import { getServerSkin } from "@/lib/skin";
 
 export const metadata: Metadata = {
-  title: "iatron.PED",
-  description: "Produto Iatron para Folha PCR pediátrica, entubação, parada cardíaca e desfibrilação"
+  title: "PED.iatron",
+  description: "PED.iatron para Folha PCR pediátrica, entubação, parada cardíaca e desfibrilação"
 };
 
 export const viewport: Viewport = {

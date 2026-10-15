@@ -68,7 +68,7 @@ export function AdminSidebar({ permissions, userEmail, userName }: { permissions
           </span>
           {expanded ? (
             <span className="min-w-0">
-              <span className="block truncate font-black text-white">iatron.PED</span>
+              <span className="block truncate font-black text-white">PED.iatron</span>
               <span className="block truncate text-xs font-semibold text-slate-500">Admin SaaS</span>
             </span>
           ) : null}

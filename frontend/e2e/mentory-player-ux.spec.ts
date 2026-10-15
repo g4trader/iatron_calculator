@@ -1,0 +1,30 @@
+import { test, expect } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
+import { mediaRange } from '../lib/mentory/media-range';
+import { login } from './helpers/auth';
+test('Player MP4: controles reais, abas preservam reprodução e não concluem automaticamente', async ({page}) => {
+ const lesson='mentory-demo-module-1-lesson-1';
+ await login(page,'mentory-test-student-b@iatron.test',`/mentory/aprender/${lesson}`);
+ // Provider response is isolated here; server permission gates are covered in mentory.spec.ts.
+ const clip=await readFile('assets/mentory-demo/lesson.mp4');
+ await page.route(`**/api/mentory/lessons/${lesson}/video?preview=0`,r=>r.fulfill({json:{kind:'mp4',url:'/ux-fixture.mp4'}}));
+ await page.route('**/ux-fixture.mp4',r=>{ const range=mediaRange(r.request().headers().range || null,clip.length); return r.fulfill({status:range ? 206 : 200,contentType:'video/mp4',headers:{'accept-ranges':'bytes',...(range ? {'content-range':`bytes ${range.start}-${range.end}/${clip.length}`} : {})},body:range ? clip.subarray(range.start,range.end+1) : clip}); });
+ const progressWrites:string[]=[];
+ page.on('request',r=>{if(r.url().includes('/progress')&&r.method()==='POST')progressWrites.push(r.url());});
+ await page.getByRole('button',{name:'Reproduzir aula',exact:true}).click();
+ const video=page.locator('video');
+ await expect.poll(()=>video.evaluate(v=>(v as HTMLVideoElement).readyState)).toBeGreaterThanOrEqual(1);
+ await video.evaluate(v=>(v as HTMLVideoElement).play());
+ await expect.poll(()=>video.evaluate(v=>(v as HTMLVideoElement).currentTime)).toBeGreaterThan(.3);
+ await video.evaluate(v=>(v as HTMLVideoElement).pause());
+ await page.getByRole('button',{name:'Avançar 10 segundos'}).click();
+ await expect.poll(()=>video.evaluate(v=>(v as HTMLVideoElement).currentTime)).toBeGreaterThan(10);
+ const position=await video.evaluate(v=>(v as HTMLVideoElement).currentTime);
+ await page.getByLabel('Velocidade').selectOption('1.5');
+ await page.getByRole('tab',{name:'Materiais',exact:true}).click();
+ expect(await video.evaluate(v=>(v as HTMLVideoElement).currentTime)).toBeCloseTo(position,1);
+ expect(await video.evaluate(v=>(v as HTMLVideoElement).playbackRate)).toBe(1.5);
+ await page.getByRole('button',{name:'Voltar 10 segundos'}).click();
+ expect(await video.evaluate(v=>(v as HTMLVideoElement).currentTime)).toBeLessThan(position-9);
+ expect(progressWrites).toEqual([]);
+});

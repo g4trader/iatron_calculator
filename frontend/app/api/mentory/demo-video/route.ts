@@ -11,7 +11,7 @@ const assets = { video: ['lesson.mp4', 'video/mp4'], captions: ['captions.vtt', 
 async function serve(req: NextRequest) {
   try {
     const actor = await identity();
-    if (!actor.editor) throw new MentoryError(403, 'Demonstração restrita à equipe Mentory.');
+    if (!actor.editor) throw new MentoryError(403, 'Demonstração restrita à equipe MENTOR.iatron.');
     const asset = req.nextUrl.searchParams.get('asset') || 'video';
     if (!Object.hasOwn(assets, asset)) throw new MentoryError(404, 'Arquivo indisponível.');
     const [filename, contentType] = assets[asset as keyof typeof assets];

@@ -7,7 +7,7 @@ import { activeAccess, MentoryError } from './domain';
 
 export async function identity() {
   const user = await getCurrentUser();
-  if (!user) throw new MentoryError(401, 'Entre para acessar a Mentory.');
+  if (!user) throw new MentoryError(401, 'Entre para acessar a MENTOR.iatron.');
   const grants = await prisma.mentoryRoleGrant.findMany({ where: { userId: user.id } });
   const roles = grants.map(g => g.role);
   return { id: user.id, name: user.name, roles, admin: roles.includes('mentory_admin'), editor: roles.includes('mentory_admin') || roles.includes('mentory_editor'), student: roles.includes('mentory_student') };
@@ -23,12 +23,12 @@ export async function subscriptionFor(userId: string) {
   return prisma.mentorySubscription.findFirst({ where: { userId }, orderBy: { expiresAt: 'desc' } });
 }
 export async function premium(actor: Identity) {
-  if (!actor.student) throw new MentoryError(403, 'Sua conta ainda não possui matrícula Mentory.');
+  if (!actor.student) throw new MentoryError(403, 'Sua conta ainda não possui matrícula MENTOR.iatron.');
   const enrollment = await prisma.mentoryEnrollment.findFirst({ where: { userId: actor.id, status: 'ACTIVE', subscription: { status: 'ACTIVE', startedAt: { lte: new Date() }, expiresAt: { gt: new Date() } } }, include: { subscription: true } });
   if (!enrollment || !activeAccess(enrollment.subscription)) throw new MentoryError(403, 'Acesso indisponível ou expirado. Consulte sua assinatura para renovar.');
 }
 export async function lessonFor(actor: Identity, id: string, preview = false) {
-  if (preview) { if (!actor.editor) throw new MentoryError(403, 'Preview restrita à equipe Mentory.'); }
+  if (preview) { if (!actor.editor) throw new MentoryError(403, 'Preview restrita à equipe MENTOR.iatron.'); }
   else await premium(actor);
   const lesson = await prisma.mentoryLesson.findFirst({ where: { id, ...(preview ? {} : { status: 'PUBLISHED', module: { status: 'PUBLISHED' } }) }, include: { module: true, materials: { orderBy: [{ position: 'asc' }, { id: 'asc' }] } } });
   if (!lesson) throw new MentoryError(404, 'Aula indisponível.');
@@ -49,7 +49,7 @@ export async function adminData(actor: Identity, filter: { query: string; status
   const studentWhere: Prisma.MentoryRoleGrantWhereInput = { role: 'mentory_student', user: { ...userFilter, ...(filter.status ? { mentoryEnrollments: { some: { subscription: statusFilter } } } : {}) } };
   const subscriptionWhere: Prisma.MentorySubscriptionWhereInput = { ...statusFilter, user: userFilter };
   const skip = (filter.page - 1) * 50;
-  if (!actor.editor) throw new MentoryError(403, 'Permissão Mentory necessária.');
+  if (!actor.editor) throw new MentoryError(403, 'Permissão MENTOR.iatron necessária.');
   const modules = await prisma.mentoryModule.findMany({ orderBy: [{ position: 'asc' }, { id: 'asc' }], include: { lessons: { orderBy: [{ position: 'asc' }, { id: 'asc' }], include: { materials: { orderBy: [{ position: 'asc' }, { id: 'asc' }] } } } } });
   if (!actor.admin) return { modules, students: [], subscriptions: [], audit: [], filter, studentCount: 0, subscriptionCount: 0 };
   const [students, subscriptions, audit, studentCount, subscriptionCount] = await Promise.all([

@@ -110,7 +110,7 @@ test('Mentory: equipe sem matrícula entra na gestão e mantém preview sem aces
       await expect(page).toHaveURL(section === 'assinatura' ? /\/mentory\/admin$/ : /\/mentory\/admin\/conteudo$/);
     }
     await page.goto(`/mentory/aprender/${lesson}?preview=1`);
-    await expect(page.getByText('Preview editorial · conteúdo não homologado para alunos')).toBeVisible();
+    await expect(page.getByRole('main').getByText('Preview editorial · conteúdo não homologado para alunos')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Marcar como concluída', exact: true })).toHaveCount(0);
     expect((await page.request.get(`/api/mentory/materials/${lesson}-text?preview=1`)).status()).toBe(200);
     expect((await page.request.get(`/api/mentory/lessons/${lesson}/video`)).status()).toBe(403);

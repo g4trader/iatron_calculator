@@ -21,7 +21,7 @@ export const adminNavigationGroups: AdminNavigationGroup[] = [
     label: "Negócio",
     items: [
       { href: "/admin", label: "Cockpit", permission: "admin.dashboard.view", description: "Receita, crescimento e riscos", Icon: LayoutDashboard },
-      { href: "/dashboard/pcr", label: "Produto", permission: "admin.dashboard.view", description: "Testar iatron.PED", Icon: Activity },
+      { href: "/dashboard/pcr", label: "Produto", permission: "admin.dashboard.view", description: "Testar PED.iatron", Icon: Activity },
       { href: "/admin/sales", label: "Vendas", permission: "admin.sales.view", description: "Funil comercial e assinaturas", Icon: BarChart3 },
       { href: "/admin/payments-manual", label: "Pagamentos manuais", permission: "admin.billing.manage", description: "Recebimentos fora do Stripe", Icon: Banknote },
       { href: "/admin/billing", label: "Billing", permission: "admin.billing.manage", description: "Cobrança e risco de receita", Icon: ClipboardList }

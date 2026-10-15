@@ -40,7 +40,7 @@ export function DashboardChooser() {
     <CalculatorShell active="pcr">
       <div className="mx-auto grid max-w-5xl gap-6 px-4 py-8 sm:px-6 lg:px-8">
         <div>
-          <p className="text-sm font-black text-cyan-200">iatron.PED</p>
+          <p className="text-sm font-black text-cyan-200">PED.iatron</p>
           <h1 className="mt-3 text-4xl font-black text-white md:text-5xl">Produtos clínicos para plantão pediátrico.</h1>
           <p className="mt-4 max-w-2xl text-base font-medium leading-7 text-slate-300">
             A entrada principal continua sendo a Folha de PCR, com módulos complementares em mockup para validação de experiência.

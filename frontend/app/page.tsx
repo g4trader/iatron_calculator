@@ -29,7 +29,7 @@ import {
 } from "@/lib/pricing";
 
 export const metadata: Metadata = {
-  title: "iatron.PED | Folha PCR pediátrica",
+  title: "PED.iatron | Folha PCR pediátrica",
   description:
     "Via aérea, desfibrilação e medicações organizadas na Folha PCR pediátrica. Consulte os resultados e imprima para apoiar a conferência clínica.",
   alternates: { canonical: "https://ped.iatron.com.br" },
@@ -170,7 +170,7 @@ export default async function LandingPage() {
             >
               <div className="ped-demo-chrome">
                 <span aria-hidden="true">● ● ●</span>
-                <span>iatron.PED / Folha PCR</span>
+                <span>PED.iatron / Folha PCR</span>
               </div>
               <div className="ped-demo-body">
                 <span className="ped-eyebrow">
@@ -267,7 +267,7 @@ export default async function LandingPage() {
                 O Dr. Aristóteles de Almeida Pires é médico com trajetória
                 dedicada à prática clínica, inovação em saúde e formação de
                 profissionais. Doutor em telemedicina e mentor de carreira
-                médica, conduz a visão clínica do iatron.PED para transformar
+                médica, conduz a visão clínica do PED.iatron para transformar
                 rotinas críticas em ferramentas digitais mais claras, rápidas e
                 úteis no atendimento real.
               </p>

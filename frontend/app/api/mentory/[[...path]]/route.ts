@@ -87,7 +87,7 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
         if (!verifyAssetSignature(actor.id, material.id, expiry, preview, req.nextUrl.searchParams.get('signature') || '')) throw new MentoryError(403, 'Link inválido ou expirado. Solicite um novo acesso.');
         if (!material.storageKey) throw new MentoryError(404, 'Arquivo indisponível.');
         const asset = await prisma.mentoryPrivateAsset.findUniqueOrThrow({ where: { id: material.storageKey } });
-        return new NextResponse(new Uint8Array(asset.content), { headers: { ...headers, 'Content-Type': 'application/pdf', 'Content-Disposition': 'attachment; filename="material-mentory.pdf"', 'Content-Security-Policy': "sandbox; default-src 'none'" } });
+        return new NextResponse(new Uint8Array(asset.content), { headers: { ...headers, 'Content-Type': 'application/pdf', 'Content-Disposition': 'attachment; filename="material-MENTOR.iatron.pdf"', 'Content-Security-Policy': "sandbox; default-src 'none'" } });
       }
       if (material.type === 'TEXT') return json({ title: material.title, body: material.body });
       const expiry = Date.now() + 60000;

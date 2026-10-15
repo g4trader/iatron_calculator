@@ -182,7 +182,7 @@ function PcrPrintReport({
   if (!result) {
     return (
       <div className="print-only print-report">
-        <h1>Folha PCR</h1>
+        <h1>PED.iatron - Folha PCR</h1>
         <p>Nenhum resultado calculado.</p>
       </div>
     );
@@ -191,7 +191,7 @@ function PcrPrintReport({
   return (
     <div className="print-only print-report">
       <header className="print-report-section">
-        <h1>Folha PCR - Entubação e PCR</h1>
+        <h1>PED.iatron - Folha PCR - Entubação e PCR</h1>
         <table>
           <tbody>
             <tr>

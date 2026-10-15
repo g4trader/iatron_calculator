@@ -10,7 +10,7 @@ test.describe("funil comercial SaaS", () => {
     await page.getByRole("link", { name: /assinar agora/i }).click();
 
     await expect(page).toHaveURL(/\/checkout$/);
-    await expect(page.getByRole("heading", { name: /escolha o acesso comercial do iatron/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /escolha o acesso comercial do PED\.iatron/i })).toBeVisible();
     await expect(page.getByText(/planos individuais/i)).toBeVisible();
   });
 
