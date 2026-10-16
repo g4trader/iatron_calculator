@@ -107,7 +107,7 @@ test('Mentory: equipe sem matrícula entra na gestão e mantém preview sem aces
     await expect(page.getByText('Seu acesso premium ainda não está ativo ou expirou.', { exact: false })).toHaveCount(0);
     for (const section of ['modulos', 'materiais', 'assinatura']) {
       await page.goto(`/mentory/${section}`);
-      await expect(page).toHaveURL(section === 'assinatura' ? /\/mentory\/admin$/ : /\/mentory\/admin\/conteudo$/);
+      await expect(page).toHaveURL(section === 'assinatura' ? /\/mentory\/conta\/assinatura$/ : /\/mentory\/admin\/conteudo$/);
     }
     await page.goto(`/mentory/aprender/${lesson}?preview=1`);
     await expect(page.getByRole('main').getByText('Preview editorial · conteúdo não homologado para alunos')).toBeVisible();

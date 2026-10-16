@@ -1,5 +1,6 @@
 'use client';
-import { useRef, useState } from 'react';
+import { playbackRates, playbackPreferenceKey } from '@/lib/mentory/account-validation';
+import { useRef, useState, useEffect } from 'react';
 import { RotateCcw, RotateCw } from 'lucide-react';
 import chapters from '@/lib/mentory/demo-video-chapters.json';
 const url = '/api/mentory/demo-video';
@@ -12,6 +13,7 @@ export default function DemoVideoPlayer({ title, position, onPosition }: { title
   const [ready, setReady] = useState(false);
   const [duration, setDuration] = useState(0);
   const [rate, setRate] = useState('1');
+  useEffect(() => { try { const value=localStorage.getItem(playbackPreferenceKey); if(playbackRates.includes(value as typeof playbackRates[number])) {setRate(value!);if(video.current)video.current.playbackRate=Number(value);} } catch {} }, []);
   function fail() { setError(true); setReady(false); setStatus('Não foi possível carregar o vídeo. Verifique sua conexão e tente novamente.'); }
   function seek(seconds: number) { if (video.current && ready) { video.current.currentTime = Math.max(0, Math.min(seconds, duration)); onPosition(video.current.currentTime); } }
   return <section className="demo-video" aria-label="Player da videoaula">

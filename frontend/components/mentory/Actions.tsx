@@ -1,5 +1,6 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { playbackRates, playbackPreferenceKey } from '@/lib/mentory/account-validation';
 import { useRouter } from 'next/navigation';
 export function MaterialAccess({ id, preview = false }: { id: string; preview?: boolean }) {
   const [body, setBody] = useState(''); const [busy, setBusy] = useState(false);
@@ -13,6 +14,7 @@ export function ProgressControl({ id, duration, position, completed }: { id: str
 export function VideoPlayer({ id, preview, position }: { id: string; preview: boolean; position: number }) {
   const video = useRef<HTMLVideoElement>(null);
   const [rate, setRate] = useState('1');
+  useEffect(() => { try { const value=localStorage.getItem(playbackPreferenceKey); if(playbackRates.includes(value as typeof playbackRates[number])) setRate(value!); } catch {} }, []);
   const [ready, setReady] = useState(false);
   function seek(delta: number) { if (video.current && Number.isFinite(video.current.duration)) video.current.currentTime = Math.max(0, Math.min(video.current.duration, video.current.currentTime + delta)); }
   const [media, setMedia] = useState<{ url: string; kind: string; captions?: string } | null>(null);

@@ -18,13 +18,13 @@ test('Demonstração: curso completo, materiais e progresso isolados', async ({ 
   const writes: string[] = [];
   await login(page, 'mentory-test-admin@iatron.test', route);
   page.on('request', r => { if (r.url().includes('/api/mentory') && r.method() !== 'GET') writes.push(r.url()); });
-  const nav = page.locator('nav:visible').filter({ has: page.getByRole('button', { name: 'Visão geral', exact: true }) });
+  const nav = page.locator('nav:visible').filter({ has: page.getByRole('button', { name: 'Minha jornada', exact: true }) });
   await expect(page.getByRole('progressbar', { name: 'Progresso demonstrativo' })).toHaveAttribute('aria-valuenow', '5');
   await page.screenshot({ path: info.outputPath('overview.png'), fullPage: true });
   await nav.getByRole('button', { name: /^(Meus módulos|Módulos)$/ }).click();
   await expect(page.locator('.demo-lesson-row')).toHaveCount(24);
   await page.screenshot({ path: info.outputPath('modules.png'), fullPage: true });
-  await nav.getByRole('button', { name: 'Visão geral', exact: true }).click();
+  await nav.getByRole('button', { name: 'Minha jornada', exact: true }).click();
   await page.getByRole('button', { name: 'Continuar aula', exact: true }).click();
   const video = page.locator('video');
   await expect.poll(() => video.evaluate(v => (v as HTMLVideoElement).readyState)).toBeGreaterThanOrEqual(1);
@@ -36,8 +36,8 @@ test('Demonstração: curso completo, materiais e progresso isolados', async ({ 
   await page.getByRole('button', { name: 'Avançar 10 segundos' }).click();
   await expect.poll(() => video.evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThan(10);
   const savedPosition = await video.evaluate(v => (v as HTMLVideoElement).currentTime);
-  await nav.getByRole('button', { name: 'Visão geral', exact: true }).click();
-  await nav.getByRole('button', { name: 'Visão geral', exact: true }).click();
+  await nav.getByRole('button', { name: 'Minha jornada', exact: true }).click();
+  await nav.getByRole('button', { name: 'Minha jornada', exact: true }).click();
   await page.getByRole('button', { name: 'Continuar aula', exact: true }).click();
   await expect.poll(() => video.evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThan(savedPosition - 0.2);
   await expect.poll(() => video.evaluate(v => (v as HTMLVideoElement).textTracks[0]?.cues?.length || 0)).toBeGreaterThan(0);
@@ -59,7 +59,7 @@ test('Demonstração: curso completo, materiais e progresso isolados', async ({ 
   await page.getByRole('button', { name: 'Concluir aula na demonstração', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Desmarcar conclusão simulada' })).toBeVisible();
   await page.screenshot({ path: info.outputPath('lesson.png'), fullPage: true });
-  await nav.getByRole('button', { name: 'Visão geral', exact: true }).click();
+  await nav.getByRole('button', { name: 'Minha jornada', exact: true }).click();
   await expect(page.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '6');
   await nav.getByRole('button', { name: 'Materiais', exact: true }).click();
   await expect(page.getByRole('button', { name: /^Abrir (Roteiro|Ficha)/ })).toHaveCount(48);
@@ -72,7 +72,8 @@ test('Demonstração: curso completo, materiais e progresso isolados', async ({ 
   await page.getByRole('link', { name: 'Baixar exemplo em texto' }).click();
   expect((await download).suggestedFilename()).toBe('demo-guide-1-1.txt');
   await page.screenshot({ path: info.outputPath('materials.png'), fullPage: true });
-  await nav.getByRole('button', { name: 'Assinatura', exact: true }).click();
+  await page.getByRole('button', { name: /^Menu de/ }).click();
+  await page.getByRole('button', { name: 'Assinatura demonstrativa', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Cobrança não habilitada' })).toBeDisabled();
   await page.screenshot({ path: info.outputPath('subscription.png'), fullPage: true });
   await page.locator('.demo-disclosure summary').click();
