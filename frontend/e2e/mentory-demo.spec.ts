@@ -105,3 +105,35 @@ test('Demonstração: falha de vídeo permite tentar novamente', async ({ page }
   await page.locator('video').evaluate(v => (v as HTMLVideoElement).play());
   await expect.poll(() => page.locator('video').evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThan(0.3);
 });
+
+
+test('Demonstração: próxima e anterior substituem o player sem acumular vídeos', async ({ page }, info) => {
+  test.setTimeout(90000);
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await login(page, 'mentory-test-admin@iatron.test', route);
+  await page.getByRole('button', { name: 'Continuar aula', exact: true }).click();
+  const video = page.locator('video');
+  await expect(video).toHaveCount(1);
+  await expect.poll(() => video.evaluate(v => (v as HTMLVideoElement).readyState)).toBeGreaterThanOrEqual(1);
+  await page.getByRole('button', { name: 'Avançar 10 segundos' }).click();
+  const saved = await video.evaluate(v => (v as HTMLVideoElement).currentTime);
+  for (const direction of ['Próxima aula', 'Aula anterior']) {
+    for (let i = 0; i < 12; i++) {
+      const heading = await page.getByRole('heading', { level: 1 }).innerText();
+      await page.getByRole('button', { name: new RegExp(direction) }).first().click();
+      await expect(page.getByRole('heading', { level: 1 })).not.toHaveText(heading);
+      await page.screenshot({ path: info.outputPath('navigation-current.png'), fullPage: true });
+      await expect(page.locator('.demo-video')).toHaveCount(1);
+      await expect(video).toHaveCount(1);
+      await expect(page.getByRole('tablist')).toHaveCount(1);
+      await expect(video).toHaveAttribute('aria-label', `Videoaula demonstrativa: ${await page.getByRole('heading', { level: 1 }).innerText()}`);
+    }
+  }
+  await expect.poll(() => video.evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThanOrEqual(saved - 0.2);
+  await video.evaluate(v => (v as HTMLVideoElement).play());
+  await expect.poll(() => video.evaluate(v => (v as HTMLVideoElement).currentTime)).toBeGreaterThan(saved + 0.2);
+  await video.evaluate(v => (v as HTMLVideoElement).pause());
+  expect(errors).toEqual([]);
+});
