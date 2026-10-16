@@ -24,5 +24,5 @@ export class MentoryError extends Error {
 }
 export interface MentoryPaymentAdapter { checkout(): Promise<never>; }
 export const mentoryPayment: MentoryPaymentAdapter = {
-  async checkout() { throw new MentoryError(423, 'Matrículas e cobranças aguardam homologação comercial. Nenhuma cobrança foi iniciada.'); }
+  async checkout() { throw new MentoryError(423, 'Contratação online e cobranças automáticas estão desativadas. Nenhuma cobrança foi iniciada.'); }
 };
