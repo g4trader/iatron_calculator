@@ -97,3 +97,7 @@
  .mentory .mentor-final .subscription-grid{grid-template-columns:minmax(0,1fr)}.mentory .mentor-final .lesson-tabbar button{padding:8px;font-size:13px}
 }
 @media(prefers-reduced-motion:reduce){.mentory .mentor-final *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Immediate feedback without replacing the current workspace during navigation. */
+.mentory .mentor-navigation-status{position:fixed;top:76px;left:50%;transform:translateX(-50%);z-index:1000;padding:10px 18px;border:1px solid #b8d3e4;border-radius:10px;background:#fff;color:#12314b;box-shadow:0 4px 16px #102a431a;font-size:14px;pointer-events:none}
+.mentory a[aria-busy="true"]{cursor:progress;outline:2px solid #2d93b7;outline-offset:2px}

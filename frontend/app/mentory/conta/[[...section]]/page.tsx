@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from '@/components/mentory/NavigationLink';
 import { notFound } from 'next/navigation';
 import Shell from '@/components/mentory/Shell';
 import { ProfileForm, PasswordForm, PreferencesForm } from '@/components/mentory/AccountForms';

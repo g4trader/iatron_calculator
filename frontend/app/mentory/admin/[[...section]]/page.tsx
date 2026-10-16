@@ -9,6 +9,6 @@ export default async function AdminPage({ params, searchParams }: { params: Prom
   if (['alunos', 'assinaturas'].includes(section) && !actor.admin) redirect('/mentory/admin');
   const search = await searchParams;
   const filter = { query: (search.q || '').slice(0, 200), status: search.status || '', page: Math.max(1, Math.min(100000, Number.parseInt(search.page || '1', 10) || 1)) };
-  const data = JSON.parse(JSON.stringify(await adminData(actor, filter))) as AdminData;
+  const data = JSON.parse(JSON.stringify(await adminData(actor, filter, section))) as AdminData;
   return <Shell editor admin={actor.admin} name={actor.name}><div className="page-heading"><span className="eyebrow">ADMINISTRAÇÃO MENTOR.iatron</span><h1>{{ '': 'Visão geral', conteudo: 'Gestão de conteúdo', alunos: 'Gestão de alunos', assinaturas: 'Assinaturas' }[section]}</h1><p>Organize a experiência de aprendizagem com segurança.</p></div><Admin data={data} section={section} admin={actor.admin}/></Shell>;
 }

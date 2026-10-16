@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from '@/components/mentory/NavigationLink';
 import { notFound, redirect } from 'next/navigation';
 import { BookOpen, ArrowRight } from 'lucide-react';
 import Shell from '@/components/mentory/Shell';
