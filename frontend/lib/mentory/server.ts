@@ -10,7 +10,7 @@ export async function identity() {
   if (!user) throw new MentoryError(401, 'Entre para acessar a MENTOR.iatron.');
   const grants = await prisma.mentoryRoleGrant.findMany({ where: { userId: user.id } });
   const roles = grants.map(g => g.role);
-  return { id: user.id, name: user.name, roles, admin: roles.includes('mentory_admin'), editor: roles.includes('mentory_admin') || roles.includes('mentory_editor'), student: roles.includes('mentory_student') };
+  return { id: user.id, name: user.name, email: user.email, roles, admin: roles.includes('mentory_admin'), editor: roles.includes('mentory_admin') || roles.includes('mentory_editor'), student: roles.includes('mentory_student') };
 }
 export type Identity = Awaited<ReturnType<typeof identity>>;
 export async function pageIdentity(admin = false) {

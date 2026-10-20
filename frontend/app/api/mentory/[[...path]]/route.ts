@@ -2,7 +2,7 @@ import { beginMediaUpload, finishMediaUpload, readCaptions } from '@/lib/mentory
 import { NextRequest, NextResponse } from 'next/server';
 import { createHash } from 'node:crypto';
 import { prisma } from '@/lib/prisma';
-import { identity, lessonFor, subscriptionFor } from '@/lib/mentory/server';
+import { identity, lessonFor, subscriptionFor, adminData } from '@/lib/mentory/server';
 import { MentoryError, mentoryPayment } from '@/lib/mentory/domain';
 import { mutate } from '@/lib/mentory/mutations';
 import { assetSignature, verifyAssetSignature, videoPlayback } from '@/lib/mentory/assets';
@@ -30,6 +30,7 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
     const path = (await context.params).path || [];
     const preview = req.nextUrl.searchParams.get('preview') === '1';
     if (req.nextUrl.searchParams.has('userId')) throw new MentoryError(403, 'Consulta restrita ao titular autenticado.');
+    if (!write && path.join('/') === 'admin/content') return json(await adminData(actor, undefined, 'conteudo'));
     if (write && path.join('/') === 'admin') return json(await mutate(actor, await req.json()));
     if (write && path.join('/') === 'checkout') return json(await mentoryPayment.checkout());
     if (write && ['media/start', 'media/finish'].includes(path.join('/'))) {

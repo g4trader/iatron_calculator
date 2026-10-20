@@ -7,7 +7,7 @@ test.afterAll(()=>db.$disconnect());
 test('Conta: navegação, persistência, conflito, CSRF e isolamento',async({page,request})=>{
  expect((await request.post('/api/mentory/account',{data:{}})).status()).toBe(401);
  await login(page,'mentory-test-student-a@iatron.test','/mentory/aprender');
- const nav=page.locator('nav:visible').filter({has:page.getByRole('link',{name:'Minha jornada',exact:true})});
+ const nav=page.locator('nav:visible').filter({has:page.getByRole('link',{name:'Início',exact:true})});
  await expect(nav).not.toContainText('Assinatura');await expect(nav).not.toContainText('Administração');
  await page.getByRole('button',{name:/^Menu de/}).click();await page.getByRole('link',{name:'Meu perfil',exact:true}).click();
  const original=await db.user.findUniqueOrThrow({where:{id:'mentory-test-student-a'}});

@@ -7,8 +7,8 @@ import { Identity } from './server';
 const text = z.string().trim().min(1).max(200);
 const id = z.string().min(1).max(100);
 const schema = z.discriminatedUnion('action', [
-  z.object({ action: z.literal('module.save'), id: id.optional(), title: text, description: z.string().max(5000) }),
-  z.object({ action: z.literal('lesson.save'), id: id.optional(), moduleId: id, title: text, description: z.string().max(10000), duration: z.number().int().min(0).max(86400), videoAssetId: z.string().regex(/^[a-zA-Z0-9_-]*$/).max(200), captionsAssetId: z.string().regex(/^[a-zA-Z0-9_-]*$/).max(200) }),
+  z.object({ action: z.literal('module.save'), id: id.optional(), expectedUpdatedAt: z.string().datetime().optional(), title: text, description: z.string().max(5000) }),
+  z.object({ action: z.literal('lesson.save'), id: id.optional(), expectedUpdatedAt: z.string().datetime().optional(), moduleId: id, title: text, description: z.string().max(10000), duration: z.number().int().min(0).max(86400), videoAssetId: z.string().regex(/^[a-zA-Z0-9_-]*$/).max(200), captionsAssetId: z.string().regex(/^[a-zA-Z0-9_-]*$/).max(200) }),
   z.object({ action: z.literal('material.save'), id: id.optional(), lessonId: id, title: text, type: z.enum(['TEXT', 'PDF', 'SLIDES']), body: z.string().max(30000), storageKey: id.optional() }),
   z.object({ action: z.literal('delete'), kind: z.enum(['module', 'lesson', 'material']), id }),
   z.object({ action: z.literal('reorder'), kind: z.enum(['module', 'lesson', 'material']), parentId: id.optional(), ids: z.array(id).max(500) }),
@@ -29,6 +29,10 @@ export async function mutate(actor: Identity, input: unknown) {
   return prisma.$transaction(async tx => {
     // Serialize editorial writes, including complete-list reorder and review invalidation.
     await tx.$executeRaw`SELECT pg_advisory_xact_lock(72419831)`;
+    if ((v.action === 'module.save' || v.action === 'lesson.save') && v.id && v.expectedUpdatedAt) {
+      const current = v.action === 'module.save' ? await tx.mentoryModule.findUnique({ where: { id: v.id }, select: { updatedAt: true } }) : await tx.mentoryLesson.findUnique({ where: { id: v.id }, select: { updatedAt: true } });
+      if (!current || current.updatedAt.toISOString() !== v.expectedUpdatedAt) throw new MentoryError(409, 'Este conteúdo mudou em outra edição. Recarregue a versão atual antes de salvar; suas alterações continuam no formulário.');
+    }
     let entityId = 'id' in v && v.id ? v.id : 'mentory';
     const invalidate = async (lessonId: string) => tx.mentoryLesson.update({ where: { id: lessonId }, data: { status: 'DRAFT', reviewedAt: null, reviewedBy: null, reviewReference: null } });
     if (v.action === 'module.save') {

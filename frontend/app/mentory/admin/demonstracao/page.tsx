@@ -3,5 +3,5 @@ import { pageIdentity } from '@/lib/mentory/server';
 export const dynamic = 'force-dynamic';
 export default async function CourseDemonstration() {
   const actor = await pageIdentity(true);
-  return <CourseDemo name={actor.name}/>;
+  return <CourseDemo name={actor.name} email={actor.email}/>;
 }
