@@ -4,6 +4,17 @@
 .mentory .mentor-final .sidebar{background:linear-gradient(160deg,#0b2038,#102e48)}
 .mentory .mentor-final .sidebar .active{background:#1d4563}
 .mentory .mentor-final .account-email{display:block;font-weight:400;overflow-wrap:anywhere;font-size:12px;margin-top:4px;color:var(--muted)}
+.mentory .mentor-final .user-trigger{border-radius:10px;padding:4px 8px;gap:10px;font-weight:500;transition:background .15s}
+.mentory .mentor-final .user-trigger:is(:hover,[aria-expanded=true]){background:var(--brand-50)}
+.mentory .mentor-final .user-trigger>svg{color:var(--muted);transition:transform .15s}
+.mentory .mentor-final .user-trigger[aria-expanded=true]>svg{transform:rotate(180deg)}
+.mentory .mentor-final .user-dropdown{width:min(288px,calc(100vw - 32px));padding:8px;gap:2px;border-radius:12px;box-shadow:0 8px 28px #0b20381a}
+.mentory .mentor-final .user-dropdown>strong{display:block;padding:10px 12px 14px;margin-bottom:4px;line-height:1.5;font-size:14px;font-weight:650}
+.mentory .mentor-final .user-dropdown :is(a,button){gap:12px;width:100%;padding:10px 12px;min-height:44px;font-family:inherit;font-size:14px;line-height:1.4;font-weight:500;text-decoration:none;cursor:pointer;transition:background .15s,color .15s}
+.mentory .mentor-final .user-dropdown :is(a,button)>svg{flex-shrink:0;color:var(--muted)}
+.mentory .mentor-final .user-dropdown :is(a,button):is(:hover,[aria-current=page]){background:var(--brand-50);color:var(--brand-700);text-decoration:none}
+.mentory .mentor-final .user-dropdown :is(a,button):focus-visible{outline:2px solid var(--brand-700);outline-offset:-2px;background:var(--brand-50)}
+.mentory .mentor-final .user-dropdown .account-signout{border-top:1px solid var(--border);border-radius:0 0 8px 8px;margin-top:4px;padding-top:14px}
 .mentory .mentor-final .course-cover{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:10px}
 .mentory .mentor-final .cover-compact{width:88px;height:56px;flex-shrink:0}
 .mentory .mentor-final .module-card{border:1px solid var(--border);background:white;border-radius:12px;overflow:hidden;padding:12px;transition:border-color .15s}
