@@ -1,17 +1,28 @@
 import 'server-only';
 import { redirect } from 'next/navigation';
 import type { Prisma } from '@prisma/client';
-import { getCurrentUser } from '@/lib/authz';
+import { cache } from 'react';
+import { auth } from '@/auth';
+import { validateCurrentUserSession } from '@/lib/session-control';
 import { prisma } from '@/lib/prisma';
 import { activeAccess, MentoryError } from './domain';
 
-export async function identity() {
-  const user = await getCurrentUser();
-  if (!user) throw new MentoryError(401, 'Entre para acessar a MENTOR.iatron.');
-  const grants = await prisma.mentoryRoleGrant.findMany({ where: { userId: user.id } });
+// Deduplicate within one RSC request only. Every navigation rechecks revocation
+// and current role grants; no cross-request cache of authorization or contracts.
+async function loadIdentity() {
+  const session = await auth();
+  if (!session?.user?.id) throw new MentoryError(401, 'Entre para acessar a MENTOR.iatron.');
+  const userId = session.user.id;
+  const [validSession, user, grants] = await Promise.all([
+    validateCurrentUserSession(userId, session.user.sessionId).catch(() => null),
+    prisma.user.findUnique({ where: { id: userId }, select: { id: true, name: true, email: true } }),
+    prisma.mentoryRoleGrant.findMany({ where: { userId }, select: { role: true } })
+  ]);
+  if (!validSession || !user) throw new MentoryError(401, 'Entre para acessar a MENTOR.iatron.');
   const roles = grants.map(g => g.role);
   return { id: user.id, name: user.name, email: user.email, roles, admin: roles.includes('mentory_admin'), editor: roles.includes('mentory_admin') || roles.includes('mentory_editor'), student: roles.includes('mentory_student') };
 }
+export const identity = typeof cache === 'function' ? cache(loadIdentity) : loadIdentity;
 export type Identity = Awaited<ReturnType<typeof identity>>;
 export async function pageIdentity(admin = false) {
   let actor: Identity;
