@@ -2,7 +2,7 @@ import { beginMediaUpload, finishMediaUpload, readCaptions } from '@/lib/mentory
 import { NextRequest, NextResponse } from 'next/server';
 import { createHash } from 'node:crypto';
 import { prisma } from '@/lib/prisma';
-import { identity, lessonFor, subscriptionFor, adminData } from '@/lib/mentory/server';
+import { identity, lessonAccess, subscriptionFor, adminData } from '@/lib/mentory/server';
 import { MentoryError, mentoryPayment } from '@/lib/mentory/domain';
 import { mutate } from '@/lib/mentory/mutations';
 import { assetSignature, verifyAssetSignature, videoPlayback } from '@/lib/mentory/assets';
@@ -62,7 +62,7 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
     if (!write && path.join('/') === 'subscription') return json(await subscriptionFor(actor.id));
     if (!write && path.join('/') === 'progress') return json(await prisma.mentoryLessonProgress.findMany({ where: { userId: actor.id } }));
     if (path[0] === 'lessons' && path[1]) {
-      const lesson = await lessonFor(actor, path[1], preview);
+      const lesson = await lessonAccess(actor, path[1], preview);
       if (!write && path[2] === 'video') {
         const subscription = await subscriptionFor(actor.id);
         return json({ url: await videoPlayback(lesson.videoAssetId, preview ? new Date(Date.now() + 300000) : subscription!.expiresAt), kind: lesson.videoAssetId?.startsWith('gcs_') ? 'mp4' : 'iframe', captions: lesson.captionsAssetId?.startsWith('gcs_') ? `/api/mentory/lessons/${lesson.id}/captions?preview=${preview ? '1' : '0'}` : null });
@@ -82,7 +82,7 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
     if (!write && path[0] === 'materials' && path[1]) {
       const material = await prisma.mentoryMaterial.findUnique({ where: { id: path[1] } });
       if (!material) throw new MentoryError(404, 'Material indisponível.');
-      await lessonFor(actor, material.lessonId, preview);
+      await lessonAccess(actor, material.lessonId, preview);
       if (path[2] === 'download') {
         const expiry = Number(req.nextUrl.searchParams.get('expires'));
         if (!verifyAssetSignature(actor.id, material.id, expiry, preview, req.nextUrl.searchParams.get('signature') || '')) throw new MentoryError(403, 'Link inválido ou expirado. Solicite um novo acesso.');

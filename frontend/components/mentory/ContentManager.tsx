@@ -4,7 +4,8 @@ import { useSearchParams } from 'next/navigation';
 import { Plus, ArrowLeft, ArrowUp, ArrowDown, BookOpen, MoreHorizontal, FileText } from 'lucide-react';
 import CourseCover from './CourseCover';
 import EditorDialog from './EditorDialog';
-import LessonEditor from './LessonEditor';
+import dynamic from 'next/dynamic';
+const LessonEditor = dynamic(() => import('./LessonEditor'), { loading: () => <p role="status">Carregando editor de aula…</p> });
 import { editorialRequest, Module, useUnsavedChanges } from './editor-utils';
 
 function ModuleForm({ module, save, close }: { module?: Module; save: (body: Record<string, unknown>) => Promise<void>; close: () => void }) {

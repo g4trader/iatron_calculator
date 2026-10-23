@@ -33,7 +33,9 @@ test('Gestão conserva contadores, conteúdo e filtros com consultas por seção
   await expect(page.getByText('Nenhum módulo cadastrado.')).toHaveCount(0);
   await page.goto('/mentory/admin/alunos');
   await expect(page.getByRole('main').getByText('mentory-test-student-b@iatron.test', { exact: true })).toBeVisible();
-  await page.getByLabel('Buscar por nome ou email').fill('no-matching-student');
+  const search = page.getByRole('textbox', { name: 'Buscar por nome ou email' });
+  await expect(search).toHaveCount(1);
+  await search.fill('no-matching-student');
   await page.getByRole('button', { name: 'Aplicar filtros' }).click();
   await expect(page.getByRole('main').getByText('Página 1 · 0 resultados')).toBeVisible();
   await page.goto('/mentory/admin/assinaturas');

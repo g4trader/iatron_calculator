@@ -27,10 +27,25 @@ export async function premium(actor: Identity) {
   const enrollment = await prisma.mentoryEnrollment.findFirst({ where: { userId: actor.id, status: 'ACTIVE', subscription: { status: 'ACTIVE', startedAt: { lte: new Date() }, expiresAt: { gt: new Date() } } }, include: { subscription: true } });
   if (!enrollment || !activeAccess(enrollment.subscription)) throw new MentoryError(403, 'Acesso indisponível ou expirado. Consulte sua assinatura para renovar.');
 }
-export async function lessonFor(actor: Identity, id: string, preview = false) {
+async function authorizedLessonWhere(actor: Identity, id: string, preview: boolean): Promise<Prisma.MentoryLessonWhereInput> {
   if (preview) { if (!actor.editor) throw new MentoryError(403, 'Preview restrita à equipe MENTOR.iatron.'); }
   else await premium(actor);
-  const lesson = await prisma.mentoryLesson.findFirst({ where: { id, ...(preview ? {} : { status: 'PUBLISHED', module: { status: 'PUBLISHED' } }) }, include: { module: true, materials: { orderBy: [{ position: 'asc' }, { id: 'asc' }] } } });
+  return { id, ...(preview ? {} : { status: 'PUBLISHED', module: { status: 'PUBLISHED' } }) };
+}
+// Media/progress endpoints need scalar lesson fields, not the full material library.
+export async function lessonAccess(actor: Identity, id: string, preview = false) {
+  const lesson = await prisma.mentoryLesson.findFirst({ where: await authorizedLessonWhere(actor, id, preview), select: { id: true, duration: true, videoAssetId: true, captionsAssetId: true } });
+  if (!lesson) throw new MentoryError(404, 'Aula indisponível.');
+  return lesson;
+}
+export async function lessonFor(actor: Identity, id: string, preview = false) {
+  const lesson = await prisma.mentoryLesson.findFirst({
+    where: await authorizedLessonWhere(actor, id, preview),
+    include: { module: { select: { title: true } }, materials: {
+      orderBy: [{ position: 'asc' }, { id: 'asc' }],
+      select: { id: true, title: true, type: true, asset: { select: { byteSize: true } } }
+    } }
+  });
   if (!lesson) throw new MentoryError(404, 'Aula indisponível.');
   return lesson;
 }

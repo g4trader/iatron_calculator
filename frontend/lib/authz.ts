@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getCommercialEntitlement, requirePremiumAccess } from "@/lib/commercial-access";
@@ -17,21 +18,24 @@ export function isSubscriptionActive(status?: string | null) {
   return isCommercialStatusActive(status);
 }
 
-export async function getCurrentUser() {
+// Request-scoped deduplication only: every new request revalidates the session.
+async function loadCurrentUser() {
   const session = await auth();
   if (!session?.user?.id) return null;
-  const validSession = await validateCurrentUserSession(session.user.id, session.user.sessionId).catch(() => null);
-  if (!validSession) return null;
-  return prisma.user.findUnique({
-    where: { id: session.user.id },
-    include: {
-      subscriptions: {
-        orderBy: { updatedAt: "desc" },
-        take: 1
-      }
-    }
-  });
+  // Both reads are independent; never return user data until validation succeeds.
+  const [validSession, user] = await Promise.all([
+    validateCurrentUserSession(session.user.id, session.user.sessionId).catch(() => null),
+    prisma.user.findUnique({
+      where: { id: session.user.id },
+      include: { subscriptions: { orderBy: { updatedAt: "desc" }, take: 1 } }
+    })
+  ]);
+  return validSession ? user : null;
 }
+
+// Next RSC provides cache; standalone React 18 operational scripts do not.
+// Outside RSC, keep ordinary fresh reads instead of any process-wide cache.
+export const getCurrentUser = typeof cache === "function" ? cache(loadCurrentUser) : loadCurrentUser;
 
 export async function requireAuth() {
   const user = await getCurrentUser();
