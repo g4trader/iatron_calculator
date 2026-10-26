@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { prisma } from '@/lib/prisma';
 import { identity, lessonAccess, subscriptionFor, adminData } from '@/lib/mentory/server';
 import { MentoryError, mentoryPayment } from '@/lib/mentory/domain';
+import { openCommunity, saveCommunity } from '@/lib/mentory/community';
 import { mutate } from '@/lib/mentory/mutations';
 import { assetSignature, verifyAssetSignature, videoPlayback } from '@/lib/mentory/assets';
 export const runtime = 'nodejs';
@@ -30,6 +31,8 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
     const path = (await context.params).path || [];
     const preview = req.nextUrl.searchParams.get('preview') === '1';
     if (req.nextUrl.searchParams.has('userId')) throw new MentoryError(403, 'Consulta restrita ao titular autenticado.');
+    if (write && path.join('/') === 'community/settings') return json(await saveCommunity(actor, await req.json()));
+    if (write && path.join('/') === 'community/join') return json(await openCommunity(actor, await req.json()));
     if (!write && path.join('/') === 'admin/content') return json(await adminData(actor, undefined, 'conteudo'));
     if (write && path.join('/') === 'admin') return json(await mutate(actor, await req.json()));
     if (write && path.join('/') === 'checkout') return json(await mentoryPayment.checkout());
