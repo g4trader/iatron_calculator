@@ -1,0 +1,1 @@
+Vídeo original de demonstração, gerado localmente com FFmpeg e voz sintética padrão Luciana (macOS). Sem conteúdo clínico ou imagens de pessoas. MP4 H.264/AAC, 1280×720, legendas WebVTT. Servido exclusivamente por rota autenticada de equipe; não colocar em public/.
