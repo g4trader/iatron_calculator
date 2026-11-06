@@ -17,11 +17,11 @@ export default async function VerifyEmailPage({ searchParams }: { searchParams?:
     <SaaSPage>
       <div className="mx-auto grid min-h-screen max-w-md place-items-center px-4 py-10">
         <NeuralCard className="w-full p-6">
-          <Link href="/" className="mb-8 block text-sm font-black text-cyan-200">iatron.PED</Link>
+          <Link href="/ped-expert-mentory" className="mb-8 block text-sm font-black text-cyan-200">Ped Expert Mentory</Link>
           <h1 className="text-3xl font-black text-white">{result.ok ? "Email verificado." : rateLimited ? "Muitas tentativas." : "Link inválido ou expirado."}</h1>
           <p className="mt-3 text-sm leading-6 text-slate-400">
             {result.ok
-              ? "Sua conta foi liberada. Você já pode entrar na plataforma clínica."
+              ? "Sua conta foi liberada. Você já pode entrar na Ped Expert Mentory."
               : rateLimited
                 ? "Aguarde alguns minutos antes de tentar verificar novamente."
                 : "Solicite um novo cadastro ou entre em contato com o suporte quando disponível."}
