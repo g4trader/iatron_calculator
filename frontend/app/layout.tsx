@@ -4,8 +4,8 @@ import { AuthProvider } from "@/components/AuthProvider";
 import { getServerSkin } from "@/lib/skin";
 
 export const metadata: Metadata = {
-  title: "Ped Expert Mentory",
-  description: "Plataforma Ped Expert Mentory de formação e recursos educacionais em urgência pediátrica."
+  title: "iatron.PED",
+  description: "Produto Iatron para Folha PCR pediátrica, entubação, parada cardíaca e desfibrilação"
 };
 
 export const viewport: Viewport = {
