@@ -32,11 +32,11 @@ export default function PedExpertMentoryPage() {
               <a href="#programa" className="rounded-lg border border-[#b5d4e7] bg-white px-7 py-4 font-bold text-[#006da7]">Conhecer a mentoria</a>
             </div>
           </div>
-          <div className="rounded-3xl bg-[#0c395a] p-9 text-white shadow-xl">
-            <p className="text-sm font-semibold uppercase tracking-widest text-[#9ed7f3]">Com Dr. Aristóteles Pires</p>
-            <h2 className="mt-4 text-3xl font-bold">Experiência para orientar o aprendizado.</h2>
-            <p className="mt-5 leading-7 text-[#d0e4ef]">Especialista em Pediatria, com 28 anos de experiência profissional e doutorado em Pediatria e Telemedicina.</p>
-            <div className="mt-8 border-t border-white/20 pt-6 text-sm text-[#d0e4ef]">Encontros coletivos ao vivo todas as semanas.</div>
+          <div className="rounded-3xl bg-[#0c395a] p-7 text-white shadow-xl md:p-9" style={{ color: "#ffffff" }}>
+            <div className="mb-6 flex items-center gap-5"><img src="/dr-aristoteles-pires.svg" alt="Retrato do Dr. Aristóteles Pires" className="h-28 w-28 shrink-0 rounded-2xl border-2 border-white/20 bg-white object-cover shadow-lg sm:h-36 sm:w-36" /><div><p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#a9dcf5" }}>Seu mentor</p><p className="mt-2 text-xl font-extrabold leading-snug" style={{ color: "#ffffff" }}>Dr. Aristóteles Pires</p></div></div>
+            <h2 className="mt-4 text-2xl font-bold leading-tight sm:text-3xl" style={{ color: "#ffffff" }}>Experiência para orientar o aprendizado.</h2>
+            <p className="mt-5 text-base font-bold leading-7" style={{ color: "#ffffff" }}>+28 anos de experiência | MD, PhD | Mentor de carreira médica</p><p className="mt-3 text-sm leading-6" style={{ color: "#d0e4ef" }}>Especialista em Pediatria, com doutorado em Pediatria e Telemedicina.</p>
+            <div className="mt-8 border-t border-white/20 pt-6 text-sm" style={{ color: "#d0e4ef" }}>Encontros coletivos ao vivo todas as semanas.</div>
           </div>
         </div>
       </section>
@@ -48,9 +48,9 @@ export default function PedExpertMentoryPage() {
           {items.map((item) => <article key={item.title} className="rounded-2xl border border-[#dbe8f1] bg-white p-7 shadow-sm"><h3 className="text-xl font-bold">{item.title}</h3><p className="mt-3 leading-7 text-[#526d80]">{item.description}</p></article>)}
         </div>
       </section>
-      <section className="bg-[#0c395a] px-5 py-16 text-center text-white">
-        <h2 className="text-3xl font-black">Já faz parte da Ped Expert Mentory?</h2>
-        <p className="mx-auto mt-4 max-w-2xl leading-7 text-[#d0e4ef]">Entre com suas credenciais na tela de login do sistema para acessar os recursos disponíveis na sua conta.</p>
+      <section className="bg-[#0c395a] px-5 py-16 text-center text-white" style={{ color: "#ffffff" }}>
+        <h2 className="text-3xl font-black" style={{ color: "#ffffff" }}>Já faz parte da Ped Expert Mentory?</h2>
+        <p className="mx-auto mt-4 max-w-2xl leading-7" style={{ color: "#d0e4ef" }}>Entre com suas credenciais na tela de login do sistema para acessar os recursos disponíveis na sua conta.</p>
         <Link href="/login" className="mt-8 inline-block rounded-lg bg-white px-8 py-4 font-bold text-[#006da7]">Acessar tela de login →</Link>
       </section>
       <footer className="bg-[#082a43] px-5 py-7 text-center text-xs text-[#bdd5e3]">© Ped Expert Mentory · PEDIATRON · Conteúdo educacional; não substitui supervisão clínica ou atendimento assistencial.</footer>
