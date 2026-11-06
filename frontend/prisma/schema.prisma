@@ -269,6 +269,11 @@ enum SecurityEventType {
 }
 
 model User {
+  mentoryRoles MentoryRoleGrant[]
+  mentoryEnrollments MentoryEnrollment[]
+  mentoryProgress MentoryLessonProgress[]
+  mentorySubscriptions MentorySubscription[]
+  mentoryAuditLogs MentoryAuditLog[]
   id                              String                       @id @default(cuid())
   name                            String?
   clinicalName                    String?
@@ -1100,4 +1105,141 @@ model ArchiveRestoreEvent {
   @@index([restoreJobId, createdAt])
   @@index([actorUserId, createdAt])
   @@index([type, createdAt])
+}
+
+enum MentoryRole {
+  mentory_admin
+  mentory_editor
+  mentory_student
+}
+enum MentoryContentStatus {
+  DRAFT
+  PUBLISHED
+}
+enum MentoryAccessStatus {
+  PENDING
+  ACTIVE
+  EXPIRED
+  CANCELED
+}
+model MentoryRoleGrant {
+  userId String
+  role MentoryRole
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  @@id([userId, role])
+  @@map("mentory_role_grants")
+}
+model MentoryModule {
+  id String @id @default(cuid())
+  title String
+  description String @default("")
+  position Int @default(0)
+  status MentoryContentStatus @default(DRAFT)
+  lessons MentoryLesson[]
+  updatedAt DateTime @updatedAt
+  @@index([status, position])
+  @@map("mentory_modules")
+}
+model MentoryLesson {
+  id String @id @default(cuid())
+  moduleId String
+  title String
+  description String @default("")
+  position Int @default(0)
+  duration Int @default(0)
+  videoAssetId String?
+  captionsAssetId String?
+  status MentoryContentStatus @default(DRAFT)
+  reviewReference String?
+  reviewedBy String?
+  reviewedAt DateTime?
+  module MentoryModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  materials MentoryMaterial[]
+  progress MentoryLessonProgress[]
+  updatedAt DateTime @updatedAt
+  @@index([moduleId, status, position])
+  @@map("mentory_lessons")
+}
+model MentoryMaterial {
+  id String @id @default(cuid())
+  lessonId String
+  title String
+  type String
+  storageKey String?
+  body String @default("") @db.Text
+  position Int @default(0)
+  lesson MentoryLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  asset MentoryPrivateAsset? @relation(fields: [storageKey], references: [id], onDelete: Restrict)
+  @@index([lessonId, position])
+  @@map("mentory_materials")
+}
+model MentoryPrivateAsset {
+  id String @id @default(cuid())
+  content Bytes
+  contentType String
+  checksum String
+  byteSize Int
+  createdAt DateTime @default(now())
+  materials MentoryMaterial[]
+  @@map("mentory_private_assets")
+}
+model MentoryEnrollment {
+  id String @id @default(cuid())
+  userId String
+  subscriptionId String @unique
+  status MentoryAccessStatus @default(PENDING)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscription MentorySubscription @relation(fields: [subscriptionId, userId], references: [id, userId], onDelete: Cascade)
+  @@index([userId, status])
+  @@unique([subscriptionId, userId])
+  @@map("mentory_enrollments")
+}
+model MentoryLessonProgress {
+  userId String
+  lessonId String
+  completedAt DateTime?
+  lastPositionSeconds Int @default(0)
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson MentoryLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  @@id([userId, lessonId])
+  @@index([userId, updatedAt])
+  @@map("mentory_lesson_progress")
+}
+model MentorySubscription {
+  id String @id @default(cuid())
+  userId String
+  priceCents Int @default(350000)
+  currency String @default("BRL")
+  startedAt DateTime @db.Timestamptz(3)
+  expiresAt DateTime @db.Timestamptz(3)
+  renewalPriceCents Int @default(350000)
+  renewalTermsVersion String
+  status MentoryAccessStatus @default(PENDING)
+  paymentProviderId String? @unique
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enrollment MentoryEnrollment?
+  @@unique([id, userId])
+  @@index([userId, status, expiresAt])
+  @@map("mentory_subscriptions")
+}
+model MentoryAuditLog {
+  id String @id @default(cuid())
+  actorId String?
+  action String
+  entityId String
+  timestamp DateTime @default(now())
+  metadata Json?
+  actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  @@index([actorId, timestamp])
+  @@index([entityId, timestamp])
+  @@map("mentory_audit_logs")
+}
+model MentoryRateBucket {
+  key String @id
+  count Int
+  resetAt DateTime
+  @@index([resetAt])
+  @@map("mentory_rate_buckets")
 }
