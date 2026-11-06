@@ -18,7 +18,7 @@ export default function PedExpertMentoryPage() {
       <header className="border-b border-[#d8e8f2] bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-5">
           <Link href="/ped-expert-mentory" className="text-xl font-black tracking-tight text-[#006da7]">Ped Expert Mentory</Link>
-          <Link href="/login" className="rounded-lg bg-[#006da7] px-5 py-3 text-sm font-bold text-white hover:bg-[#005781]">Acessar o sistema</Link>
+          <Link href="/mentory/login" className="rounded-lg bg-[#006da7] px-5 py-3 text-sm font-bold text-white hover:bg-[#005781]">Acessar o sistema</Link>
         </div>
       </header>
       <section className="bg-gradient-to-br from-[#eaf7ff] to-[#cfe9f8]">
@@ -28,7 +28,7 @@ export default function PedExpertMentoryPage() {
             <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight md:text-6xl">Ped Expert Mentory</h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-[#45667c]">Uma jornada de seis meses para médicos que desejam aprofundar conhecimentos e desenvolver o raciocínio clínico diante dos desafios dos plantões pediátricos.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/login" className="rounded-lg bg-[#006da7] px-7 py-4 font-bold text-white hover:bg-[#005781]">Entrar na plataforma →</Link>
+              <Link href="/mentory/login" className="rounded-lg bg-[#006da7] px-7 py-4 font-bold text-white hover:bg-[#005781]">Entrar na plataforma →</Link>
               <a href="#programa" className="rounded-lg border border-[#b5d4e7] bg-white px-7 py-4 font-bold text-[#006da7]">Conhecer a mentoria</a>
             </div>
           </div>
@@ -51,7 +51,7 @@ export default function PedExpertMentoryPage() {
       <section className="bg-[#0c395a] px-5 py-16 text-center text-white" style={{ color: "#ffffff" }}>
         <h2 className="text-3xl font-black" style={{ color: "#ffffff" }}>Já faz parte da Ped Expert Mentory?</h2>
         <p className="mx-auto mt-4 max-w-2xl leading-7" style={{ color: "#d0e4ef" }}>Entre com suas credenciais na tela de login do sistema para acessar os recursos disponíveis na sua conta.</p>
-        <Link href="/login" className="mt-8 inline-block rounded-lg bg-white px-8 py-4 font-bold text-[#006da7]">Acessar tela de login →</Link>
+        <Link href="/mentory/login" className="mt-8 inline-block rounded-lg bg-white px-8 py-4 font-bold text-[#006da7]">Acessar tela de login →</Link>
       </section>
       <footer className="bg-[#082a43] px-5 py-7 text-center text-xs text-[#bdd5e3]">© Ped Expert Mentory · PEDIATRON · Conteúdo educacional; não substitui supervisão clínica ou atendimento assistencial.</footer>
     </main>

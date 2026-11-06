@@ -1,0 +1,2722 @@
+/* Redesign scopes: public landing and clinical workspace only. */
+@font-face {
+  font-family: Inter;
+  src: url("/fonts/InterVariable.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+.ped-theme {
+  --ped-primary: #086cb0;
+  --ped-primary-dark: #075b91;
+  --ped-navy: #122238;
+  --ped-accent: #0e8092;
+  --ped-bg: #f6f9fc;
+  --ped-surface: #fff;
+  --ped-soft: #edf6fb;
+  --ped-text: #122238;
+  --ped-secondary: #53657b;
+  --ped-border: #dce7f0;
+  --ped-success: #16754b;
+  --ped-warning: #955707;
+  --ped-danger: #b42318;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color: var(--ped-text);
+  background: var(--ped-bg);
+  font-size: 14px;
+  line-height: 1.6;
+  color-scheme: light;
+}
+.ped-theme * {
+  min-width: 0;
+}
+.ped-theme svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.ped-theme a,
+.ped-theme button {
+  transition:
+    background-color 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+}
+.ped-theme :focus-visible {
+  outline: 3px solid var(--ped-primary) !important;
+  outline-offset: 3px;
+}
+.ped-theme button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+.ped-theme h1,
+.ped-theme h2,
+.ped-theme h3 {
+  color: var(--ped-text);
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+}
+.ped-theme h1 {
+  font-weight: 750;
+}
+.ped-theme h2 {
+  font-weight: 700;
+}
+.ped-theme h3 {
+  font-weight: 650;
+}
+.ped-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--ped-primary);
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  white-space: nowrap;
+}
+.ped-brand svg {
+  width: 29px;
+  height: 29px;
+  stroke-width: 1.8;
+  color: var(--ped-accent);
+}
+.ped-brand-dot {
+  color: var(--ped-accent);
+}
+.ped-skip {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 200;
+  background: white;
+  padding: 12px 20px;
+  border: 2px solid var(--ped-primary);
+  border-radius: 8px;
+}
+.ped-skip:focus {
+  top: 12px;
+}
+.ped-container {
+  max-width: 1184px;
+  margin: 0 auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+.ped-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 20px;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 650;
+  border: 1px solid transparent;
+  text-align: center;
+}
+.ped-button svg {
+  width: 17px;
+  height: 17px;
+}
+.ped-button-primary {
+  background: var(--ped-primary);
+  color: #fff;
+  box-shadow: 0 3px 6px #086cb014;
+}
+.ped-button-primary:hover {
+  background: var(--ped-primary-dark);
+}
+.ped-button-secondary {
+  background: #fff;
+  color: var(--ped-primary);
+  border-color: var(--ped-border);
+}
+.ped-button-secondary:hover {
+  background: var(--ped-soft);
+  border-color: #9bbdd3;
+}
+.ped-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #e4f3fb;
+  color: var(--ped-primary);
+  border: 1px solid #d1eaf7;
+  padding: 5px 10px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 650;
+}
+.ped-badge svg {
+  width: 16px;
+  height: 16px;
+}
+.ped-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--ped-primary);
+  margin-bottom: 12px;
+}
+.ped-card {
+  border: 1px solid var(--ped-border);
+  border-radius: 14px;
+  background: var(--ped-surface);
+  box-shadow: 0 3px 14px #12223803;
+}
+.ped-section-description {
+  color: var(--ped-secondary);
+  font-size: 14px;
+  margin: 8px 0 20px;
+}
+/* Landing */
+.ped-landing {
+  background: #fff;
+}
+.ped-lp-header {
+  border-bottom: 1px solid #e9f1f6;
+  background: #fff;
+}
+.ped-lp-header > nav {
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+.ped-lp-links {
+  display: flex;
+  gap: 28px;
+  font-size: 12px;
+  font-weight: 550;
+}
+.ped-lp-links a {
+  padding: 14px 0;
+}
+.ped-lp-links a:hover {
+  color: var(--ped-primary);
+}
+.ped-lp-account {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.ped-login-link {
+  padding: 14px 5px;
+  color: var(--ped-primary);
+}
+.ped-hero {
+  background: linear-gradient(115deg, #f7fcff 0%, #f2f9fd 48%, #eaf6fb 100%);
+  border-bottom: 1px solid #e4f0f7;
+}
+.ped-hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  align-items: center;
+  gap: 32px;
+  min-height: 590px;
+  padding-top: 56px;
+  padding-bottom: 56px;
+}
+.ped-hero h1 {
+  font-size: clamp(36px, 4vw, 53px);
+  line-height: 1.09;
+  letter-spacing: -2.1px;
+  margin: 22px 0;
+}
+.ped-hero-copy > p {
+  max-width: 530px;
+  color: var(--ped-secondary);
+  line-height: 1.8;
+  font-size: 15px;
+}
+.ped-hero-points {
+  display: flex;
+  gap: 18px;
+  margin: 26px 0;
+}
+.ped-hero-points span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  max-width: 145px;
+  line-height: 1.5;
+}
+.ped-hero-points svg {
+  color: var(--ped-primary);
+  width: 23px;
+  height: 23px;
+}
+.ped-hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.ped-hero-copy > .ped-hero-note {
+  font-size: 11px;
+  line-height: 1.65;
+  margin-top: 18px;
+  max-width: 460px;
+}
+.ped-hero-art {
+  position: relative;
+  height: 450px;
+}
+.ped-care-illustration {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute;
+  inset: 0;
+}
+.ped-care-label {
+  position: absolute;
+  left: 4%;
+  top: 4%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--ped-primary);
+  line-height: 1.7;
+}
+.ped-care-label > svg {
+  width: 36px;
+  height: 36px;
+  stroke-width: 1.5;
+}
+.ped-product-preview {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 290px;
+  background: #ffffffed;
+  border: 1px solid #dce7f0;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 18px 40px #1222381a;
+}
+.ped-preview-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--ped-primary);
+}
+.ped-preview-header > span {
+  font-size: 9px;
+  margin-left: auto;
+  color: var(--ped-secondary);
+  background: var(--ped-soft);
+  border-radius: 4px;
+  padding: 3px 5px;
+}
+.ped-product-preview > p {
+  font-size: 11px;
+  color: var(--ped-secondary);
+  margin: 7px 0 14px;
+}
+.ped-preview-patient {
+  padding: 10px 12px;
+  background: var(--ped-soft);
+  border-radius: 7px;
+  display: grid;
+  font-size: 12px;
+  gap: 3px;
+}
+.ped-preview-patient > span {
+  font-size: 10px;
+  color: var(--ped-secondary);
+}
+.ped-preview-sections {
+  display: grid;
+  margin-top: 12px;
+  gap: 8px;
+}
+.ped-preview-sections > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px solid #ecf1f6;
+  font-size: 11px;
+  font-weight: 550;
+}
+.ped-preview-sections svg {
+  color: var(--ped-primary);
+  width: 16px;
+  height: 16px;
+}
+.ped-preview-sections svg:last-child {
+  margin-left: auto;
+  color: var(--ped-success);
+}
+.ped-preview-caption {
+  display: block;
+  font-size: 9px;
+  color: var(--ped-secondary);
+  margin-top: 13px;
+}
+.ped-lp-section {
+  padding-top: 64px;
+  padding-bottom: 64px;
+  scroll-margin-top: 24px;
+}
+.ped-lp-section > h2,
+.ped-audience-section > h2 {
+  font-size: 28px;
+  max-width: 850px;
+}
+.ped-features {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+}
+.ped-features article {
+  padding: 24px 20px;
+}
+.ped-feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  background: var(--ped-soft);
+  color: var(--ped-primary);
+  border-radius: 12px;
+}
+.ped-features h3 {
+  font-size: 15px;
+  margin: 20px 0 10px;
+}
+.ped-features p,
+.ped-steps p {
+  color: var(--ped-secondary);
+  font-size: 12px;
+  line-height: 1.8;
+}
+.ped-doctor-section {
+  background: linear-gradient(105deg, #edf8fc, #f5fbfe);
+  padding: 48px 0;
+}
+.ped-doctor-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.ped-doctor-photo {
+  position: relative;
+  align-self: stretch;
+  min-height: 400px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #c4dce6;
+}
+.ped-doctor-photo img {
+  object-fit: cover;
+  object-position: center 24%;
+}
+.ped-doctor-photo figcaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, #122238eb);
+  padding: 55px 20px 20px;
+  color: #fff;
+  display: grid;
+  font-size: 12px;
+}
+.ped-doctor-photo figcaption span {
+  font-size: 11px;
+  opacity: 0.9;
+}
+.ped-doctor-grid h2 {
+  font-size: 29px;
+  margin: 18px 0;
+}
+.ped-doctor-grid p {
+  color: var(--ped-secondary);
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 12px 0;
+}
+.ped-credentials {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+.ped-credentials > span {
+  padding: 12px;
+  background: #fff;
+  border: 1px solid #e3eff6;
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--ped-secondary);
+}
+.ped-credentials strong {
+  display: block;
+  font-size: 13px;
+  color: var(--ped-primary);
+}
+.ped-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--ped-border);
+  border-radius: 14px;
+  margin-top: 28px;
+}
+.ped-steps article {
+  display: flex;
+  gap: 16px;
+  padding: 24px;
+}
+.ped-steps article + article {
+  border-left: 1px solid var(--ped-border);
+}
+.ped-step-number {
+  font-size: 11px;
+  color: var(--ped-primary);
+  font-weight: 700;
+}
+.ped-steps h3 {
+  font-size: 14px;
+  margin: 5px 0 10px;
+}
+.ped-audience-section {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.ped-audience-section > h2 {
+  font-size: 24px;
+}
+.ped-audiences {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+.ped-audiences > div {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 18px 8px;
+  border: 1px solid var(--ped-border);
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.ped-audiences svg {
+  color: var(--ped-primary);
+}
+.ped-plans {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+.ped-plan {
+  padding: 28px;
+}
+.ped-plan-featured {
+  background: linear-gradient(135deg, #eff8fe, #fff);
+  border-color: #a6d3ea;
+}
+.ped-plan-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ped-primary);
+}
+.ped-plan h3 {
+  font-size: 17px;
+}
+.ped-plan-price {
+  font-size: 32px !important;
+  font-weight: 750;
+  color: var(--ped-navy) !important;
+  letter-spacing: -1px;
+  margin: 18px 0 8px;
+}
+.ped-plan-price span {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.ped-plan > p {
+  font-size: 13px;
+  color: var(--ped-secondary);
+}
+.ped-plan ul {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  margin: 24px 0;
+}
+.ped-plan li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 13px;
+}
+.ped-plan li svg {
+  width: 16px;
+  height: 16px;
+  color: var(--ped-primary);
+}
+.ped-plan > .ped-button {
+  width: 100%;
+}
+.ped-pricing-empty {
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.ped-pricing-empty > .ped-button {
+  margin-left: auto;
+}
+.ped-pricing-empty > svg {
+  color: var(--ped-primary);
+}
+.ped-pricing-empty p {
+  color: var(--ped-secondary);
+  margin-top: 8px;
+}
+.ped-footer {
+  border-top: 1px solid var(--ped-border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 28px;
+  padding-bottom: 28px;
+}
+.ped-footer > div {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.ped-footer .ped-brand {
+  font-size: 18px;
+}
+.ped-footer .ped-brand svg {
+  width: 24px;
+  height: 24px;
+}
+.ped-footer p {
+  font-size: 11px;
+  color: var(--ped-secondary);
+}
+.ped-footer nav {
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+}
+.ped-footer nav a {
+  padding: 12px 0;
+}
+.ped-footer-disclaimer {
+  width: 100%;
+  max-width: 760px;
+}
+/* Clinical workspace */
+.ped-app {
+  min-height: 100dvh;
+}
+.ped-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 248px;
+  background: #fff;
+  border-right: 1px solid var(--ped-border);
+  padding: 25px 16px;
+  display: flex;
+  flex-direction: column;
+  z-index: 40;
+  overflow-y: auto;
+}
+.ped-sidebar > .ped-brand {
+  padding-left: 8px;
+}
+.ped-nav-caption {
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  color: var(--ped-secondary);
+  margin: 40px 12px 14px;
+  font-weight: 600;
+}
+.ped-sidebar nav {
+  display: grid;
+  gap: 6px;
+}
+.ped-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--ped-secondary);
+  font-size: 12px;
+  font-weight: 550;
+  line-height: 1.6;
+  min-height: 48px;
+}
+.ped-nav-item svg {
+  width: 18px;
+  height: 18px;
+}
+.ped-nav-item small {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+}
+.ped-nav-item:hover {
+  background: var(--ped-soft);
+  color: var(--ped-primary);
+}
+.ped-nav-item[aria-current="page"] {
+  background: var(--ped-primary);
+  color: #fff;
+  box-shadow: 0 3px 8px #086cb01a;
+}
+.ped-sidebar-bottom {
+  margin-top: auto;
+  padding-top: 32px;
+}
+.ped-sidebar-bottom > p {
+  padding: 16px 10px;
+  font-weight: 650;
+  color: var(--ped-primary);
+  font-size: 12px;
+}
+.ped-sidebar-bottom > p > span {
+  display: block;
+  color: var(--ped-secondary);
+  font-size: 11px;
+  font-weight: 400;
+  margin-top: 4px;
+}
+.ped-workspace {
+  margin-left: 248px;
+}
+.ped-topbar {
+  height: 76px;
+  padding: 0 32px;
+  background: #fff;
+  border-bottom: 1px solid var(--ped-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.ped-desktop-context {
+  font-size: 12px;
+  color: var(--ped-secondary);
+}
+.ped-desktop-context > span {
+  margin: 0 12px;
+  color: #b1c2d0;
+}
+.ped-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.ped-user {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ped-primary);
+  font-size: 12px;
+  font-weight: 600;
+}
+.ped-user > svg {
+  width: 34px;
+  height: 34px;
+  stroke-width: 1.5;
+}
+.ped-user small {
+  display: block;
+  font-size: 10px;
+  color: var(--ped-secondary);
+  font-weight: 400;
+}
+.ped-mobile-brand,
+.ped-mobile-menu {
+  display: none;
+}
+.ped-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  min-width: 0;
+}
+.ped-pcr {
+  display: grid;
+  gap: 24px;
+  padding: 32px;
+}
+.ped-page-heading h1 {
+  font-size: 30px;
+  margin: 6px 0 8px;
+  letter-spacing: -1px;
+}
+.ped-page-heading > .ped-eyebrow {
+  margin: 0;
+}
+.ped-page-heading > p:last-child {
+  color: var(--ped-secondary);
+  font-size: 13px;
+}
+.ped-patient-card,
+.ped-result-summary {
+  padding: 24px;
+}
+.ped-card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  color: var(--ped-primary) !important;
+  letter-spacing: -0.02em !important;
+}
+.ped-card-title > svg {
+  color: var(--ped-primary);
+}
+.ped-patient-identity {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 210px;
+  gap: 16px;
+  margin: 24px 0 18px;
+}
+.ped-patient-identity label {
+  display: grid;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--ped-secondary);
+}
+/* The legacy skin uses !important attribute selectors. Confine compatibility to the workspace. */
+body .ped-app input {
+  height: 48px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  border: 1px solid var(--ped-border) !important;
+  border-radius: 9px;
+  background: #f8fafc !important;
+  color: var(--ped-text) !important;
+  padding: 0 12px;
+  width: 100%;
+  min-width: 0;
+}
+body .ped-app input::placeholder {
+  color: #687c91 !important;
+  font-size: 14px;
+}
+body .ped-app input:focus {
+  border-color: var(--ped-primary) !important;
+  outline: 2px solid #086cb028 !important;
+  outline-offset: 1px;
+  box-shadow: none !important;
+}
+body .ped-app input[aria-invalid="true"] {
+  border-color: var(--ped-danger) !important;
+}
+.ped-patient-grid {
+  gap: 16px;
+  align-items: start;
+}
+.ped-patient-grid label {
+  font-size: 12px;
+  align-content: start;
+  font-weight: 550;
+}
+.ped-field-hint {
+  font-size: 11px;
+  color: var(--ped-secondary);
+  font-weight: 400;
+}
+.ped-field-error {
+  font-size: 11px;
+  color: var(--ped-danger);
+  font-weight: 500;
+}
+.ped-calculate {
+  width: 100%;
+  margin-top: 24px;
+}
+.ped-form-status {
+  text-align: center;
+  margin-top: 10px;
+  color: var(--ped-secondary);
+  font-size: 11px;
+  min-height: 18px;
+}
+.ped-empty-state {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: linear-gradient(105deg, #eaf5fc, #f3f9fd);
+  border-radius: 10px;
+  padding: 28px;
+  margin-top: 20px;
+}
+.ped-empty-state > svg {
+  width: 40px;
+  height: 40px;
+  color: var(--ped-primary);
+  stroke-width: 1.5;
+}
+.ped-empty-state h3 {
+  font-size: 14px;
+}
+.ped-empty-state p {
+  font-size: 12px;
+  color: var(--ped-secondary);
+  margin-top: 6px;
+  max-width: 480px;
+}
+.ped-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.ped-summary-grid > :first-child {
+  grid-column: span 2;
+}
+.ped-summary-grid .metric-card > p {
+  font-size: 20px !important;
+  line-height: 1.4;
+  margin-top: 10px;
+  overflow-wrap: anywhere;
+}
+.ped-api-error {
+  border: 1px solid #ebbbc1;
+  border-radius: 8px;
+  padding: 14px;
+  background: #fff3f4;
+  color: var(--ped-danger);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.ped-navigation-status {
+  background: var(--ped-soft);
+  color: var(--ped-primary);
+  padding: 12px 32px;
+  font-size: 13px;
+}
+body .ped-app [class*="bg-slate-950"],
+body .ped-app [class*="bg-slate-900"],
+body .ped-app [class*="bg-slate-800"] {
+  background-color: #fff !important;
+}
+body .ped-app [class*="text-white"],
+body .ped-app [class*="text-slate-100"],
+body .ped-app [class*="text-slate-200"] {
+  color: var(--ped-text) !important;
+}
+body .ped-app [class*="text-slate-300"],
+body .ped-app [class*="text-slate-400"],
+body .ped-app [class*="text-slate-500"],
+body .ped-app [class*="text-slate-600"] {
+  color: var(--ped-secondary) !important;
+}
+body .ped-app [class*="text-cyan-"] {
+  color: var(--ped-primary) !important;
+}
+body .ped-app [class*="border-cyan-"],
+body .ped-app [class*="border-slate-"] {
+  border-color: var(--ped-border) !important;
+}
+body .ped-app [class*="shadow-"] {
+  box-shadow: 0 2px 8px #12223804 !important;
+}
+body .ped-app [class~="bg-cyan-300"],
+body .ped-app [class~="bg-cyan-400"] {
+  background: var(--ped-primary) !important;
+  color: white !important;
+}
+body .ped-app [class*="bg-cyan-300/"] {
+  background: var(--ped-soft) !important;
+}
+body .ped-app [class*="text-emerald-"] {
+  color: var(--ped-success) !important;
+}
+body .ped-app [class*="bg-amber-"] {
+  background: #fff8eb !important;
+}
+body .ped-app [class*="text-amber-"] {
+  color: var(--ped-warning) !important;
+}
+body .ped-app [class*="border-amber-"] {
+  border-color: #eac992 !important;
+}
+body .ped-app [class*="bg-red-"],
+body .ped-app [class*="bg-rose-"] {
+  background: #fff3f4 !important;
+}
+body .ped-app [class*="text-red-"],
+body .ped-app [class*="text-rose-"] {
+  color: var(--ped-danger) !important;
+}
+body .ped-app [class*="border-red-"],
+body .ped-app [class*="border-rose-"] {
+  border-color: #e8b9bf !important;
+}
+.ped-app .metric-card {
+  border-radius: 10px;
+}
+.ped-app .metric-card::after {
+  display: none;
+}
+.ped-app .ped-sidebar-bottom button,
+.ped-app .ped-sidebar-bottom a[title="Acessar admin"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+.ped-pcr .print-break-inside-avoid {
+  border-radius: 14px;
+  padding: 20px;
+}
+.ped-pcr .print-break-inside-avoid h2 {
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.ped-pcr article h3 {
+  font-size: 14px;
+}
+.ped-app [class*="neural-surface"] {
+  background: var(--ped-soft);
+}
+@media (min-width: 1440px) {
+  .ped-pcr {
+    padding: 36px 48px;
+  }
+}
+@media (max-width: 1023px) {
+  .ped-sidebar {
+    display: none;
+  }
+  .ped-workspace {
+    margin-left: 0;
+  }
+  .ped-topbar {
+    height: 68px;
+    padding: 0 24px;
+  }
+  .ped-mobile-brand,
+  .ped-mobile-menu {
+    display: block;
+  }
+  .ped-desktop-context,
+  .ped-desktop-print {
+    display: none;
+  }
+  .ped-topbar-actions {
+    gap: 12px;
+  }
+  .ped-user > span {
+    display: none;
+  }
+  .ped-user > svg {
+    width: 30px;
+    height: 30px;
+  }
+  .ped-mobile-menu {
+    position: relative;
+  }
+  .ped-mobile-menu summary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 44px;
+    width: 44px;
+    cursor: pointer;
+    border: 1px solid var(--ped-border);
+    border-radius: 9px;
+    color: var(--ped-primary);
+    list-style: none;
+  }
+  .ped-mobile-menu summary::-webkit-details-marker {
+    display: none;
+  }
+  .ped-menu-close {
+    display: none;
+  }
+  .ped-mobile-menu[open] .ped-menu-close {
+    display: block;
+  }
+  .ped-mobile-menu[open] .ped-menu-open {
+    display: none;
+  }
+  .ped-mobile-menu nav {
+    position: absolute;
+    right: 0;
+    top: 54px;
+    background: white;
+    z-index: 60;
+    padding: 12px;
+    border: 1px solid var(--ped-border);
+    border-radius: 12px;
+    width: min(340px, calc(100vw - 32px));
+    box-shadow: 0 14px 40px #12223826;
+    max-height: calc(100dvh - 90px);
+    overflow-y: auto;
+  }
+  .ped-mobile-print {
+    padding: 12px 0;
+  }
+  .ped-lp-links {
+    gap: 16px;
+  }
+  .ped-lp-header > nav {
+    gap: 16px;
+  }
+  .ped-hero-grid {
+    gap: 12px;
+  }
+  .ped-doctor-grid {
+    gap: 28px;
+    grid-template-columns: 250px 1fr;
+  }
+  .ped-features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ped-steps article {
+    padding: 20px 16px;
+    gap: 12px;
+  }
+  .ped-steps .ped-feature-icon {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+  }
+}
+@media (max-width: 767px) {
+  .ped-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .ped-lp-header > nav {
+    min-height: 72px;
+    gap: 12px;
+  }
+  .ped-lp-links,
+  .ped-organization-link {
+    display: none;
+  }
+  .ped-lp-account {
+    gap: 10px;
+  }
+  .ped-lp-account .ped-button {
+    font-size: 11px;
+    padding: 10px 12px;
+    min-height: 44px;
+  }
+  .ped-lp-header .ped-brand {
+    font-size: 20px;
+    gap: 5px;
+  }
+  .ped-lp-header .ped-brand svg {
+    width: 25px;
+    height: 25px;
+  }
+  .ped-login-link {
+    font-size: 12px;
+  }
+  .ped-hero-grid {
+    grid-template-columns: 1fr;
+    padding-top: 40px;
+    padding-bottom: 32px;
+    gap: 16px;
+  }
+  .ped-hero h1 {
+    font-size: 39px;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin: 20px 0;
+  }
+  .ped-hero-copy > p {
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .ped-hero-points {
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .ped-hero-points span {
+    font-size: 10px;
+    gap: 6px;
+  }
+  .ped-hero-points svg {
+    width: 20px;
+    height: 20px;
+  }
+  .ped-hero-actions .ped-button {
+    flex: 1;
+    padding: 13px 12px;
+    font-size: 12px;
+  }
+  .ped-hero-art {
+    height: 340px;
+    max-width: 420px;
+    width: 100%;
+    margin: auto;
+  }
+  .ped-product-preview {
+    width: 240px;
+    padding: 16px;
+    bottom: 0;
+    right: 2%;
+  }
+  .ped-care-label {
+    font-size: 11px;
+    top: 0;
+  }
+  .ped-care-illustration {
+    width: 90% !important;
+    left: 10%;
+  }
+  .ped-lp-section {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  .ped-lp-section > h2 {
+    font-size: 25px;
+  }
+  .ped-features {
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .ped-features article {
+    padding: 18px 14px;
+  }
+  .ped-features h3 {
+    font-size: 14px;
+  }
+  .ped-features p {
+    font-size: 12px;
+  }
+  .ped-feature-icon {
+    width: 40px;
+    height: 40px;
+  }
+  .ped-doctor-section {
+    padding: 32px 0;
+  }
+  .ped-doctor-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .ped-doctor-photo {
+    min-height: 360px;
+    width: 100%;
+    max-width: 340px;
+    margin: auto;
+  }
+  .ped-doctor-grid h2 {
+    font-size: 26px;
+  }
+  .ped-doctor-grid p {
+    font-size: 13px;
+  }
+  .ped-credentials {
+    gap: 8px;
+  }
+  .ped-credentials > span {
+    padding: 10px;
+    font-size: 10px;
+  }
+  .ped-credentials strong {
+    font-size: 12px;
+  }
+  .ped-steps {
+    grid-template-columns: 1fr;
+  }
+  .ped-steps article {
+    padding: 22px;
+  }
+  .ped-steps article + article {
+    border-left: 0;
+    border-top: 1px solid var(--ped-border);
+  }
+  .ped-steps p {
+    font-size: 13px;
+  }
+  .ped-audiences {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .ped-audiences > div {
+    font-size: 11px;
+  }
+  .ped-audience-section > h2 {
+    font-size: 23px;
+  }
+  .ped-plans {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .ped-plan {
+    padding: 24px;
+  }
+  .ped-pricing-empty {
+    flex-wrap: wrap;
+    padding: 20px;
+  }
+  .ped-pricing-empty > .ped-button {
+    width: 100%;
+    margin: 0;
+  }
+  .ped-footer {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+  .ped-footer > div {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .ped-footer nav {
+    width: 100%;
+  }
+  .ped-topbar {
+    padding: 0 16px;
+    height: 64px;
+  }
+  .ped-topbar .ped-brand {
+    font-size: 22px;
+  }
+  .ped-topbar .ped-brand svg {
+    width: 27px;
+    height: 27px;
+  }
+  .ped-pcr {
+    padding: 20px 16px 32px;
+    gap: 20px;
+  }
+  .ped-page-heading h1 {
+    font-size: 26px;
+    letter-spacing: -0.8px;
+  }
+  .ped-page-heading > p:last-child {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .ped-page-heading .ped-eyebrow {
+    font-size: 12px;
+  }
+  .ped-patient-card,
+  .ped-result-summary {
+    padding: 18px 16px;
+  }
+  .ped-card-title {
+    font-size: 15px;
+  }
+  .ped-patient-identity {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 20px 0 16px;
+  }
+  .ped-patient-grid {
+    gap: 10px;
+  }
+  .ped-patient-grid label {
+    font-size: 12px;
+  }
+  .ped-field-hint,
+  .ped-field-error {
+    font-size: 10px;
+    line-height: 1.55;
+  }
+  .ped-calculate {
+    margin-top: 20px;
+    min-height: 48px;
+    font-size: 12px;
+  }
+  .ped-form-status {
+    font-size: 10px;
+    line-height: 1.6;
+  }
+  .ped-empty-state {
+    padding: 20px 16px;
+    gap: 14px;
+  }
+  .ped-empty-state > svg {
+    width: 30px;
+    height: 30px;
+  }
+  .ped-empty-state h3 {
+    font-size: 13px;
+  }
+  .ped-empty-state p {
+    font-size: 11px;
+  }
+  .ped-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ped-summary-grid > :first-child {
+    grid-column: span 2;
+  }
+  .ped-summary-grid > :last-child {
+    grid-column: span 2;
+  }
+  .ped-summary-grid .metric-card {
+    padding: 12px;
+  }
+  .ped-summary-grid .metric-card > p {
+    font-size: 17px !important;
+  }
+  .ped-pcr .print-break-inside-avoid {
+    padding: 16px;
+  }
+  .ped-pcr .print-break-inside-avoid h2 {
+    font-size: 13px;
+  }
+  .ped-content {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+@media (max-width: 359px) {
+  .ped-lp-header .ped-brand {
+    font-size: 17px;
+  }
+  .ped-lp-header .ped-brand svg {
+    width: 22px;
+  }
+  .ped-lp-account {
+    gap: 7px;
+  }
+  .ped-lp-account .ped-button {
+    max-width: 92px;
+  }
+  .ped-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .ped-hero h1 {
+    font-size: 34px;
+  }
+  .ped-hero-points {
+    flex-wrap: wrap;
+  }
+  .ped-hero-points span {
+    max-width: 125px;
+  }
+  .ped-patient-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ped-patient-grid > label:last-child {
+    grid-column: span 2;
+  }
+  .ped-features {
+    grid-template-columns: 1fr;
+  }
+  .ped-topbar-actions {
+    gap: 8px;
+  }
+  .ped-topbar .ped-brand {
+    font-size: 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ped-theme *,
+  .ped-theme *::before,
+  .ped-theme *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media print {
+  .ped-app,
+  .ped-workspace,
+  .ped-content {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    background: white !important;
+  }
+  .ped-app .no-print {
+    display: none !important;
+  }
+  .ped-app .print-report {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+  }
+  .ped-app .print-report h1 {
+    font-size: 18px;
+  }
+  .ped-app .print-report h2 {
+    font-size: 12px;
+  }
+  .ped-app .print-report-section {
+    break-inside: auto;
+  }
+  .ped-app .print-report table {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+  .ped-app .print-report tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .ped-app .print-report thead {
+    display: table-header-group;
+  }
+  .ped-app .print-report h2 {
+    break-after: avoid;
+  }
+  .ped-app .print-report-alert {
+    break-inside: avoid;
+  }
+}
+
+@media print {
+  .ped-app .print-report th,
+  .ped-app .print-report td {
+    padding: 3px 5px;
+  }
+  .ped-app .print-report h2 {
+    margin: 8px 0 4px;
+  }
+}
+
+/* V2: editorial public page and compact clinical reading surfaces. Screen only:
+   the approved A4 report keeps its original presentation and full content. */
+@media screen {
+  .ped-container {
+    max-width: 1248px;
+  }
+  .ped-hero-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    padding-top: 64px;
+    padding-bottom: 64px;
+    min-height: 600px;
+  }
+  .ped-hero h1 {
+    font-size: clamp(40px, 4.2vw, 60px);
+    line-height: 1.06;
+    letter-spacing: -0.05em;
+  }
+  .ped-hero h1 em {
+    color: var(--ped-primary);
+    font-style: normal;
+  }
+  .ped-hero-copy > p {
+    font-size: 18px;
+    max-width: 540px;
+  }
+  .ped-demo-browser {
+    margin: 0;
+    background: white;
+    border: 1px solid var(--ped-border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 16px 48px #1222380c;
+    transform: none;
+  }
+  .ped-demo-chrome {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--ped-bg);
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--ped-border);
+    color: var(--ped-secondary);
+    font-size: 11px;
+  }
+  .ped-demo-chrome > :first-child {
+    letter-spacing: 3px;
+    color: var(--ped-secondary);
+  }
+  .ped-demo-body {
+    padding: 32px;
+  }
+  .ped-demo-body h2 {
+    font-size: 24px;
+    margin: 12px 0 24px;
+  }
+  .ped-demo-body > p {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .ped-demo-fields {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .ped-demo-name {
+    grid-column: 1/-1;
+  }
+  .ped-demo-fields dt {
+    font-size: 12px;
+    margin-bottom: 6px;
+    color: var(--ped-secondary);
+  }
+  .ped-demo-fields dd {
+    padding: 10px 12px;
+    border: 1px solid var(--ped-border);
+    border-radius: 12px;
+    font-size: 16px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ped-demo-body .ped-demo-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--ped-primary);
+    font-weight: 500;
+    padding: 12px 0;
+  }
+  .ped-demo-next {
+    display: flex;
+    gap: 12px;
+    border-top: 1px solid var(--ped-border);
+    padding-top: 20px;
+    margin-top: 12px;
+  }
+  .ped-demo-next > svg {
+    color: var(--ped-primary);
+  }
+  .ped-demo-next strong {
+    font-size: 14px;
+  }
+  .ped-demo-next p {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--ped-secondary);
+  }
+  .ped-demo-browser figcaption {
+    padding: 12px 24px;
+    font-size: 11px;
+    text-align: center;
+    border-top: 1px solid var(--ped-border);
+    color: var(--ped-secondary);
+  }
+  .ped-features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 48px;
+  }
+  .ped-features article {
+    border: 0;
+    border-top: 1px solid var(--ped-border);
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    padding: 24px 0;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    column-gap: 16px;
+  }
+  .ped-features .ped-feature-icon {
+    grid-row: span 2;
+    margin: 0;
+    width: 40px;
+    height: 40px;
+  }
+  .ped-features h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+  }
+  .ped-features p {
+    font-size: 14px;
+    max-width: 420px;
+  }
+  .ped-doctor-grid {
+    grid-template-columns: minmax(280px, 0.8fr) 1.2fr;
+    gap: 64px;
+  }
+  .ped-doctor-photo {
+    width: 100%;
+    max-width: 400px;
+    min-height: 0;
+    aspect-ratio: 1272 / 1274;
+    margin: 0;
+  }
+  .ped-doctor-photo img {
+    object-fit: contain;
+    object-position: center bottom;
+  }
+  .ped-steps article {
+    border: 0;
+    border-radius: 0;
+    border-top: 1px solid var(--ped-border);
+    background: transparent;
+  }
+  .ped-topbar {
+    height: 68px;
+  }
+  .ped-pcr {
+    padding: 24px 32px;
+  }
+  .ped-page-heading {
+    margin-bottom: 0;
+  }
+  .ped-patient-card {
+    padding: 24px;
+  }
+  .ped-calculate {
+    margin-top: 16px;
+  }
+  .ped-summary-grid {
+    grid-template-columns: 2fr 1fr 1.2fr 0.8fr 1fr;
+    gap: 0;
+  }
+  .ped-summary-grid > :first-child {
+    grid-column: auto;
+  }
+  body .ped-app .ped-summary-grid .metric-card {
+    border: 0 !important;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent !important;
+    padding: 12px;
+    border-left: 1px solid var(--ped-border) !important;
+  }
+  body .ped-app .ped-summary-grid .metric-card:first-child {
+    padding-left: 0;
+    border-left: 0 !important;
+  }
+  .ped-summary-grid .metric-card > p {
+    font-size: 18px !important;
+    margin-top: 6px;
+  }
+  .ped-results {
+    display: grid;
+    gap: 24px;
+  }
+  .ped-result-group,
+  #resumo {
+    scroll-margin-top: 88px;
+  }
+  .ped-clinical-alerts {
+    display: grid;
+    gap: 8px;
+  }
+  .ped-clinical-alerts h2 {
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  .ped-result-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    border-block: 1px solid var(--ped-border);
+    padding: 12px 0;
+  }
+  .ped-result-nav a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 16px;
+    border-radius: 12px;
+    color: var(--ped-primary);
+    background: white;
+    font-weight: 600;
+  }
+  .ped-result-nav a:hover {
+    background: var(--ped-soft);
+  }
+  .ped-group-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .ped-group-heading h2 {
+    font-size: 20px;
+  }
+  .ped-group-heading a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 12px;
+    color: var(--ped-primary);
+  }
+  .ped-metric-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    background: white;
+    border: 1px solid var(--ped-border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .ped-metric-list > div {
+    padding: 16px;
+    border-bottom: 1px solid var(--ped-border);
+  }
+  .ped-metric-list dt {
+    color: var(--ped-secondary);
+    font-size: 12px;
+  }
+  .ped-metric-list dd {
+    font-size: 20px;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+    margin-top: 4px;
+  }
+  .ped-drug-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border: 1px solid var(--ped-border);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  .ped-drug-table th,
+  .ped-drug-table td {
+    text-align: left;
+    vertical-align: top;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--ped-border);
+    overflow-wrap: anywhere;
+  }
+  .ped-drug-table thead th {
+    font-size: 11px;
+    color: var(--ped-secondary);
+    background: var(--ped-bg);
+    font-weight: 600;
+  }
+  .ped-drug-table th:first-child {
+    width: 34%;
+  }
+  .ped-drug-table th:last-child {
+    width: 24%;
+  }
+  .ped-drug-table tbody th {
+    font-weight: 400;
+  }
+  .ped-drug-table h3 {
+    font-size: 14px;
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+  .ped-drug-table tbody th > span {
+    color: var(--ped-secondary);
+    font-size: 12px;
+  }
+  .ped-drug-table p {
+    margin-top: 4px;
+    font-size: 12px;
+  }
+  .ped-drug-volume {
+    display: block;
+    color: var(--ped-primary);
+    font-size: 18px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ped-volume-label {
+    display: none;
+  }
+  .ped-small-volume {
+    background: #fffbf1;
+  }
+  .ped-drug-note {
+    color: #784800;
+  }
+  .ped-drug-table tr:last-child > * {
+    border-bottom: 0;
+  }
+  .ped-mobile-menu > button,
+  .ped-menu-heading button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 44px;
+    border: 1px solid var(--ped-border);
+    border-radius: 12px;
+    color: var(--ped-primary);
+    background: white;
+  }
+  .ped-menu-dialog {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    width: min(400px, calc(100vw - 32px));
+    max-height: calc(100dvh - 32px);
+    margin: 16px 16px auto auto;
+    color: var(--ped-text);
+  }
+  .ped-menu-dialog::backdrop {
+    background: #12223870;
+  }
+  .ped-menu-panel {
+    padding: 20px;
+    border: 1px solid var(--ped-border);
+    border-radius: 16px;
+    background: white;
+  }
+  .ped-menu-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .ped-menu-heading h2 {
+    font-size: 18px;
+  }
+  .ped-theme .ped-mobile-menu nav {
+    position: static;
+    width: auto;
+    max-height: none;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    display: grid;
+    gap: 4px;
+  }
+  .ped-menu-dialog nav > a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    color: var(--ped-primary);
+  }
+}
+@media screen and (max-width: 1023px) {
+  .ped-lp-links {
+    display: none;
+  }
+  .ped-lp-header > nav {
+    min-height: 64px;
+  }
+  .ped-lp-header .ped-mobile-menu {
+    margin-left: auto;
+  }
+  .ped-lp-account {
+    display: none;
+  }
+  .ped-hero-grid {
+    gap: 24px;
+  }
+  .ped-demo-body {
+    padding: 24px;
+  }
+  .ped-topbar {
+    height: 64px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .ped-hero-grid {
+    grid-template-columns: 1fr;
+    padding-top: 32px;
+    padding-bottom: 40px;
+    gap: 32px;
+  }
+  .ped-hero h1 {
+    font-size: 40px;
+  }
+  .ped-hero-copy > p {
+    font-size: 16px;
+  }
+  .ped-demo-body {
+    padding: 24px 20px;
+  }
+  .ped-demo-body h2 {
+    font-size: 22px;
+  }
+  .ped-demo-fields {
+    gap: 12px;
+  }
+  .ped-demo-fields dd {
+    padding: 10px;
+  }
+  .ped-demo-body .ped-eyebrow {
+    font-size: 10px;
+  }
+  .ped-features {
+    grid-template-columns: 1fr;
+  }
+  .ped-features article {
+    padding: 20px 0;
+  }
+  .ped-doctor-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .ped-doctor-photo {
+    max-width: 360px;
+    min-height: 0;
+    margin: auto;
+  }
+  .ped-pcr {
+    padding: 24px 16px;
+  }
+  .ped-patient-card {
+    padding: 16px;
+  }
+  .ped-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ped-summary-grid > :first-child {
+    grid-column: 1/-1;
+  }
+  .ped-summary-grid > :last-child {
+    grid-column: auto;
+  }
+  body .ped-app .ped-summary-grid .metric-card {
+    padding: 12px 0;
+    border-left: 0 !important;
+    border-bottom: 1px solid var(--ped-border) !important;
+  }
+  .ped-metric-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ped-metric-list > div {
+    padding: 12px;
+  }
+  .ped-group-heading h2 {
+    font-size: 18px;
+  }
+  .ped-group-heading a {
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .ped-drug-table,
+  .ped-drug-table tbody {
+    display: block;
+  }
+  .ped-drug-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .ped-drug-table tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(88px, 0.65fr);
+    padding: 16px;
+    gap: 8px 12px;
+    border-bottom: 1px solid var(--ped-border);
+  }
+  .ped-drug-table th,
+  .ped-drug-table td {
+    padding: 0;
+    border: 0;
+    width: auto !important;
+  }
+  .ped-drug-table tbody th {
+    grid-column: 1;
+  }
+  .ped-drug-table td:nth-child(2) {
+    grid-column: 1/-1;
+    grid-row: 2;
+  }
+  .ped-drug-table td:last-child {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .ped-volume-label {
+    display: block;
+    font-size: 11px;
+    color: var(--ped-secondary);
+  }
+  .ped-drug-volume {
+    font-size: 18px;
+  }
+  .ped-result-nav {
+    gap: 4px;
+  }
+  .ped-result-nav a {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+@media screen and (max-width: 359px) {
+  .ped-patient-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ped-patient-grid > :last-child {
+    grid-column: 1/-1;
+  }
+  .ped-hero h1 {
+    font-size: 36px;
+  }
+  .ped-demo-chrome {
+    padding: 12px 16px;
+    font-size: 10px;
+  }
+}
+
+/* V3 — reading hierarchy. Screen-only: clinical values and A4 remain unchanged. */
+@media screen {
+  .ped-clinical-summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 24px;
+    margin-top: 20px;
+  }
+  .ped-summary-identity {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 12px 24px;
+    align-content: start;
+  }
+  .ped-summary-name {
+    grid-column: 1/-1;
+  }
+  .ped-clinical-summary dt {
+    font-size: 12px;
+    color: var(--ped-secondary);
+    font-weight: 500;
+  }
+  .ped-clinical-summary dd {
+    margin-top: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+  .ped-summary-name dd {
+    font-size: 18px;
+    font-weight: 650;
+    line-height: 1.4;
+  }
+  .ped-summary-values {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    align-content: center;
+    padding-left: 24px;
+    border-left: 1px solid var(--ped-border);
+  }
+  .ped-summary-values dd {
+    color: var(--ped-primary-dark);
+    font-size: 24px;
+    line-height: 1.3;
+    font-weight: 700;
+  }
+  .ped-summary-values dt {
+    color: var(--ped-text);
+    font-weight: 600;
+  }
+  .ped-clinical-alerts {
+    gap: 8px;
+  }
+  body .ped-app .ped-clinical-alerts > div {
+    border-width: 0 0 0 3px !important;
+    border-radius: 0 12px 12px 0;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    line-height: 1.55;
+    font-weight: 450;
+  }
+  .ped-result-nav {
+    border-block: 0;
+    background: transparent;
+    gap: 8px;
+    padding: 0;
+  }
+  .ped-result-nav a {
+    border: 1px solid var(--ped-border);
+    background: white;
+    border-radius: 12px;
+    font-size: 13px;
+  }
+  .ped-group-heading h2 {
+    font-size: 22px;
+    letter-spacing: -0.025em;
+  }
+  .ped-group-heading a {
+    font-size: 12px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .ped-result-group {
+    scroll-margin-top: 88px;
+  }
+  .ped-next-group {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    min-height: 44px;
+    align-items: center;
+    margin: 4px 0 0 auto;
+    padding: 8px 0 8px 12px;
+    color: var(--ped-primary-dark);
+    font-size: 12px;
+  }
+  .ped-next-group:hover,
+  .ped-group-heading a:hover {
+    text-decoration: underline;
+  }
+  .ped-metric-list {
+    border: 0;
+    border-radius: 12px;
+    gap: 0;
+  }
+  .ped-metric-list > div {
+    border-bottom: 0;
+    padding: 16px 20px;
+  }
+  .ped-metric-list dt {
+    font-size: 13px;
+  }
+  .ped-metric-list dd {
+    font-size: 20px;
+  }
+  .ped-drug-table {
+    border: 0;
+    border-radius: 12px;
+    font-size: 14px;
+  }
+  .ped-drug-table th,
+  .ped-drug-table td {
+    padding: 16px;
+  }
+  .ped-drug-table thead th {
+    font-size: 12px;
+    background: #edf3f8;
+    color: var(--ped-secondary);
+  }
+  .ped-drug-table thead th:nth-child(1) {
+    width: 27%;
+  }
+  .ped-drug-table thead th:nth-child(2) {
+    width: 18%;
+  }
+  .ped-drug-table thead th:nth-child(3) {
+    width: 21%;
+  }
+  .ped-drug-table thead th:nth-child(4) {
+    width: 34%;
+  }
+  .ped-drug-table h3 {
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+  .ped-drug-table tbody .ped-drug-identity > span {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .ped-drug-dose > strong {
+    display: block;
+    font-weight: 650;
+    font-size: 16px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ped-drug-volume {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--ped-primary-dark);
+  }
+  .ped-drug-table p {
+    font-size: 13px;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .ped-drug-table p + p {
+    margin-top: 8px;
+  }
+  .ped-drug-table .ped-ui100 {
+    margin-top: 4px;
+    color: var(--ped-text);
+  }
+  .ped-drug-instructions {
+    color: var(--ped-secondary);
+  }
+  .ped-drug-instructions .ped-drug-note {
+    color: #784800;
+  }
+  .ped-data-label {
+    display: none;
+  }
+  .ped-small-volume {
+    background: #fffbf1;
+  }
+}
+@media screen and (max-width: 767px) {
+  .ped-result-summary {
+    padding: 20px 16px;
+  }
+  .ped-clinical-summary {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .ped-summary-identity {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px 16px;
+  }
+  .ped-summary-name dd {
+    font-size: 16px;
+  }
+  .ped-summary-values {
+    border-left: 0;
+    border-top: 1px solid var(--ped-border);
+    padding: 16px 0 0;
+    gap: 16px;
+  }
+  .ped-summary-values dd {
+    font-size: 22px;
+  }
+  .ped-result-nav {
+    gap: 8px;
+  }
+  .ped-result-nav a {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .ped-group-heading {
+    gap: 8px;
+    margin-bottom: 12px;
+    align-items: start;
+  }
+  .ped-group-heading h2 {
+    font-size: 20px;
+    padding-top: 8px;
+  }
+  .ped-group-heading a {
+    font-size: 11px;
+  }
+  .ped-metric-list > div {
+    padding: 12px 16px;
+  }
+  .ped-drug-table tr {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    padding: 20px 16px;
+    gap: 12px 16px;
+  }
+  .ped-drug-table tbody .ped-drug-identity {
+    grid-column: 1/-1;
+    grid-row: 1;
+    width: auto;
+  }
+  .ped-drug-table .ped-drug-dose {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .ped-drug-table .ped-drug-amount {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .ped-drug-table .ped-drug-instructions {
+    grid-column: 1/-1;
+    grid-row: 3;
+  }
+  .ped-drug-table th,
+  .ped-drug-table td {
+    padding: 0;
+  }
+  .ped-data-label {
+    display: block;
+    font-size: 12px;
+    color: var(--ped-secondary);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .ped-drug-table h3 {
+    font-size: 17px;
+  }
+  .ped-drug-dose > strong {
+    font-size: 18px;
+    line-height: 1.4;
+  }
+  .ped-drug-volume {
+    font-size: 20px;
+  }
+  .ped-drug-table p {
+    font-size: 14px;
+  }
+  .ped-drug-table .ped-ui100 {
+    font-size: 13px;
+  }
+  .ped-next-group {
+    font-size: 12px;
+  }
+}
+@media screen and (max-width: 359px) {
+  .ped-summary-values dd {
+    font-size: 20px;
+  }
+  .ped-drug-table tr {
+    gap: 12px;
+    padding: 16px;
+  }
+  .ped-drug-dose > strong {
+    font-size: 16px;
+  }
+  .ped-drug-volume {
+    font-size: 18px;
+  }
+  .ped-group-heading {
+    flex-wrap: wrap;
+  }
+  .ped-group-heading a {
+    margin-left: auto;
+  }
+}
+
+/* V3 workspace: a single form surface and persistent, contextual actions. */
+@media screen {
+  /* Legacy overflow:hidden creates a scrolling ancestor that prevents sticky.
+     Clip only the horizontal axis; modal scroll locking remains inline. */
+  html:has(.ped-app),
+  body:has(.ped-app) {
+    overflow-x: clip;
+  }
+  .ped-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+  .ped-pcr .ped-card {
+    box-shadow: none;
+    border-radius: 16px;
+  }
+  .ped-pcr .ped-card-title {
+    color: var(--ped-text) !important;
+    font-weight: 650;
+  }
+  .ped-patient-card .ped-card-title > svg,
+  .ped-result-summary .ped-card-title > svg {
+    display: none;
+  }
+  .ped-theme .ped-button,
+  .ped-theme .ped-nav-item {
+    border-radius: 12px;
+    box-shadow: none;
+  }
+  body .ped-app input {
+    border-radius: 12px;
+  }
+  .ped-page-heading h1 {
+    font-size: 30px;
+    font-weight: 700;
+  }
+  .ped-patient-identity {
+    margin: 20px 0 16px;
+  }
+  .ped-form-status {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .ped-result-nav a:active,
+  .ped-next-group:active {
+    background: var(--ped-soft);
+  }
+  .ped-theme .ped-button:active:not(:disabled) {
+    box-shadow: inset 0 0 0 1px currentColor;
+  }
+  .ped-pcr .ped-empty-state {
+    background: var(--ped-bg);
+    border-radius: 12px;
+    margin-top: 16px;
+    padding: 24px;
+  }
+  .ped-pcr .ped-empty-state > svg {
+    width: 28px;
+    height: 28px;
+  }
+  .ped-pcr .ped-empty-state p {
+    font-size: 13px;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .ped-patient-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 16px 24px;
+    align-items: start;
+  }
+  .ped-patient-card > h2 {
+    grid-column: 1/-1;
+  }
+  .ped-patient-identity {
+    margin: 0;
+    grid-template-columns: minmax(0, 1fr) 170px;
+  }
+  .ped-patient-card > .ped-calculate {
+    width: fit-content;
+    max-width: 100%;
+    margin: 0;
+  }
+  .ped-patient-card > .ped-form-status {
+    align-self: center;
+    text-align: left;
+    margin: 0;
+  }
+  .ped-patient-grid {
+    gap: 12px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .ped-page-heading h1 {
+    font-size: 28px;
+  }
+  .ped-patient-card {
+    padding: 20px 16px;
+  }
+  .ped-patient-identity {
+    margin: 16px 0;
+  }
+  .ped-pcr .ped-empty-state {
+    padding: 20px 16px;
+    gap: 12px;
+  }
+  .ped-form-status {
+    font-size: 12px;
+  }
+}
+
+/* V3 public page: preserve copy, real catalog and portrait; refine the rhythm. */
+@media screen {
+  .ped-hero {
+    background: var(--ped-bg);
+  }
+  .ped-hero-grid {
+    min-height: 560px;
+    padding-block: 48px;
+    gap: 48px;
+  }
+  .ped-hero h1 {
+    font-size: clamp(40px, 4vw, 58px);
+    line-height: 1.1;
+    letter-spacing: -0.045em;
+  }
+  .ped-hero-copy > p {
+    font-weight: 400;
+    line-height: 1.65;
+    margin-bottom: 24px;
+  }
+  .ped-hero-actions {
+    gap: 12px;
+  }
+  .ped-hero-copy > .ped-hero-note {
+    max-width: 440px;
+    margin-top: 20px;
+    margin-bottom: 0;
+    font-size: 12px;
+  }
+  .ped-hero .ped-badge {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    font-weight: 600;
+    color: var(--ped-primary-dark);
+  }
+  .ped-demo-browser {
+    box-shadow: 0 12px 32px #12223808;
+  }
+  .ped-demo-chrome {
+    padding: 12px 20px;
+    background: #edf3f8;
+    font-size: 12px;
+  }
+  .ped-demo-body {
+    padding: 24px;
+  }
+  .ped-demo-body h2 {
+    margin: 8px 0 24px;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .ped-demo-body > p {
+    font-weight: 600;
+  }
+  .ped-demo-identity {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 132px;
+    gap: 12px;
+    margin: 16px 0 12px;
+  }
+  .ped-demo-identity dt {
+    font-size: 12px;
+    color: var(--ped-secondary);
+    margin-bottom: 6px;
+  }
+  .ped-demo-identity dd {
+    border: 1px solid var(--ped-border);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+  .ped-demo-fields {
+    margin: 0;
+    gap: 12px;
+  }
+  .ped-demo-fields dd {
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 10px 12px;
+  }
+  .ped-demo-body .ped-demo-status {
+    padding: 16px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .ped-demo-next {
+    padding-top: 16px;
+    margin-top: 16px;
+  }
+  .ped-demo-next p {
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .ped-demo-browser figcaption {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .ped-features {
+    margin-top: 32px;
+    gap: 0 48px;
+  }
+  .ped-features h3 {
+    font-size: 20px;
+    font-weight: 650;
+  }
+  .ped-features p {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  .ped-doctor-section {
+    background: var(--ped-bg);
+  }
+  .ped-doctor-grid h2 {
+    line-height: 1.3;
+  }
+  .ped-credentials {
+    gap: 24px;
+  }
+  .ped-credentials > span {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+  }
+  .ped-plan-featured {
+    background: white;
+  }
+  .ped-steps {
+    border: 0;
+    gap: 24px;
+  }
+  .ped-steps article {
+    padding: 24px 0;
+    border-right: 0;
+  }
+  .ped-audiences {
+    gap: 12px;
+  }
+  .ped-audiences > div {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 12px;
+  }
+}
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+  .ped-hero-grid {
+    gap: 24px;
+  }
+  .ped-demo-identity {
+    grid-template-columns: 1fr;
+  }
+}
+@media screen and (max-width: 767px) {
+  .ped-hero-grid {
+    min-height: 0;
+    padding-block: 32px;
+    gap: 24px;
+  }
+  .ped-hero h1 {
+    font-size: 40px;
+    margin-top: 20px;
+  }
+  .ped-hero-copy > p {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+  .ped-hero-copy > .ped-hero-note {
+    margin-top: 16px;
+    font-size: 12px;
+  }
+  .ped-demo-body {
+    padding: 20px 16px;
+  }
+  .ped-demo-body h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  .ped-demo-identity {
+    grid-template-columns: 1fr;
+  }
+  .ped-demo-identity dd {
+    padding: 10px 12px;
+  }
+  .ped-demo-body .ped-eyebrow {
+    font-size: 11px;
+  }
+  .ped-demo-next {
+    gap: 8px;
+  }
+  .ped-demo-browser figcaption {
+    padding: 12px 16px;
+    font-size: 11px;
+  }
+  .ped-features {
+    margin-top: 24px;
+  }
+  .ped-features h3 {
+    font-size: 18px;
+  }
+  .ped-features p {
+    font-size: 14px;
+  }
+  .ped-credentials {
+    gap: 16px;
+  }
+  .ped-steps {
+    gap: 0;
+  }
+  .ped-steps article {
+    padding-block: 20px;
+  }
+}
+@media screen and (max-width: 359px) {
+  .ped-hero h1 {
+    font-size: 36px;
+  }
+}

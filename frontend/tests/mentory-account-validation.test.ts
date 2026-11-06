@@ -1,0 +1,5 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {profileInput,passwordInput,playbackRates} from '../lib/mentory/account-validation';
+test('profile accepts only supported fields and optimistic version',()=>{const p={action:'profile',name:' Ana Silva ',version:new Date().toISOString()};assert.equal(profileInput.parse(p).name,'Ana Silva');for(const patch of [{userId:'other'},{email:'other@example.test'},{name:'a'},{version:'invalid'}])assert.equal(profileInput.safeParse({...p,...patch}).success,false);});
+test('password policy rejects mismatch, reuse, short passwords and injected identity',()=>{const p={action:'password',currentPassword:'Current#1234',newPassword:'NewPassword#1234',confirmation:'NewPassword#1234'};assert.ok(passwordInput.safeParse(p).success);for(const patch of [{confirmation:'mismatch'},{newPassword:'short',confirmation:'short'},{newPassword:p.currentPassword,confirmation:p.currentPassword},{userId:'other'}])assert.equal(passwordInput.safeParse({...p,...patch}).success,false);assert.deepEqual(playbackRates,['0.75','1','1.25','1.5','2']);});
