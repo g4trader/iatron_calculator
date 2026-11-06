@@ -1,0 +1,131 @@
+/* Mentory student workspace only. Clinical screens and public landing are untouched. */
+.mentory .student-workspace { --ux-ink:#122b43; --ux-muted:#4d6278; --ux-line:#dbe5ef; font-size:1rem; line-height:1.5; }
+.mentory .student-workspace *, .mentory .student-workspace *::before, .mentory .student-workspace *::after { box-sizing:border-box; }
+.mentory .student-workspace .workspace { min-width:0; }
+.mentory .student-workspace .workspace-main { max-width:1280px; padding:24px 32px 48px; }
+.mentory .student-workspace .topbar { height:auto; min-height:56px; padding:12px 32px; gap:16px; font-size:.875rem; }
+.mentory .student-workspace .sidebar { width:224px; flex-basis:224px; padding:24px 16px; }
+.mentory .student-workspace .sidebar .brand { flex-wrap:wrap; font-size:1rem; }
+.mentory .student-workspace .nav-item { font-size:.875rem; min-height:44px; }
+.mentory .student-workspace button.nav-item { border:0; background:transparent; color:inherit; width:100%; text-align:left; font-family:inherit; cursor:pointer; }
+.mentory .student-workspace .sidebar button.nav-item { color:#dce8f5; }
+.mentory .student-workspace .sidebar button.nav-item.active { background:#23425e; color:white; }
+.mentory .student-workspace .page-heading { margin-bottom:24px; }
+.mentory .student-workspace .page-heading h1 { font-size:2rem; line-height:1.2; margin:0 0 8px; letter-spacing:-.025em; }
+.mentory .student-workspace .page-heading p { margin:0; color:var(--ux-muted); }
+.mentory .student-workspace h2 { font-size:1.375rem; line-height:1.3; }
+.mentory .student-workspace h3 { font-size:1.0625rem; line-height:1.4; }
+.mentory .student-workspace .eyebrow { font-size:.75rem; line-height:1.5; letter-spacing:.06em; }
+.mentory .student-workspace .btn { min-height:44px; font-size:.875rem; white-space:normal; text-align:center; }
+.mentory .student-workspace .panel { padding:24px; border-radius:14px; border:1px solid var(--ux-line); box-shadow:0 3px 12px #102b4305; }
+.mentory .student-workspace .dashboard-grid { display:grid; grid-template-columns:minmax(0,1.6fr) minmax(240px,1fr); gap:24px; }
+.mentory .student-workspace .dashboard-grid > :first-child { grid-column:2; grid-row:1; }
+.mentory .student-workspace .dashboard-grid > :nth-child(2) { grid-column:1; grid-row:1; border-top:3px solid #006da3; }
+.mentory .student-workspace .dashboard-grid h2 { margin:12px 0; }
+.mentory .student-workspace .dashboard-grid .metric { font-size:2rem; line-height:1.3; margin:16px 0; }
+.mentory .student-workspace .dashboard-grid .metric span { font-size:.875rem; }
+.mentory .student-workspace .dashboard-grid p { font-size:.875rem; }
+.mentory .student-workspace .stat-grid { display:flex; flex-wrap:wrap; gap:8px 24px; margin:20px 0; }
+.mentory .student-workspace .stat-grid .stat { display:flex; align-items:baseline; flex-direction:row-reverse; gap:8px; padding:0; border:0; box-shadow:none; background:none; }
+.mentory .student-workspace .stat-grid .stat strong { font-size:1rem; }
+.mentory .student-workspace .stat-grid .stat span { font-size:.8125rem; color:var(--ux-muted); }
+.mentory .student-workspace .module-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.mentory .student-workspace .module-card { border:1px solid var(--ux-line); border-radius:14px; box-shadow:none; min-width:0; }
+.mentory .student-workspace .module-art { height:60px; padding:16px 20px; background:#eaf0f6; color:#35516b; display:flex; align-items:center; justify-content:space-between; }
+.mentory .student-workspace .module-art span { font-size:1.25rem; opacity:1; }
+.mentory .student-workspace .module-art svg { width:20px; height:20px; }
+.mentory .student-workspace .module-body { padding:20px; }
+.mentory .student-workspace .module-body h3 { margin:8px 0; }
+.mentory .student-workspace .module-body p { font-size:.875rem; }
+.mentory .student-workspace .module-link { display:inline-flex; align-items:center; min-height:44px; }
+.mentory .student-workspace .demo-disclosure { border:1px solid #e4d8b8; border-radius:8px; background:#fff9e9; color:#65511e; padding:0 12px; margin-bottom:16px; font-size:.8125rem; }
+.mentory .student-workspace .demo-disclosure summary { min-height:44px; padding:12px 0; cursor:pointer; font-weight:600; }
+.mentory .student-workspace .demo-disclosure .row-actions { margin-bottom:12px; }
+.mentory .student-workspace .classroom-heading { margin-bottom:16px; }
+.mentory .student-workspace .classroom-heading .back-link { display:inline-flex; align-items:center; min-height:44px; margin:0 12px 0 0; background:none; border:0; color:#006a9f; cursor:pointer; font:inherit; }
+.mentory .student-workspace .classroom-heading .eyebrow { display:inline; }
+.mentory .student-workspace .classroom-heading h1 { margin:4px 0 0; font-size:1.75rem; }
+.mentory .student-workspace .learning-layout { grid-template-columns:minmax(0,1fr) 280px; gap:24px; align-items:start; }
+.mentory .student-workspace .learning-layout > * { min-width:0; }
+.mentory .student-workspace .lesson-side { position:sticky; top:16px; max-height:calc(100dvh - 32px); overflow-y:auto; }
+.mentory .student-workspace .lesson-nav, .mentory .student-workspace .demo-lesson-row { min-height:56px; font-size:.875rem; text-align:left; }
+.mentory .student-workspace .lesson-nav small, .mentory .student-workspace .demo-lesson-row small { display:block; margin-top:4px; font-size:.75rem; color:var(--ux-muted); }
+.mentory .student-workspace .lesson-nav.selected, .mentory .student-workspace .demo-selected { border-left:3px solid #006da3; background:#eaf3fa; }
+.mentory .student-workspace .player { aspect-ratio:16/9; min-height:0; width:100%; border-radius:12px; }
+.mentory .student-workspace .player iframe, .mentory .student-workspace .player video { width:100%; height:100%; aspect-ratio:16/9; }
+.mentory .student-workspace .demo-video { border-radius:12px; overflow:hidden; }
+.mentory .student-workspace .demo-video video { width:100%; aspect-ratio:16/9; display:block; background:#102b43; }
+.mentory .student-workspace .demo-video-heading { display:none; }
+.mentory .student-workspace .demo-video-tools { padding:8px 12px; gap:8px; display:flex; flex-wrap:wrap; align-items:center; }
+.mentory .student-workspace .demo-video-tools label { margin-left:auto; display:flex; align-items:center; gap:8px; font-size:.75rem; }
+.mentory .student-workspace .demo-video-tools select { width:auto; min-height:44px; }
+.mentory .student-workspace .demo-video > .notice { background:none; border:0; margin:0; padding:0 12px 8px; font-size:.75rem; }
+.mentory .student-workspace .video-details { padding:0 12px 8px; font-size:.8125rem; }
+.mentory .student-workspace .video-details summary { min-height:44px; padding:12px 0; cursor:pointer; }
+.mentory .student-workspace .lesson-status { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:12px; font-size:.8125rem; color:var(--ux-muted); flex-wrap:wrap; }
+.mentory .student-workspace .lesson-actions { margin:12px 0 20px; display:flex; justify-content:space-between; gap:12px; }
+.mentory .student-workspace .lesson-tabs { margin:16px 0; }
+.mentory .student-workspace .lesson-tabbar { display:flex; overflow-x:auto; gap:4px; border-bottom:1px solid var(--ux-line); padding:4px 0; }
+.mentory .student-workspace .lesson-tabbar button { flex-shrink:0; min-height:44px; padding:8px 12px; font:inherit; font-size:.875rem; color:var(--ux-muted); border:0; background:transparent; border-bottom:3px solid transparent; cursor:pointer; }
+.mentory .student-workspace .lesson-tabbar button[aria-selected=true] { color:#005f91; border-bottom-color:#006da3; font-weight:700; }
+.mentory .student-workspace .lesson-tabs [role=tabpanel] > .panel { border-top:0; border-radius:0 0 12px 12px; margin:0; }
+.mentory .student-workspace .lesson-tabs [hidden] { display:none; }
+.mentory .student-workspace .lesson-tabs details summary { min-height:44px; padding:12px 0; cursor:pointer; }
+.mentory .student-workspace .trail-mobile { display:none; }
+.mentory .student-workspace :is(button,a,input,select,textarea,summary,[tabindex]):focus-visible { outline:3px solid #1275ad; outline-offset:3px; }
+.mentory .student-workspace :is(p,h1,h2,h3,strong,small,a,button,label,span) { overflow-wrap:anywhere; }
+.mentory .student-workspace :is(input,select,textarea) { max-width:100%; font-size:1rem; }
+.mentory .student-workspace .material-row > div { min-width:0; }
+@media(min-width:1400px) { .mentory .student-workspace .module-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media(max-width:1199px) {
+ .mentory .student-workspace .learning-layout { grid-template-columns:minmax(0,1fr); }
+ .mentory .student-workspace .lesson-side { display:none; }
+ .mentory .student-workspace .trail-mobile { display:block; }
+ .mentory .student-workspace .dashboard-grid { grid-template-columns:minmax(0,1fr); gap:16px; }
+ .mentory .student-workspace .dashboard-grid > :first-child { grid-column:1; grid-row:2; }
+ .mentory .student-workspace .dashboard-grid > :nth-child(2) { grid-column:1; grid-row:1; }
+}
+@media(max-width:900px) {
+ .mentory .student-workspace .sidebar { display:none; }
+ .mentory .student-workspace { display:block; }
+ .mentory .student-workspace .workspace-main { padding:20px 24px calc(6.5rem + 24px + env(safe-area-inset-bottom)); }
+ .mentory .student-workspace .bottom-nav { position:fixed; inset:auto 0 0; z-index:30; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); background:#fff; border-top:1px solid var(--ux-line); padding:8px 8px calc(8px + env(safe-area-inset-bottom)); }
+ .mentory .student-workspace .bottom-nav .nav-item { display:flex; flex-direction:column; justify-content:center; gap:4px; padding:4px; text-align:center; color:var(--ux-muted); font-size:.75rem; border-radius:8px; min-width:0; }
+ .mentory .student-workspace .bottom-nav .active { background:#eaf3fa; color:#006699; }
+ .mentory .student-workspace .topbar { padding:12px 24px; }
+}
+@media(max-width:600px) {
+ .mentory .student-workspace .workspace-main { padding:16px 16px calc(6.5rem + 24px + env(safe-area-inset-bottom)); }
+ .mentory .student-workspace .topbar { padding:10px 16px; min-height:48px; font-size:.75rem; }
+ .mentory .student-workspace .topbar .eyebrow { font-size:.625rem; }
+ .mentory .student-workspace .page-heading { margin-bottom:16px; }
+ .mentory .student-workspace .page-heading h1 { font-size:1.5rem; }
+ .mentory .student-workspace .page-heading p { font-size:.8125rem; }
+ .mentory .student-workspace .panel { padding:16px; }
+ .mentory .student-workspace .dashboard-grid .metric { margin:8px 0; font-size:1.75rem; }
+ .mentory .student-workspace .dashboard-grid h2 { font-size:1.25rem; margin:8px 0; }
+ .mentory .student-workspace .dashboard-grid p { margin:8px 0; }
+ .mentory .student-workspace .module-grid { grid-template-columns:minmax(0,1fr); }
+ .mentory .student-workspace .module-art { height:44px; padding:8px 16px; }
+ .mentory .student-workspace .module-body { padding:16px; }
+ .mentory .student-workspace .module-body p { margin:8px 0; }
+ .mentory .student-workspace .demo-disclosure { margin-bottom:12px; }
+ .mentory .student-workspace .stat-grid { gap:8px 16px; }
+ .mentory .student-workspace .classroom-heading .eyebrow { font-size:.6875rem; }
+ .mentory .student-workspace .classroom-heading h1 { font-size:1.5rem; }
+ .mentory .student-workspace .lesson-status .btn { width:100%; }
+ .mentory .student-workspace .lesson-actions .btn { flex:1; width:auto; }
+ .mentory .student-workspace .lesson-actions { flex-direction:row; }
+ .mentory .student-workspace .demo-video-tools label { flex-direction:row; width:auto; }
+ .mentory .student-workspace .demo-video-tools .btn { width:auto; }
+ .mentory .student-workspace .material-row { flex-wrap:wrap; gap:12px; }
+ .mentory .student-workspace .material-row > div { flex:1 1 200px; }
+ .mentory .student-workspace .material-row > .btn { width:100%; }
+ .mentory .student-workspace .section-row { flex-wrap:wrap; }
+}
+@media(prefers-reduced-motion:reduce) { .mentory .student-workspace *, .mentory .student-workspace *::before, .mentory .student-workspace *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; } }
+.mentory .student-workspace .lesson-tabs .panel .panel { padding:16px 0 0; border:0; box-shadow:none; }
+.mentory .student-workspace .stat-grid > span { color:var(--ux-muted); font-size:.875rem; }
+.mentory .student-workspace .lesson-tabbar button:hover { background:#eef4f9; }
+.mentory .student-workspace .lesson-status + .lesson-actions { scroll-margin-bottom:100px; }
+.mentory .student-workspace :is(button,a,input,textarea,summary) { scroll-margin-top:16px; scroll-margin-bottom:calc(6.5rem + 24px); }
