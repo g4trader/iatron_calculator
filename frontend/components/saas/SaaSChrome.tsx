@@ -9,11 +9,11 @@ export async function SaaSNav() {
 
   return (
     <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-      <Link href="/ped-expert-mentory" className="flex items-center gap-2 text-sm font-black text-white">
+      <Link href="/" className="flex items-center gap-2 text-sm font-black text-white">
         <span className="flex h-8 w-8 items-center justify-center rounded-md bg-cyan-300 text-slate-950">
           <BrainCircuit className="h-4 w-4" aria-hidden="true" />
         </span>
-        Ped Expert Mentory
+        iatron.PED
       </Link>
       <div className="hidden items-center gap-6 text-sm font-medium text-slate-400 md:flex">
         <a href="/#como-funciona" className="transition hover:text-white">Como funciona</a>
