@@ -1,4 +1,4 @@
-export const MENTORY_PRICE_CENTS = 350000;
+export const MENTORY_PRICE_CENTS = 600000;
 export const money = (cents: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cents / 100);
 export function activeAccess(subscription: { status: string; startedAt: Date; expiresAt: Date } | null, now = new Date()) {
   return !!subscription && subscription.status === 'ACTIVE' && subscription.startedAt <= now && subscription.expiresAt > now;
