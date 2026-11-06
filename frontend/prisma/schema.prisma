@@ -1210,11 +1210,11 @@ model MentoryLessonProgress {
 model MentorySubscription {
   id String @id @default(cuid())
   userId String
-  priceCents Int @default(350000)
+  priceCents Int @default(600000)
   currency String @default("BRL")
   startedAt DateTime @db.Timestamptz(3)
   expiresAt DateTime @db.Timestamptz(3)
-  renewalPriceCents Int @default(350000)
+  renewalPriceCents Int @default(600000)
   renewalTermsVersion String
   status MentoryAccessStatus @default(PENDING)
   paymentProviderId String? @unique
