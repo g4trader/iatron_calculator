@@ -35,10 +35,6 @@ function persistCampaignSkin(response: NextResponse, req: NextRequest, skin: str
 
 export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  if (pathname === "/mentory" || pathname === "/mentory/") {
-    const destination = new URL("/ped-expert-mentory", req.nextUrl.origin);
-    return NextResponse.redirect(destination, 308);
-  }
   const isProtected = protectedRoutes.some((route) => pathname === route || pathname.startsWith(`${route}/`));
   const requestId = req.headers.get("x-request-id") ?? crypto.randomUUID();
   const campaignSkin = campaignSkinFromRequest(req);
