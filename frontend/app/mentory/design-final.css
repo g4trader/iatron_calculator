@@ -1,0 +1,103 @@
+/* Final workspace tokens. Scoped to MENTOR: no clinical or public-page changes. */
+.mentory .mentor-final{--sidebar-width:248px;--navy-950:#0b1f35;--navy-900:#102b48;--brand-700:#075b91;--brand-600:#0874ad;--brand-50:#edf7fc;--ink:#14263b;--muted:#52657b;--canvas:#f5f8fc;--surface:#fff;--border:#dce6f0;--danger:#b42318;--success:#067647;--blue:var(--brand-700);--ux-muted:var(--muted);display:grid;grid-template-columns:var(--sidebar-width) minmax(0,1fr);min-height:100dvh;color:var(--ink);background:var(--canvas);font-size:16px;line-height:1.5}
+.mentory .mentor-final .sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar-width);height:100dvh;overflow-y:auto;overscroll-behavior:contain;padding:24px 16px;background:var(--navy-950);display:flex;flex-direction:column;z-index:40}
+.mentory .mentor-final .workspace{grid-column:2;min-width:0;width:100%}
+.mentory .mentor-final .workspace-main{max-width:1440px;padding:32px 32px 48px;margin:auto}
+.mentory .mentor-final .sidebar .brand{margin-bottom:32px;color:white;font-size:17px;white-space:nowrap;flex-wrap:nowrap;gap:8px}
+.mentory .mentor-final .nav-label{font-size:12px;color:#b3c5d7;letter-spacing:.08em;margin:0 12px 12px}
+.mentory .mentor-final .sidebar-bottom{margin-top:auto;padding-top:32px}
+.mentory .mentor-final .nav-item{min-height:44px;font-size:14px}
+.mentory .mentor-final .sidebar .nav-item{color:#e1ebf4}
+.mentory .mentor-final .sidebar :is(button,a):focus-visible{outline-color:#9cd9ff}
+.mentory .mentor-final .topbar{position:sticky;top:0;z-index:45;min-height:68px;padding:10px 32px;background:var(--surface);border-bottom:1px solid var(--border);gap:16px}
+.mentory .mentor-final .header-context{display:flex;align-items:center;gap:16px;min-width:0}
+.mentory .mentor-final .header-context .brand{display:none;font-size:16px;white-space:nowrap}
+.mentory .mentor-final .context-label{font-size:14px;color:var(--muted)}
+.mentory .mentor-final .menu-trigger{display:none}
+.mentory .mentor-final .user-menu{position:relative;min-width:0}
+.mentory .mentor-final .user-trigger{display:flex;align-items:center;gap:8px;background:none;border:0;padding:0 4px;min-height:44px;color:var(--ink);font-size:14px}
+.mentory .mentor-final .avatar{width:36px;height:36px;flex-shrink:0;background:var(--brand-50);color:var(--brand-700);font-weight:700}
+.mentory .mentor-final .user-name{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mentory .mentor-final .user-dropdown{position:absolute;right:0;top:calc(100% + 8px);width:min(280px,calc(100vw - 32px));max-height:calc(100dvh - 92px);overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:8px;box-shadow:0 12px 32px #0b1f3526;display:grid;z-index:60}
+.mentory .mentor-final .user-dropdown strong{padding:12px;font-size:14px;border-bottom:1px solid var(--border)}
+.mentory .mentor-final .user-dropdown :is(a,button){display:flex;align-items:center;min-height:44px;border:0;background:none;color:var(--ink);padding:10px 12px;text-align:left;border-radius:8px;font-size:14px}
+.mentory .mentor-final .user-dropdown :is(a,button):hover{background:var(--brand-50)}
+.mentory .mentor-final .nav-drawer{padding:0;border:0;inset:0 auto 0 0;margin:0;max-height:100dvh;height:100dvh;width:min(300px,90vw);max-width:90vw;background:var(--navy-950);color:white}
+.mentory .mentor-final .nav-drawer::backdrop{background:#0b1f3580}
+.mentory .mentor-final .drawer-content{min-height:100%;padding:24px 16px;display:flex;flex-direction:column}
+.mentory .mentor-final .drawer-content .brand{color:white;font-size:17px;margin:16px 0 32px}
+.mentory .mentor-final .drawer-close{align-self:flex-end;background:none;border:1px solid #52657b;color:white;border-radius:10px;width:44px}
+.mentory .mentor-final .drawer-content .nav-item{color:white}
+.mentory .mentor-final .drawer-content button.nav-item{background:none;border:0;width:100%;text-align:left}
+.mentory .mentor-final .page-heading h1{font-size:32px;line-height:1.2;letter-spacing:-.025em}
+.mentory .mentor-final :is(h1,h2,h3){color:var(--ink)}
+.mentory .mentor-final p{color:var(--muted)}
+.mentory .mentor-final .eyebrow{color:var(--brand-700)}
+.mentory .mentor-final .panel{box-shadow:none;border-color:var(--border);border-radius:16px}
+.mentory .mentor-final .btn{border-radius:10px;min-height:44px;font-size:14px;line-height:1.45}
+.mentory .mentor-final .btn-primary{background:var(--brand-700);color:white}
+.mentory .mentor-final .btn-primary:hover:not(:disabled){background:var(--navy-900)}
+.mentory .mentor-final .btn-outline:hover:not(:disabled){background:var(--brand-50)}
+.mentory .mentor-final .btn:disabled{opacity:.65;cursor:not-allowed}
+.mentory .mentor-final .module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.mentory .mentor-final .module-art{height:48px;padding:12px 20px;background:var(--brand-50);color:var(--brand-700)}
+.mentory .mentor-final .module-art span{font-size:16px}
+.mentory .mentor-final .module-body{padding:20px}
+.mentory .mentor-final .module-body h3{font-size:18px;line-height:1.4}
+.mentory .mentor-final .learning-layout{grid-template-columns:minmax(0,1fr) 280px;gap:24px}
+.mentory .mentor-final .lesson-side{top:92px;max-height:calc(100dvh - 116px);overscroll-behavior:auto}
+.mentory .mentor-final .player-inner{background:var(--navy-900)}
+.mentory .mentor-final .player-inner :is(p,span,strong){color:white}
+.mentory .mentor-final .lesson-actions{flex-wrap:wrap}
+.mentory .mentor-final .lesson-tabbar{flex-wrap:wrap;overflow:visible}
+.mentory .mentor-final .classroom-heading h1{font-size:28px}
+.mentory .mentor-final .notice{font-size:14px;flex-wrap:wrap}
+.mentory .mentor-final .message{color:var(--success)}
+.mentory .mentor-final .field-error{color:var(--danger);font-size:14px}
+.mentory .mentor-final :is(button,a,input,textarea,summary){scroll-margin-top:90px}
+.mentory .mentor-final .account-nav{display:grid;align-content:start;gap:4px}
+.mentory .mentor-final .account-nav a{min-height:44px;padding:12px;border-radius:10px;font-size:14px}
+.mentory .mentor-final .account-nav a[aria-current=page]{background:var(--brand-50);color:var(--brand-700);font-weight:700}
+.mentory .mentor-final.account-workspace{display:block}
+.mentory .mentor-final.account-workspace .workspace-main{max-width:1120px}
+.mentory .mentor-final.account-workspace .header-context .brand{display:flex}
+.mentory .mentor-final .account-layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:32px}
+.mentory .mentor-final .account-content{min-width:0}
+.mentory .mentor-final .account-form{display:grid;gap:20px;max-width:600px}
+.mentory .mentor-final .account-form label{display:grid;gap:8px;font-weight:600;font-size:14px}
+.mentory .mentor-final .account-form :is(input,select){min-height:44px;padding:12px;border:1px solid #9bacbf;border-radius:10px;background:white;color:var(--ink);width:100%}
+.mentory .mentor-final .account-form input[readonly]{background:var(--canvas);color:var(--muted)}
+.mentory .mentor-final .account-form .row-actions{flex-wrap:wrap}
+.mentory .mentor-final .account-summary{display:grid;gap:12px}
+.mentory .mentor-final .account-summary dd{margin:0 0 16px;overflow-wrap:anywhere}
+.mentory .mentor-final .account-summary dt{font-size:14px;color:var(--muted)}
+.mentory .mentor-final .account-back{display:inline-flex;align-items:center;min-height:44px;color:var(--brand-700);margin-bottom:16px}
+.mentory .mentor-final .admin-module-head{flex-wrap:wrap}
+.mentory .mentor-final .admin-module-head>div{min-width:0;flex-basis:200px}
+.mentory .mentor-final .admin-lesson{flex-wrap:wrap;gap:12px}
+.mentory .mentor-final .admin-lesson>span{min-width:0}
+.mentory .mentor-final .table-scroll{max-width:100%;border:1px solid var(--border);border-radius:12px}
+.mentory .mentor-final .table-scroll:focus-visible{outline:3px solid var(--brand-700)}
+@media(min-width:1420px){.mentory .mentor-final .module-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:1199px){.mentory .mentor-final .learning-layout{grid-template-columns:minmax(0,1fr)}.mentory .mentor-final .lesson-side{display:none}}
+@media(max-width:1023px){
+ .mentory .mentor-final{display:block}.mentory .mentor-final .sidebar{display:none}.mentory .mentor-final .menu-trigger{display:grid;place-items:center;border:1px solid var(--border);border-radius:10px;background:white;width:44px;flex-shrink:0;color:var(--ink)}
+ .mentory .mentor-final .header-context .brand{display:flex}.mentory .mentor-final .context-label{display:none}.mentory .mentor-final .workspace-main{padding:24px 24px 48px}.mentory .mentor-final .topbar{padding:10px 24px}.mentory .mentor-final .bottom-nav{display:none}
+}
+@media(max-width:767px){
+ .mentory .mentor-final .menu-trigger{display:none}.mentory .mentor-final.admin-workspace .menu-trigger{display:grid}
+ .mentory .mentor-final .workspace-main{padding:20px 16px calc(104px + env(safe-area-inset-bottom))}.mentory .mentor-final .topbar{padding:10px 16px;min-height:64px;gap:8px}.mentory .mentor-final .header-context{gap:8px}.mentory .mentor-final .header-context .brand{font-size:14px;gap:6px}.mentory .mentor-final .header-context .brand svg{width:18px}
+ .mentory .mentor-final .user-name{display:none}.mentory .mentor-final .user-trigger>svg{display:none}
+ .mentory .mentor-final .bottom-nav{position:fixed;inset:auto 0 0;z-index:40;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:8px 8px calc(8px + env(safe-area-inset-bottom));border-top:1px solid var(--border);background:var(--surface)}
+ .mentory .mentor-final .bottom-nav .nav-item{font-size:12px;display:flex;flex-direction:column;gap:4px;padding:4px;min-height:48px;text-align:center;justify-content:center;border:0;background:none;color:var(--muted)}
+ .mentory .mentor-final .bottom-nav .active{background:var(--brand-50);color:var(--brand-700)}
+ .mentory .mentor-final .page-heading h1{font-size:26px}.mentory .mentor-final .classroom-heading h1{font-size:25px}.mentory .mentor-final .page-heading p{font-size:14px}
+ .mentory .mentor-final .module-grid{grid-template-columns:minmax(0,1fr)}.mentory .mentor-final .account-layout{display:block}.mentory .mentor-final .account-nav{margin-bottom:24px}.mentory .mentor-final .account-nav a{border-bottom:1px solid var(--border)}
+ .mentory .mentor-final .account-layout.account-child .account-nav{display:none}.mentory .mentor-final.account-workspace .workspace-main,.mentory .mentor-final.admin-workspace .workspace-main{padding-bottom:40px}
+ .mentory .mentor-final .subscription-grid{grid-template-columns:minmax(0,1fr)}.mentory .mentor-final .lesson-tabbar button{padding:8px;font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){.mentory .mentor-final *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Immediate feedback without replacing the current workspace during navigation. */
+.mentory .mentor-navigation-status{position:fixed;top:76px;left:50%;transform:translateX(-50%);z-index:1000;padding:10px 18px;border:1px solid #b8d3e4;border-radius:10px;background:#fff;color:#12314b;box-shadow:0 4px 16px #102a431a;font-size:14px;pointer-events:none}
+.mentory a[aria-busy="true"]{cursor:progress;outline:2px solid #2d93b7;outline-offset:2px}
