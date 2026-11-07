@@ -18,6 +18,7 @@ export default function LancamentoMentoria() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
   const [complete, setComplete] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -125,6 +126,55 @@ export default function LancamentoMentoria() {
       .pediatron .launch-brand .mentory-hero h1{font-size:clamp(42px,4.3vw,64px)!important}
       @media(max-width:800px){.pediatron .launch-brand .mentory-hero-grid{min-height:0}.pediatron .launch-brand-features>.mentory-container{grid-template-columns:repeat(2,1fr)}.pediatron .launch-feature{font-size:12px;gap:8px}.pediatron .launch-feature-icon{width:31px;height:31px}.pediatron .launch-brand .mentory-hero-copy{padding:45px 0 15px}}
       @media(max-width:540px){.pediatron .wrap{padding:0 19px}.pediatron .hero{padding:48px 0}.pediatron .section,.pediatron .launch{padding:50px 0}.pediatron .cards,.pediatron .steps,.pediatron .fields{grid-template-columns:1fr}.pediatron .navin .btn{font-size:11px;padding:12px}.pediatron .logo{font-size:18px}.pediatron .product-name{font-size:20px}.pediatron .portrait{min-height:280px}}
+
+      .pediatron .launch-menu-toggle,.pediatron .launch-mobile-menu{display:none}
+      @media(max-width:800px){
+        .pediatron .launch-brand .mentory-nav{position:relative;z-index:30}
+        .pediatron .launch-brand .mentory-nav-inner{justify-content:space-between}
+        .pediatron .launch-brand .launch-desktop-badge{display:none!important}
+        .pediatron .launch-menu-toggle{display:flex;flex-direction:column;justify-content:center;gap:5px;width:46px;height:44px;align-items:center;border:1px solid #64c9df80;border-radius:10px;background:#073954;color:#fff;cursor:pointer;flex:none}
+        .pediatron .launch-menu-toggle span{display:block;width:22px;height:2px;background:#04e3e4;border-radius:2px}
+        .pediatron .launch-mobile-menu.is-open{display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:#042640;border-top:1px solid #ffffff30;padding:8px 22px 18px;box-shadow:0 18px 25px #00172880;z-index:40}
+        .pediatron .launch-mobile-menu a{color:#fff;padding:13px 8px;border-bottom:1px solid #ffffff22;font-size:15px;font-weight:600}
+        .pediatron .launch-brand .mentory-hero-copy{padding:36px 0 14px}
+        .pediatron .launch-brand .mentory-hero-art{height:440px;min-height:440px;overflow:hidden}
+        .pediatron .launch-brand .mentory-hero-portrait{width:min(580px,145vw);height:480px;max-width:none;right:50%;transform:translateX(50%);bottom:-2px;object-fit:contain;object-position:center bottom}
+        .pediatron .launch-brand .mentory-hero h1{font-size:clamp(34px,9.4vw,48px)!important;letter-spacing:-1.3px}
+        .pediatron .launch-brand-urgency>.mentory-container{grid-template-columns:64px 1fr;gap:12px;text-align:left;padding:24px 20px}
+        .pediatron .launch-brand-urgency .launch-rocket{width:56px;height:56px}
+        .pediatron .launch-brand-urgency strong{font-size:clamp(29px,8vw,40px);line-height:1.08}
+        .pediatron .launch-brand-urgency p{grid-column:1/-1;font-size:15px;margin:8px 0 0;text-align:center}
+      }
+      @media(max-width:390px){.pediatron .launch-brand .mentory-hero-art{height:390px;min-height:390px}.pediatron .launch-brand .mentory-hero-portrait{height:430px;width:520px}}
+
+      /* Mobile: retrato integrado à própria superfície do hero, sem bloco isolado. */
+      @media(max-width:800px){
+        .pediatron .launch-brand .mentory-hero{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 55% 78%,#0b5678 0%,#063c5c 37%,#031b32 78%)}
+        .pediatron .launch-brand .mentory-hero::before{content:"";position:absolute;z-index:0;inset:0;pointer-events:none;background-image:linear-gradient(to bottom,#031b32 0%,#031b32ed 14%,#031b3299 38%,transparent 58%,#031b3220 80%,#031b32 100%),url("/images/a_clean_cutout_portrait_on_a_transparent_backgroun.png");background-repeat:no-repeat;background-position:center bottom,center bottom;background-size:100% 100%,auto clamp(390px,110vw,580px)}
+        .pediatron .launch-brand .mentory-hero-grid{display:block;min-height:0;position:relative;z-index:1}
+        .pediatron .launch-brand .mentory-hero-copy{padding:42px 0 clamp(350px,100vw,510px);max-width:600px}
+        .pediatron .launch-brand .mentory-hero-art{display:none!important}
+        .pediatron .launch-brand .mentory-hero-description{max-width:440px}
+        .pediatron .launch-brand .mentory-actions{position:relative;z-index:2}
+      }
+      @media(max-width:390px){
+        .pediatron .launch-brand .mentory-hero::before{background-size:100% 100%,auto 400px}
+        .pediatron .launch-brand .mentory-hero-copy{padding-bottom:360px}
+      }
+
+      .pediatron .launch-brand .mentory-hero{position:relative}
+      .pediatron .launch-mentor-identity{position:absolute;z-index:6;right:max(5%,calc((100vw - 1120px)/2));bottom:26px;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px;max-width:490px;padding:12px 14px;background:#031b32c9;border:1px solid #4dd8ed66;border-radius:14px;box-shadow:0 8px 25px #00152577;backdrop-filter:blur(9px);color:#fff}
+      .pediatron .launch-mentor-identity-item{display:inline-flex;align-items:center;gap:7px;color:#fff;font-size:13px;white-space:nowrap}
+      .pediatron .launch-mentor-identity-item svg{width:18px;height:18px;color:#04e3e4;flex:none}
+      .pediatron .launch-mentor-instagram{color:#d5f8ff;text-decoration:none}
+      .pediatron .launch-mentor-instagram:hover{text-decoration:underline}
+      @media(max-width:800px){
+        .pediatron .launch-mentor-identity{left:18px;right:18px;bottom:24px;max-width:none;justify-content:center;gap:10px 14px;padding:12px 10px}
+        .pediatron .launch-mentor-identity-item{font-size:12px}
+        .pediatron .launch-mentor-identity-item svg{width:17px;height:17px}
+        .pediatron .launch-brand .mentory-hero-copy{padding-bottom:clamp(400px,112vw,550px)}
+      }
+      @media(max-width:390px){.pediatron .launch-brand .mentory-hero-copy{padding-bottom:420px}}
     `}</style>
     <div className="ribbon">Aula inaugural gratuita • 14 de novembro, às 19h • Condições de lançamento somente no WhatsApp</div>
     <div className="launch-brand mentory-landing">
@@ -137,15 +187,19 @@ export default function LancamentoMentoria() {
             <nav className="mentory-nav-links" aria-label="Navegação da página">
               <a href="#programa">Programa</a><a href="#mentor">Mentor</a><a href="#novembro">Lançamento</a><a href="#perguntas">Dúvidas</a>
             </nav>
-            <a href="#inscricao" className="mentory-outline">LANÇAMENTO OFICIAL</a>
+            <a href="#inscricao" className="mentory-outline launch-desktop-badge">LANÇAMENTO OFICIAL</a>
+            <button type="button" className="launch-menu-toggle" aria-expanded={menuOpen} aria-controls="launch-mobile-menu" aria-label={menuOpen ? "Fechar menu" : "Abrir menu"} onClick={() => setMenuOpen(!menuOpen)}><span/><span/><span/></button>
           </div>
+          <nav id="launch-mobile-menu" className={`launch-mobile-menu${menuOpen ? " is-open" : ""}`} aria-label="Menu mobile">
+            <a href="#inicio" onClick={() => setMenuOpen(false)}>Início</a><a href="#programa" onClick={() => setMenuOpen(false)}>Programa</a><a href="#mentor" onClick={() => setMenuOpen(false)}>Mentor</a><a href="#novembro" onClick={() => setMenuOpen(false)}>Lançamento</a><a href="#perguntas" onClick={() => setMenuOpen(false)}>Dúvidas</a><a href="#inscricao" onClick={() => setMenuOpen(false)}>Inscrever-se</a>
+          </nav>
         </header>
         <section id="inicio" className="mentory-hero">
           <div className="mentory-container mentory-hero-grid">
             <div className="mentory-hero-copy">
               <p className="mentory-eyebrow">Lançamento da mentoria</p>
               <h1>A mentoria em<br/>Pediatria que conecta<br/><em>evidência, experiência<br/>e prática real.</em></h1>
-              <p className="mentory-hero-description">Entre para a primeira turma da Ped Expert Mentory e fortaleça sua tomada de decisão clínica com acompanhamento próximo, conteúdo atualizado e discussão de casos.</p>
+              <p className="mentory-hero-description">Participe da Ped Expert Mentory e fortaleça sua tomada de decisão clínica com acompanhamento próximo, conteúdo atualizado e discussão de casos.</p>
               <div className="mentory-actions">
                 <a href="#inscricao" className="mentory-cta">Quero participar do lançamento <span aria-hidden="true">→</span></a>
                 <a href="#novembro" className="mentory-outline">Conheça o lançamento</a>
@@ -157,12 +211,17 @@ export default function LancamentoMentoria() {
               <img className="mentory-hero-portrait" src="/images/a_clean_cutout_portrait_on_a_transparent_backgroun.png" alt="Dr. Aristóteles Pires"/>
             </div>
           </div>
+          <div className="launch-mentor-identity" aria-label="Informações do mentor">
+            <span className="launch-mentor-identity-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 3v6a6 6 0 0 0 12 0V3"/><path d="M4 3h4M16 3h4"/><path d="M12 15v3a4 4 0 0 0 8 0v-3"/><circle cx="20" cy="13" r="2"/></svg><strong>Dr. Aristóteles Pires</strong></span>
+            <span className="launch-mentor-identity-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><strong>+28a XP</strong></span>
+            <a className="launch-mentor-identity-item launch-mentor-instagram" href="https://www.instagram.com/dr.aristotelespires/" target="_blank" rel="noopener noreferrer" aria-label="Instagram do Dr. Aristóteles Pires, @dr.aristotelespires"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 2A3.75 3.75 0 0 0 4 7.75v8.5A3.75 3.75 0 0 0 7.75 20h8.5A3.75 3.75 0 0 0 20 16.25v-8.5A3.75 3.75 0 0 0 16.25 4h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.5-2.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Z"/></svg><span>@dr.aristotelespires</span></a>
+          </div>
         </section>
       </div>
       <div className="launch-brand-features">
         <div className="mentory-container">
-          <div className="launch-feature"><MentoryIcon name="mentor" className="launch-feature-icon" /><strong>Mentoria ao vivo<br/>com especialistas</strong></div>
-          <div className="launch-feature"><MentoryIcon name="book" className="launch-feature-icon" /><strong>Casos clínicos<br/>reais</strong></div>
+          <div className="launch-feature"><MentoryIcon name="mentor" className="launch-feature-icon" /><strong>Mentoria online semanal</strong></div>
+          <div className="launch-feature"><MentoryIcon name="book" className="launch-feature-icon" /><strong>Análise de casos reais</strong></div>
           <div className="launch-feature"><MentoryIcon name="layers" className="launch-feature-icon" /><strong>Conteúdo atualizado<br/>e aplicável</strong></div>
           <div className="launch-feature"><MentoryIcon name="cases" className="launch-feature-icon" /><strong>Turma limitada<br/>para maior interação</strong></div>
         </div>
