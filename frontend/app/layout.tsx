@@ -6,9 +6,9 @@ import { AuthProvider } from "@/components/AuthProvider";
 import { getServerSkin } from "@/lib/skin";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ped.iatron.com.br"),
-  title: "PED.iatron",
-  description: "PED.iatron para Folha PCR pediátrica, entubação, parada cardíaca e desfibrilação"
+  metadataBase: new URL("https://pediatron.com.br"),
+  title: "Pediatron",
+  description: "Pediatron: educação médica, mentoria, comunidade e ferramentas digitais para pediatria"
 };
 
 export const viewport: Viewport = {
