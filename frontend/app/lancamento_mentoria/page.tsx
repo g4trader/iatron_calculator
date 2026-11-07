@@ -1,5 +1,6 @@
 'use client';
 import { useState, type FormEvent } from 'react';
+import '../ped-expert-mentory/brand-landing.css';
 
 const GROUP_URL = 'https://chat.whatsapp.com/IZfXGWubm5gKO9baqP2lWa?s=sw&p=i&mlu=4&ilr=4&iam=2';
 
@@ -91,11 +92,76 @@ export default function LancamentoMentoria() {
       .pediatron .consent input{margin-top:3px}.pediatron .error{color:#a02d2d;font-size:13px}
       .pediatron .foot{background:#092e4a;color:#c9deeb;padding:30px 0;font-size:12px}
       @media(max-width:800px){.pediatron .navlinks{display:none}.pediatron .hero-grid,.pediatron .launch-grid,.pediatron .mentor-grid{grid-template-columns:1fr}.pediatron .hero .portrait{min-height:380px}.pediatron .hero-grid>div:first-child{padding-bottom:0}.pediatron .cards,.pediatron .steps{grid-template-columns:1fr 1fr}}
+      .pediatron .launch-brand{font-family:Arial,Helvetica,sans-serif}
+      .pediatron .launch-brand .mentory-dark-shell{background:radial-gradient(ellipse at 76% 51%,#05648b 0%,#063a5a 33%,#042741 65%,#031b32 100%)}
+      .pediatron .launch-brand .mentory-hero h1{font-size:clamp(39px,4.3vw,61px)!important;line-height:1.1;color:#fff!important;font-weight:900!important;letter-spacing:-2px;margin:0}
+      .pediatron .launch-brand .mentory-hero h1 em{color:#04e3e4!important}
+      .pediatron .launch-brand .mentory-hero-description{color:#f0f7fc!important;font-size:18px!important;line-height:1.55}
+      .pediatron .launch-brand .mentory-eyebrow{color:#04e3e4!important;font-size:15px!important}
+      .pediatron .launch-brand .mentory-logo strong{color:#fff!important}
+      .pediatron .launch-brand .mentory-logo small{color:#04e3e4!important}
+      .pediatron .launch-brand .mentory-cta{color:#05263e!important;background:#04e3e4!important}
+      .pediatron .launch-brand .mentory-outline{color:#fff!important}
+      .pediatron .launch-brand .mentory-hero-grid{grid-template-columns:55% 45%;gap:0}
+      .pediatron .launch-brand-features{background:#f1f8fe;padding:0 20px 38px}
+      .pediatron .launch-brand-features>.mentory-container{position:relative;z-index:5;transform:translateY(-36px);margin-bottom:-36px;display:grid;grid-template-columns:repeat(4,1fr);background:#f5fbff;border:1px solid #d6e9f4;border-radius:22px;box-shadow:0 15px 30px #00314c20;padding:26px 18px}
+      .pediatron .launch-feature{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;border-right:1px solid #cce3ef;padding:8px 12px;color:#092b42;font-size:15px;line-height:1.35}
+      .pediatron .launch-feature:last-child{border:0}.pediatron .launch-feature span{font-size:37px;color:#00768e}
+      .pediatron .launch-brand-urgency{background:#f1f8fe;padding:0 20px 70px}
+      .pediatron .launch-brand-urgency>.mentory-container{background:linear-gradient(110deg,#03456b,#042944);color:white;border-radius:24px;padding:28px 40px;display:grid;grid-template-columns:70px 240px 1fr;align-items:center;gap:24px}
+      .pediatron .launch-brand-urgency .launch-rocket{font-size:60px;color:#04e3e4}
+      .pediatron .launch-brand-urgency strong{font-size:40px;line-height:1.04;border-right:1px solid #0c92aa;padding-right:25px}
+      .pediatron .launch-brand-urgency strong em{display:block;font-style:normal;color:#04e3e4}
+      .pediatron .launch-brand-urgency p{color:white;font-size:20px;line-height:1.4}
+      @media(max-width:800px){.pediatron .launch-brand .mentory-hero-grid{display:flex;flex-direction:column}.pediatron .launch-brand-features>.mentory-container{grid-template-columns:repeat(2,1fr)}.pediatron .launch-brand-urgency>.mentory-container{grid-template-columns:1fr;text-align:center}.pediatron .launch-brand-urgency strong{border-right:0;padding:0}}
       @media(max-width:540px){.pediatron .wrap{padding:0 19px}.pediatron .hero{padding:48px 0}.pediatron .section,.pediatron .launch{padding:50px 0}.pediatron .cards,.pediatron .steps,.pediatron .fields{grid-template-columns:1fr}.pediatron .navin .btn{font-size:11px;padding:12px}.pediatron .logo{font-size:18px}.pediatron .product-name{font-size:20px}.pediatron .portrait{min-height:280px}}
     `}</style>
     <div className="ribbon">Aula inaugural gratuita • 14 de novembro, às 19h • Condições de lançamento somente no WhatsApp</div>
-    <header className="nav"><div className="wrap navin"><a href="#" className="logo" style={{display:"inline-flex",alignItems:"center",gap:10}}><img src="/mentory-brand-symbol.svg" alt="" aria-hidden="true" style={{width:52,height:52,objectFit:"contain"}}/><span>Ped Expert <strong className="product-name">Mentory</strong></span></a><nav className="navlinks"><a href="#programa">Programa</a><a href="#mentor">Mentor</a><a href="#novembro">Lançamento</a><a href="#perguntas">Dúvidas</a></nav><a className="btn" href="#inscricao">Entrar no grupo →</a></div></header>
-    <section className="hero"><div className="wrap hero-grid"><div><div className="eyebrow">Ped Expert Mentory • Urgência pediátrica</div><h1>Mais preparo para os desafios dos <span style={{color:"#0be0e0"}}>primeiros plantões pediátricos.</span></h1><p className="lead">Seis meses de desenvolvimento profissional com o Dr. Aristóteles Pires, com <strong>encontros ao vivo semanais</strong>, aulas gravadas e uma comunidade de médicos.</p><div className="actions"><a className="btn" href="#inscricao">Quero participar do lançamento →</a><a className="btn outline" href="#programa">Conhecer o programa</a></div><div className="ticks"><span>✓ 6 meses</span><span>✓ Aulas semanais</span><span>✓ Grupo de lançamento gratuito</span></div></div><div className="portrait" role="img" aria-label="Área reservada para fotografia oficial do Dr. Aristóteles Pires"><img src="/images/dr-aristoteles-pires.png" alt="Dr. Aristóteles Pires" className="mentor-photo"/><strong>Dr. Aristóteles Pires</strong><p>+28 anos de experiência | MD, PhD | Mentor de carreira médica</p></div></div></section>
+    <div className="launch-brand mentory-landing">
+      <div className="mentory-dark-shell">
+        <header className="mentory-nav">
+          <div className="mentory-container mentory-nav-inner">
+            <a href="#inicio" className="mentory-logo" aria-label="Ped Expert Mentory">
+              <img src="/mentory-brand-symbol.svg" alt="" aria-hidden="true"/>
+              <span><strong>Ped Expert</strong><small>Mentory</small></span>
+            </a>
+            <nav className="mentory-nav-links" aria-label="Navegação da página">
+              <a href="#programa">Programa</a><a href="#mentor">Mentor</a><a href="#novembro">Lançamento</a><a href="#perguntas">Dúvidas</a>
+            </nav>
+            <a href="#inscricao" className="mentory-outline">LANÇAMENTO OFICIAL</a>
+          </div>
+        </header>
+        <section id="inicio" className="mentory-hero">
+          <div className="mentory-container mentory-hero-grid">
+            <div className="mentory-hero-copy">
+              <p className="mentory-eyebrow">Lançamento da mentoria</p>
+              <h1>A mentoria em<br/>Pediatria que conecta<br/><em>evidência, experiência<br/>e prática real.</em></h1>
+              <p className="mentory-hero-description">Entre para a primeira turma da Ped Expert Mentory e fortaleça sua tomada de decisão clínica com acompanhamento próximo, conteúdo atualizado e discussão de casos.</p>
+              <div className="mentory-actions">
+                <a href="#inscricao" className="mentory-cta">Quero participar do lançamento <span aria-hidden="true">→</span></a>
+                <a href="#novembro" className="mentory-outline">Conheça o lançamento</a>
+              </div>
+            </div>
+            <div className="mentory-hero-art">
+              <div className="mentory-wave mentory-wave-back" aria-hidden="true"/>
+              <div className="mentory-wave mentory-wave-front" aria-hidden="true"/>
+              <img className="mentory-hero-portrait" src="/images/dr-aristoteles-pires.png" alt="Dr. Aristóteles Pires"/>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div className="launch-brand-features">
+        <div className="mentory-container">
+          <div className="launch-feature"><span aria-hidden="true">♧</span><strong>Mentoria ao vivo<br/>com especialistas</strong></div>
+          <div className="launch-feature"><span aria-hidden="true">▤</span><strong>Casos clínicos<br/>reais</strong></div>
+          <div className="launch-feature"><span aria-hidden="true">▱</span><strong>Conteúdo atualizado<br/>e aplicável</strong></div>
+          <div className="launch-feature"><span aria-hidden="true">◎</span><strong>Turma limitada<br/>para maior interação</strong></div>
+        </div>
+      </div>
+      <div className="launch-brand-urgency">
+        <div className="mentory-container"><span className="launch-rocket" aria-hidden="true">✧</span><strong>Vagas <em>limitadas</em></strong><p>Condições especiais de lançamento por tempo limitado.</p></div>
+      </div>
+    </div>
     <section id="programa" className="section"><div className="wrap"><div className="intro"><div className="eyebrow">A mentoria</div><h2>Aprendizado contínuo para a prática em urgência pediátrica.</h2><p>Para médicos recém-formados e em início de carreira que desejam aprofundar o raciocínio clínico e discutir situações comuns dos plantões pediátricos com orientação educacional experiente.</p></div><div className="cards">{benefits.map(([title, description], index) => <article className="card" key={title}><div className="icon">{['◷','▷','♧','✚','▤','↻'][index]}</div><h3>{title}</h3><p>{description}</p></article>)}</div></div></section>
     <section id="mentor" className="section alt"><div className="wrap mentor-grid"><div className="mentor-art"><img src="/images/dr-aristoteles-pires.png" alt="Dr. Aristóteles Pires" className="mentor-photo"/></div><div><div className="eyebrow">Quem acompanha você</div><h2>Aprenda com a experiência do Dr. Aristóteles Pires.</h2><p>Especialista em Pediatria, com 28 anos de carreira e doutorado em Pediatria e Telemedicina. Na Ped Expert Mentory, conduz encontros coletivos semanais e compartilha sua experiência profissional.</p><div className="stats"><div><b>28</b><span>anos de carreira</span></div><div><b>6</b><span>meses por ciclo</span></div><div><b>1×</b><span>encontro por semana</span></div></div></div></div></section>
     <section id="novembro" className="launch"><div className="wrap launch-grid"><div><div className="eyebrow">Lançamento exclusivo • Novembro de 2026</div><h2>O lançamento acontece dentro do grupo aberto do WhatsApp.</h2><p>Participe da aula inaugural gratuita <strong style={{color:'white'}}>“Do conhecimento à prática: os desafios dos primeiros plantões de urgência pediátrica”</strong> e acompanhe a apresentação da mentoria.</p><p>Os valores promocionais, descontos, vagas por lote e condições comerciais serão revelados <strong style={{color:'white'}}>exclusivamente dentro do grupo aberto</strong>, na abertura das matrículas.</p><a className="btn light" href="#inscricao">Quero entrar no grupo gratuito →</a><p style={{fontSize:12}}>A participação é gratuita e não obriga a contratar.</p></div><div className="agenda"><div className="eyebrow">Agenda de novembro</div><div className="date">14 NOV</div><p><b>19h — Aula inaugural gratuita</b><br/>Encontro educacional com o Dr. Aristóteles.</p><hr/><p><b>20h — Abertura das matrículas</b><br/>Condições do primeiro lote anunciadas no grupo.</p><hr/><p><b>24 NOV • 20h — Encerramento previsto</b><br/>Fechamento programado do lançamento.</p></div></div></section>
