@@ -17,7 +17,7 @@ export default function PedExpertMentoryPage() {
     <main className="min-h-screen bg-[#f3f9fd] text-[#12344d]">
       <header className="border-b border-[#d8e8f2] bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-5">
-          <Link href="/ped-expert-mentory" className="text-xl font-black tracking-tight text-[#006da7]">Ped Expert Mentory</Link>
+          <Link href="/ped-expert-mentory" className="inline-flex items-center gap-3 text-xl font-black tracking-tight text-[#006da7]"><img src="/mentory-brand-symbol.svg" alt="" aria-hidden="true" className="h-12 w-12 object-contain" /><span>Ped Expert Mentory</span></Link>
           <Link href="/mentory/login" className="rounded-lg bg-[#006da7] px-5 py-3 text-sm font-bold text-white hover:bg-[#005781]">Acessar o sistema</Link>
         </div>
       </header>
@@ -33,7 +33,7 @@ export default function PedExpertMentoryPage() {
             </div>
           </div>
           <div className="rounded-3xl bg-[#0c395a] p-7 text-white shadow-xl md:p-9" style={{ color: "#ffffff" }}>
-            <div className="mb-6 flex items-center gap-5"><img src="/dr-aristoteles-pires.svg" alt="Retrato do Dr. Aristóteles Pires" className="h-28 w-28 shrink-0 rounded-2xl border-2 border-white/20 bg-white object-cover shadow-lg sm:h-36 sm:w-36" /><div><p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#a9dcf5" }}>Seu mentor</p><p className="mt-2 text-xl font-extrabold leading-snug" style={{ color: "#ffffff" }}>Dr. Aristóteles Pires</p></div></div>
+            <div className="mb-6 flex items-center gap-5"><img src="/images/dr-aristoteles-pires.png" alt="Retrato do Dr. Aristóteles Pires" className="h-28 w-28 shrink-0 rounded-2xl border-2 border-white/20 bg-white object-cover shadow-lg sm:h-36 sm:w-36" /><div><p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#a9dcf5" }}>Seu mentor</p><p className="mt-2 text-xl font-extrabold leading-snug" style={{ color: "#ffffff" }}>Dr. Aristóteles Pires</p></div></div>
             <h2 className="mt-4 text-2xl font-bold leading-tight sm:text-3xl" style={{ color: "#ffffff" }}>Experiência para orientar o aprendizado.</h2>
             <p className="mt-5 text-base font-bold leading-7" style={{ color: "#ffffff" }}>+28 anos de experiência | MD, PhD | Mentor de carreira médica</p><p className="mt-3 text-sm leading-6" style={{ color: "#d0e4ef" }}>Especialista em Pediatria, com doutorado em Pediatria e Telemedicina.</p>
             <div className="mt-8 border-t border-white/20 pt-6 text-sm" style={{ color: "#d0e4ef" }}>Encontros coletivos ao vivo todas as semanas.</div>
