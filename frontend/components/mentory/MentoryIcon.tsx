@@ -1,8 +1,8 @@
-import type { SVGProps } from "react";
+import type { ReactNode, SVGProps } from "react";
 
 type Name = "mentor" | "book" | "cases" | "award" | "layers" | "calendar" | "shield" | "rocket";
 export function MentoryIcon({ name, ...props }: SVGProps<SVGSVGElement> & { name: Name }) {
-  const paths: Record<Name, React.ReactNode> = {
+  const paths: Record<Name, ReactNode> = {
     mentor: <><rect x="3" y="3" width="18" height="15" rx="2"/><circle cx="12" cy="9" r="2"/><path d="M8 15c.5-2.5 7.5-2.5 8 0M8 22h8m-4-4v4"/></>,
     book: <><path d="M12 6c-3-2-6-2-10-1v14c4-1 7-1 10 1 3-2 6-2 10-1V5c-4-1-7-1-10 1Z"/><path d="M12 6v14"/></>,
     cases: <><circle cx="12" cy="7" r="3"/><path d="M6 20v-2a6 6 0 0 1 12 0v2H6Z"/><circle cx="4" cy="9" r="2"/><path d="M1 19v-2c0-2 1-3 3-4M20 9a2 2 0 1 0 0-4m0 8c2 1 3 2 3 4v2"/></>,
