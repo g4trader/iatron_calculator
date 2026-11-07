@@ -146,6 +146,21 @@ export default function LancamentoMentoria() {
         .pediatron .launch-brand-urgency p{grid-column:1/-1;font-size:15px;margin:8px 0 0;text-align:center}
       }
       @media(max-width:390px){.pediatron .launch-brand .mentory-hero-art{height:390px;min-height:390px}.pediatron .launch-brand .mentory-hero-portrait{height:430px;width:520px}}
+
+      /* Mobile: retrato integrado à própria superfície do hero, sem bloco isolado. */
+      @media(max-width:800px){
+        .pediatron .launch-brand .mentory-hero{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 55% 78%,#0b5678 0%,#063c5c 37%,#031b32 78%)}
+        .pediatron .launch-brand .mentory-hero::before{content:"";position:absolute;z-index:0;inset:0;pointer-events:none;background-image:linear-gradient(to bottom,#031b32 0%,#031b32ed 14%,#031b3299 38%,transparent 58%,#031b3220 80%,#031b32 100%),url("/images/a_clean_cutout_portrait_on_a_transparent_backgroun.png");background-repeat:no-repeat;background-position:center bottom,center bottom;background-size:100% 100%,auto clamp(390px,110vw,580px)}
+        .pediatron .launch-brand .mentory-hero-grid{display:block;min-height:0;position:relative;z-index:1}
+        .pediatron .launch-brand .mentory-hero-copy{padding:42px 0 clamp(350px,100vw,510px);max-width:600px}
+        .pediatron .launch-brand .mentory-hero-art{display:none!important}
+        .pediatron .launch-brand .mentory-hero-description{max-width:440px}
+        .pediatron .launch-brand .mentory-actions{position:relative;z-index:2}
+      }
+      @media(max-width:390px){
+        .pediatron .launch-brand .mentory-hero::before{background-size:100% 100%,auto 400px}
+        .pediatron .launch-brand .mentory-hero-copy{padding-bottom:360px}
+      }
     `}</style>
     <div className="ribbon">Aula inaugural gratuita • 14 de novembro, às 19h • Condições de lançamento somente no WhatsApp</div>
     <div className="launch-brand mentory-landing">
@@ -170,7 +185,7 @@ export default function LancamentoMentoria() {
             <div className="mentory-hero-copy">
               <p className="mentory-eyebrow">Lançamento da mentoria</p>
               <h1>A mentoria em<br/>Pediatria que conecta<br/><em>evidência, experiência<br/>e prática real.</em></h1>
-              <p className="mentory-hero-description">Entre para a primeira turma da Ped Expert Mentory e fortaleça sua tomada de decisão clínica com acompanhamento próximo, conteúdo atualizado e discussão de casos.</p>
+              <p className="mentory-hero-description">Participe da Ped Expert Mentory e fortaleça sua tomada de decisão clínica com acompanhamento próximo, conteúdo atualizado e discussão de casos.</p>
               <div className="mentory-actions">
                 <a href="#inscricao" className="mentory-cta">Quero participar do lançamento <span aria-hidden="true">→</span></a>
                 <a href="#novembro" className="mentory-outline">Conheça o lançamento</a>
@@ -186,8 +201,8 @@ export default function LancamentoMentoria() {
       </div>
       <div className="launch-brand-features">
         <div className="mentory-container">
-          <div className="launch-feature"><MentoryIcon name="mentor" className="launch-feature-icon" /><strong>Mentoria ao vivo<br/>com especialistas</strong></div>
-          <div className="launch-feature"><MentoryIcon name="book" className="launch-feature-icon" /><strong>Casos clínicos<br/>reais</strong></div>
+          <div className="launch-feature"><MentoryIcon name="mentor" className="launch-feature-icon" /><strong>Mentoria online semanal</strong></div>
+          <div className="launch-feature"><MentoryIcon name="book" className="launch-feature-icon" /><strong>Análise de casos reais</strong></div>
           <div className="launch-feature"><MentoryIcon name="layers" className="launch-feature-icon" /><strong>Conteúdo atualizado<br/>e aplicável</strong></div>
           <div className="launch-feature"><MentoryIcon name="cases" className="launch-feature-icon" /><strong>Turma limitada<br/>para maior interação</strong></div>
         </div>
