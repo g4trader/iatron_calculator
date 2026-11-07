@@ -126,6 +126,26 @@ export default function LancamentoMentoria() {
       .pediatron .launch-brand .mentory-hero h1{font-size:clamp(42px,4.3vw,64px)!important}
       @media(max-width:800px){.pediatron .launch-brand .mentory-hero-grid{min-height:0}.pediatron .launch-brand-features>.mentory-container{grid-template-columns:repeat(2,1fr)}.pediatron .launch-feature{font-size:12px;gap:8px}.pediatron .launch-feature-icon{width:31px;height:31px}.pediatron .launch-brand .mentory-hero-copy{padding:45px 0 15px}}
       @media(max-width:540px){.pediatron .wrap{padding:0 19px}.pediatron .hero{padding:48px 0}.pediatron .section,.pediatron .launch{padding:50px 0}.pediatron .cards,.pediatron .steps,.pediatron .fields{grid-template-columns:1fr}.pediatron .navin .btn{font-size:11px;padding:12px}.pediatron .logo{font-size:18px}.pediatron .product-name{font-size:20px}.pediatron .portrait{min-height:280px}}
+
+      .pediatron .launch-menu-toggle,.pediatron .launch-mobile-menu{display:none}
+      @media(max-width:800px){
+        .pediatron .launch-brand .mentory-nav{position:relative;z-index:30}
+        .pediatron .launch-brand .mentory-nav-inner{justify-content:space-between}
+        .pediatron .launch-brand .launch-desktop-badge{display:none!important}
+        .pediatron .launch-menu-toggle{display:flex;flex-direction:column;justify-content:center;gap:5px;width:46px;height:44px;align-items:center;border:1px solid #64c9df80;border-radius:10px;background:#073954;color:#fff;cursor:pointer;flex:none}
+        .pediatron .launch-menu-toggle span{display:block;width:22px;height:2px;background:#04e3e4;border-radius:2px}
+        .pediatron .launch-mobile-menu.is-open{display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:#042640;border-top:1px solid #ffffff30;padding:8px 22px 18px;box-shadow:0 18px 25px #00172880;z-index:40}
+        .pediatron .launch-mobile-menu a{color:#fff;padding:13px 8px;border-bottom:1px solid #ffffff22;font-size:15px;font-weight:600}
+        .pediatron .launch-brand .mentory-hero-copy{padding:36px 0 14px}
+        .pediatron .launch-brand .mentory-hero-art{height:440px;min-height:440px;overflow:hidden}
+        .pediatron .launch-brand .mentory-hero-portrait{width:min(580px,145vw);height:480px;max-width:none;right:50%;transform:translateX(50%);bottom:-2px;object-fit:contain;object-position:center bottom}
+        .pediatron .launch-brand .mentory-hero h1{font-size:clamp(34px,9.4vw,48px)!important;letter-spacing:-1.3px}
+        .pediatron .launch-brand-urgency>.mentory-container{grid-template-columns:64px 1fr;gap:12px;text-align:left;padding:24px 20px}
+        .pediatron .launch-brand-urgency .launch-rocket{width:56px;height:56px}
+        .pediatron .launch-brand-urgency strong{font-size:clamp(29px,8vw,40px);line-height:1.08}
+        .pediatron .launch-brand-urgency p{grid-column:1/-1;font-size:15px;margin:8px 0 0;text-align:center}
+      }
+      @media(max-width:390px){.pediatron .launch-brand .mentory-hero-art{height:390px;min-height:390px}.pediatron .launch-brand .mentory-hero-portrait{height:430px;width:520px}}
     `}</style>
     <div className="ribbon">Aula inaugural gratuita • 14 de novembro, às 19h • Condições de lançamento somente no WhatsApp</div>
     <div className="launch-brand mentory-landing">
