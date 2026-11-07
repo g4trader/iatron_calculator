@@ -5,6 +5,7 @@ import "./brand-landing.css";
 export const metadata = {
   title: "Ped Expert Mentory | Mentoria em Urgência Pediátrica",
   description: "Mentoria médica em urgência pediátrica com o Dr. Aristóteles Pires. Encontros semanais, conteúdo e comunidade.",
+  icons: { icon: "/images/mentory-favicon.png", shortcut: "/images/mentory-favicon.png", apple: "/images/mentory-favicon.png" },
 };
 
 const benefits = [
@@ -21,8 +22,7 @@ export default function PedExpertMentoryPage() {
         <header className="mentory-nav">
           <div className="mentory-container mentory-nav-inner">
             <Link href="/ped-expert-mentory" className="mentory-logo" aria-label="Ped Expert Mentory, início">
-              <img src="/mentory-brand-symbol.svg" alt="" aria-hidden="true" />
-              <span><strong>Ped Expert</strong><small>Mentory</small></span>
+              <img src="/images/mentory-logo-oficial.png" alt="Ped Expert Mentory" />
             </Link>
             <nav aria-label="Navegação principal" className="mentory-nav-links">
               <a href="#inicio" className="active">Home</a>
