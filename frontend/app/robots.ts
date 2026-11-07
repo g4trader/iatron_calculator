@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/ped-expert-mentory", "/lancamento_mentoria"],
+        allow: ["/", "/ped-expert-mentory", "/folha-pcr", "/lancamento_mentoria"],
         disallow: [
           "/api/",
           "/admin/",
@@ -19,7 +19,7 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: "https://ped.iatron.com.br/sitemap.xml",
-    host: "https://ped.iatron.com.br",
+    sitemap: "https://pediatron.com.br/sitemap.xml",
+    host: "https://pediatron.com.br",
   };
 }
