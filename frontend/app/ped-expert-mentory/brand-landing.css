@@ -86,3 +86,7 @@
 .mentory-landing .mentory-hero-portrait{z-index:2;width:790px;height:710px;max-width:none;right:-125px;bottom:-3px;object-fit:contain;object-position:center bottom;clip-path:none;border-radius:0;-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 87%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 87%,transparent 100%)}
 @media(max-width:1100px) and (min-width:701px){.mentory-landing .mentory-hero-grid{min-height:600px}.mentory-landing .mentory-hero-art{min-height:600px}.mentory-landing .mentory-hero-art::before{width:800px;height:620px;right:-265px}.mentory-landing .mentory-hero-portrait{width:700px;height:625px;right:-150px}}
 @media(max-width:700px){.mentory-landing .mentory-hero-grid{min-height:0;display:flex;flex-direction:column}.mentory-landing .mentory-hero-copy{padding:45px 0 16px}.mentory-landing .mentory-hero-art{height:430px;min-height:430px;overflow:hidden}.mentory-landing .mentory-hero-art::before{width:570px;height:460px;right:calc(50% - 360px);bottom:-20px}.mentory-landing .mentory-hero-portrait{width:510px;height:455px;right:calc(50% - 255px);bottom:-3px}}
+
+/* Hero clean: mentor is the sole visual protagonist, without cyan/blue ribbons. */
+.mentory-landing .mentory-hero-art::before{content:none!important;display:none!important;background:none!important}
+.mentory-landing .mentory-wave,.mentory-landing .mentory-wave-back,.mentory-landing .mentory-wave-front{display:none!important}
