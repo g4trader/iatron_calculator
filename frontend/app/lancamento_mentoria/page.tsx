@@ -197,7 +197,7 @@ export default function LancamentoMentoria() {
         <section id="inicio" className="mentory-hero">
           <div className="mentory-container mentory-hero-grid">
             <div className="mentory-hero-copy">
-              <p className="mentory-eyebrow">Lançamento da mentoria</p>
+              
               <h1>A mentoria em<br/>Pediatria que conecta<br/><em>evidência, experiência<br/>e prática real.</em></h1>
               <p className="mentory-hero-description">Participe da Ped Expert Mentory e fortaleça sua tomada de decisão clínica com acompanhamento próximo, conteúdo atualizado e discussão de casos.</p>
               <div className="mentory-actions">
