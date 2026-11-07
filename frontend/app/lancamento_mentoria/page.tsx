@@ -18,6 +18,7 @@ export default function LancamentoMentoria() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
   const [complete, setComplete] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -137,8 +138,12 @@ export default function LancamentoMentoria() {
             <nav className="mentory-nav-links" aria-label="Navegação da página">
               <a href="#programa">Programa</a><a href="#mentor">Mentor</a><a href="#novembro">Lançamento</a><a href="#perguntas">Dúvidas</a>
             </nav>
-            <a href="#inscricao" className="mentory-outline">LANÇAMENTO OFICIAL</a>
+            <a href="#inscricao" className="mentory-outline launch-desktop-badge">LANÇAMENTO OFICIAL</a>
+            <button type="button" className="launch-menu-toggle" aria-expanded={menuOpen} aria-controls="launch-mobile-menu" aria-label={menuOpen ? "Fechar menu" : "Abrir menu"} onClick={() => setMenuOpen(!menuOpen)}><span/><span/><span/></button>
           </div>
+          <nav id="launch-mobile-menu" className={`launch-mobile-menu${menuOpen ? " is-open" : ""}`} aria-label="Menu mobile">
+            <a href="#inicio" onClick={() => setMenuOpen(false)}>Início</a><a href="#programa" onClick={() => setMenuOpen(false)}>Programa</a><a href="#mentor" onClick={() => setMenuOpen(false)}>Mentor</a><a href="#novembro" onClick={() => setMenuOpen(false)}>Lançamento</a><a href="#perguntas" onClick={() => setMenuOpen(false)}>Dúvidas</a><a href="#inscricao" onClick={() => setMenuOpen(false)}>Inscrever-se</a>
+          </nav>
         </header>
         <section id="inicio" className="mentory-hero">
           <div className="mentory-container mentory-hero-grid">
