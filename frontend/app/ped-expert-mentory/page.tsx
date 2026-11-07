@@ -15,30 +15,23 @@ const items = [
 export default function PedExpertMentoryPage() {
   return (
     <main className="min-h-screen bg-[#f3f9fd] text-[#12344d]">
-      <header className="border-b border-[#d8e8f2] bg-white">
+      <header className="border-b border-[#0a4260] bg-[#052843]">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-5">
-          <Link href="/ped-expert-mentory" className="inline-flex items-center gap-3 text-xl font-black tracking-tight text-[#006da7]"><img src="/mentory-brand-symbol.svg" alt="" aria-hidden="true" className="h-12 w-12 object-contain" /><span>Ped Expert Mentory</span></Link>
-          <Link href="/mentory/login" className="rounded-lg bg-[#006da7] px-5 py-3 text-sm font-bold text-white hover:bg-[#005781]">Acessar o sistema</Link>
+          <Link href="/ped-expert-mentory" className="inline-flex items-center gap-3 text-xl font-black tracking-tight text-white"><img src="/mentory-brand-symbol.svg" alt="" aria-hidden="true" className="h-12 w-12 object-contain" /><span>Ped Expert Mentory</span></Link>
+          <Link href="/mentory/login" className="rounded-full bg-[#0be0e0] px-5 py-3 text-sm font-bold text-[#052843] hover:bg-[#4cf0ed]">Acessar o sistema</Link>
         </div>
       </header>
-      <section className="bg-gradient-to-br from-[#eaf7ff] to-[#cfe9f8]">
-        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 md:grid-cols-2 md:items-center">
-          <div>
-            <p className="text-xs font-extrabold uppercase tracking-[.18em] text-[#0877aa]">Mentoria médica em urgência pediátrica</p>
-            <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight md:text-6xl">Ped Expert Mentory</h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-[#45667c]">Uma jornada de seis meses para médicos que desejam aprofundar conhecimentos e desenvolver o raciocínio clínico diante dos desafios dos plantões pediátricos.</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/mentory/login" className="rounded-lg bg-[#006da7] px-7 py-4 font-bold text-white hover:bg-[#005781]">Entrar na plataforma →</Link>
-              <a href="#programa" className="rounded-lg border border-[#b5d4e7] bg-white px-7 py-4 font-bold text-[#006da7]">Conhecer a mentoria</a>
-            </div>
+      <section className="relative overflow-hidden bg-[#052843] text-white" style={{background:"radial-gradient(ellipse at 75% 52%, #0877a0 0%, #063b61 33%, #05243d 73%)"}}>
+        <div className="relative mx-auto grid max-w-6xl gap-4 px-5 pt-12 md:min-h-[620px] md:grid-cols-[1.1fr_.9fr] md:items-center md:pt-14">
+          <div className="relative z-10 pb-10 md:pb-24">
+            <p className="text-xs font-bold uppercase tracking-[.23em] text-[#17e1e4]">Mentoria em pediatria</p>
+            <h1 className="mt-6 text-4xl font-black leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[62px]">Decisões clínicas mais seguras, <span className="text-[#13e4e3]">na prática.</span></h1>
+            <p className="mt-6 max-w-lg text-lg leading-8 text-[#e0eef6]">Mentoria para médicos que buscam atualização, raciocínio clínico e mais confiança na condução dos casos do dia a dia.</p>
+            <div className="mt-9 flex flex-wrap gap-3"><Link href="/mentory/login" className="rounded-full bg-[#0be0e0] px-6 py-4 text-sm font-extrabold text-[#062c47] shadow-lg hover:bg-[#4cf0ed]">Quero participar da mentoria →</Link><a href="#programa" className="rounded-full border border-white/70 px-6 py-4 text-sm font-bold text-white hover:bg-white/10">Conheça o programa</a></div>
           </div>
-          <div className="rounded-3xl bg-[#0c395a] p-7 text-white shadow-xl md:p-9" style={{ color: "#ffffff" }}>
-            <div className="mb-6 flex items-center gap-5"><img src="/images/dr-aristoteles-pires.png" alt="Retrato do Dr. Aristóteles Pires" className="h-28 w-28 shrink-0 rounded-2xl border-2 border-white/20 bg-white object-cover shadow-lg sm:h-36 sm:w-36" /><div><p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#a9dcf5" }}>Seu mentor</p><p className="mt-2 text-xl font-extrabold leading-snug" style={{ color: "#ffffff" }}>Dr. Aristóteles Pires</p></div></div>
-            <h2 className="mt-4 text-2xl font-bold leading-tight sm:text-3xl" style={{ color: "#ffffff" }}>Experiência para orientar o aprendizado.</h2>
-            <p className="mt-5 text-base font-bold leading-7" style={{ color: "#ffffff" }}>+28 anos de experiência | MD, PhD | Mentor de carreira médica</p><p className="mt-3 text-sm leading-6" style={{ color: "#d0e4ef" }}>Especialista em Pediatria, com doutorado em Pediatria e Telemedicina.</p>
-            <div className="mt-8 border-t border-white/20 pt-6 text-sm" style={{ color: "#d0e4ef" }}>Encontros coletivos ao vivo todas as semanas.</div>
-          </div>
+          <div className="relative flex min-h-[350px] items-end justify-center self-stretch md:min-h-[580px]"><div className="absolute inset-x-4 bottom-10 top-14 rotate-[23deg] rounded-[48%] bg-gradient-to-tr from-[#03548d] via-[#048db7] to-[#00e1d8] opacity-75 blur-[1px]"/><img src="/images/dr-aristoteles-pires.png" alt="Dr. Aristóteles Pires" className="relative z-10 h-[390px] w-full rounded-t-[45%] object-cover object-top [mask-image:linear-gradient(to_bottom,black_72%,transparent_100%)] md:absolute md:bottom-0 md:h-[570px] md:rounded-none" /></div>
         </div>
+        <div className="relative z-20 border-t border-white/10 bg-[#062e4b]/80"><div className="mx-auto grid max-w-6xl grid-cols-2 gap-5 px-5 py-7 text-sm font-semibold text-white md:grid-cols-4"><span>✧ &nbsp; Mentoria com especialistas</span><span>▤ &nbsp; Conteúdo prático e atualizado</span><span>◎ &nbsp; Discussão de casos reais</span><span>✓ &nbsp; Mais segurança na prática clínica</span></div></div>
       </section>
       <section id="programa" className="mx-auto max-w-6xl px-5 py-20">
         <p className="text-xs font-extrabold uppercase tracking-widest text-[#0877aa]">O programa</p>
