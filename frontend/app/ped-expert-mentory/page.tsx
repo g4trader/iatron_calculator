@@ -1,52 +1,101 @@
 import Link from "next/link";
+import "./brand-landing.css";
 
 export const metadata = {
   title: "Ped Expert Mentory | Mentoria em Urgência Pediátrica",
-  description: "Conheça a Ped Expert Mentory, mentoria de seis meses em urgência pediátrica com o Dr. Aristóteles Pires. Acesse o sistema pela área de login.",
+  description: "Mentoria médica em urgência pediátrica com o Dr. Aristóteles Pires. Encontros semanais, conteúdo e comunidade.",
 };
 
-const items = [
-  { title: "Encontros semanais ao vivo", description: "Discussões educacionais coletivas com o Dr. Aristóteles Pires durante os seis meses de mentoria." },
-  { title: "Conteúdo para rever", description: "Aulas gravadas e materiais de apoio para aprofundar o aprendizado ao longo do ciclo." },
-  { title: "Comunidade Fechada Iatron", description: "Acesso à comunidade premium por seis meses, com espaço para trocas profissionais." },
-  { title: "Folha PCR", description: "Acesso por doze meses ao recurso educacional complementar." },
+const benefits = [
+  ["✧", "Mentoria com especialistas"],
+  ["▤", "Conteúdo prático e atualizado"],
+  ["◎", "Discussão de casos reais"],
+  ["✓", "Mais segurança na prática clínica"],
 ];
 
 export default function PedExpertMentoryPage() {
   return (
-    <main className="min-h-screen bg-[#f3f9fd] text-[#12344d]">
-      <header className="border-b border-[#0a4260] bg-[#052843]">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-5">
-          <Link href="/ped-expert-mentory" className="inline-flex items-center gap-3 text-xl font-black tracking-tight text-white"><img src="/mentory-brand-symbol.svg" alt="" aria-hidden="true" className="h-12 w-12 object-contain" /><span>Ped Expert Mentory</span></Link>
-          <Link href="/mentory/login" className="rounded-full bg-[#0be0e0] px-5 py-3 text-sm font-bold text-[#052843] hover:bg-[#4cf0ed]">Acessar o sistema</Link>
-        </div>
-      </header>
-      <section className="relative overflow-hidden bg-[#052843] text-white" style={{background:"radial-gradient(ellipse at 75% 52%, #0877a0 0%, #063b61 33%, #05243d 73%)"}}>
-        <div className="relative mx-auto grid max-w-6xl gap-4 px-5 pt-12 md:min-h-[620px] md:grid-cols-[1.1fr_.9fr] md:items-center md:pt-14">
-          <div className="relative z-10 pb-10 md:pb-24">
-            <p className="text-xs font-bold uppercase tracking-[.23em] text-[#17e1e4]">Mentoria em pediatria</p>
-            <h1 className="mt-6 text-4xl font-black leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[62px]">Decisões clínicas mais seguras, <span className="text-[#13e4e3]">na prática.</span></h1>
-            <p className="mt-6 max-w-lg text-lg leading-8 text-[#e0eef6]">Mentoria para médicos que buscam atualização, raciocínio clínico e mais confiança na condução dos casos do dia a dia.</p>
-            <div className="mt-9 flex flex-wrap gap-3"><Link href="/mentory/login" className="rounded-full bg-[#0be0e0] px-6 py-4 text-sm font-extrabold text-[#062c47] shadow-lg hover:bg-[#4cf0ed]">Quero participar da mentoria →</Link><a href="#programa" className="rounded-full border border-white/70 px-6 py-4 text-sm font-bold text-white hover:bg-white/10">Conheça o programa</a></div>
+    <main className="mentory-landing">
+      <div className="mentory-dark-shell">
+        <header className="mentory-nav">
+          <div className="mentory-container mentory-nav-inner">
+            <Link href="/ped-expert-mentory" className="mentory-logo" aria-label="Ped Expert Mentory, início">
+              <img src="/mentory-brand-symbol.svg" alt="" aria-hidden="true" />
+              <span><strong>Ped Expert</strong><small>Mentory</small></span>
+            </Link>
+            <nav aria-label="Navegação principal" className="mentory-nav-links">
+              <a href="#inicio" className="active">Home</a>
+              <a href="#programa">Mentoria</a>
+              <a href="#sobre">Sobre</a>
+              <a href="#conteudos">Conteúdos</a>
+              <a href="#depoimentos">Depoimentos</a>
+            </nav>
+            <Link href="/mentory/login" className="mentory-cta mentory-cta-nav">Acessar o sistema</Link>
           </div>
-          <div className="relative flex min-h-[350px] items-end justify-center self-stretch md:min-h-[580px]"><div className="absolute inset-x-4 bottom-10 top-14 rotate-[23deg] rounded-[48%] bg-gradient-to-tr from-[#03548d] via-[#048db7] to-[#00e1d8] opacity-75 blur-[1px]"/><img src="/images/dr-aristoteles-pires.png" alt="Dr. Aristóteles Pires" className="relative z-10 h-[390px] w-full rounded-t-[45%] object-cover object-top [mask-image:linear-gradient(to_bottom,black_72%,transparent_100%)] md:absolute md:bottom-0 md:h-[570px] md:rounded-none" /></div>
+        </header>
+        <section id="inicio" className="mentory-hero">
+          <div className="mentory-container mentory-hero-grid">
+            <div className="mentory-hero-copy">
+              <p className="mentory-eyebrow">Mentoria em pediatria</p>
+              <h1>Decisões clínicas<br/>mais seguras,<br/><em>na prática.</em></h1>
+              <p className="mentory-hero-description">Mentoria para médicos que buscam atualização, raciocínio clínico e mais confiança na condução dos casos do dia a dia.</p>
+              <div className="mentory-actions">
+                <a className="mentory-cta" href="#programa">Quero participar da mentoria <span aria-hidden="true">→</span></a>
+                <a className="mentory-outline" href="#sobre"><span className="mentory-play-small">▶</span> Conheça o programa</a>
+              </div>
+            </div>
+            <div className="mentory-hero-art" aria-label="Fotografia do Dr. Aristóteles Pires">
+              <div className="mentory-wave mentory-wave-back" aria-hidden="true"/>
+              <div className="mentory-wave mentory-wave-front" aria-hidden="true"/>
+              <img className="mentory-hero-portrait" src="/images/dr-aristoteles-pires.png" alt="Dr. Aristóteles Pires"/>
+            </div>
+          </div>
+          <div className="mentory-benefits-bar">
+            <div className="mentory-container mentory-benefits-inner">
+              {benefits.map(([symbol, title]) => <div key={title} className="mentory-benefit"><span className="mentory-benefit-icon" aria-hidden="true">{symbol}</span><span>{title}</span></div>)}
+            </div>
+          </div>
+        </section>
+      </div>
+      <section id="sobre" className="mentory-about">
+        <div className="mentory-container mentory-about-grid">
+          <div className="mentory-video-card">
+            <img src="/images/dr-aristoteles-pires.png" alt="Dr. Aristóteles Pires, mentor da Ped Expert Mentory" />
+            <a href="#programa" aria-label="Conheça o programa" className="mentory-video-play">▶</a>
+          </div>
+          <div className="mentory-about-copy">
+            <h2>Sobre a Ped Expert Mentory</h2>
+            <p>Uma plataforma de mentoria criada por médicos, para médicos, com foco em educação continuada de alto nível, adequada à realidade da prática clínica.</p>
+            <ul>
+              <li>Atualização baseada em evidências</li>
+              <li>Discussão de casos reais</li>
+              <li>Aplicação prática no consultório e no hospital</li>
+              <li>Troca direta com especialista</li>
+            </ul>
+          </div>
         </div>
-        <div className="relative z-20 border-t border-white/10 bg-[#062e4b]/80"><div className="mx-auto grid max-w-6xl grid-cols-2 gap-5 px-5 py-7 text-sm font-semibold text-white md:grid-cols-4"><span>✧ &nbsp; Mentoria com especialistas</span><span>▤ &nbsp; Conteúdo prático e atualizado</span><span>◎ &nbsp; Discussão de casos reais</span><span>✓ &nbsp; Mais segurança na prática clínica</span></div></div>
       </section>
-      <section id="programa" className="mx-auto max-w-6xl px-5 py-20">
-        <p className="text-xs font-extrabold uppercase tracking-widest text-[#0877aa]">O programa</p>
-        <h2 className="mt-3 max-w-3xl text-3xl font-black md:text-4xl">Formação complementar com acompanhamento e continuidade.</h2>
-        <p className="mt-4 max-w-3xl leading-7 text-[#526d80]">Voltada especialmente a médicos recém-formados e em início de carreira, a mentoria combina encontros, conteúdo e recursos de apoio.</p>
-        <div className="mt-10 grid gap-5 md:grid-cols-2">
-          {items.map((item) => <article key={item.title} className="rounded-2xl border border-[#dbe8f1] bg-white p-7 shadow-sm"><h3 className="text-xl font-bold">{item.title}</h3><p className="mt-3 leading-7 text-[#526d80]">{item.description}</p></article>)}
+      <section id="programa" className="mentory-program">
+        <div className="mentory-container">
+          <p className="mentory-section-eyebrow">O programa</p>
+          <h2>Formação complementar com acompanhamento e continuidade.</h2>
+          <p>Voltada especialmente a médicos recém-formados e em início de carreira, a mentoria combina encontros, conteúdo e recursos de apoio.</p>
+          <div id="conteudos" className="mentory-program-cards">
+            <article><h3>Encontros semanais ao vivo</h3><p>Discussões educacionais coletivas com o Dr. Aristóteles Pires durante os seis meses de mentoria.</p></article>
+            <article><h3>Conteúdo para rever</h3><p>Aulas gravadas e materiais de apoio para aprofundar o aprendizado ao longo do ciclo.</p></article>
+            <article><h3>Comunidade Fechada Iatron</h3><p>Acesso à comunidade premium por seis meses, com espaço para trocas profissionais.</p></article>
+            <article><h3>Folha PCR</h3><p>Acesso por doze meses ao recurso educacional complementar.</p></article>
+          </div>
         </div>
       </section>
-      <section className="bg-[#0c395a] px-5 py-16 text-center text-white" style={{ color: "#ffffff" }}>
-        <h2 className="text-3xl font-black" style={{ color: "#ffffff" }}>Já faz parte da Ped Expert Mentory?</h2>
-        <p className="mx-auto mt-4 max-w-2xl leading-7" style={{ color: "#d0e4ef" }}>Entre com suas credenciais na tela de login do sistema para acessar os recursos disponíveis na sua conta.</p>
-        <Link href="/mentory/login" className="mt-8 inline-block rounded-lg bg-white px-8 py-4 font-bold text-[#006da7]">Acessar tela de login →</Link>
+      <section id="depoimentos" className="mentory-bottom-cta">
+        <div className="mentory-container">
+          <h2>Já faz parte da Ped Expert Mentory?</h2>
+          <p>Entre com suas credenciais na tela de login do sistema para acessar os recursos disponíveis na sua conta.</p>
+          <Link href="/mentory/login" className="mentory-cta">Acessar tela de login →</Link>
+        </div>
       </section>
-      <footer className="bg-[#082a43] px-5 py-7 text-center text-xs text-[#bdd5e3]">© Ped Expert Mentory · PEDIATRON · Conteúdo educacional; não substitui supervisão clínica ou atendimento assistencial.</footer>
+      <footer className="mentory-footer">© Ped Expert Mentory · PEDIATRON · Conteúdo educacional; não substitui supervisão clínica ou atendimento assistencial.</footer>
     </main>
   );
 }
