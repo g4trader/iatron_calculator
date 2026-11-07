@@ -115,6 +115,15 @@ export default function LancamentoMentoria() {
       .pediatron .launch-brand-urgency strong em{display:block;font-style:normal;color:#04e3e4}
       .pediatron .launch-brand-urgency p{color:white;font-size:20px;line-height:1.4}
       @media(max-width:800px){.pediatron .launch-brand .mentory-hero-grid{display:flex;flex-direction:column}.pediatron .launch-brand-features>.mentory-container{grid-template-columns:repeat(2,1fr)}.pediatron .launch-brand-urgency>.mentory-container{grid-template-columns:1fr;text-align:center}.pediatron .launch-brand-urgency strong{border-right:0;padding:0}}
+      .pediatron .launch-brand-features{background:#062b47;padding:0 20px 0;border-top:1px solid #ffffff20}
+      .pediatron .launch-brand-features>.mentory-container{transform:none;margin-bottom:0;min-height:118px;background:transparent;border:0;border-radius:0;box-shadow:none;padding:22px 10px}
+      .pediatron .launch-feature{flex-direction:row;text-align:left;gap:16px;color:#fff;font-size:14px;font-weight:600;border-right:1px solid #1684a0}
+      .pediatron .launch-feature-icon{flex:none;width:43px;height:43px;color:#04e3e4}
+      .pediatron .launch-brand-urgency{padding:28px 20px 52px}
+      .pediatron .launch-brand .mentory-hero-grid{min-height:620px;grid-template-columns:53% 47%}
+      .pediatron .launch-brand .mentory-hero-copy{padding:42px 0 80px}
+      .pediatron .launch-brand .mentory-hero h1{font-size:clamp(42px,4.3vw,64px)!important}
+      @media(max-width:800px){.pediatron .launch-brand .mentory-hero-grid{min-height:0}.pediatron .launch-brand-features>.mentory-container{grid-template-columns:repeat(2,1fr)}.pediatron .launch-feature{font-size:12px;gap:8px}.pediatron .launch-feature-icon{width:31px;height:31px}.pediatron .launch-brand .mentory-hero-copy{padding:45px 0 15px}}
       @media(max-width:540px){.pediatron .wrap{padding:0 19px}.pediatron .hero{padding:48px 0}.pediatron .section,.pediatron .launch{padding:50px 0}.pediatron .cards,.pediatron .steps,.pediatron .fields{grid-template-columns:1fr}.pediatron .navin .btn{font-size:11px;padding:12px}.pediatron .logo{font-size:18px}.pediatron .product-name{font-size:20px}.pediatron .portrait{min-height:280px}}
     `}</style>
     <div className="ribbon">Aula inaugural gratuita • 14 de novembro, às 19h • Condições de lançamento somente no WhatsApp</div>
