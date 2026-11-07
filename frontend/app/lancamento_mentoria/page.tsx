@@ -155,7 +155,7 @@ export default function LancamentoMentoria() {
             <div className="mentory-hero-art">
               <div className="mentory-wave mentory-wave-back" aria-hidden="true"/>
               <div className="mentory-wave mentory-wave-front" aria-hidden="true"/>
-              <img className="mentory-hero-portrait" src="/images/dr-aristoteles-pires.png" alt="Dr. Aristóteles Pires"/>
+              <img className="mentory-hero-portrait" src="/images/a_clean_cutout_portrait_on_a_transparent_backgroun.png" alt="Dr. Aristóteles Pires"/>
             </div>
           </div>
         </section>
