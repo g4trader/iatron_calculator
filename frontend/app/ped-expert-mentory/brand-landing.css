@@ -90,3 +90,8 @@
 /* Hero clean: mentor is the sole visual protagonist, without cyan/blue ribbons. */
 .mentory-landing .mentory-hero-art::before{content:none!important;display:none!important;background:none!important}
 .mentory-landing .mentory-wave,.mentory-landing .mentory-wave-back,.mentory-landing .mentory-wave-front{display:none!important}
+
+/* Official brand artwork is a single immutable image: never reconstruct its symbol or lettering. */
+.mentory-landing .mentory-logo{min-width:240px;gap:0}
+.mentory-landing .mentory-logo img{width:245px;height:78px;max-width:100%;object-fit:contain;object-position:left center}
+@media(max-width:700px){.mentory-landing .mentory-logo{min-width:0}.mentory-landing .mentory-logo img{width:185px;height:60px}}
