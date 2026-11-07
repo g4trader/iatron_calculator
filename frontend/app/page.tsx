@@ -1,467 +1,70 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Activity,
-  ArrowRight,
-  Check,
-  ClipboardList,
-  FileCheck,
-  HeartPulse,
-  Hospital,
-  Instagram,
-  Printer,
-  ShieldCheck,
-  Smartphone,
-  Stethoscope,
-  Users,
-} from "lucide-react";
-import { MobileMenu } from "@/components/MobileMenu";
-import { Brand } from "@/components/Brand";
-import { LogoutButton } from "@/components/auth/LogoutButton";
-import { FunnelBeacon } from "@/components/analytics/FunnelBeacon";
-import { getCurrentUser } from "@/lib/authz";
-import {
-  getPricingView,
-  getDefaultPriceForPlan,
-  formatPrice,
-} from "@/lib/pricing";
+import { ArrowRight, BookOpenCheck, CalendarDays, HeartPulse, Instagram, Menu, MessageCircle, ShieldCheck, Stethoscope, Users } from "lucide-react";
+import "./pediatron-home.css";
 
+const base = "https://pediatron.com.br";
 export const metadata: Metadata = {
-  title: "PED.iatron | Folha PCR pediátrica",
-  description:
-    "Via aérea, desfibrilação e medicações organizadas na Folha PCR pediátrica. Consulte os resultados e imprima para apoiar a conferência clínica.",
-  alternates: { canonical: "https://ped.iatron.com.br" },
+  title: "Pediatron | Educação médica, comunidade e ferramentas para pediatria",
+  description: "Conheça a Pediatron: Ped Expert Mentory com Dr. Aristóteles Pires, comunidade médica no WhatsApp e Folha PCR para apoio à prática pediátrica.",
+  alternates: { canonical: base },
+  openGraph: { title: "Pediatron | Conhecimento que acompanha a prática", description: "Mentoria, comunidade e ferramentas digitais para a rotina da pediatria.", url: base, siteName: "Pediatron", locale: "pt_BR", type: "website", images: [{ url: "/images/dr-aristoteles-pires.png", alt: "Dr. Aristóteles Pires" }] },
+  twitter: { card: "summary_large_image", images: ["/images/dr-aristoteles-pires.png"] },
 };
-const features = [
-  {
-    Icon: FileCheck,
-    title: "Consulta organizada",
-    text: "Peso, idade, via aérea, medicações e desfibrilação em uma folha de consulta.",
-  },
-  {
-    Icon: Stethoscope,
-    title: "Foco no atendimento",
-    text: "Informações agrupadas por etapa para apoiar a conferência durante o plantão.",
-  },
-  {
-    Icon: Smartphone,
-    title: "Também no celular",
-    text: "A mesma Folha PCR, em uma interface que acompanha sua rotina.",
-  },
-  {
-    Icon: Printer,
-    title: "Impressão e PDF",
-    text: "Leve os resultados para a impressão ou salve em PDF pelo navegador.",
-  },
-];
-const steps = [
-  {
-    Icon: ClipboardList,
-    title: "Informe os dados",
-    text: "Preencha nome, data, idade e peso do paciente.",
-  },
-  {
-    Icon: FileCheck,
-    title: "Cálculo automático",
-    text: "Ao preencher idade e peso, os resultados são atualizados automaticamente.",
-  },
-  {
-    Icon: Printer,
-    title: "Imprima a folha",
-    text: "Consulte na tela, imprima ou salve como PDF.",
-  },
-];
 
-export default async function LandingPage() {
-  const user = await getCurrentUser();
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "Organization", "@id": base + "/#organization", name: "Pediatron", url: base, description: "Ecossistema de educação médica, comunidade e ferramentas digitais para pediatria." },
+    { "@type": "WebSite", "@id": base + "/#website", name: "Pediatron", url: base, inLanguage: "pt-BR", publisher: { "@id": base + "/#organization" } },
+    { "@type": "WebPage", "@id": base + "/#webpage", url: base, name: "Pediatron | Educação médica, comunidade e ferramentas para pediatria", inLanguage: "pt-BR", isPartOf: { "@id": base + "/#website" } }
+  ]
+};
+
+export default function PediatronHome() {
   return (
-    <div className="ped-theme ped-landing">
-      <FunnelBeacon step="landing_view" source="landing" scope="home" />
-      <a className="ped-skip" href="#landing-content">
-        Ir para o conteúdo
-      </a>
-      <header className="ped-lp-header">
-        <nav className="ped-container" aria-label="Navegação principal">
-          <Brand />
-          <div className="ped-lp-links">
-            <a href="#como-funciona">Como funciona</a>
-            <a href="#beneficios">Benefícios</a>
-            <a href="#planos">Planos</a>
-          </div>
-          <MobileMenu>
-            <a href="#como-funciona">Como funciona</a>
-            <a href="#beneficios">Benefícios</a>
-            <a href="#planos">Planos</a>
-            <Link href={user ? "/dashboard" : "/login"}>
-              {user ? "Folha PCR" : "Entrar"}
-            </Link>
-            <Link href="/checkout">Começar agora</Link>
-          </MobileMenu>
-          <div className="ped-lp-account">
-            {user ? (
-              <>
-                <Link
-                  className="ped-button ped-button-secondary"
-                  href="/dashboard"
-                >
-                  Folha PCR
-                </Link>
-                <Link className="ped-organization-link" href="/organization">
-                  Organização
-                </Link>
-                <LogoutButton />
-              </>
-            ) : (
-              <>
-                <Link className="ped-login-link" href="/login">
-                  Entrar
-                </Link>
-                <Link
-                  className="ped-button ped-button-primary"
-                  href="/checkout"
-                >
-                  Começar agora
-                </Link>
-              </>
-            )}
-          </div>
-        </nav>
+    <main className="pediatron-home">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
+      <a className="pediatron-skip" href="#conteudo">Ir para o conteúdo</a>
+      <header className="pediatron-header">
+        <div className="pediatron-shell pediatron-header-inner">
+          <Link className="pediatron-wordmark" href="/" aria-label="Pediatron, início"><span className="pediatron-wordmark-symbol"><HeartPulse aria-hidden="true" /></span><span>PEDIATRON<span className="pediatron-wordmark-dot">.</span></span></Link>
+          <nav className="pediatron-nav" aria-label="Navegação principal"><a href="#solucoes">Soluções</a><a href="#especialista">Especialista</a><a href="#sobre">Sobre a Pediatron</a></nav>
+          <Link className="pediatron-header-cta" href="/ped-expert-mentory">Conheça a mentoria <ArrowRight size={17} aria-hidden="true"/></Link>
+          <details className="pediatron-mobile-nav"><summary aria-label="Abrir menu"><Menu aria-hidden="true" /></summary><nav aria-label="Menu mobile"><a href="#solucoes">Soluções</a><a href="#especialista">Especialista</a><a href="#sobre">Sobre a Pediatron</a><Link href="/ped-expert-mentory">Ped Expert Mentory</Link><Link href="/folha-pcr">Folha PCR</Link></nav></details>
+        </div>
       </header>
-      <main id="landing-content">
-        <section className="ped-hero">
-          <div className="ped-container ped-hero-grid">
-            <div className="ped-hero-copy">
-              <span className="ped-badge">
-                <HeartPulse aria-hidden="true" /> Folha PCR pediátrica
-              </span>
-              <h1>
-                Mais clareza no
-                <br className="ped-desktop-break" />{" "}
-                <em>plantão pediátrico.</em>
-              </h1>
-              <p>
-                Via aérea, medicações e desfibrilação em uma folha digital para
-                consulta e conferência no atendimento.
-              </p>
-              <div className="ped-hero-actions">
-                <Link
-                  href="/checkout"
-                  className="ped-button ped-button-primary"
-                >
-                  Começar agora <ArrowRight aria-hidden="true" />
-                </Link>
-                <a
-                  href="#como-funciona"
-                  className="ped-button ped-button-secondary"
-                >
-                  Ver como funciona
-                </a>
-              </div>
-              <p className="ped-hero-note">
-                Apoio ao cálculo. A avaliação clínica e o protocolo
-                institucional permanecem essenciais.
-              </p>
-            </div>
-            <figure
-              className="ped-demo-browser"
-              aria-label="Demonstração estática do formulário, com dados fictícios"
-            >
-              <div className="ped-demo-chrome">
-                <span aria-hidden="true">● ● ●</span>
-                <span>PED.iatron / Folha PCR</span>
-              </div>
-              <div className="ped-demo-body">
-                <span className="ped-eyebrow">
-                  Demonstração · dados fictícios
-                </span>
-                <h2>Entubação e PCR</h2>
-                <p>Dados do paciente</p>
-                <dl className="ped-demo-identity">
-                  <div>
-                    <dt>Nome do paciente</dt>
-                    <dd>Paciente demonstrativo</dd>
-                  </div>
-                  <div>
-                    <dt>Data</dt>
-                    <dd>14/10/2026</dd>
-                  </div>
-                </dl>
-                <dl className="ped-demo-fields">
-                  <div>
-                    <dt>Anos</dt>
-                    <dd>5</dd>
-                  </div>
-                  <div>
-                    <dt>Meses</dt>
-                    <dd>2</dd>
-                  </div>
-                  <div>
-                    <dt>Peso (kg)</dt>
-                    <dd>15</dd>
-                  </div>
-                </dl>
-                <p className="ped-demo-status">
-                  <Activity aria-hidden="true" /> Atualização automática ao
-                  preencher os dados
-                </p>
-                <div className="ped-demo-next">
-                  <FileCheck aria-hidden="true" />
-                  <div>
-                    <strong>Da identificação à consulta</strong>
-                    <p>
-                      Via aérea, choques, medicações e avisos em uma folha
-                      organizada.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <figcaption>
-                Representação do formulário · sem resultados clínicos
-              </figcaption>
-            </figure>
+      <section className="pediatron-hero" id="conteudo">
+        <div className="pediatron-shell pediatron-hero-inner">
+          <div className="pediatron-hero-copy">
+            <span className="pediatron-kicker"><span className="pediatron-kicker-line"/> CIÊNCIA, EXPERIÊNCIA E CONEXÃO</span>
+            <h1>O conhecimento que transforma a <em>prática pediátrica.</em></h1>
+            <p>Uma nova forma de aprender, trocar experiências e contar com recursos para os desafios da medicina. Conheça o ecossistema Pediatron.</p>
+            <div className="pediatron-hero-actions"><a className="pediatron-btn pediatron-btn-primary" href="#solucoes">Explore nossas soluções <ArrowRight aria-hidden="true" /></a><a className="pediatron-btn pediatron-btn-ghost" href="#especialista">Conheça o especialista</a></div>
+            <div className="pediatron-hero-proof"><span><BookOpenCheck aria-hidden="true"/> Educação continuada</span><span><Users aria-hidden="true"/> Conexão entre médicos</span><span><ShieldCheck aria-hidden="true"/> Apoio à prática</span></div>
           </div>
-        </section>
-
-        <section id="beneficios" className="ped-container ped-lp-section">
-          <p className="ped-eyebrow">Foco no que realmente importa</p>
-          <h2>Criado para a rotina da emergência pediátrica.</h2>
-          <div className="ped-features">
-            {features.map(({ Icon, title, text }) => (
-              <article className="ped-card" key={title}>
-                <span className="ped-feature-icon">
-                  <Icon aria-hidden="true" />
-                </span>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </article>
-            ))}
+          <div className="pediatron-hero-visual" aria-label="Dr. Aristóteles Pires, médico e mentor">
+            <div className="pediatron-hero-halo" aria-hidden="true" />
+            <Image src="/images/dr-aristoteles-pires.png" alt="Dr. Aristóteles Pires" fill priority sizes="(max-width: 800px) 100vw, 47vw" className="pediatron-hero-photo" />
+            <div className="pediatron-mentor-tag"><Stethoscope aria-hidden="true" /><span><strong>Dr. Aristóteles Pires</strong><small>Experiência clínica e educação médica</small></span></div>
           </div>
-        </section>
-
-        <section className="ped-doctor-section">
-          <div className="ped-container ped-doctor-grid">
-            <figure className="ped-doctor-photo">
-              <Image
-                src="/images/dr-aristoteles-pires.png"
-                alt="Dr. Aristóteles de Almeida Pires"
-                fill
-                sizes="(min-width: 768px) 320px, 85vw"
-              />
-              <figcaption>
-                <strong>Dr. Aristóteles de Almeida Pires</strong>
-                <span>Médico responsável</span>
-              </figcaption>
-            </figure>
-            <div>
-              <span className="ped-badge">
-                <Stethoscope aria-hidden="true" />
-                Experiência que faz a diferença
-              </span>
-              <h2>
-                Mais de 25 anos de experiência conectando prática clínica,
-                telemedicina e educação.
-              </h2>
-              <p>
-                O Dr. Aristóteles de Almeida Pires é médico com trajetória
-                dedicada à prática clínica, inovação em saúde e formação de
-                profissionais. Doutor em telemedicina e mentor de carreira
-                médica, conduz a visão clínica do PED.iatron para transformar
-                rotinas críticas em ferramentas digitais mais claras, rápidas e
-                úteis no atendimento real.
-              </p>
-              <p>
-                A Folha PCR nasce dessa interseção entre experiência
-                assistencial, tecnologia aplicada e compromisso com decisões
-                médicas mais organizadas no plantão.
-              </p>
-              <div className="ped-credentials">
-                <span>
-                  <strong>25+ anos</strong>de experiência
-                </span>
-                <span>
-                  <strong>Doutorado</strong>em telemedicina
-                </span>
-                <span>
-                  <strong>Mentor</strong>de carreira médica
-                </span>
-              </div>
-              <a
-                className="ped-button ped-button-secondary"
-                href="https://www.instagram.com/dr.aristotelespires?igsh=dmV6dWZ3bjhxNG0z"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Instagram aria-hidden="true" />
-                Ver perfil no Instagram
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <section id="como-funciona" className="ped-container ped-lp-section">
-          <p className="ped-eyebrow">Como funciona</p>
-          <h2>Da identificação ao resultado, em três passos.</h2>
-          <div className="ped-steps">
-            {steps.map(({ Icon, title, text }, index) => (
-              <article key={title}>
-                <span className="ped-feature-icon">
-                  <Icon aria-hidden="true" />
-                </span>
-                <div>
-                  <span className="ped-step-number">0{index + 1}</span>
-                  <h3>{title}</h3>
-                  <p>{text}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-        <section className="ped-container ped-audience-section">
-          <h2>Para quem está na linha de frente.</h2>
-          <div className="ped-audiences">
-            {[
-              "Pediatras",
-              "Emergência",
-              "UTI pediátrica",
-              "SAMU",
-              "Hospitais",
-              "Acadêmicos",
-            ].map((item) => (
-              <div key={item}>
-                <Hospital aria-hidden="true" />
-                <span>{item}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-        <section id="planos" className="ped-container ped-lp-section">
-          <FunnelBeacon
-            step="pricing_view"
-            source="landing"
-            scope="plans_section"
-          />
-          <p className="ped-eyebrow">Planos</p>
-          <h2>Acesso individual ou para sua instituição.</h2>
-          <p className="ped-section-description">
-            Escolha a modalidade para a sua rotina.
-          </p>
-          <Suspense
-            fallback={
-              <div className="ped-card ped-pricing-empty" role="status">
-                Carregando planos e condições…
-              </div>
-            }
-          >
-            <PricingCatalog />
-          </Suspense>
-        </section>
-      </main>
-      <footer className="ped-container ped-footer">
-        <div>
-          <Brand />
-          <p>Tecnologia a serviço do cuidado.</p>
         </div>
-        <nav aria-label="Links do rodapé">
-          <a href="#como-funciona">Como funciona</a>
-          <a href="#planos">Planos</a>
-          <Link href="/login">Entrar</Link>
-        </nav>
-        <p className="ped-footer-disclaimer">
-          Ferramenta de apoio ao cálculo. Conferir dose, apresentação,
-          concentração, protocolo institucional e avaliação clínica antes da
-          administração.
-        </p>
-      </footer>
-    </div>
-  );
-}
-
-async function PricingCatalog() {
-  const pricing = await getPricingView().catch(() => null);
-  const plans = pricing
-    ? [...pricing.individualPlans, ...pricing.institutionalPlans]
-    : [];
-  return (
-    <>
-      <div className="ped-plans">
-        {plans.map((plan) => {
-          const price = getDefaultPriceForPlan(plan);
-          const individual = plan.audience === "INDIVIDUAL";
-          return (
-            <article
-              key={plan.id}
-              className={`ped-card ped-plan ${individual ? "ped-plan-featured" : ""}`}
-            >
-              <div className="ped-plan-heading">
-                {individual ? (
-                  <Stethoscope aria-hidden="true" />
-                ) : (
-                  <Users aria-hidden="true" />
-                )}
-                <h3>{plan.name}</h3>
-              </div>
-              <p className="ped-plan-price">
-                {formatPrice(price?.amountCents ?? null, price?.currency)}
-                {price && !price.isCustom && (
-                  <span> / {price.billingCycleLabel.toLowerCase()}</span>
-                )}
-              </p>
-              <p>
-                {plan.description ||
-                  (individual
-                    ? "Acesso individual à Folha PCR digital."
-                    : "Acesso institucional para equipes clínicas.")}
-              </p>
-              <ul>
-                {(individual
-                  ? [
-                      "Folha PCR digital",
-                      "Consulta em desktop e celular",
-                      "Impressão e PDF",
-                    ]
-                  : [
-                      "Times e permissões",
-                      "Licenças institucionais",
-                      "Gestão de acesso da equipe",
-                    ]
-                ).map((feature) => (
-                  <li key={feature}>
-                    <Check aria-hidden="true" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/checkout"
-                className={`ped-button ${individual ? "ped-button-primary" : "ped-button-secondary"}`}
-              >
-                {individual
-                  ? "Ver assinatura"
-                  : "Consultar plano institucional"}
-                <ArrowRight aria-hidden="true" />
-              </Link>
-            </article>
-          );
-        })}
-      </div>
-      {plans.length === 0 && (
-        <div className="ped-card ped-pricing-empty">
-          <ShieldCheck aria-hidden="true" />
-          <div>
-            <h3>
-              {pricing
-                ? "Nenhum plano disponível no momento"
-                : "Não foi possível carregar os planos"}
-            </h3>
-            <p>Preços e condições serão apresentados na contratação.</p>
+        <div className="pediatron-hero-bottom" aria-hidden="true" />
+      </section>
+      <section className="pediatron-solutions" id="solucoes">
+        <div className="pediatron-shell">
+          <div className="pediatron-section-heading"><span className="pediatron-eyebrow">NOSSO ECOSSISTEMA</span><h2>Três soluções. Um propósito: <em>evoluir juntos.</em></h2><p>Da atualização profissional à troca de experiências, a Pediatron reúne iniciativas que acompanham diferentes momentos da jornada médica.</p></div>
+          <div className="pediatron-product-grid">
+            <article className="pediatron-product pediatron-product-featured"><span className="pediatron-product-icon"><BookOpenCheck aria-hidden="true"/></span><span className="pediatron-product-type">01 / MENTORIA</span><h3>Ped Expert Mentory</h3><p>Mentoria online semanal com o Dr. Aristóteles Pires, análise de casos reais e conteúdo para aprofundar o raciocínio clínico.</p><ul><li>Encontros online semanais</li><li>Discussão educacional de casos</li><li>Aprendizado com experiência prática</li></ul><Link href="/ped-expert-mentory" className="pediatron-product-link">Conheça a mentoria <ArrowRight aria-hidden="true"/></Link></article>
+            <article className="pediatron-product"><span className="pediatron-product-icon"><MessageCircle aria-hidden="true"/></span><span className="pediatron-product-type">02 / COMUNIDADE</span><h3>Comunidade no WhatsApp</h3><p>Um espaço de conexão entre profissionais para compartilhar conhecimento, experiências e discussões de educação médica.</p><ul><li>Troca entre profissionais</li><li>Conteúdos e conversas da comunidade</li><li>Conexão com o ecossistema Pediatron</li></ul><Link href="/lancamento_mentoria#inscricao" className="pediatron-product-link">Conheça o grupo de lançamento <ArrowRight aria-hidden="true"/></Link><small className="pediatron-product-note">O grupo gratuito de lançamento é diferente da comunidade fechada.</small></article>
+            <article className="pediatron-product"><span className="pediatron-product-icon"><HeartPulse aria-hidden="true"/></span><span className="pediatron-product-type">03 / FERRAMENTA DIGITAL</span><h3>Folha PCR</h3><p>Uma folha digital de consulta para organizar informações de via aérea, medicações e desfibrilação na rotina da emergência pediátrica.</p><ul><li>Consulta organizada por etapas</li><li>Interface para desktop e celular</li><li>Opções de impressão e PDF</li></ul><Link href="/folha-pcr" className="pediatron-product-link">Conheça a Folha PCR <ArrowRight aria-hidden="true"/></Link></article>
           </div>
-          <Link href="/checkout" className="ped-button ped-button-primary">
-            Consultar planos <ArrowRight aria-hidden="true" />
-          </Link>
         </div>
-      )}
-    </>
+      </section>
+      <section className="pediatron-specialist" id="especialista"><div className="pediatron-shell pediatron-specialist-grid"><div className="pediatron-specialist-photo"><Image src="/images/dr-aristoteles-pires.png" alt="Dr. Aristóteles Pires" fill sizes="(max-width: 800px) 90vw, 36vw" /></div><div><span className="pediatron-eyebrow">EXPERIÊNCIA QUE INSPIRA</span><h2>Dr. Aristóteles Pires: conhecimento construído na prática.</h2><p>Com 28 anos de carreira, o Dr. Aristóteles Pires reúne experiência em Pediatria e formação acadêmica em Pediatria e Telemedicina. Sua atuação contribui para conectar educação médica, tecnologia e os desafios reais da assistência.</p><div className="pediatron-specialist-facts"><span><strong>28+</strong><small>anos de carreira</small></span><span><CalendarDays aria-hidden="true"/><small>Mentoria semanal</small></span></div><a className="pediatron-social" href="https://www.instagram.com/dr.aristotelespires/" target="_blank" rel="noopener noreferrer"><Instagram aria-hidden="true"/> @dr.aristotelespires <ArrowRight aria-hidden="true"/></a></div></div></section>
+      <section className="pediatron-about" id="sobre"><div className="pediatron-shell pediatron-about-inner"><span className="pediatron-eyebrow">SOBRE A PEDIATRON</span><h2>Mais do que produtos. Um ecossistema para quem cuida.</h2><p>Unimos educação continuada, conexões profissionais e recursos digitais para apoiar o desenvolvimento de médicos que atuam com crianças. Cada solução tem seu papel; todas compartilham o compromisso com uma prática informada e responsável.</p><a className="pediatron-btn pediatron-btn-primary" href="#solucoes">Conheça nossas soluções <ArrowRight aria-hidden="true"/></a></div></section>
+      <footer className="pediatron-footer"><div className="pediatron-shell pediatron-footer-inner"><span className="pediatron-wordmark">PEDIATRON<span className="pediatron-wordmark-dot">.</span></span><p>Educação médica e recursos de apoio. As soluções não substituem protocolos institucionais nem decisões clínicas individualizadas.</p><nav aria-label="Links do rodapé"><Link href="/ped-expert-mentory">Mentory</Link><Link href="/folha-pcr">Folha PCR</Link><Link href="/lancamento_mentoria">Lançamento</Link></nav></div></footer>
+    </main>
   );
 }
