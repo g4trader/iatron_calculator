@@ -1,11 +1,30 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { MentoryIcon } from "@/components/mentory/MentoryIcon";
 import "./brand-landing.css";
 
-export const metadata = {
-  title: "Ped Expert Mentory | Mentoria em Urgência Pediátrica",
-  description: "Mentoria médica em urgência pediátrica com o Dr. Aristóteles Pires. Encontros semanais, conteúdo e comunidade.",
+const pageUrl = "https://ped.iatron.com.br/ped-expert-mentory";
+const pageTitle = "Ped Expert Mentory | Mentoria em Urgência Pediátrica";
+const pageDescription = "Mentoria online semanal em pediatria com o Dr. Aristóteles Pires: análise de casos reais, atualização baseada em evidências e comunidade médica.";
+
+export const metadata: Metadata = {
+  title: pageTitle,
+  description: pageDescription,
+  alternates: { canonical: pageUrl },
+  robots: { index: true, follow: true },
+  openGraph: { type: "website", locale: "pt_BR", siteName: "Ped Expert Mentory", url: pageUrl, title: pageTitle, description: pageDescription, images: [{ url: "/images/dr-aristoteles-pires.png", alt: "Dr. Aristóteles Pires" }] },
+  twitter: { card: "summary_large_image", title: pageTitle, description: pageDescription, images: ["/images/dr-aristoteles-pires.png"] },
   icons: { icon: "/images/mentory-favicon.png", shortcut: "/images/mentory-favicon.png", apple: "/images/mentory-favicon.png" },
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "Organization", "@id": "https://ped.iatron.com.br/#mentory-organization", name: "Ped Expert Mentory", url: pageUrl, logo: "https://ped.iatron.com.br/images/mentory-logo-oficial.png" },
+    { "@type": "WebSite", "@id": "https://ped.iatron.com.br/#mentory-website", name: "Ped Expert Mentory", url: pageUrl, inLanguage: "pt-BR" },
+    { "@type": "WebPage", "@id": pageUrl + "#webpage", url: pageUrl, name: pageTitle, description: pageDescription, inLanguage: "pt-BR", isPartOf: { "@id": "https://ped.iatron.com.br/#mentory-website" } },
+    { "@type": "EducationalOccupationalProgram", name: "Ped Expert Mentory", description: "Mentoria em urgência pediátrica com encontros online semanais e discussão de casos reais.", url: pageUrl, educationalProgramMode: "online", provider: { "@id": "https://ped.iatron.com.br/#mentory-organization" } },
+  ],
 };
 
 const benefits = [
@@ -18,6 +37,7 @@ const benefits = [
 export default function PedExpertMentoryPage() {
   return (
     <main className="mentory-landing">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />
       <div className="mentory-dark-shell">
         <header className="mentory-nav">
           <div className="mentory-container mentory-nav-inner">
