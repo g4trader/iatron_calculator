@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MentoryIcon } from "@/components/mentory/MentoryIcon";
 import "./brand-landing.css";
 
 export const metadata = {
@@ -7,11 +8,11 @@ export const metadata = {
 };
 
 const benefits = [
-  ["✧", "Mentoria com especialistas"],
-  ["▤", "Conteúdo prático e atualizado"],
-  ["◎", "Discussão de casos reais"],
-  ["✓", "Mais segurança na prática clínica"],
-];
+  { icon: "mentor", title: "Mentoria com especialistas" },
+  { icon: "book", title: "Conteúdo prático e atualizado" },
+  { icon: "cases", title: "Discussão de casos reais" },
+  { icon: "award", title: "Mais segurança na prática clínica" },
+] as const;
 
 export default function PedExpertMentoryPage() {
   return (
@@ -52,7 +53,7 @@ export default function PedExpertMentoryPage() {
           </div>
           <div className="mentory-benefits-bar">
             <div className="mentory-container mentory-benefits-inner">
-              {benefits.map(([symbol, title]) => <div key={title} className="mentory-benefit"><span className="mentory-benefit-icon" aria-hidden="true">{symbol}</span><span>{title}</span></div>)}
+              {benefits.map(({ icon, title }) => <div key={title} className="mentory-benefit"><MentoryIcon name={icon} className="mentory-benefit-icon" /><span>{title}</span></div>)}
             </div>
           </div>
         </section>
