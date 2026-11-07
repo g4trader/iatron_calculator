@@ -161,6 +161,20 @@ export default function LancamentoMentoria() {
         .pediatron .launch-brand .mentory-hero::before{background-size:100% 100%,auto 400px}
         .pediatron .launch-brand .mentory-hero-copy{padding-bottom:360px}
       }
+
+      .pediatron .launch-brand .mentory-hero{position:relative}
+      .pediatron .launch-mentor-identity{position:absolute;z-index:6;right:max(5%,calc((100vw - 1120px)/2));bottom:26px;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px;max-width:490px;padding:12px 14px;background:#031b32c9;border:1px solid #4dd8ed66;border-radius:14px;box-shadow:0 8px 25px #00152577;backdrop-filter:blur(9px);color:#fff}
+      .pediatron .launch-mentor-identity-item{display:inline-flex;align-items:center;gap:7px;color:#fff;font-size:13px;white-space:nowrap}
+      .pediatron .launch-mentor-identity-item svg{width:18px;height:18px;color:#04e3e4;flex:none}
+      .pediatron .launch-mentor-instagram{color:#d5f8ff;text-decoration:none}
+      .pediatron .launch-mentor-instagram:hover{text-decoration:underline}
+      @media(max-width:800px){
+        .pediatron .launch-mentor-identity{left:18px;right:18px;bottom:24px;max-width:none;justify-content:center;gap:10px 14px;padding:12px 10px}
+        .pediatron .launch-mentor-identity-item{font-size:12px}
+        .pediatron .launch-mentor-identity-item svg{width:17px;height:17px}
+        .pediatron .launch-brand .mentory-hero-copy{padding-bottom:clamp(400px,112vw,550px)}
+      }
+      @media(max-width:390px){.pediatron .launch-brand .mentory-hero-copy{padding-bottom:420px}}
     `}</style>
     <div className="ribbon">Aula inaugural gratuita • 14 de novembro, às 19h • Condições de lançamento somente no WhatsApp</div>
     <div className="launch-brand mentory-landing">
@@ -196,6 +210,11 @@ export default function LancamentoMentoria() {
               <div className="mentory-wave mentory-wave-front" aria-hidden="true"/>
               <img className="mentory-hero-portrait" src="/images/a_clean_cutout_portrait_on_a_transparent_backgroun.png" alt="Dr. Aristóteles Pires"/>
             </div>
+          </div>
+          <div className="launch-mentor-identity" aria-label="Informações do mentor">
+            <span className="launch-mentor-identity-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 3v6a6 6 0 0 0 12 0V3"/><path d="M4 3h4M16 3h4"/><path d="M12 15v3a4 4 0 0 0 8 0v-3"/><circle cx="20" cy="13" r="2"/></svg><strong>Dr. Aristóteles Pires</strong></span>
+            <span className="launch-mentor-identity-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><strong>+28a XP</strong></span>
+            <a className="launch-mentor-identity-item launch-mentor-instagram" href="https://www.instagram.com/dr.aristotelespires/" target="_blank" rel="noopener noreferrer" aria-label="Instagram do Dr. Aristóteles Pires, @dr.aristotelespires"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 2A3.75 3.75 0 0 0 4 7.75v8.5A3.75 3.75 0 0 0 7.75 20h8.5A3.75 3.75 0 0 0 20 16.25v-8.5A3.75 3.75 0 0 0 16.25 4h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.5-2.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Z"/></svg><span>@dr.aristotelespires</span></a>
           </div>
         </section>
       </div>
