@@ -46,7 +46,7 @@ export default function PediatronHome() {
           </div>
           <div className="pediatron-hero-visual" aria-label="Dr. Aristóteles Pires, médico e mentor">
             <div className="pediatron-hero-halo" aria-hidden="true" />
-            <Image src="/images/dr-aristoteles-pires.png" alt="Dr. Aristóteles Pires" fill priority sizes="(max-width: 800px) 100vw, 47vw" className="pediatron-hero-photo" />
+            <Image src="/images/a_clean_cutout_portrait_on_a_transparent_backgroun.png" alt="Dr. Aristóteles Pires" fill priority sizes="(max-width: 800px) 100vw, 47vw" className="pediatron-hero-photo" />
             <div className="pediatron-mentor-tag"><Stethoscope aria-hidden="true" /><span><strong>Dr. Aristóteles Pires</strong><small>Experiência clínica e educação médica</small></span></div>
           </div>
         </div>
