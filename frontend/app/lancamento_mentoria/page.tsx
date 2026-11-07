@@ -132,8 +132,7 @@ export default function LancamentoMentoria() {
         <header className="mentory-nav">
           <div className="mentory-container mentory-nav-inner">
             <a href="#inicio" className="mentory-logo" aria-label="Ped Expert Mentory">
-              <img src="/mentory-brand-symbol.svg" alt="" aria-hidden="true"/>
-              <span><strong>Ped Expert</strong><small>Mentory</small></span>
+              <img src="/images/mentory-logo-oficial.png" alt="Ped Expert Mentory"/>
             </a>
             <nav className="mentory-nav-links" aria-label="Navegação da página">
               <a href="#programa">Programa</a><a href="#mentor">Mentor</a><a href="#novembro">Lançamento</a><a href="#perguntas">Dúvidas</a>
