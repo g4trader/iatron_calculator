@@ -62,7 +62,7 @@ export async function lessonFor(actor: Identity, id: string, preview = false) {
 }
 export async function studentData(actor: Identity) {
   const [modules, progress, hasAccess] = await Promise.all([
-    prisma.mentoryModule.findMany({ where: { status: 'PUBLISHED' }, orderBy: [{ position: 'asc' }, { id: 'asc' }], select: { id: true, title: true, description: true, lessons: { where: { status: 'PUBLISHED' }, orderBy: [{ position: 'asc' }, { id: 'asc' }], select: { id: true, title: true, duration: true } } } }),
+    prisma.mentoryModule.findMany({ orderBy: [{ position: 'asc' }, { id: 'asc' }], select: { id: true, title: true, description: true, status: true, lessons: { where: { status: 'PUBLISHED' }, orderBy: [{ position: 'asc' }, { id: 'asc' }], select: { id: true, title: true, duration: true } } } }),
     prisma.mentoryLessonProgress.findMany({ where: { userId: actor.id }, select: { lessonId: true, completedAt: true, lastPositionSeconds: true, updatedAt: true }, orderBy: { updatedAt: 'desc' } }),
     premium(actor).then(() => true).catch(e => { if (!(e instanceof MentoryError)) throw e; return false; })
   ]);
