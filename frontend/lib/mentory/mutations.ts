@@ -73,7 +73,7 @@ export async function mutate(actor: Identity, input: unknown) {
         await tx.mentoryLesson.update({ where: { id: v.id }, data: { status: v.publish ? 'PUBLISHED' : 'DRAFT' } });
       } else {
         const lessons = await tx.mentoryLesson.findMany({ where: { moduleId: v.id } });
-        if (v.publish && (!lessons.length || lessons.some(l => l.status !== 'PUBLISHED'))) throw new MentoryError(423, 'Publique as aulas revisadas antes do módulo.');
+        if (v.publish && (!lessons.some(l => l.status === 'PUBLISHED'))) throw new MentoryError(423, 'Publique ao menos uma aula revisada antes de liberar o módulo.');
         await tx.mentoryModule.update({ where: { id: v.id }, data: { status: v.publish ? 'PUBLISHED' : 'DRAFT' } });
       }
     } else if (v.action === 'role') {
