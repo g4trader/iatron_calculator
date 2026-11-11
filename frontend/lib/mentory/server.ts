@@ -66,7 +66,7 @@ export async function studentData(actor: Identity) {
     prisma.mentoryLessonProgress.findMany({ where: { userId: actor.id }, select: { lessonId: true, completedAt: true, lastPositionSeconds: true, updatedAt: true }, orderBy: { updatedAt: 'desc' } }),
     premium(actor).then(() => true).catch(e => { if (!(e instanceof MentoryError)) throw e; return false; })
   ]);
-  return { modules, progress, hasAccess };
+  return { modules: modules.map(module => module.status === 'PUBLISHED' ? module : { ...module, lessons: [] }), progress, hasAccess };
 }
 export async function adminData(actor: Identity, filter: { query: string; status: string; page: number } = { query: '', status: '', page: 1 }, section = '') {
   const userFilter: Prisma.UserWhereInput = filter.query ? { OR: [{ name: { contains: filter.query, mode: 'insensitive' } }, { email: { contains: filter.query, mode: 'insensitive' } }] } : {};
