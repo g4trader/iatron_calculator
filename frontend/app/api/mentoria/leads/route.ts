@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 export const runtime = 'nodejs';
-const CRM_URL = 'https://connect.fromcore.com.br/webhook/mentory-ped';
+const CRM_URL = 'https://connect.fromcore.com.br/webhook/pediatron-leads';
 const schema = z.object({
   name: z.string().trim().min(2).max(120),
   phone: z.string().min(10).max(25),
