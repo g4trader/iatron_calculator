@@ -62,6 +62,28 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
       },{isolationLevel:'Serializable'});
       return json(result);
     }
+    if(path[0]==='modules'&&path[1]&&path[2]==='cover'&&path.length===3){
+      if(write&&!actor.editor)throw new MentoryError(403,'Permissão editorial necessária.');
+      const module=await prisma.mentoryModule.findUnique({where:{id:path[1]},select:{id:true}});
+      if(!module)throw new MentoryError(404,'Módulo indisponível.');
+      const key='cover_'+createHash('sha256').update(module.id).digest('hex');
+      if(write){
+        const restore=req.nextUrl.searchParams.get('restore')==='1';
+        const bytes=restore?Buffer.alloc(0):Buffer.from(await req.arrayBuffer());
+        if(!restore&&(req.headers.get('content-type')!=='image/jpeg'||bytes.length<100||bytes.length>1000000||bytes[0]!==255||bytes[1]!==216||bytes[bytes.length-2]!==255||bytes[bytes.length-1]!==217))throw new MentoryError(400,'Envie uma imagem JPEG válida de até 1 MB.');
+        await prisma.$transaction(async tx=>{
+          if(restore)await tx.mentoryPrivateAsset.deleteMany({where:{id:key}});
+          else{const data={content:bytes,contentType:'image/jpeg',checksum:createHash('sha256').update(bytes).digest('hex'),byteSize:bytes.length};await tx.mentoryPrivateAsset.upsert({where:{id:key},create:{id:key,...data},update:data});}
+          await tx.mentoryAuditLog.create({data:{actorId:actor.id,entityId:module.id,action:restore?'cover.restore':'cover.save'}});
+        });
+        return json({custom:!restore});
+      }
+      const asset=await prisma.mentoryPrivateAsset.findUnique({where:{id:key}});
+      if(asset)return new NextResponse(new Uint8Array(asset.content),{headers:{...headers,'Content-Type':'image/jpeg','Cross-Origin-Resource-Policy':'same-origin','Content-Security-Policy':"default-src 'none'"}});
+      const covers=['fundamentos','emergencias','terapia-intensiva','neonatologia','capa-generica'];
+      const index=Math.max(0,Number.parseInt(req.nextUrl.searchParams.get('index')||'0',10)||0)%covers.length;
+      return NextResponse.redirect(new URL('/mentory/covers/'+covers[index]+'.svg',req.url),{headers});
+    }
     if (write && path.join('/') === 'admin') return json(await mutate(actor, await req.json()));
     if (write && path.join('/') === 'checkout') return json(await mentoryPayment.checkout());
     if (!write && path.join('/') === 'media/drive') {
