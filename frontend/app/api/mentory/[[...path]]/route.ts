@@ -1,4 +1,4 @@
-import { startHlsImport } from '@/lib/mentory/hls-jobs';
+import { startHlsImport, listDriveVideos } from '@/lib/mentory/hls-jobs';
 import { readHlsObject } from '@/lib/mentory/hls';
 import { beginMediaUpload, finishMediaUpload, readCaptions } from '@/lib/mentory/gcs-video';
 import { NextRequest, NextResponse } from 'next/server';
@@ -38,6 +38,10 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
     if (!write && path.join('/') === 'admin/content') return json(await adminData(actor, undefined, 'conteudo'));
     if (write && path.join('/') === 'admin') return json(await mutate(actor, await req.json()));
     if (write && path.join('/') === 'checkout') return json(await mentoryPayment.checkout());
+    if (!write && path.join('/') === 'media/drive') {
+      if (!actor.editor) throw new MentoryError(403, 'Permissão editorial necessária.');
+      return json(await listDriveVideos());
+    }
     if (path.join('/') === 'media/hls') {
       if (!actor.editor) throw new MentoryError(403, 'Permissão editorial necessária.');
       if (write) {
@@ -88,7 +92,7 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
       if (!write && path[2] === 'video') {
         if (lesson.videoAssetId?.startsWith('hls_')) {
           await readHlsObject(lesson.videoAssetId, 'index.m3u8').then(r => r.body?.cancel());
-          return json({ url: `/api/mentory/lessons/${lesson.id}/hls/${preview ? 'staff' : 'student'}/index.m3u8`, kind: 'hls', captions: lesson.captionsAssetId?.startsWith('gcs_') ? `/api/mentory/lessons/${lesson.id}/captions?preview=${preview ? '1' : '0'}` : null });
+          return json({ url: `/api/mentory/lessons/${lesson.id}/hls/${preview ? 'staff' : 'student'}/index.m3u8`, kind: 'hls', watermark: preview ? 'Prévia editorial' : 'Aluno '+createHash('sha256').update(actor.id).digest('hex').slice(0,12), captions: lesson.captionsAssetId?.startsWith('gcs_') ? `/api/mentory/lessons/${lesson.id}/captions?preview=${preview ? '1' : '0'}` : null });
         }
         const subscription = await subscriptionFor(actor.id);
         return json({ url: await videoPlayback(lesson.videoAssetId, preview ? new Date(Date.now() + 300000) : subscription!.expiresAt), kind: lesson.videoAssetId?.startsWith('gcs_') ? 'mp4' : 'iframe', captions: lesson.captionsAssetId?.startsWith('gcs_') ? `/api/mentory/lessons/${lesson.id}/captions?preview=${preview ? '1' : '0'}` : null });
