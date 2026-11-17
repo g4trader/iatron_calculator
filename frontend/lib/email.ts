@@ -27,6 +27,8 @@ export async function sendEmail(input: SendEmailInput) {
     });
 
     if (!response.ok) {
+      const detail = await response.json().catch(() => null);
+      console.error("[email:resend] rejected", { status: response.status, code: typeof detail?.name === "string" ? detail.name.slice(0,80) : "unknown" });
       throw new Error("Email provider rejected the message.");
     }
 
@@ -42,5 +44,5 @@ export async function sendEmail(input: SendEmailInput) {
     return { delivered: false, provider: "development-console" as const };
   }
 
-  return { delivered: false, provider: "not_configured" as const };
+  throw new Error("Email provider not configured.");
 }
