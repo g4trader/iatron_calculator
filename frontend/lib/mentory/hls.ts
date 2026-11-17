@@ -12,6 +12,7 @@ export async function readHlsObject(assetId: string, filename: string) {
   const response = await fetch('https://storage.googleapis.com/storage/v1/b/' + encodeURIComponent(bucket) + '/o/' + object + '?alt=media', {
     headers: { authorization: 'Bearer ' + token }, cache: 'no-store', signal: AbortSignal.timeout(20000)
   });
-  if (!response.ok || !response.body) throw new MentoryError(404, 'Mídia indisponível.');
+  if (response.status === 404) throw new MentoryError(404, 'Mídia indisponível.');
+  if (!response.ok || !response.body) throw new MentoryError(503, 'Armazenamento temporariamente indisponível.');
   return response;
 }
