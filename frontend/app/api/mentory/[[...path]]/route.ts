@@ -1,3 +1,4 @@
+import { startHlsImport } from '@/lib/mentory/hls-jobs';
 import { readHlsObject } from '@/lib/mentory/hls';
 import { beginMediaUpload, finishMediaUpload, readCaptions } from '@/lib/mentory/gcs-video';
 import { NextRequest, NextResponse } from 'next/server';
@@ -37,6 +38,17 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
     if (!write && path.join('/') === 'admin/content') return json(await adminData(actor, undefined, 'conteudo'));
     if (write && path.join('/') === 'admin') return json(await mutate(actor, await req.json()));
     if (write && path.join('/') === 'checkout') return json(await mentoryPayment.checkout());
+    if (path.join('/') === 'media/hls') {
+      if (!actor.editor) throw new MentoryError(403, 'Permissão editorial necessária.');
+      if (write) {
+        const result = await startHlsImport((await req.json()).fileId);
+        await prisma.mentoryAuditLog.create({ data: { actorId: actor.id, action: 'media.hls.start', entityId: result.id, metadata: {} } });
+        return json(result, 202);
+      }
+      const id = req.nextUrl.searchParams.get('id') || '';
+      try { const r = await readHlsObject(id, 'index.m3u8'); await r.body?.cancel(); return json({ ready: true }); }
+      catch(e) { if (e instanceof MentoryError && e.status === 404) return json({ ready: false }); throw e; }
+    }
     if (write && ['media/start', 'media/finish'].includes(path.join('/'))) {
       if (!actor.editor) throw new MentoryError(403, 'Permissão editorial necessária.');
       const body = await req.json();
