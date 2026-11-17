@@ -83,6 +83,37 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
     if (!write && path.join('/') === 'progress') return json(await prisma.mentoryLessonProgress.findMany({ where: { userId: actor.id } }));
     if (path[0] === 'lessons' && path[1]) {
       const lesson = await lessonAccess(actor, path[1], preview);
+      if (path[2] === 'thumbnail' && path.length === 3) {
+        const assetId = lesson.videoAssetId || '';
+        if (!assetId.startsWith('hls_')) throw new MentoryError(404, 'Vídeo HLS não vinculado.');
+        const key = 'thumb_' + createHash('sha256').update(JSON.stringify([lesson.id,assetId])).digest('hex');
+        if (write) {
+          if (!actor.editor || !preview) throw new MentoryError(403, 'Permissão editorial necessária.');
+          if (req.nextUrl.searchParams.get('restore') === '1') {
+            await prisma.$transaction(async tx => {
+              await tx.mentoryPrivateAsset.deleteMany({where:{id:key}});
+              await tx.mentoryAuditLog.create({data:{actorId:actor.id,action:'thumbnail.restore',entityId:lesson.id}});
+            });
+            return json({custom:false});
+          }
+          if (req.headers.get('content-type') !== 'image/jpeg' || Number(req.headers.get('content-length')||0)>1000000) throw new MentoryError(400,'Imagem JPEG de até 1 MB após otimização.');
+          const bytes=Buffer.from(await req.arrayBuffer());
+          if(bytes.length<100||bytes.length>1000000||bytes[0]!==255||bytes[1]!==216||bytes[bytes.length-2]!==255||bytes[bytes.length-1]!==217) throw new MentoryError(400,'Imagem JPEG inválida.');
+          const data={content:bytes,contentType:'image/jpeg',checksum:createHash('sha256').update(bytes).digest('hex'),byteSize:bytes.length};
+          await prisma.$transaction(async tx=>{
+            await tx.mentoryPrivateAsset.upsert({where:{id:key},create:{id:key,...data},update:data});
+            await tx.mentoryAuditLog.create({data:{actorId:actor.id,action:'thumbnail.save',entityId:lesson.id}});
+          });
+          return json({custom:true});
+        }
+        const custom=await prisma.mentoryPrivateAsset.findUnique({where:{id:key}});
+        if(req.nextUrl.searchParams.get('status')==='1'){
+          if(!actor.editor||!preview)throw new MentoryError(403,'Permissão editorial necessária.');
+          return json({custom:!!custom});
+        }
+        const body=custom?new Uint8Array(custom.content):(await readHlsObject(assetId,'thumbnail.jpg')).body;
+        return new NextResponse(body,{headers:{...headers,'Content-Type':'image/jpeg','Cross-Origin-Resource-Policy':'same-origin','Content-Security-Policy':"default-src 'none'"}});
+      }
       if (!write && path[2] === 'hls' && path.length === 5 && ['staff','student'].includes(path[3])) {
         const filename = path[4];
         const source = await readHlsObject(lesson.videoAssetId || '', filename);
