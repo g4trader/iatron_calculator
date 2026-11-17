@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createHash } from 'node:crypto';
 import { prisma } from '@/lib/prisma';
 import { identity, lessonAccess, subscriptionFor, adminData } from '@/lib/mentory/server';
-import { MentoryError, mentoryPayment } from '@/lib/mentory/domain';
+import { MentoryError, mentoryPayment, sixMonthsAfter, MENTORY_PRICE_CENTS } from '@/lib/mentory/domain';
 import { openCommunity, saveCommunity } from '@/lib/mentory/community';
 import { mutate } from '@/lib/mentory/mutations';
 import { assetSignature, verifyAssetSignature, videoPlayback } from '@/lib/mentory/assets';
@@ -36,6 +36,32 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
     if (write && path.join('/') === 'community/settings') return json(await saveCommunity(actor, await req.json()));
     if (write && path.join('/') === 'community/join') return json(await openCommunity(actor, await req.json()));
     if (!write && path.join('/') === 'admin/content') return json(await adminData(actor, undefined, 'conteudo'));
+    if (write && path.join('/') === 'admin/student-access') {
+      if(!actor.admin) throw new MentoryError(403,'Apenas administradores podem liberar acessos.');
+      const body=await req.json();
+      const email=typeof body.email==='string'?body.email.trim().toLowerCase():'';
+      const type=body.type;
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||email.length>254||!['trial','courtesy','commercial'].includes(type))throw new MentoryError(400,'Informe email e tipo de acesso válidos.');
+      const days=Number(body.days);
+      if(type!=='commercial'&&(!Number.isInteger(days)||days<1||days>730))throw new MentoryError(400,'Informe de 1 a 730 dias.');
+      const result=await prisma.$transaction(async tx=>{
+        const user=await tx.user.findFirst({where:{email:{equals:email,mode:'insensitive'}},select:{id:true}});
+        if(!user)throw new MentoryError(404,'O aluno precisa criar sua conta Pediatron antes da liberação.');
+        const now=new Date();
+        const current=await tx.mentorySubscription.findFirst({where:{userId:user.id,status:'ACTIVE',expiresAt:{gt:now}},orderBy:{expiresAt:'desc'}});
+        if(current&&body.renew!==true)throw new MentoryError(409,'Já existe acesso ativo. Use a renovação para estender a vigência.');
+        if(body.renew===true&&type!=='commercial')throw new MentoryError(400,'Renovação disponível para acesso comercial.');
+        const start=current?current.expiresAt:now;
+        const end=type==='commercial'?sixMonthsAfter(start):new Date(start.getTime()+days*86400000);
+        await tx.mentoryRoleGrant.upsert({where:{userId_role:{userId:user.id,role:'mentory_student'}},create:{userId:user.id,role:'mentory_student'},update:{}});
+        if(current){await tx.mentorySubscription.update({where:{id:current.id},data:{status:'CANCELED'}});await tx.mentoryEnrollment.updateMany({where:{subscriptionId:current.id},data:{status:'CANCELED'}});}
+        const subscription=await tx.mentorySubscription.create({data:{userId:user.id,startedAt:current?current.startedAt:now,expiresAt:end,status:'ACTIVE',priceCents:type==='commercial'?MENTORY_PRICE_CENTS:0,renewalPriceCents:MENTORY_PRICE_CENTS,renewalTermsVersion:'manual-'+type+'-v1'}});
+        await tx.mentoryEnrollment.create({data:{userId:user.id,subscriptionId:subscription.id,status:'ACTIVE'}});
+        await tx.mentoryAuditLog.create({data:{actorId:actor.id,entityId:user.id,action:body.renew===true?'student.renew':'student.grant',metadata:{type,subscriptionId:subscription.id,expiresAt:end.toISOString(),payment:'external'}}});
+        return {expiresAt:end};
+      },{isolationLevel:'Serializable'});
+      return json(result);
+    }
     if (write && path.join('/') === 'admin') return json(await mutate(actor, await req.json()));
     if (write && path.join('/') === 'checkout') return json(await mentoryPayment.checkout());
     if (!write && path.join('/') === 'media/drive') {
