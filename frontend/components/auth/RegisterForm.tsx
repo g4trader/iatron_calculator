@@ -1,28 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useState, useRef } from "react";
 
 export function RegisterForm() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setPending] = useState(false);
+  const submitting = useRef(false);
 
   return (
     <form
       className="mt-8 grid gap-4"
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
+        if (submitting.current) return;
+        const form = event.currentTarget;
         setError("");
         setSuccess("");
-        const formData = new FormData(event.currentTarget);
+        const formData = new FormData(form);
         const payload = {
           name: String(formData.get("name") ?? ""),
           email: String(formData.get("email") ?? ""),
           password: String(formData.get("password") ?? "")
         };
 
-        startTransition(async () => {
+        submitting.current = true;
+        setPending(true);
+        try {
           const response = await fetch("/api/auth/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -34,21 +39,26 @@ export function RegisterForm() {
             return;
           }
           setSuccess(data.message ?? "Conta criada. Verifique seu email.");
-          event.currentTarget.reset();
-        });
+          form.reset();
+        } catch {
+          setError("Não foi possível confirmar o cadastro. Verifique seu email antes de tentar novamente.");
+        } finally {
+          submitting.current = false;
+          setPending(false);
+        }
       }}
     >
       <label className="grid gap-2 text-sm font-semibold text-slate-300">
         Nome
-        <input className="h-12 rounded-md border border-cyan-300/15 bg-slate-950 px-4 text-white outline-none transition focus:border-cyan-300/60" name="name" type="text" autoComplete="name" required />
+        <input className="h-12 rounded-md border border-cyan-300/15 bg-slate-950 px-4 text-white outline-none transition focus:border-cyan-300/60" name="name" type="text" autoComplete="name" required disabled={isPending} />
       </label>
       <label className="grid gap-2 text-sm font-semibold text-slate-300">
         Email
-        <input className="h-12 rounded-md border border-cyan-300/15 bg-slate-950 px-4 text-white outline-none transition focus:border-cyan-300/60" name="email" type="email" autoComplete="email" required />
+        <input className="h-12 rounded-md border border-cyan-300/15 bg-slate-950 px-4 text-white outline-none transition focus:border-cyan-300/60" name="email" type="email" autoComplete="email" required disabled={isPending} />
       </label>
       <label className="grid gap-2 text-sm font-semibold text-slate-300">
         Senha
-        <input className="h-12 rounded-md border border-cyan-300/15 bg-slate-950 px-4 text-white outline-none transition focus:border-cyan-300/60" name="password" type="password" autoComplete="new-password" minLength={10} required />
+        <input className="h-12 rounded-md border border-cyan-300/15 bg-slate-950 px-4 text-white outline-none transition focus:border-cyan-300/60" name="password" type="password" autoComplete="new-password" minLength={10} required disabled={isPending} />
       </label>
       <p className="text-xs leading-5 text-slate-500">Use pelo menos 10 caracteres. O acesso será liberado após a verificação do email.</p>
       {error ? <p className="text-sm font-semibold text-red-200">{error}</p> : null}
