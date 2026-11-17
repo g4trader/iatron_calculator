@@ -172,3 +172,45 @@
  .mentory .mentor-final .editor-material-row>.order-controls,.mentory .mentor-final .editor-material-row>.text-danger{justify-self:start}
  .mentory .mentor-final .editor-material-row :is(strong,small){word-break:normal;overflow-wrap:anywhere}
 }
+
+/* Student administration only */
+.mentory .mentor-final .students-workspace{display:grid;gap:16px;padding-bottom:96px}
+.mentory .mentor-final .students-list{padding:0;overflow:hidden}
+.mentory .students-list-heading{padding:24px 24px 12px}
+.mentory .students-list-heading h2{font-size:20px;margin:0}
+.mentory .students-list-heading p{font-size:14px;margin:4px 0 0}
+.mentory .students-toolbar{display:flex;flex-wrap:wrap;gap:12px;padding:12px 24px 24px;align-items:center}
+.mentory .student-search{flex:1 1 250px;display:flex;align-items:center;gap:10px;padding:0 12px;border:1px solid var(--border);border-radius:10px;color:var(--muted);min-height:44px;background:white}
+.mentory .student-search input{width:100%;min-width:0;background:transparent;border:0;outline:none;color:var(--ink);height:44px}
+.mentory .student-search:focus-within{outline:2px solid var(--brand-600)}
+.mentory .students-toolbar select,.mentory .student-modal-form :is(input:not([type=checkbox]),select){border:1px solid #b6c5d4;background:white;color:var(--ink);min-height:44px;padding:10px 12px;border-radius:10px;font:inherit}
+.mentory .students-table-scroll{overflow-x:auto}
+.mentory .students-table{width:100%;border-collapse:collapse;text-align:left;font-size:14px;min-width:680px}
+.mentory .students-table th{padding:13px 18px;background:var(--canvas);color:var(--muted);font-size:12px;font-weight:600;white-space:nowrap}
+.mentory .students-table td{padding:18px;border-top:1px solid var(--border);vertical-align:middle}
+.mentory .students-table th:first-child,.mentory .students-table td:first-child{padding-left:24px}
+.mentory .student-identity{display:flex;align-items:center;gap:12px;min-width:180px}
+.mentory .student-identity strong,.mentory .student-identity small{display:block;overflow-wrap:anywhere}
+.mentory .student-identity small{color:var(--muted);font-size:12px;margin-top:4px}
+.mentory .student-avatar{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:50%;color:var(--brand-700);background:var(--brand-50)}
+.mentory .student-status{font-size:12px;font-weight:600;border-radius:20px;padding:5px 10px;background:#edf1f5;color:#52657b;white-space:nowrap}
+.mentory .student-status.active{background:#e7f5ec;color:#067647}
+.mentory .student-status.expired,.mentory .student-status.canceled{background:#fef0ef;color:#a52820}
+.mentory .student-status.pending{background:#fff4dc;color:#885a00}
+.mentory .students-pagination{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:16px 24px;border-top:1px solid var(--border);font-size:13px}
+.mentory .students-empty{text-align:center;display:grid;justify-items:center;gap:8px;padding:48px 20px;color:var(--muted)}
+.mentory .students-empty :is(h3,p){margin:0}
+.mentory .students-advanced summary{cursor:pointer;color:var(--muted);font-size:14px}
+.mentory .students-advanced[open] .form-grid{margin-top:16px}
+.mentory .mentor-final .student-fab{position:fixed;right:24px;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:46;width:64px;height:64px;border:0;border-radius:50%;display:grid;place-items:center;background:var(--brand-700);color:white;box-shadow:0 8px 24px #0b1f3533;cursor:pointer}
+.mentory .mentor-final .student-fab:hover{background:var(--navy-900)}
+.mentory .student-modal-form{display:grid;gap:20px;padding:20px 24px 24px}
+.mentory .student-modal-form p{margin:0;font-size:14px}
+.mentory .student-modal-form fieldset{border:0;padding:0;margin:0;min-width:0;display:grid;gap:18px}
+.mentory .student-modal-form label{display:grid;gap:7px;font-size:14px;font-weight:600}
+.mentory .student-modal-form small{font-weight:400;color:var(--muted)}
+.mentory .student-modal-form .student-access-summary{display:grid;gap:10px;background:var(--brand-50);border-radius:12px;padding:16px}
+.mentory .student-modal-form .student-confirm{display:flex;align-items:flex-start;gap:10px;font-weight:400}
+.mentory .student-confirm input{width:18px;height:18px;flex:none;accent-color:var(--brand-700);margin-top:2px}
+.mentory .student-modal-form footer{display:flex;justify-content:flex-end;gap:12px;border-top:1px solid var(--border);padding-top:18px}
+@media(max-width:700px){.mentory .students-list-heading{padding:18px 16px 10px}.mentory .students-toolbar{padding:10px 16px 18px}.mentory .students-toolbar select{flex:1}.mentory .students-table{min-width:0}.mentory .students-table thead{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}.mentory .students-table tbody,.mentory .students-table tr{display:block}.mentory .students-table tr{padding:16px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:10px}.mentory .students-table td,.mentory .students-table td:first-child{display:block;padding:0;border:0}.mentory .students-table td:first-child,.mentory .students-table td:last-child{grid-column:1/-1}.mentory .students-table td:nth-child(4):before{content:'Vence: ';color:var(--muted)}.mentory .students-table td:last-child .btn{width:100%}.mentory .student-modal-form{padding:16px}.mentory .student-modal-form footer>*{flex:1}}
