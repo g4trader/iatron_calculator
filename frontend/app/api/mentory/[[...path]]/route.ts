@@ -86,7 +86,7 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
       if (!write && path[2] === 'hls' && path.length === 5 && ['staff','student'].includes(path[3])) {
         const filename = path[4];
         const source = await readHlsObject(lesson.videoAssetId || '', filename);
-        const type = filename.endsWith('.m3u8') ? 'application/vnd.apple.mpegurl' : filename.endsWith('.ts') ? 'video/mp2t' : 'application/octet-stream';
+        const type = filename === 'thumbnail.jpg' ? 'image/jpeg' : filename.endsWith('.m3u8') ? 'application/vnd.apple.mpegurl' : filename.endsWith('.ts') ? 'video/mp2t' : 'application/octet-stream';
         return new NextResponse(source.body, { headers: { ...headers, 'Content-Type': type, 'Cross-Origin-Resource-Policy': 'same-origin' } });
       }
       if (!write && path[2] === 'video') {
