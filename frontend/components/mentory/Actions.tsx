@@ -12,10 +12,10 @@ export function ProgressControl({ id, duration, position, completed }: { id: str
   async function save(done?: boolean) { setBusy(true); try { const r = await fetch(`/api/mentory/lessons/${id}/progress`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lastPositionSeconds: seconds, ...(done === undefined ? {} : { completed: done }) }) }); const data = await r.json(); if (!r.ok) throw new Error(data.error); setMessage('Progresso salvo.'); router.refresh(); } catch(e) { setMessage(e instanceof Error ? e.message : 'Falha ao salvar.'); } finally { setBusy(false); } }
   return <section className="panel"><h3>Seu progresso</h3><label>Retomar no segundo<input type="number" min={0} max={duration} value={seconds} onChange={e => setSeconds(Number(e.target.value))}/></label><div className="row-actions"><button className="btn btn-outline" disabled={busy} onClick={() => save()}>Salvar posição</button><button className="btn btn-primary" disabled={busy} onClick={() => save(!completed)}>{completed ? 'Marcar como não concluída' : 'Marcar como concluída'}</button></div><p role="status">{message}</p></section>;
 }
-export function VideoPlayer({ id, preview, position }: { id: string; preview: boolean; position: number }) {
+export function VideoPlayer({ id, preview, position, posterVersion = 0 }: { id: string; preview: boolean; position: number; posterVersion?: number }) {
   const video = useRef<HTMLVideoElement>(null);
   const [posterFailed,setPosterFailed]=useState(false);
-  const poster='/api/mentory/lessons/'+encodeURIComponent(id)+'/hls/'+(preview?'staff':'student')+'/thumbnail.jpg';
+  const poster='/api/mentory/lessons/'+encodeURIComponent(id)+'/thumbnail?preview='+(preview?'1':'0')+'&v='+posterVersion;
   useEffect(()=>setPosterFailed(false),[poster]);
   const [rate, setRate] = useState('1');
   useEffect(() => { try { const value=localStorage.getItem(playbackPreferenceKey); if(playbackRates.includes(value as typeof playbackRates[number])) setRate(value!); } catch {} }, []);
