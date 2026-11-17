@@ -1,3 +1,4 @@
+import { readHlsObject } from './hls';
 import { verifiedMedia } from './gcs-video';
 import 'server-only';
 import { z } from 'zod';
@@ -22,6 +23,7 @@ export async function mutate(actor: Identity, input: unknown) {
   if (!parsed.success) throw new MentoryError(400, 'Dados inválidos. Verifique os campos.');
   const v = parsed.data;
   if (v.action === 'lesson.save') {
+    if (v.videoAssetId.startsWith('hls_')) { const r = await readHlsObject(v.videoAssetId, 'index.m3u8'); await r.body?.cancel(); }
     if (v.videoAssetId.startsWith('gcs_')) await verifiedMedia(v.videoAssetId, 'video');
     if (v.captionsAssetId.startsWith('gcs_')) await verifiedMedia(v.captionsAssetId, 'captions');
   }
@@ -73,7 +75,7 @@ export async function mutate(actor: Identity, input: unknown) {
         await tx.mentoryLesson.update({ where: { id: v.id }, data: { status: v.publish ? 'PUBLISHED' : 'DRAFT' } });
       } else {
         const lessons = await tx.mentoryLesson.findMany({ where: { moduleId: v.id } });
-        if (v.publish && (!lessons.length || lessons.some(l => l.status !== 'PUBLISHED'))) throw new MentoryError(423, 'Publique as aulas revisadas antes do módulo.');
+        if (v.publish && (!lessons.some(l => l.status === 'PUBLISHED'))) throw new MentoryError(423, 'Publique ao menos uma aula revisada antes de liberar o módulo.');
         await tx.mentoryModule.update({ where: { id: v.id }, data: { status: v.publish ? 'PUBLISHED' : 'DRAFT' } });
       }
     } else if (v.action === 'role') {

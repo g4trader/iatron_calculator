@@ -1,3 +1,5 @@
+import { startHlsImport, listDriveVideos } from '@/lib/mentory/hls-jobs';
+import { readHlsObject } from '@/lib/mentory/hls';
 import { beginMediaUpload, finishMediaUpload, readCaptions } from '@/lib/mentory/gcs-video';
 import { NextRequest, NextResponse } from 'next/server';
 import { createHash } from 'node:crypto';
@@ -29,13 +31,28 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
     }
     await limited(actor.id, write);
     const path = (await context.params).path || [];
-    const preview = req.nextUrl.searchParams.get('preview') === '1';
+    const preview = path[2] === 'hls' ? path[3] === 'staff' : req.nextUrl.searchParams.get('preview') === '1';
     if (req.nextUrl.searchParams.has('userId')) throw new MentoryError(403, 'Consulta restrita ao titular autenticado.');
     if (write && path.join('/') === 'community/settings') return json(await saveCommunity(actor, await req.json()));
     if (write && path.join('/') === 'community/join') return json(await openCommunity(actor, await req.json()));
     if (!write && path.join('/') === 'admin/content') return json(await adminData(actor, undefined, 'conteudo'));
     if (write && path.join('/') === 'admin') return json(await mutate(actor, await req.json()));
     if (write && path.join('/') === 'checkout') return json(await mentoryPayment.checkout());
+    if (!write && path.join('/') === 'media/drive') {
+      if (!actor.editor) throw new MentoryError(403, 'Permissão editorial necessária.');
+      return json(await listDriveVideos());
+    }
+    if (path.join('/') === 'media/hls') {
+      if (!actor.editor) throw new MentoryError(403, 'Permissão editorial necessária.');
+      if (write) {
+        const result = await startHlsImport((await req.json()).fileId);
+        await prisma.mentoryAuditLog.create({ data: { actorId: actor.id, action: 'media.hls.start', entityId: result.id, metadata: {} } });
+        return json(result, 202);
+      }
+      const id = req.nextUrl.searchParams.get('id') || '';
+      try { const r = await readHlsObject(id, 'index.m3u8'); await r.body?.cancel(); return json({ ready: true }); }
+      catch(e) { if (e instanceof MentoryError && e.status === 404) return json({ ready: false }); throw e; }
+    }
     if (write && ['media/start', 'media/finish'].includes(path.join('/'))) {
       if (!actor.editor) throw new MentoryError(403, 'Permissão editorial necessária.');
       const body = await req.json();
@@ -66,7 +83,17 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
     if (!write && path.join('/') === 'progress') return json(await prisma.mentoryLessonProgress.findMany({ where: { userId: actor.id } }));
     if (path[0] === 'lessons' && path[1]) {
       const lesson = await lessonAccess(actor, path[1], preview);
+      if (!write && path[2] === 'hls' && path.length === 5 && ['staff','student'].includes(path[3])) {
+        const filename = path[4];
+        const source = await readHlsObject(lesson.videoAssetId || '', filename);
+        const type = filename.endsWith('.m3u8') ? 'application/vnd.apple.mpegurl' : filename.endsWith('.ts') ? 'video/mp2t' : 'application/octet-stream';
+        return new NextResponse(source.body, { headers: { ...headers, 'Content-Type': type, 'Cross-Origin-Resource-Policy': 'same-origin' } });
+      }
       if (!write && path[2] === 'video') {
+        if (lesson.videoAssetId?.startsWith('hls_')) {
+          await readHlsObject(lesson.videoAssetId, 'index.m3u8').then(r => r.body?.cancel());
+          return json({ url: `/api/mentory/lessons/${lesson.id}/hls/${preview ? 'staff' : 'student'}/index.m3u8`, kind: 'hls', watermark: preview ? 'Prévia editorial' : 'Aluno '+createHash('sha256').update(actor.id).digest('hex').slice(0,12), captions: lesson.captionsAssetId?.startsWith('gcs_') ? `/api/mentory/lessons/${lesson.id}/captions?preview=${preview ? '1' : '0'}` : null });
+        }
         const subscription = await subscriptionFor(actor.id);
         return json({ url: await videoPlayback(lesson.videoAssetId, preview ? new Date(Date.now() + 300000) : subscription!.expiresAt), kind: lesson.videoAssetId?.startsWith('gcs_') ? 'mp4' : 'iframe', captions: lesson.captionsAssetId?.startsWith('gcs_') ? `/api/mentory/lessons/${lesson.id}/captions?preview=${preview ? '1' : '0'}` : null });
       }
