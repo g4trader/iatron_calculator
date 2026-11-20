@@ -59,7 +59,7 @@ export function RegisterForm({ mentory = false }: { mentory?: boolean } = {}) {
       </label>
       <label className={mentory ? "mentory-register-field" : "grid gap-2 text-sm font-semibold text-slate-300"}>
         Senha
-        <input className={mentory ? "mentory-register-input" : "h-12 rounded-md border border-cyan-300/15 bg-slate-950 px-4 text-white outline-none transition focus:border-cyan-300/60"} name="password type="password" autoComplete="new-password" minLength={10} required disabled={isPending} />
+        <input className={mentory ? "mentory-register-input" : "h-12 rounded-md border border-cyan-300/15 bg-slate-950 px-4 text-white outline-none transition focus:border-cyan-300/60"} name="password" type="password" autoComplete="new-password" minLength={10} required disabled={isPending} />
       </label>
       <p className={mentory ? "mentory-register-help" : "text-xs leading-5 text-slate-500"}>Use pelo menos 10 caracteres. Após confirmar o e-mail, siga para a próxima etapa do cadastro.</p>
       {error ? <p className={mentory ? "mentory-register-error" : "text-sm font-semibold text-red-200"}>{error}</p> : null}
