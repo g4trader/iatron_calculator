@@ -120,7 +120,7 @@ export async function verifyEmailToken(token: string) {
       select: { user: { select: { email: true } } }
     });
     const { sendEmail } = await import('@/lib/email');
-    const destinations = [...new Set(managers.map(m => m.user.email).filter((email): email is string => Boolean(email)))];
+    const destinations = Array.from(new Set(managers.map(m => m.user.email).filter((email): email is string => Boolean(email))));
     await Promise.allSettled(destinations.map(to => sendEmail({
       to,
       subject: 'Ped Expert Mentory — novo cadastro aguardando matrícula',
