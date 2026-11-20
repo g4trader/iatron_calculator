@@ -74,19 +74,19 @@ export async function adminData(actor: Identity, filter: { query: string; status
   const studentWhere: Prisma.MentoryRoleGrantWhereInput = { role: 'mentory_student', user: { ...userFilter, ...(filter.status ? { mentoryEnrollments: { some: { subscription: statusFilter } } } : {}) } };
   const subscriptionWhere: Prisma.MentorySubscriptionWhereInput = { ...statusFilter, user: userFilter };
   const skip = (filter.page - 1) * 50;
-  if (!actor.editor) throw new MentoryError(403, 'Permissão Ped Expert Mentory necessária.');
+  if (!actor.editor && !(actor.enrollmentManager && section === 'alunos')) throw new MentoryError(403, 'Permissão Ped Expert Mentory necessária.');
   const [modules, students, subscriptions, audit, studentCount, subscriptionCount, moduleCount, publishedLessonCount] = await Promise.all([
     section === 'conteudo' ? prisma.mentoryModule.findMany({ orderBy: [{ position: 'asc' }, { id: 'asc' }], include: { lessons: { orderBy: [{ position: 'asc' }, { id: 'asc' }], include: { materials: { orderBy: [{ position: 'asc' }, { id: 'asc' }] } } } } }) : Promise.resolve([]),
-    actor.admin && section === 'alunos' ? prisma.mentoryRoleGrant.findMany({ where: studentWhere, orderBy: { userId: 'asc' }, skip, select: { user: { select: { id: true, name: true, email: true, mentoryEnrollments: { select: { status: true, subscription: { select: { startedAt: true, expiresAt: true, status: true, renewalTermsVersion: true } } } } } } }, take: 50 }) : Promise.resolve([]),
+    actor.enrollmentManager && section === 'alunos' ? prisma.mentoryRoleGrant.findMany({ where: studentWhere, orderBy: { userId: 'asc' }, skip, select: { user: { select: { id: true, name: true, email: true, mentoryEnrollments: { select: { status: true, subscription: { select: { startedAt: true, expiresAt: true, status: true, renewalTermsVersion: true } } } } } } }, take: 50 }) : Promise.resolve([]),
     actor.admin && section === 'assinaturas' ? prisma.mentorySubscription.findMany({ where: subscriptionWhere, skip, orderBy: { expiresAt: 'desc' }, take: 50, include: { user: { select: { name: true, email: true } } } }) : Promise.resolve([]),
     actor.admin && !section ? prisma.mentoryAuditLog.findMany({ orderBy: { timestamp: 'desc' }, take: 100, select: { id: true, action: true, entityId: true, timestamp: true } }) : Promise.resolve([]),
-    actor.admin && (!section || section === 'alunos') ? prisma.mentoryRoleGrant.count({ where: studentWhere }) : Promise.resolve(0),
+    (actor.admin || actor.enrollmentManager && section === 'alunos') && (!section || section === 'alunos') ? prisma.mentoryRoleGrant.count({ where: studentWhere }) : Promise.resolve(0),
     actor.admin && section === 'assinaturas' ? prisma.mentorySubscription.count({ where: subscriptionWhere }) : Promise.resolve(0),
     !section ? prisma.mentoryModule.count() : Promise.resolve(0),
     !section ? prisma.mentoryLesson.count({ where: { status: 'PUBLISHED' } }) : Promise.resolve(0)
   ]);
   // Eligible existing accounts, not evidence of payment. Admin must confirm it.
-  const pendingRegistrations = actor.admin && section === 'alunos'
+  const pendingRegistrations = actor.enrollmentManager && section === 'alunos'
     ? await prisma.user.findMany({
         where: {
           emailVerified: { not: null },
