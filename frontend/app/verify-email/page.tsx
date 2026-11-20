@@ -21,7 +21,7 @@ export default async function VerifyEmailPage({ searchParams }: { searchParams?:
           <h1 className="text-3xl font-black text-white">{result.ok ? "Email verificado." : rateLimited ? "Muitas tentativas." : "Link inválido ou expirado."}</h1>
           <p className="mt-3 text-sm leading-6 text-slate-400">
             {result.ok
-              ? result.mentory ? "E-mail confirmado! Entre na Ped Expert Mentory para enviar o comprovante de pagamento. As aulas permanecem bloqueadas até a aprovação da matrícula." : "Sua conta foi liberada. Você já pode entrar na plataforma clínica."
+              ? ('mentory' in result && result.mentory) ? "E-mail confirmado! Entre na Ped Expert Mentory para enviar o comprovante de pagamento. As aulas permanecem bloqueadas até a aprovação da matrícula." : "Sua conta foi liberada. Você já pode entrar na plataforma clínica."
               : rateLimited
                 ? "Aguarde alguns minutos antes de tentar verificar novamente."
                 : "Solicite um novo cadastro ou entre em contato com o suporte quando disponível."}
