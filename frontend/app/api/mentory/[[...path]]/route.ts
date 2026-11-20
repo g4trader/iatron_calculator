@@ -45,8 +45,9 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
       const days=Number(body.days);
       if(type!=='commercial'&&(!Number.isInteger(days)||days<1||days>730))throw new MentoryError(400,'Informe de 1 a 730 dias.');
       const result=await prisma.$transaction(async tx=>{
-        const user=await tx.user.findFirst({where:{email:{equals:email,mode:'insensitive'}},select:{id:true}});
+        const user=await tx.user.findFirst({where:{email:{equals:email,mode:'insensitive'}},select:{id:true,emailVerified:true}});
         if(!user)throw new MentoryError(404,'O aluno precisa criar sua conta Pediatron antes da liberação.');
+        if(type==='commercial'&&!user.emailVerified)throw new MentoryError(409,'O aluno precisa confirmar o e-mail antes da aprovação do pagamento.');
         const now=new Date();
         const current=await tx.mentorySubscription.findFirst({where:{userId:user.id,status:'ACTIVE',expiresAt:{gt:now}},orderBy:{expiresAt:'desc'}});
         if(current&&body.renew!==true)throw new MentoryError(409,'Já existe acesso ativo. Use a renovação para estender a vigência.');
