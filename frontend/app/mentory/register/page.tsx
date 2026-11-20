@@ -8,7 +8,7 @@ export default async function MentoryRegister(){
   if(await getCurrentUser())redirect('/mentory/aprender');
   return <main className="mentory-auth-page">
     <section className="mentory-auth-intro">
-      <Link href="/mentory" className="mentory-auth-brand"><GraduationCap size={28}/> Ped Expert Mentory</Link>
+      <Link href="/mentory" className="mentory-auth-brand"><img src="/images/mentory-logo-dark.svg" alt="Ped Expert Mentory" style={{width:270,maxWidth:"100%",height:"auto"}}/></Link>
       <span className="mentory-auth-eyebrow">SUA JORNADA COMEÇA AQUI</span>
       <h1>Aprenda com segurança. Evolua na prática.</h1>
       <p>Uma única conta para acompanhar sua formação e acessar os recursos incluídos na sua mentoria.</p>
