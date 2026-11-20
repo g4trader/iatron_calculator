@@ -8,7 +8,8 @@ export const runtime = "nodejs";
 const registerSchema = z.object({
   name: z.string().trim().min(2, "Informe seu nome.").max(120).optional(),
   email: z.string().trim().email("Informe um email válido."),
-  password: z.string().min(10, "A senha deve ter pelo menos 10 caracteres.").max(128)
+  password: z.string().min(10, "A senha deve ter pelo menos 10 caracteres.").max(128),
+  context: z.enum(["mentory"]).optional()
 });
 
 export async function POST(request: Request) {
