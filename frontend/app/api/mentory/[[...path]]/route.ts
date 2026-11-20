@@ -37,7 +37,7 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
     if (write && path.join('/') === 'community/join') return json(await openCommunity(actor, await req.json()));
     if (!write && path.join('/') === 'admin/content') return json(await adminData(actor, undefined, 'conteudo'));
     if (write && path.join('/') === 'admin/student-access') {
-      if(!actor.admin) throw new MentoryError(403,'Apenas administradores podem liberar acessos.');
+      if(!actor.enrollmentManager) throw new MentoryError(403,'Apenas responsáveis por matrículas podem liberar acessos.');
       const body=await req.json();
       const email=typeof body.email==='string'?body.email.trim().toLowerCase():'';
       const type=body.type;
@@ -48,6 +48,11 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
         const user=await tx.user.findFirst({where:{email:{equals:email,mode:'insensitive'}},select:{id:true,emailVerified:true}});
         if(!user)throw new MentoryError(404,'O aluno precisa criar sua conta Pediatron antes da liberação.');
         if(type==='commercial'&&!user.emailVerified)throw new MentoryError(409,'O aluno precisa confirmar o e-mail antes da aprovação do pagamento.');
+        if(type==='commercial'){
+          const proofId='mentory_payment_'+createHash('sha256').update(user.id).digest('hex');
+          const proof=await tx.mentoryPrivateAsset.findUnique({where:{id:proofId},select:{checksum:true}});
+          if(!proof)throw new MentoryError(409,'Anexe o comprovante de pagamento antes de aprovar a matrícula.');
+        }
         const now=new Date();
         const current=await tx.mentorySubscription.findFirst({where:{userId:user.id,status:'ACTIVE',expiresAt:{gt:now}},orderBy:{expiresAt:'desc'}});
         if(current&&body.renew!==true)throw new MentoryError(409,'Já existe acesso ativo. Use a renovação para estender a vigência.');
