@@ -214,3 +214,40 @@
 .mentory .student-confirm input{width:18px;height:18px;flex:none;accent-color:var(--brand-700);margin-top:2px}
 .mentory .student-modal-form footer{display:flex;justify-content:flex-end;gap:12px;border-top:1px solid var(--border);padding-top:18px}
 @media(max-width:700px){.mentory .students-list-heading{padding:18px 16px 10px}.mentory .students-toolbar{padding:10px 16px 18px}.mentory .students-toolbar select{flex:1}.mentory .students-table{min-width:0}.mentory .students-table thead{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}.mentory .students-table tbody,.mentory .students-table tr{display:block}.mentory .students-table tr{padding:16px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:10px}.mentory .students-table td,.mentory .students-table td:first-child{display:block;padding:0;border:0}.mentory .students-table td:first-child,.mentory .students-table td:last-child{grid-column:1/-1}.mentory .students-table td:nth-child(4):before{content:'Vence: ';color:var(--muted)}.mentory .students-table td:last-child .btn{width:100%}.mentory .student-modal-form{padding:16px}.mentory .student-modal-form footer>*{flex:1}}
+
+/* Mentory registration and bonus navigation */
+.mentory .mentor-final .bonus-menu{margin-top:8px;color:#e1ebf4}
+.mentory .mentor-final .bonus-menu summary{list-style:none;cursor:pointer;display:flex;align-items:center}
+.mentory .mentor-final .bonus-menu summary::-webkit-details-marker{display:none}
+.mentory .mentor-final .bonus-menu summary>svg:last-child{margin-left:auto}
+.mentory .mentor-final .bonus-menu[open] summary>svg:last-child{transform:rotate(180deg)}
+.mentory .mentor-final .bonus-subnav{display:grid;gap:2px;margin:4px 0 8px 18px;padding-left:12px;border-left:1px solid #54708b}
+.mentory .mentor-final .bonus-subnav a{display:flex;align-items:center;gap:9px;min-height:40px;padding:7px 9px;color:#d6e7f3;border-radius:7px;font-size:13px}
+.mentory .mentor-final .bonus-subnav a:hover,.mentory .mentor-final .bonus-subnav a.active{background:#1d4563;color:#fff}
+.mentory .mentory-auth-page{min-height:100dvh;display:grid;grid-template-columns:minmax(0,1fr) minmax(390px,1fr);background:#f5f8fc}
+.mentory .mentory-auth-intro{background:linear-gradient(145deg,#0b2038,#0967ae);color:#fff;padding:clamp(32px,6vw,100px);display:flex;flex-direction:column;justify-content:center;gap:22px}
+.mentory .mentory-auth-brand{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:800;color:#fff}
+.mentory .mentory-auth-eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;color:#0874ad}
+.mentory .mentory-auth-intro .mentory-auth-eyebrow{color:#a7defe}
+.mentory .mentory-auth-intro h1{font-size:clamp(32px,4vw,58px);max-width:630px;margin:0;line-height:1.12}
+.mentory .mentory-auth-intro p{font-size:17px;max-width:560px;color:#d6e7f3}
+.mentory .mentory-auth-intro ul{list-style:none;display:grid;gap:14px;padding:0;margin:10px 0}
+.mentory .mentory-auth-intro li{display:flex;align-items:center;gap:12px;font-weight:600}
+.mentory .mentory-auth-intro li svg{width:20px;height:20px;color:#a7defe}
+.mentory .mentory-auth-form-panel{display:grid;place-items:center;padding:32px 20px}
+.mentory .mentory-auth-card{width:min(100%,470px);padding:clamp(24px,4vw,44px);background:#fff;border:1px solid #dbe5ef;border-radius:20px;box-shadow:0 16px 48px #0b203810}
+.mentory .mentory-auth-card h2{font-size:29px;color:#14263e;margin:8px 0}
+.mentory .mentory-auth-card>p{color:#526780;margin:0 0 20px}
+.mentory .mentory-register-form{display:grid;gap:17px}
+.mentory .mentory-register-field{display:grid;gap:7px;color:#14263e;font-weight:650;font-size:14px}
+.mentory .mentory-register-input{height:48px;border:1px solid #b8c9d8;border-radius:10px;background:#fff;color:#14263e;padding:0 14px;outline:none}
+.mentory .mentory-register-input:focus{border-color:#0967ae;box-shadow:0 0 0 3px #0967ae20}
+.mentory .mentory-register-help{font-size:12px;color:#526780}
+.mentory .mentory-register-error{color:#b42318;font-size:14px}
+.mentory .mentory-register-success{background:#e7f5ec;color:#067647;padding:14px;border-radius:10px;font-size:14px}
+.mentory .mentory-register-submit{min-height:50px;border:0;border-radius:10px;background:#0967ae;color:#fff;font-weight:750}
+.mentory .mentory-register-submit:disabled{opacity:.6}
+.mentory .mentory-register-link{text-align:center;color:#0967ae;font-size:14px;font-weight:600}
+.mentory .mentory-auth-back{text-align:center;margin:14px 0 0!important}
+.mentory .mentory-auth-back a{color:#0967ae;font-weight:650}
+@media(max-width:800px){.mentory .mentory-auth-page{grid-template-columns:1fr}.mentory .mentory-auth-intro{padding:30px 24px;gap:12px}.mentory .mentory-auth-intro h1{font-size:29px}.mentory .mentory-auth-intro ul{display:none}.mentory .mentory-auth-form-panel{padding:24px 16px 44px}.mentory .mentory-auth-card{padding:26px 22px}}
