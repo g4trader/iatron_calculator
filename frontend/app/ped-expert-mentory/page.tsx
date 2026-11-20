@@ -42,7 +42,7 @@ export default function PedExpertMentoryPage() {
         <header className="mentory-nav">
           <div className="mentory-container mentory-nav-inner">
             <Link href="/ped-expert-mentory" className="mentory-logo" aria-label="Ped Expert Mentory, início">
-              <img src="/images/mentory-logo-oficial.png" alt="Ped Expert Mentory" />
+              <img src="/images/mentory-logo-dark.svg" alt="Ped Expert Mentory" />
             </Link>
             <nav aria-label="Navegação principal" className="mentory-nav-links">
               <a href="#inicio" className="active">Home</a>
