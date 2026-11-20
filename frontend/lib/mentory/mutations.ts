@@ -15,7 +15,7 @@ const schema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('reorder'), kind: z.enum(['module', 'lesson', 'material']), parentId: id.optional(), ids: z.array(id).max(500) }),
   z.object({ action: z.literal('publication'), kind: z.enum(['module', 'lesson']), id, publish: z.boolean() }),
   z.object({ action: z.literal('review'), id, reference: text }),
-  z.object({ action: z.literal('role'), userId: id, role: z.enum(['mentory_admin', 'mentory_editor', 'mentory_student']), grant: z.boolean() })
+  z.object({ action: z.literal('role'), userId: id, role: z.enum(['mentory_admin', 'mentory_editor', 'mentory_student', 'mentory_enrollment_manager']), grant: z.boolean() })
 ]);
 export async function mutate(actor: Identity, input: unknown) {
   if (!actor.editor) throw new MentoryError(403, 'Permissão Ped Expert Mentory necessária.');
