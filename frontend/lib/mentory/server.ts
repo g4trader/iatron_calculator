@@ -20,7 +20,7 @@ async function loadIdentity() {
   ]);
   if (!validSession || !user) throw new MentoryError(401, 'Entre para acessar a Ped Expert Mentory.');
   const roles = grants.map(g => g.role);
-  return { id: user.id, name: user.name, email: user.email, roles, admin: roles.includes('mentory_admin'), editor: roles.includes('mentory_admin') || roles.includes('mentory_editor'), student: roles.includes('mentory_student') };
+  return { id: user.id, name: user.name, email: user.email, roles, admin: roles.includes('mentory_admin'), editor: roles.includes('mentory_admin') || roles.includes('mentory_editor'), enrollmentManager: roles.includes('mentory_enrollment_manager') || roles.includes('mentory_admin'), student: roles.includes('mentory_student') };
 }
 export const identity = typeof cache === 'function' ? cache(loadIdentity) : loadIdentity;
 export type Identity = Awaited<ReturnType<typeof identity>>;
