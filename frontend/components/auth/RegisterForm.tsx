@@ -22,7 +22,8 @@ export function RegisterForm({ mentory = false }: { mentory?: boolean } = {}) {
         const payload = {
           name: String(formData.get("name") ?? ""),
           email: String(formData.get("email") ?? ""),
-          password: String(formData.get("password") ?? "")
+          password: String(formData.get("password") ?? ""),
+          ...(mentory ? { context: "mentory" } : {})
         };
 
         submitting.current = true;
