@@ -49,7 +49,7 @@ export async function sendVerificationEmail(email: string, token: string) {
   });
 }
 
-export async function registerUser(input: { name?: string; email: string; password: string }) {
+export async function registerUser(input: { name?: string; email: string; password: string; context?: "mentory" }) {
   const email = normalizeEmail(input.email);
   auditAuthEvent("register_requested", { email });
   const existing = await prisma.user.findUnique({ where: { email }, include: { passwordCredential: true } });
@@ -80,6 +80,9 @@ export async function registerUser(input: { name?: string; email: string; passwo
     }
   });
 
+  if (input.context === 'mentory') {
+    await trackFunnelEvent({ step: 'account_created', userId: user.id, source: 'mentory_registration', scope: 'mentory' });
+  }
   const token = await createEmailVerificationToken(user.id);
   await sendVerificationEmail(email, token);
   await trackFunnelEvent({ step: "account_created", userId: user.id, source: "register", scope: "account" }).catch(() => null);
