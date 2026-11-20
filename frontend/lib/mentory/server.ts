@@ -92,6 +92,7 @@ export async function adminData(actor: Identity, filter: { query: string; status
           emailVerified: { not: null },
           passwordCredential: { isNot: null },
           mentoryRoles: { none: { role: 'mentory_student' } },
+          funnelEvents: { some: { step: 'account_created', source: 'mentory_registration' } },
           ...(filter.query ? userFilter : {})
         },
         select: { id: true, name: true, email: true, emailVerified: true },
