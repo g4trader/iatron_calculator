@@ -39,7 +39,7 @@ export function RegisterForm({ mentory = false }: { mentory?: boolean } = {}) {
             setError(data.error ?? "Não foi possível criar a conta.");
             return;
           }
-          setSuccess(mentory ? 'Conta criada! Confira seu e-mail e confirme o endereço. A matrícula será ativada após a confirmação da contratação.' : data.message ?? 'Conta criada. Verifique seu email.');
+          setSuccess(mentory ? 'Conta criada! Confira seu e-mail e confirme o endereço, para ir pra próxima etapa.' : data.message ?? 'Conta criada. Verifique seu email.');
           form.reset();
         } catch {
           setError("Não foi possível confirmar o cadastro. Verifique seu email antes de tentar novamente.");
@@ -53,15 +53,15 @@ export function RegisterForm({ mentory = false }: { mentory?: boolean } = {}) {
         Nome
         <input className={mentory ? "mentory-register-input" : "h-12 rounded-md border border-cyan-300/15 bg-slate-950 px-4 text-white outline-none transition focus:border-cyan-300/60"} name="name" type="text" autoComplete="name" required disabled={isPending} />
       </label>
-      <label className="grid gap-2 text-sm font-semibold text-slate-300">
+      <label className={mentory ? "mentory-register-field" : "grid gap-2 text-sm font-semibold text-slate-300"}>
         Email
-        <input className="h-12 rounded-md border border-cyan-300/15 bg-slate-950 px-4 text-white outline-none transition focus:border-cyan-300/60" name="email" type="email" autoComplete="email" required disabled={isPending} />
+        <input className={mentory ? "mentory-register-input" : "h-12 rounded-md border border-cyan-300/15 bg-slate-950 px-4 text-white outline-none transition focus:border-cyan-300/60"} name="email" type="email" autoComplete="email" required disabled={isPending} />
       </label>
-      <label className="grid gap-2 text-sm font-semibold text-slate-300">
+      <label className={mentory ? "mentory-register-field" : "grid gap-2 text-sm font-semibold text-slate-300"}>
         Senha
-        <input className="h-12 rounded-md border border-cyan-300/15 bg-slate-950 px-4 text-white outline-none transition focus:border-cyan-300/60" name="password" type="password" autoComplete="new-password" minLength={10} required disabled={isPending} />
+        <input className={mentory ? "mentory-register-input" : "h-12 rounded-md border border-cyan-300/15 bg-slate-950 px-4 text-white outline-none transition focus:border-cyan-300/60"} name="password type="password" autoComplete="new-password" minLength={10} required disabled={isPending} />
       </label>
-      <p className={mentory ? "mentory-register-help" : "text-xs leading-5 text-slate-500"}>Use pelo menos 10 caracteres. O acesso será liberado após a verificação do email.</p>
+      <p className={mentory ? "mentory-register-help" : "text-xs leading-5 text-slate-500"}>Use pelo menos 10 caracteres. Após confirmar o e-mail, siga para a próxima etapa do cadastro.</p>
       {error ? <p className={mentory ? "mentory-register-error" : "text-sm font-semibold text-red-200"}>{error}</p> : null}
       {success ? <p className={mentory ? "mentory-register-success" : "rounded-md border border-emerald-300/20 bg-emerald-300/10 p-3 text-sm font-semibold text-emerald-100"}>{success}</p> : null}
       <button className={mentory ? "mentory-register-submit" : "h-12 rounded-md bg-cyan-300 text-sm font-black text-slate-950 transition hover:bg-cyan-200 disabled:opacity-70"} disabled={isPending} type="submit">
