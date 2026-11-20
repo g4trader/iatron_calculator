@@ -187,6 +187,36 @@ function denialPriority(entitlement: CommercialEntitlement) {
 }
 
 export async function getCommercialEntitlement(userId: string): Promise<CommercialEntitlement> {
+  // A verified, active commercial Mentory enrollment also licenses the clinical tools.
+  // Trial and courtesy grants are deliberately excluded from this paid benefit.
+  const mentoryEnrollment = await prisma.mentoryEnrollment.findFirst({
+    where: {
+      userId,
+      status: "ACTIVE",
+      subscription: {
+        status: "ACTIVE",
+        startedAt: { lte: new Date() },
+        expiresAt: { gt: new Date() },
+        renewalTermsVersion: { startsWith: "manual-commercial-" }
+      }
+    },
+    include: { subscription: { select: { expiresAt: true } } }
+  });
+  if (mentoryEnrollment) {
+    return {
+      ...emptyEntitlement(),
+      hasAccess: true,
+      blockReason: null,
+      accountType: "INDIVIDUAL",
+      plan: "PROFESSIONAL",
+      status: SubscriptionStatus.ACTIVE,
+      billingCycle: "SEMIANNUAL",
+      currentPeriodEnd: mentoryEnrollment.subscription.expiresAt,
+      licenseStatus: LicenseStatus.ACTIVE,
+      seatsPurchased: 1,
+      seatsUsed: 1
+    };
+  }
   const individualSubscription = await prisma.subscription.findFirst({
     where: {
       ownerType: SubscriptionOwnerType.USER,
