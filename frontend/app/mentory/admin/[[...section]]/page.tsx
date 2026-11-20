@@ -6,7 +6,7 @@ import { pageIdentity, adminData, type Identity } from '@/lib/mentory/server';
 export const dynamic = 'force-dynamic';
 async function AdminContent({ actor, filter, section }: { actor: Identity; filter: { query: string; status: string; page: number }; section: string }) {
   const data = JSON.parse(JSON.stringify(await adminData(actor, filter, section))) as AdminData;
-  return <Admin data={data} section={section} admin={actor.enrollmentManager}/>;
+  return <Admin data={data} section={section} admin={actor.enrollmentManager} canManageRoles={actor.admin}/>;
 }
 export default async function AdminPage({ params, searchParams }: { params: Promise<{ section?: string[] }>; searchParams: Promise<{ q?: string; status?: string; page?: string }> }) {
   const actor = await pageIdentity(); const parts = (await params).section || []; const section = parts.join('/');
