@@ -1,6 +1,7 @@
 "use client";
 import Link from './NavigationLink';
 import EditorDialog from './EditorDialog';
+import PaymentProof from './PaymentProof';
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plus, BookOpen, Users, FileVideo, ArrowRight, Search, RotateCw, UserRound, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -18,10 +19,12 @@ export default function Admin({ data, section, admin }: { data: AdminData; secti
   const [confirmed,setConfirmed]=useState(false);
   const lock=useRef(false);
   function openStudent(email='',renewal=false){
+    setStudentUserId('');
     setStudentEmail(email);setAccessType(renewal?'commercial':'trial');setAccessDays('30');setRenew(renewal);setConfirmed(false);setModalError('');setModal(true);
   }
   const [accessType,setAccessType]=useState('trial');
   const [studentEmail,setStudentEmail]=useState('');
+  const [studentUserId,setStudentUserId]=useState('');
   const [accessDays,setAccessDays]=useState('30');
   const [renew,setRenew]=useState(false);
   async function grantAccess(){
@@ -47,7 +50,7 @@ export default function Admin({ data, section, admin }: { data: AdminData; secti
       <section className="panel students-awaiting">
         <header className="students-list-heading"><div><h2>Contas aguardando matrícula</h2><p>Contas verificadas, ainda sem matrícula. A existência de uma conta não confirma pagamento.</p></div></header>
         {data.pendingRegistrations.length ? <div className="students-table-scroll"><table className="students-table"><thead><tr><th>Conta</th><th>E-mail verificado</th><th>Ação</th></tr></thead><tbody>
-          {data.pendingRegistrations.map(u=><tr key={u.id}><td><div className="student-identity"><span className="student-avatar"><UserRound size={20}/></span><div><strong>{u.name||'Aluno'}</strong><small>{u.email}</small></div></div></td><td>{u.emailVerified?date(u.emailVerified):'—'}</td><td><button type="button" className="btn btn-primary" disabled={busy||!u.email} onClick={()=>{openStudent(u.email||'');setAccessType('commercial');}}>Aprovar pagamento e ativar</button></td></tr>)}
+          {data.pendingRegistrations.map(u=><tr key={u.id}><td><div className="student-identity"><span className="student-avatar"><UserRound size={20}/></span><div><strong>{u.name||'Aluno'}</strong><small>{u.email}</small></div></div></td><td>{u.emailVerified?date(u.emailVerified):'—'}</td><td><button type="button" className="btn btn-primary" disabled={busy||!u.email} onClick={()=>{openStudent(u.email||'');setStudentUserId(u.id);setAccessType('commercial');}}>Aprovar pagamento e ativar</button></td></tr>)}
         </tbody></table></div> : <p className="notice">Nenhuma conta verificada sem matrícula encontrada nesta consulta.</p>}
       </section>
       <section className="panel students-list">
@@ -69,7 +72,7 @@ export default function Admin({ data, section, admin }: { data: AdminData; secti
         })}</tbody></table></div>:<div className="students-empty"><Users size={36}/><h3>{data.filter.query||data.filter.status?'Nenhum resultado encontrado':'Nenhum aluno cadastrado'}</h3><p>{data.filter.query||data.filter.status?'Tente alterar os filtros.':'Use o botão + para liberar o primeiro acesso.'}</p></div>}
         {count>50&&<footer className="students-pagination"><span>Página {data.filter.page} de {Math.ceil(count/50)}</span><button aria-label="Página anterior" className="btn btn-outline" disabled={data.filter.page<=1} onClick={()=>navigate(data.filter.page-1)}><ChevronLeft size={18}/></button><button aria-label="Próxima página" className="btn btn-outline" disabled={data.filter.page*50>=count} onClick={()=>navigate(data.filter.page+1)}><ChevronRight size={18}/></button></footer>}
       </section>
-      <details className="panel students-advanced"><summary>Permissões avançadas</summary><form className="form-grid" onSubmit={e=>{e.preventDefault();const f=new FormData(e.currentTarget);void send({action:'role',userId:f.get('userId'),role:f.get('role'),grant:f.get('grant')==='true'});}}><label>ID de usuário<input name="userId" required/></label><label>Permissão<select name="role"><option value="mentory_student">Aluno</option><option value="mentory_editor">Editor</option><option value="mentory_admin">Administrador</option></select></label><label>Ação<select name="grant"><option value="true">Conceder</option><option value="false">Revogar</option></select></label><button className="btn btn-outline" disabled={busy}>Salvar permissão</button></form></details>
+      <details className="panel students-advanced"><summary>Permissões avançadas</summary><form className="form-grid" onSubmit={e=>{e.preventDefault();const f=new FormData(e.currentTarget);void send({action:'role',userId:f.get('userId'),role:f.get('role'),grant:f.get('grant')==='true'});}}><label>ID de usuário<input name="userId" required/></label><label>Permissão<select name="role"><option value="mentory_student">Aluno</option><option value="mentory_editor">Editor</option><option value="mentory_admin">Administrador</option><option value="mentory_enrollment_manager">Responsável por matrículas</option></select></label><label>Ação<select name="grant"><option value="true">Conceder</option><option value="false">Revogar</option></select></label><button className="btn btn-outline" disabled={busy}>Salvar permissão</button></form></details>
       <button type="button" className="student-fab" aria-label="Cadastrar aluno" title="Cadastrar aluno" onClick={()=>openStudent()}><Plus size={32}/></button>
       {modal&&<EditorDialog title={renew?'Renovar acesso':'Cadastrar aluno'} close={()=>{if(!lock.current)setModal(false);}}><form className="student-modal-form" onSubmit={e=>{e.preventDefault();void grantAccess();}}>
         <p>Vincule uma conta Pediatron à mentoria e defina a vigência do acesso.</p>
@@ -77,6 +80,7 @@ export default function Admin({ data, section, admin }: { data: AdminData; secti
         <label>Tipo de acesso<select value={accessType} disabled={renew} onChange={e=>{setAccessType(e.target.value);setConfirmed(false);}}><option value="trial">Experimental</option><option value="courtesy">Cortesia</option><option value="commercial">Assinatura comercial</option></select></label>
         {accessType==='commercial'?<div className="student-access-summary"><strong>6 meses de acesso</strong><p>{renew?'A vigência será prorrogada a partir do vencimento atual ou de hoje, se expirada.':'A vigência começa na liberação.'}</p><label className="student-confirm"><input type="checkbox" required checked={confirmed} onChange={e=>setConfirmed(e.target.checked)}/> Confirmo a contratação ou renovação realizada externamente.</label></div>:<label>Período de acesso (dias)<input type="number" min={1} max={730} required value={accessDays} onChange={e=>setAccessDays(e.target.value)}/><small>O acesso termina automaticamente após a vigência.</small></label>}
         </fieldset>
+        {accessType==='commercial'&&studentUserId?<PaymentProof userId={studentUserId} manager/>:accessType==='commercial'?<p className="notice">O aluno deve enviar o comprovante na própria conta. Para anexar pelo painel, selecione o cadastro na fila de matrículas.</p>:null}
         {modalError&&<p role="alert" className="field-error">{modalError}</p>}
         <footer><button type="button" className="btn btn-outline" disabled={busy} onClick={()=>setModal(false)}>Cancelar</button><button className="btn btn-primary" disabled={busy||(accessType==='commercial'&&!confirmed)}>{busy?'Salvando…':renew?'Confirmar renovação':'Liberar acesso'}</button></footer>
       </form></EditorDialog>}
