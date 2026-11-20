@@ -128,7 +128,7 @@ export async function verifyEmailToken(token: string) {
     })));
   }
   auditAuthEvent("email_verified", { userId: storedToken.userId });
-  return { ok: true as const };
+  return { ok: true as const, mentory: Boolean(intent) };
 }
 
 export async function requestPasswordReset(emailInput: string) {
