@@ -85,5 +85,19 @@ export async function adminData(actor: Identity, filter: { query: string; status
     !section ? prisma.mentoryModule.count() : Promise.resolve(0),
     !section ? prisma.mentoryLesson.count({ where: { status: 'PUBLISHED' } }) : Promise.resolve(0)
   ]);
-  return { modules, students, subscriptions, audit, filter, studentCount, subscriptionCount, moduleCount, publishedLessonCount };
+  // Eligible existing accounts, not evidence of payment. Admin must confirm it.
+  const pendingRegistrations = actor.admin && section === 'alunos'
+    ? await prisma.user.findMany({
+        where: {
+          emailVerified: { not: null },
+          passwordCredential: { isNot: null },
+          mentoryRoles: { none: { role: 'mentory_student' } },
+          ...(filter.query ? userFilter : {})
+        },
+        select: { id: true, name: true, email: true, emailVerified: true },
+        orderBy: { emailVerified: 'desc' },
+        take: 50
+      })
+    : [];
+  return { modules, students, subscriptions, audit, filter, studentCount, subscriptionCount, moduleCount, publishedLessonCount, pendingRegistrations };
 }
