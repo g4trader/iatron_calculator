@@ -107,6 +107,26 @@ export async function verifyEmailToken(token: string) {
     })
   ]);
 
+  // A verified Mentory registration enters the manual-payment review workflow.
+  // Notification failure must not undo a successful email verification.
+  const intent = await prisma.funnelEvent.findFirst({
+    where: { userId: storedToken.userId, step: 'account_created', source: 'mentory_registration' },
+    select: { id: true }
+  });
+  if (intent) {
+    const student = await prisma.user.findUnique({ where: { id: storedToken.userId }, select: { name: true, email: true } });
+    const managers = await prisma.mentoryRoleGrant.findMany({
+      where: { role: 'mentory_enrollment_manager' },
+      select: { user: { select: { email: true } } }
+    });
+    const { sendEmail } = await import('@/lib/email');
+    const destinations = [...new Set(managers.map(m => m.user.email).filter((email): email is string => Boolean(email)))];
+    await Promise.allSettled(destinations.map(to => sendEmail({
+      to,
+      subject: 'Ped Expert Mentory — novo cadastro aguardando matrícula',
+      text: `Novo cadastro verificado: ${student?.name || 'Aluno'} (${student?.email || 'sem e-mail'}). Consulte a fila de matrículas em https://www.pediatron.com.br/mentory/admin/alunos. Verifique o pagamento antes de ativar.`
+    })));
+  }
   auditAuthEvent("email_verified", { userId: storedToken.userId });
   return { ok: true as const };
 }
