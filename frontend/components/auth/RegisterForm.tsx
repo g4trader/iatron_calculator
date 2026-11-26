@@ -65,9 +65,9 @@ export function RegisterForm({ mentory = false }: { mentory?: boolean } = {}) {
       </label>
       {mentory && <>
         <label className="mentory-register-field">WhatsApp com DDD<input className="mentory-register-input" name="whatsapp" type="tel" autoComplete="tel" required disabled={isPending}/></label>
-        <label><input type="checkbox" name="terms" required disabled={isPending}/> Aceito os <Link href="/mentory/termos" target="_blank">termos de uso</Link>.</label>
-        <label><input type="checkbox" name="privacy" required disabled={isPending}/> Li a <Link href="/mentory/privacidade" target="_blank">política de privacidade</Link>.</label>
-        <label><input type="checkbox" name="marketing" disabled={isPending}/> Aceito receber comunicações comerciais (opcional).</label>
+        <label className="mentory-consent"><input type="checkbox" name="terms" required disabled={isPending}/><span>Aceito os <Link href="/mentory/termos" target="_blank">termos de uso</Link>.</span></label>
+        <label className="mentory-consent"><input type="checkbox" name="privacy" required disabled={isPending}/><span>Li a <Link href="/mentory/privacidade" target="_blank">política de privacidade</Link>.</span></label>
+        <label className="mentory-consent"><input type="checkbox" name="marketing" disabled={isPending}/><span>Aceito receber comunicações comerciais (opcional).</span></label>
       </>}
       {communityUrl && <a className="mentory-register-submit" href={communityUrl} target="_blank" rel="noopener noreferrer">Entrar na comunidade aberta</a>}
       <p className={mentory ? "mentory-register-help" : "text-xs leading-5 text-slate-500"}>Use pelo menos 10 caracteres. Após confirmar o e-mail, siga para a próxima etapa do cadastro.</p>
