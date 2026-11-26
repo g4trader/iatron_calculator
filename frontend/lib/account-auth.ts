@@ -129,7 +129,7 @@ export async function verifyEmailToken(token: string) {
   if (intent) {
     const student = await prisma.user.findUnique({ where: { id: storedToken.userId }, select: { name: true, email: true } });
     const managers = await prisma.mentoryRoleGrant.findMany({
-      where: { role: 'mentory_enrollment_manager' },
+      where: { role: { in: ['mentory_enrollment_manager', 'mentory_admin'] } },
       select: { user: { select: { email: true } } }
     });
     const { sendEmail } = await import('@/lib/email');
