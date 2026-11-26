@@ -14,8 +14,8 @@ function title(day:ReminderDay){
 }
 export async function runMentoryReminders(now=new Date()){
   const staff=await prisma.mentoryRoleGrant.findMany({where:{role:{in:['mentory_enrollment_manager','mentory_admin']}},select:{role:true,user:{select:{email:true}}}});
-  const admins=[...new Set(staff.filter(s=>s.role==='mentory_admin').map(s=>s.user.email).filter((v):v is string=>Boolean(v)))];
-  const commercial=[...new Set(staff.filter(s=>s.role==='mentory_enrollment_manager').map(s=>s.user.email).filter((v):v is string=>Boolean(v)))];
+  const admins=Array.from(new Set(staff.filter(s=>s.role==='mentory_admin').map(s=>s.user.email).filter((v):v is string=>Boolean(v))));
+  const commercial=Array.from(new Set(staff.filter(s=>s.role==='mentory_enrollment_manager').map(s=>s.user.email).filter((v):v is string=>Boolean(v))));
   const summary={evaluated:0,sent:0,pending:0,skipped:0};
   for(const day of reminderDays){
     const subs=await prisma.mentorySubscription.findMany({
@@ -25,7 +25,7 @@ export async function runMentoryReminders(now=new Date()){
     });
     for(const sub of subs){
       summary.evaluated++;
-      const recipients=day===0?admins:day===15?commercial:day===30?[...new Set([sub.user.email,...commercial].filter((v):v is string=>Boolean(v)))]:sub.user.email?[sub.user.email]:[];
+      const recipients=day===0?admins:day===15?commercial:day===30?Array.from(new Set([sub.user.email,...commercial].filter((v):v is string=>Boolean(v)))):sub.user.email?[sub.user.email]:[];
       if(!recipients.length){summary.skipped++;continue;}
       const eventType=`D${day}`;
       const record=await prisma.mentoryReminderDelivery.upsert({
