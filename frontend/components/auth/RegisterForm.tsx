@@ -41,7 +41,7 @@ export function RegisterForm({ mentory = false }: { mentory?: boolean } = {}) {
             return;
           }
           setCommunityUrl(data.communityUrl ?? "");
-          setSuccess(mentory ? 'Conta criada! Entre na comunidade aberta e confirme seu e-mail para acessar a plataforma.' : data.message ?? 'Conta criada. Verifique seu email.');
+          setSuccess(data.emailPending ? 'Conta criada! Entre na comunidade aberta. O envio da verificação falhou; use o link abaixo para solicitar outro e-mail.' : (mentory ? 'Conta criada! Entre na comunidade aberta e confirme seu e-mail para acessar a plataforma.' : data.message ?? 'Conta criada. Verifique seu email.'));
           form.reset();
         } catch {
           setError("Não foi possível confirmar o cadastro. Verifique seu email antes de tentar novamente.");

@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Role, Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/password";
 import { addMinutes, createRawToken, hashToken } from "@/lib/token";
@@ -43,9 +43,9 @@ export async function sendVerificationEmail(email: string, token: string) {
   const verificationUrl = buildUrl("/verify-email", token);
   await sendEmail({
     to: email,
-    subject: "Verifique seu email no iatron.PED",
-    text: `Acesse este link para verificar seu email no iatron.PED: ${verificationUrl}`,
-    html: `<p>Acesse este link para verificar seu email no iatron.PED:</p><p><a href="${verificationUrl}">Verificar email</a></p>`
+    subject: "Confirme seu e-mail na Pediatron",
+    text: `Confirme seu e-mail na Pediatron: ${verificationUrl}`,
+    html: `<p>Confirme seu e-mail na Pediatron:</p><p><a href="${verificationUrl}">Verificar email</a></p>`
   });
 }
 
@@ -59,7 +59,9 @@ export async function registerUser(input: { name?: string; email: string; passwo
   }
 
   const passwordHash = await hashPassword(input.password);
-  const user = await prisma.user.create({
+  let user;
+  try {
+    user = await prisma.user.create({
     data: {
       email,
       name: input.name?.trim() || null,
@@ -70,15 +72,34 @@ export async function registerUser(input: { name?: string; email: string; passwo
       marketingConsentAt: input.marketingConsent ? new Date() : undefined,
       passwordCredential: { create: { passwordHash } }
     }
-  });
+    });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") return { ok: false as const, code: "EMAIL_IN_USE" as const };
+    throw error;
+  }
 
   if (input.context === 'mentory') {
     await trackFunnelEvent({ step: 'account_created', userId: user.id, source: 'mentory_registration', scope: 'mentory' });
   }
-  const token = await createEmailVerificationToken(user.id);
-  await sendVerificationEmail(email, token);
+  let emailPending = false;
+  try {
+    const token = await createEmailVerificationToken(user.id);
+    await sendVerificationEmail(email, token);
+  } catch {
+    // The identity exists; a provider outage must never turn a successful registration into a duplicate-account trap.
+    emailPending = true;
+    auditAuthEvent("verification_email_pending", { userId: user.id });
+  }
+  if (input.context === "mentory") {
+    const communityUrl = process.env.PEDIATRON_OPEN_COMMUNITY_URL || "https://chat.whatsapp.com/IZfXGWubm5gKO9baqP2lWa";
+    await sendEmail({
+      to: email,
+      subject: "Bem-vindo à comunidade aberta da Pediatron",
+      text: `Seu cadastro na Pediatron foi criado. Participe da comunidade aberta: ${communityUrl}\n\nA venda da Ped Expert Mentory é consultiva. Para acessar a plataforma completa, confirme seu endereço de e-mail.`
+    }).catch(() => auditAuthEvent("open_community_email_pending", { userId: user.id }));
+  }
   await trackFunnelEvent({ step: "account_created", userId: user.id, source: "register", scope: "account" }).catch(() => null);
-  return { ok: true as const };
+  return { ok: true as const, emailPending };
 }
 
 export async function verifyEmailToken(token: string) {

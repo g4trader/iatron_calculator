@@ -36,7 +36,8 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     ok: true,
+    emailPending: result.emailPending,
     ...(parsed.data.context === "mentory" ? { communityUrl: process.env.PEDIATRON_OPEN_COMMUNITY_URL || "https://chat.whatsapp.com/IZfXGWubm5gKO9baqP2lWa" } : {}),
-    message: "Cadastro criado. Verifique seu email para liberar o acesso."
+    message: result.emailPending ? "Conta criada. Não foi possível enviar a confirmação; solicite o reenvio." : "Cadastro criado. Verifique seu email para liberar o acesso."
   });
 }
