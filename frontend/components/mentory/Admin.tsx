@@ -8,7 +8,7 @@ import { Plus, BookOpen, Users, FileVideo, ArrowRight, Search, RotateCw, UserRou
 import dynamic from 'next/dynamic';
 const ContentManager = dynamic(() => import('./ContentManager'), { loading: () => <p role="status">Carregando gestão de conteúdo…</p> });
 import type { Module } from './editor-utils';
-export type AdminData = { pendingRegistrations: { id: string; name: string | null; email: string | null; emailVerified: string | null }[]; filter: { query: string; status: string; page: number }; moduleCount: number; publishedLessonCount: number; studentCount: number; subscriptionCount: number; modules: Module[]; students: { user: { id: string; name: string | null; email: string | null; mentoryEnrollments: { status: string; subscription: { startedAt: string; expiresAt: string; status: string; renewalTermsVersion: string } }[] } }[]; subscriptions: { id: string; status: string; priceCents: number; renewalPriceCents: number; renewalTermsVersion: string; startedAt: string; expiresAt: string; user: { name: string | null; email: string | null } }[]; audit: { id: string; action: string; entityId: string; timestamp: string }[] };
+export type AdminData = { pendingRegistrations: { id: string; name: string | null; email: string | null; emailVerified: string | null; commercialStage?: string | null; commercialPaymentReference?: string | null }[]; filter: { query: string; status: string; page: number }; moduleCount: number; publishedLessonCount: number; studentCount: number; subscriptionCount: number; modules: Module[]; students: { user: { id: string; name: string | null; email: string | null; mentoryEnrollments: { status: string; subscription: { startedAt: string; expiresAt: string; status: string; renewalTermsVersion: string } }[] } }[]; subscriptions: { id: string; status: string; priceCents: number; renewalPriceCents: number; renewalTermsVersion: string; startedAt: string; expiresAt: string; user: { name: string | null; email: string | null } }[]; audit: { id: string; action: string; entityId: string; timestamp: string }[] };
 const date = (s: string) => new Date(s).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
 const money = (n: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n / 100);
 const activityLabels: Record<string,string> = { 'module.save':'Módulo salvo', 'lesson.save':'Aula salva', 'material.save':'Material salvo', 'review':'Revisão registrada', 'publication':'Publicação atualizada', 'reorder':'Ordem de conteúdo atualizada', 'delete':'Conteúdo excluído', 'role':'Permissão atualizada', 'asset.upload':'Material enviado', 'media.upload.start':'Envio de vídeo iniciado', 'media.upload.verified':'Arquivo de mídia verificado', 'account.profile.updated':'Perfil atualizado', 'account.password.changed':'Senha atualizada' };
@@ -19,7 +19,7 @@ export default function Admin({ data, section, admin, canManageRoles = false }: 
   const [confirmed,setConfirmed]=useState(false);
   const lock=useRef(false);
   function openStudent(email='',renewal=false){
-    setStudentUserId('');
+    setStudentUserId('');setPaymentReference('');
     setStudentEmail(email);setAccessType(renewal?'commercial':'trial');setAccessDays('30');setRenew(renewal);setConfirmed(false);setModalError('');setModal(true);
   }
   const [accessType,setAccessType]=useState('trial');
@@ -50,8 +50,8 @@ export default function Admin({ data, section, admin, canManageRoles = false }: 
     {section === 'alunos' && admin && <div className="students-workspace">
       <section className="panel students-awaiting">
         <header className="students-list-heading"><div><h2>Contas aguardando matrícula</h2><p>Contas verificadas, ainda sem matrícula. A existência de uma conta não confirma pagamento.</p></div></header>
-        {data.pendingRegistrations.length ? <div className="students-table-scroll"><table className="students-table"><thead><tr><th>Conta</th><th>E-mail verificado</th><th>Ação</th></tr></thead><tbody>
-          {data.pendingRegistrations.map(u=><tr key={u.id}><td><div className="student-identity"><span className="student-avatar"><UserRound size={20}/></span><div><strong>{u.name||'Aluno'}</strong><small>{u.email}</small></div></div></td><td>{u.emailVerified?date(u.emailVerified):'—'}</td><td><button type="button" className="btn btn-primary" disabled={busy||!u.email} onClick={()=>{openStudent(u.email||'');setStudentUserId(u.id);setAccessType('commercial');}}>Aprovar pagamento e ativar</button></td></tr>)}
+        {data.pendingRegistrations.length ? <div className="students-table-scroll"><table className="students-table"><thead><tr><th>Conta</th><th>E-mail verificado</th><th>Status comercial</th><th>Ação</th></tr></thead><tbody>
+          {data.pendingRegistrations.map(u=><tr key={u.id}><td><div className="student-identity"><span className="student-avatar"><UserRound size={20}/></span><div><strong>{u.name||'Aluno'}</strong><small>{u.email}</small></div></div></td><td>{u.emailVerified?date(u.emailVerified):'—'}</td><td>{u.commercialStage==='PAYMENT_CONFIRMED'?'Pagamento confirmado':'Aguardando negociação'}</td><td><button type="button" className="btn btn-primary" disabled={busy||!u.email} onClick={()=>{openStudent(u.email||'');setStudentUserId(u.id);setPaymentReference(u.commercialPaymentReference||'');setAccessType('commercial');}}>Aprovar pagamento e ativar</button></td></tr>)}
         </tbody></table></div> : <p className="notice">Nenhuma conta verificada sem matrícula encontrada nesta consulta.</p>}
       </section>
       <section className="panel students-list">

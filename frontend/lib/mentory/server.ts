@@ -86,7 +86,7 @@ export async function adminData(actor: Identity, filter: { query: string; status
     !section ? prisma.mentoryLesson.count({ where: { status: 'PUBLISHED' } }) : Promise.resolve(0)
   ]);
   // Eligible existing accounts, not evidence of payment. Admin must confirm it.
-  const pendingRegistrations = actor.enrollmentManager && section === 'alunos'
+  const pendingRegistrations = actor.admin && section === 'alunos'
     ? await prisma.user.findMany({
         where: {
           emailVerified: { not: null },
@@ -95,8 +95,8 @@ export async function adminData(actor: Identity, filter: { query: string; status
           funnelEvents: { some: { step: 'account_created', source: 'mentory_registration' } },
           ...(filter.query ? userFilter : {})
         },
-        select: { id: true, name: true, email: true, emailVerified: true },
-        orderBy: { emailVerified: 'desc' },
+        select: { id: true, name: true, email: true, emailVerified: true, commercialStage: true, commercialPaymentReference: true },
+        orderBy: [{ commercialStage: 'asc' }, { emailVerified: 'desc' }],
         take: 50
       })
     : [];

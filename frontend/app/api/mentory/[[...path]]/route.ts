@@ -45,13 +45,13 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
       const days=Number(body.days);
       if(type!=='commercial'&&(!Number.isInteger(days)||days<1||days>730))throw new MentoryError(400,'Informe de 1 a 730 dias.');
       const result=await prisma.$transaction(async tx=>{
-        const user=await tx.user.findFirst({where:{email:{equals:email,mode:'insensitive'}},select:{id:true,emailVerified:true,folhaPcrBenefitUntil:true}});
+        const user=await tx.user.findFirst({where:{email:{equals:email,mode:'insensitive'}},select:{id:true,emailVerified:true,folhaPcrBenefitUntil:true,commercialStage:true,commercialPaymentReference:true}});
         if(!user)throw new MentoryError(404,'O aluno precisa criar sua conta Pediatron antes da liberação.');
         if(type==='commercial'&&!user.emailVerified)throw new MentoryError(409,'O aluno precisa confirmar o e-mail antes da aprovação do pagamento.');
         if(type==='commercial'){
           const proofId='mentory_payment_'+createHash('sha256').update(user.id).digest('hex');
           const proof=await tx.mentoryPrivateAsset.findUnique({where:{id:proofId},select:{checksum:true}});
-          if(!proof && !(typeof body.paymentReference==='string' && body.paymentReference.trim().length>=3 && body.paymentReference.length<=200))throw new MentoryError(409,'Informe a referência do pagamento confirmado ou anexe o comprovante.');
+          if(!proof && !user.commercialPaymentReference && !(typeof body.paymentReference==='string' && body.paymentReference.trim().length>=3 && body.paymentReference.length<=200))throw new MentoryError(409,'Informe a referência do pagamento confirmado ou anexe o comprovante.');
         }
         const now=new Date();
         const current=await tx.mentorySubscription.findFirst({where:{userId:user.id,status:'ACTIVE',expiresAt:{gt:now}},orderBy:{expiresAt:'desc'}});
@@ -65,9 +65,9 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
         await tx.mentoryEnrollment.create({data:{userId:user.id,subscriptionId:subscription.id,status:'ACTIVE'}});
         if(type==='commercial'){
           const base=user.folhaPcrBenefitUntil && user.folhaPcrBenefitUntil>now ? user.folhaPcrBenefitUntil : now;
-          await tx.user.update({where:{id:user.id},data:{folhaPcrBenefitUntil:sixMonthsAfter(sixMonthsAfter(base))}});
+          await tx.user.update({where:{id:user.id},data:{folhaPcrBenefitUntil:sixMonthsAfter(sixMonthsAfter(base)),commercialStage:'ACTIVATED',commercialUpdatedAt:now}});
         }
-        await tx.mentoryAuditLog.create({data:{actorId:actor.id,entityId:user.id,action:body.renew===true?'student.renew':'student.grant',metadata:{type,subscriptionId:subscription.id,expiresAt:end.toISOString(),payment:'external',paymentReference:typeof body.paymentReference==='string'?body.paymentReference.trim().slice(0,200):null}}});
+        await tx.mentoryAuditLog.create({data:{actorId:actor.id,entityId:user.id,action:body.renew===true?'student.renew':'student.grant',metadata:{type,subscriptionId:subscription.id,expiresAt:end.toISOString(),payment:'external',paymentReference:typeof body.paymentReference==='string'&&body.paymentReference.trim()?body.paymentReference.trim().slice(0,200):user.commercialPaymentReference}}});
         return {expiresAt:end};
       },{isolationLevel:'Serializable'});
       return json(result);
