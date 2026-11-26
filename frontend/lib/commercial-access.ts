@@ -288,6 +288,10 @@ export async function getCommercialEntitlement(userId: string): Promise<Commerci
 }
 
 export async function requirePremiumAccess(userId: string, feature: CommercialFeature) {
+  if (feature === "calculator_pcr") {
+    const user = await prisma.user.findUnique({where:{id:userId},select:{folhaPcrBenefitUntil:true}});
+    if(user?.folhaPcrBenefitUntil && user.folhaPcrBenefitUntil > new Date()) return {...emptyEntitlement(),hasAccess:true,blockReason:null,accountType:"INDIVIDUAL" as const,plan:"PROFESSIONAL" as const,status:SubscriptionStatus.ACTIVE,currentPeriodEnd:user.folhaPcrBenefitUntil,licenseStatus:LicenseStatus.ACTIVE,seatsPurchased:1,seatsUsed:1};
+  }
   const entitlement = await getCommercialEntitlement(userId);
   if (!entitlement.hasAccess) {
     auditCommercialEvent("commercial_access_denied", {

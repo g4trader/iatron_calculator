@@ -2,6 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { MentoryIcon } from "@/components/mentory/MentoryIcon";
 import "./brand-landing.css";
+import "../mentory/ped-brand.css";
+import { pedFonts } from "../mentory/ped-fonts";
+import { PedBrand } from "@/components/mentory/PedBrand";
 
 const pageUrl = "https://pediatron.com.br/ped-expert-mentory";
 const pageTitle = "Ped Expert Mentory | Mentoria em Urgência Pediátrica";
@@ -14,7 +17,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   openGraph: { type: "website", locale: "pt_BR", siteName: "Ped Expert Mentory", url: pageUrl, title: pageTitle, description: pageDescription, images: [{ url: "/images/dr-aristoteles-pires.png", alt: "Dr. Aristóteles Pires" }] },
   twitter: { card: "summary_large_image", title: pageTitle, description: pageDescription, images: ["/images/dr-aristoteles-pires.png"] },
-  icons: { icon: "/images/mentory-favicon.png", shortcut: "/images/mentory-favicon.png", apple: "/images/mentory-favicon.png" },
+  icons: { icon: "/images/ped-wordmark-icon.svg", shortcut: "/images/ped-wordmark-icon.svg", apple: "/images/ped-wordmark-icon.svg" },
 };
 
 const structuredData = {
@@ -36,13 +39,13 @@ const benefits = [
 
 export default function PedExpertMentoryPage() {
   return (
-    <main className="mentory-landing">
+    <main className={`mentory-landing ${pedFonts}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />
       <div className="mentory-dark-shell">
         <header className="mentory-nav">
           <div className="mentory-container mentory-nav-inner">
             <Link href="/ped-expert-mentory" className="mentory-logo" aria-label="Ped Expert Mentory, início">
-              <img src="/images/mentory-logo-dark.svg" alt="Ped Expert Mentory" />
+              <PedBrand variant="full"/>
             </Link>
             <nav aria-label="Navegação principal" className="mentory-nav-links">
               <a href="#inicio" className="active">Home</a>
@@ -51,7 +54,7 @@ export default function PedExpertMentoryPage() {
               <a href="#conteudos">Conteúdos</a>
               <a href="#depoimentos">Depoimentos</a>
             </nav>
-            <Link href="/mentory/login" className="mentory-cta mentory-cta-nav">Acessar o sistema</Link>
+            <Link href="/minha-pediatron" className="mentory-cta mentory-cta-nav">Acessar o sistema</Link>
           </div>
         </header>
         <section id="inicio" className="mentory-hero">
@@ -61,7 +64,7 @@ export default function PedExpertMentoryPage() {
               <h1>Decisões clínicas<br/>mais seguras,<br/><em>na prática.</em></h1>
               <p className="mentory-hero-description">Mentoria para médicos que buscam atualização, raciocínio clínico e mais confiança na condução dos casos do dia a dia.</p>
               <div className="mentory-actions">
-                <a className="mentory-cta" href="#programa">Quero participar da mentoria <span aria-hidden="true">→</span></a>
+                <a className="mentory-cta" href="/cadastro">Quero participar da comunidade <span aria-hidden="true">→</span></a>
                 <a className="mentory-outline" href="#sobre"><span className="mentory-play-small">▶</span> Conheça o programa</a>
               </div>
             </div>

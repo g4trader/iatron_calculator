@@ -24,7 +24,7 @@ export async function POST(req:NextRequest){
   if(active&&!target.actor.enrollmentManager)return fail('Matrícula já ativa.',409);
   const data=await req.formData();const file=data.get('file');
   if(!(file instanceof File))return fail('Selecione um arquivo.',400);
-  if(file.size<100||file.size>5*1024*1024)return fail('O comprovante deve ter até 5 MB.',400);
+  if(file.size<100||file.size>4*1024*1024)return fail('O comprovante deve ter até 4 MB.',400);
   const bytes=Buffer.from(await file.arrayBuffer());
   const pdf=bytes.subarray(0,5).toString()==='%PDF-';
   const png=bytes.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]));

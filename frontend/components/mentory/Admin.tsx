@@ -8,7 +8,7 @@ import { Plus, BookOpen, Users, FileVideo, ArrowRight, Search, RotateCw, UserRou
 import dynamic from 'next/dynamic';
 const ContentManager = dynamic(() => import('./ContentManager'), { loading: () => <p role="status">Carregando gestão de conteúdo…</p> });
 import type { Module } from './editor-utils';
-export type AdminData = { pendingRegistrations: { id: string; name: string | null; email: string | null; emailVerified: string | null }[]; filter: { query: string; status: string; page: number }; moduleCount: number; publishedLessonCount: number; studentCount: number; subscriptionCount: number; modules: Module[]; students: { user: { id: string; name: string | null; email: string | null; mentoryEnrollments: { status: string; subscription: { startedAt: string; expiresAt: string; status: string; renewalTermsVersion: string } }[] } }[]; subscriptions: { id: string; status: string; priceCents: number; renewalPriceCents: number; renewalTermsVersion: string; startedAt: string; expiresAt: string; user: { name: string | null; email: string | null } }[]; audit: { id: string; action: string; entityId: string; timestamp: string }[] };
+export type AdminData = { pendingRegistrations: { id: string; name: string | null; email: string | null; emailVerified: string | null; commercialStage?: string | null; commercialPaymentReference?: string | null }[]; filter: { query: string; status: string; page: number }; moduleCount: number; publishedLessonCount: number; studentCount: number; subscriptionCount: number; modules: Module[]; students: { user: { id: string; name: string | null; email: string | null; mentoryEnrollments: { status: string; subscription: { startedAt: string; expiresAt: string; status: string; renewalTermsVersion: string } }[] } }[]; subscriptions: { id: string; status: string; priceCents: number; renewalPriceCents: number; renewalTermsVersion: string; startedAt: string; expiresAt: string; user: { name: string | null; email: string | null } }[]; audit: { id: string; action: string; entityId: string; timestamp: string }[] };
 const date = (s: string) => new Date(s).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
 const money = (n: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n / 100);
 const activityLabels: Record<string,string> = { 'module.save':'Módulo salvo', 'lesson.save':'Aula salva', 'material.save':'Material salvo', 'review':'Revisão registrada', 'publication':'Publicação atualizada', 'reorder':'Ordem de conteúdo atualizada', 'delete':'Conteúdo excluído', 'role':'Permissão atualizada', 'asset.upload':'Material enviado', 'media.upload.start':'Envio de vídeo iniciado', 'media.upload.verified':'Arquivo de mídia verificado', 'account.profile.updated':'Perfil atualizado', 'account.password.changed':'Senha atualizada' };
@@ -19,7 +19,7 @@ export default function Admin({ data, section, admin, canManageRoles = false }: 
   const [confirmed,setConfirmed]=useState(false);
   const lock=useRef(false);
   function openStudent(email='',renewal=false){
-    setStudentUserId('');
+    setStudentUserId('');setPaymentReference('');
     setStudentEmail(email);setAccessType(renewal?'commercial':'trial');setAccessDays('30');setRenew(renewal);setConfirmed(false);setModalError('');setModal(true);
   }
   const [accessType,setAccessType]=useState('trial');
@@ -27,11 +27,12 @@ export default function Admin({ data, section, admin, canManageRoles = false }: 
   const [studentUserId,setStudentUserId]=useState('');
   const [accessDays,setAccessDays]=useState('30');
   const [renew,setRenew]=useState(false);
+  const [paymentReference,setPaymentReference]=useState('');
   async function grantAccess(){
     if(lock.current)return;lock.current=true;
     setBusy(true);setMessage('');setModalError('');
     try{
-      const r=await fetch('/api/mentory/admin/student-access',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:studentEmail,type:accessType,days:Number(accessDays),renew})});
+      const r=await fetch('/api/mentory/admin/student-access',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:studentEmail,type:accessType,days:Number(accessDays),renew,paymentReference:paymentReference.trim()})});
       const d=await r.json();if(!r.ok)throw new Error(d.error);
       setMessage('Acesso liberado até '+date(d.expiresAt));setModal(false);router.refresh();
     }catch(e){setModalError(e instanceof Error?e.message:'Falha ao liberar acesso.');}finally{lock.current=false;setBusy(false);}
@@ -49,8 +50,8 @@ export default function Admin({ data, section, admin, canManageRoles = false }: 
     {section === 'alunos' && admin && <div className="students-workspace">
       <section className="panel students-awaiting">
         <header className="students-list-heading"><div><h2>Contas aguardando matrícula</h2><p>Contas verificadas, ainda sem matrícula. A existência de uma conta não confirma pagamento.</p></div></header>
-        {data.pendingRegistrations.length ? <div className="students-table-scroll"><table className="students-table"><thead><tr><th>Conta</th><th>E-mail verificado</th><th>Ação</th></tr></thead><tbody>
-          {data.pendingRegistrations.map(u=><tr key={u.id}><td><div className="student-identity"><span className="student-avatar"><UserRound size={20}/></span><div><strong>{u.name||'Aluno'}</strong><small>{u.email}</small></div></div></td><td>{u.emailVerified?date(u.emailVerified):'—'}</td><td><button type="button" className="btn btn-primary" disabled={busy||!u.email} onClick={()=>{openStudent(u.email||'');setStudentUserId(u.id);setAccessType('commercial');}}>Aprovar pagamento e ativar</button></td></tr>)}
+        {data.pendingRegistrations.length ? <div className="students-table-scroll"><table className="students-table"><thead><tr><th>Conta</th><th>E-mail verificado</th><th>Status comercial</th><th>Ação</th></tr></thead><tbody>
+          {data.pendingRegistrations.map(u=><tr key={u.id}><td><div className="student-identity"><span className="student-avatar"><UserRound size={20}/></span><div><strong>{u.name||'Aluno'}</strong><small>{u.email}</small></div></div></td><td>{u.emailVerified?date(u.emailVerified):'—'}</td><td>{u.commercialStage==='PAYMENT_CONFIRMED'?'Pagamento confirmado':'Aguardando negociação'}</td><td><button type="button" className="btn btn-primary" disabled={busy||!u.email} onClick={()=>{openStudent(u.email||'');setStudentUserId(u.id);setPaymentReference(u.commercialPaymentReference||'');setAccessType('commercial');}}>Aprovar pagamento e ativar</button></td></tr>)}
         </tbody></table></div> : <p className="notice">Nenhuma conta verificada sem matrícula encontrada nesta consulta.</p>}
       </section>
       <section className="panel students-list">
@@ -78,9 +79,9 @@ export default function Admin({ data, section, admin, canManageRoles = false }: 
         <p>Vincule uma conta Pediatron à mentoria e defina a vigência do acesso.</p>
         <fieldset disabled={busy}><label>E-mail da conta Pediatron<input autoFocus type="email" required value={studentEmail} readOnly={renew} onChange={e=>setStudentEmail(e.target.value)}/></label>
         <label>Tipo de acesso<select value={accessType} disabled={renew} onChange={e=>{setAccessType(e.target.value);setConfirmed(false);}}><option value="trial">Experimental</option><option value="courtesy">Cortesia</option><option value="commercial">Assinatura comercial</option></select></label>
-        {accessType==='commercial'?<div className="student-access-summary"><strong>6 meses de acesso</strong><p>{renew?'A vigência será prorrogada a partir do vencimento atual ou de hoje, se expirada.':'A vigência começa na liberação.'}</p><label className="student-confirm"><input type="checkbox" required checked={confirmed} onChange={e=>setConfirmed(e.target.checked)}/> Confirmo a contratação ou renovação realizada externamente.</label></div>:<label>Período de acesso (dias)<input type="number" min={1} max={730} required value={accessDays} onChange={e=>setAccessDays(e.target.value)}/><small>O acesso termina automaticamente após a vigência.</small></label>}
+        {accessType==='commercial'?<div className="student-access-summary"><strong>6 meses de acesso</strong><p>{renew?'A vigência será prorrogada a partir do vencimento atual ou de hoje, se expirada.':'A vigência começa na liberação.'}</p><label className="student-confirm"><input type="checkbox" required checked={confirmed} onChange={e=>setConfirmed(e.target.checked)}/> Confirmo a contratação ou renovação realizada externamente.</label><label>Referência do pagamento confirmado<input value={paymentReference} maxLength={200} onChange={e=>setPaymentReference(e.target.value)} placeholder="Identificador da transação ou referência interna"/><small>Informe a referência ou anexe o comprovante opcional.</small></label></div>:<label>Período de acesso (dias)<input type="number" min={1} max={730} required value={accessDays} onChange={e=>setAccessDays(e.target.value)}/><small>O acesso termina automaticamente após a vigência.</small></label>}
         </fieldset>
-        {accessType==='commercial'&&studentUserId?<PaymentProof userId={studentUserId} manager/>:accessType==='commercial'?<p className="notice">O aluno deve enviar o comprovante na própria conta. Para anexar pelo painel, selecione o cadastro na fila de matrículas.</p>:null}
+        {accessType==='commercial'&&studentUserId?<PaymentProof userId={studentUserId} manager/>:accessType==='commercial'?<p className="notice">Informe a referência do pagamento externo confirmado.</p>:null}
         {modalError&&<p role="alert" className="field-error">{modalError}</p>}
         <footer><button type="button" className="btn btn-outline" disabled={busy} onClick={()=>setModal(false)}>Cancelar</button><button className="btn btn-primary" disabled={busy||(accessType==='commercial'&&!confirmed)}>{busy?'Salvando…':renew?'Confirmar renovação':'Liberar acesso'}</button></footer>
       </form></EditorDialog>}

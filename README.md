@@ -19,7 +19,7 @@ Rotas principais do frontend:
 
 - `/` landing page premium
 - `/login` autenticação social planejada para Auth.js
-- `/checkout` checkout recorrente planejado para Stripe
+- `/checkout` checkout e faturamento do produto clínico (independente da Ped Expert Mentory)
 - `/dashboard` área logada com calculadora clínica
 - `/billing` gestão de assinatura
 - `/profile` perfil do usuário
@@ -29,10 +29,20 @@ Próximas integrações reais:
 
 - Auth.js com Google, Meta/Facebook e Apple
 - PostgreSQL via Supabase/Neon com Prisma
-- Stripe Checkout, Billing Portal e webhooks
+- Stripe Checkout, Billing Portal e webhooks (produto clínico; não se aplicam à Ped Expert Mentory)
 - middleware de proteção de rotas e controle de acesso por assinatura
 
 As regras ficam em funções explícitas em `backend/app/services/calculation_engine.py`, com metadados versionados em `backend/app/data/*.json` para futura migração para PostgreSQL/Supabase.
+
+## Pediatron e Ped Expert Mentory
+
+A Pediatron possui uma identidade compartilhada de usuários. O fluxo de cadastro gratuito está em `/cadastro`, o portal central em `/minha-pediatron`, a apresentação da mentoria em `/ped-expert-mentory`, as aulas em `/mentory/aprender` e a central comercial em `/mentory/comercial`.
+
+**A Mentory não usa Stripe, checkout na plataforma nem cobrança automática.** A negociação e o pagamento são consultivos pela equipe comercial vinculada à comunidade aberta do WhatsApp. Após confirmação do pagamento externo, somente o administrador ativa ou renova os benefícios. O acesso à Mentory dura seis meses e o benefício Folha PCR dura doze meses, com vigências independentes.
+
+O upload opcional de comprovante é disponibilizado à equipe comercial, com controle de acesso e trilha de auditoria. O grupo aberto permanece disponível aos cadastrados; o convite do grupo fechado exige assinatura ativa. A régua de renovação utiliza um job diário protegido por `CRON_SECRET`, exige a aplicação das migrações Prisma e registra as entregas por destinatário.
+
+**Atenção:** não execute migrações ou publique esse fluxo sem conferir a identidade do banco associado ao Vercel e concluir a validação da branch. O projeto não deve criar um ambiente novo para a implementação.
 
 ## Execução local
 

@@ -1,0 +1,89 @@
+/* Official V1 semantic tokens, scoped to Mentory and its public landing. */
+.mentory,.mentory-landing{--ped-bg:#0A1B33;--ped-layer:#123A6B;--ped-text:#FFFFFF;--ped-muted:#9FB3C8;--ped-identity:#22D3EE;--ped-action:#C4F82A;--ped-attention:#F2452D;--ped-heading:var(--font-ped-barlow,Barlow),sans-serif;--ped-body:var(--font-ped-montserrat,Montserrat),sans-serif;background:var(--ped-bg);color:var(--ped-text);font-family:var(--ped-body);color-scheme:dark}
+.mentory :is(h1,h2,h3,h4,.eyebrow,.mentory-auth-eyebrow),.mentory-landing :is(h1,h2,h3,h4,.mentory-eyebrow,.mentory-section-eyebrow){font-family:var(--ped-heading);font-weight:700}
+.ped-brand{display:inline-flex;flex-direction:column;align-items:stretch;width:max-content;max-width:100%;line-height:1;white-space:nowrap;color:#FFFFFF;font-family:var(--ped-heading);font-size:clamp(19px,3vw,29px);text-align:left}
+.ped-brand strong{font-weight:700;letter-spacing:.015em;color:inherit}
+.ped-brand>span{font-family:var(--ped-body);font-weight:400;letter-spacing:.24em;color:#22D3EE;font-size:.86em;margin-top:.15em}
+.ped-brand small{font-family:Georgia,serif;font-weight:400;font-style:normal;font-size:.55em;text-align:right;margin-top:.4em;color:inherit}
+.ped-brand-full small,.ped-brand-print small,.ped-brand-mono small{border-top:1px solid #22D3EE;padding-top:.35em}
+.ped-brand-print{color:#0A1B33}.ped-brand-print>span{color:#0085A5}.ped-brand-mono>span{color:inherit}.ped-brand-mono small{border-color:currentColor}
+.mentory .mentor-final{--navy-950:var(--ped-bg);--navy-900:var(--ped-layer);--brand-700:var(--ped-identity);--brand-600:var(--ped-identity);--brand-50:var(--ped-layer);--ink:var(--ped-text);--muted:var(--ped-muted);--canvas:var(--ped-bg);--surface:var(--ped-layer);--border:#22D3EE55;--danger:var(--ped-attention);--success:var(--ped-text);--ux-muted:var(--ped-muted);--ux-line:var(--border);--blue:var(--ped-identity);background:var(--ped-bg);color:var(--ped-text)}
+.mentory{--blue:var(--ped-identity);--navy:var(--ped-bg);--line:#22D3EE55}
+.mentory :is(.auth-bg,.mentory-auth-page,.mentory-auth-intro,.sidebar,.nav-drawer){background:var(--ped-bg)!important;color:var(--ped-text)}
+.mentory :is(.auth-card,.mentory-auth-card,.panel,.module-card,.stat,.feature,.step,.topbar,.bottom-nav,.user-dropdown,.student-modal,.pricing-side){background:var(--ped-layer)!important;color:var(--ped-text);border-color:#22D3EE55}
+.mentory :is(h1,h2,h3,h4,label,.mentory-register-field,.accordion-head,.lesson-row,.lesson-nav){color:var(--ped-text)!important}
+.mentory :is(p,.muted,.tiny,.nav-label,.mentory-register-help,.context-label){color:var(--ped-muted)}
+.mentory :is(.eyebrow,.mentory-auth-eyebrow,.text-link,.mentory-register-link,.mentory-auth-back a,.module-link,.back-link,.section-row a,.nav-item svg,.material-icon,.lesson-icon){color:var(--ped-identity)!important}
+.mentory :is(.btn-primary,.mentory-register-submit,.auth-card button[type=submit],.mentory-auth-card button[type=submit]){background:var(--ped-action)!important;color:var(--ped-bg)!important;border-color:transparent!important;font-weight:700}
+.mentory :is(.btn-primary,.mentory-register-submit,.auth-card button[type=submit]):hover:not(:disabled){filter:brightness(.94)}
+.mentory :is(.btn-outline,.btn-secondary){background:transparent!important;color:var(--ped-identity)!important;border-color:var(--ped-identity)!important}
+.mentory :is(input:not([type=checkbox]):not([type=radio]),select,textarea){background:var(--ped-bg)!important;color:var(--ped-text)!important;border-color:#22D3EE77!important;font-family:var(--ped-body)}
+.mentory input::placeholder,.mentory textarea::placeholder{color:var(--ped-muted)}
+.mentory input:-webkit-autofill{-webkit-text-fill-color:var(--ped-text);box-shadow:0 0 0 1000px var(--ped-bg) inset}
+.mentory :is(.auth-card,.mentory-auth-card) form a{color:var(--ped-identity)!important}
+.mentory :is(.field-error,.mentory-register-error,[role=alert],.auth-card .text-red-200){color:var(--ped-text)!important;border-left:3px solid var(--ped-attention);padding-left:10px}
+.mentory .notice.warning{background:var(--ped-bg);border-color:var(--ped-attention);color:var(--ped-text)}
+.mentory :is(.notice,.mentory-register-success,.module-art,.module-number,.feature-icon,.material-icon,.avatar){background:var(--ped-bg)!important;color:var(--ped-identity)!important}
+.mentory .mentor-final :is(.nav-item.active,.nav-item:hover,.bonus-subnav a:hover,.account-nav a[aria-current=page]){background:var(--ped-layer);color:var(--ped-identity)}
+.mentory .mentor-final .lesson-tabbar button[aria-selected=true]{color:var(--ped-identity);border-color:var(--ped-identity)}
+.mentory .progress{background:var(--ped-bg)}.mentory .progress i{background:var(--ped-identity)}
+.mentory :is(a,button,input,select,textarea,summary):focus-visible,.mentory-landing :is(a,button):focus-visible{outline:2px solid var(--ped-identity)!important;outline-offset:3px}
+.mentory .auth-bg{padding:24px 16px}.mentory .auth-card{width:min(100%,470px);padding:clamp(24px,5vw,40px);border:1px solid #22D3EE55}.mentory .auth-card .brand{margin-bottom:28px}.mentory .auth-card label{margin:0}.mentory .auth-card form{gap:18px}
+.mentory-landing{--navy:var(--ped-bg);--deep:var(--ped-bg);--cyan:var(--ped-identity);--white:var(--ped-text)}
+.mentory-landing :is(.mentory-dark-shell,.mentory-nav,.mentory-about,.mentory-program,.mentory-footer){background:var(--ped-bg);color:var(--ped-text)}
+.mentory-landing :is(.mentory-benefits-bar,.mentory-bottom-cta,.mentory-program-cards article,.mentory-video-card){background:var(--ped-layer);border-color:#22D3EE55}
+.mentory-landing :is(h1,h2,h3,.mentory-about li){color:var(--ped-text)!important}
+.mentory-landing :is(p,.mentory-footer){color:var(--ped-muted)!important}
+.mentory-landing :is(.mentory-eyebrow,.mentory-section-eyebrow,.mentory-benefit-icon){color:var(--ped-identity)!important}
+.mentory-landing .mentory-cta{background:var(--ped-action)!important;color:var(--ped-bg)!important;box-shadow:none}
+.mentory-landing .mentory-cta-nav,.mentory-landing .mentory-outline{background:transparent!important;color:var(--ped-identity)!important;border:1px solid var(--ped-identity)}
+.mentory-landing .mentory-about li:before{background:var(--ped-layer);color:var(--ped-identity)}
+.mentory-landing .mentory-logo{min-width:0}.mentory-landing .mentory-logo .ped-brand{font-size:clamp(17px,2.4vw,26px)}
+
+.mentory .ped-portal{min-height:100dvh;background:var(--ped-bg)}
+.mentory .ped-portal .panel{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.mentory .ped-portal .panel p{margin:0}
+.mentory .ped-portal a:not(.btn-primary){color:var(--ped-identity)}
+.mentory .ped-portal form{width:100%}
+.mentory .ped-portal form button[type=submit]{background:var(--ped-action)!important;color:var(--ped-bg)!important}
+.mentory .ped-portal .ped-brand{margin-bottom:20px}
+.mentory .mentor-final .student-modal-form .student-access-summary,.mentory .mentor-final .community-settings textarea{background:var(--ped-bg);color:var(--ped-text)}
+.mentory .mentor-final .bottom-nav .nav-item.active{background:var(--ped-bg);color:var(--ped-identity)}
+.mentory .mentor-final .lesson-tabbar button:hover{background:var(--ped-bg)}
+.mentory .mentor-final .user-dropdown :is(a,button):hover{background:var(--ped-bg)}
+.mentory .mentor-final .sidebar .brand .ped-brand{font-size:22px}
+.mentory .mentor-final .topbar .brand .ped-brand{font-size:17px}
+.mentory .mentor-final .avatar{color:var(--ped-identity)}
+.mentory .mentory-auth-intro li svg{color:var(--ped-identity)}
+.mentory .mentory-register-success{border:1px solid var(--ped-identity)}
+@media(max-width:480px){.mentory-landing .mentory-nav-inner{gap:10px}.mentory-landing .mentory-logo .ped-brand{font-size:16px}.mentory-landing .mentory-cta-nav{white-space:normal;text-align:center}.mentory .ped-portal .panel{padding:20px}}
+
+/* Unlayered, high-specificity portal rules override legacy global utilities. */
+html body .mentory.ped-portal-theme .ped-portal {background:#0A1B33!important;color:#FFFFFF!important;}
+html body .mentory.ped-portal-theme .ped-portal .panel {background:#123A6B!important;color:#FFFFFF!important;border:1px solid #22D3EE!important;}
+html body .mentory.ped-portal-theme .ped-portal :is(h1,h2,h3,h4,label,strong) {color:#FFFFFF!important;}
+html body .mentory.ped-portal-theme .ped-portal :is(p,.text-slate-300) {color:#9FB3C8!important;}
+html body .mentory.ped-portal-theme .ped-portal a:not(.btn-primary) {color:#22D3EE!important;}
+html body .mentory.ped-portal-theme .ped-portal .btn-primary {background:#C4F82A!important;color:#0A1B33!important;}
+html body .mentory.ped-portal-theme .ped-portal .btn-outline {background:transparent!important;color:#22D3EE!important;border-color:#22D3EE!important;}
+html body .mentory.ped-portal-theme .ped-portal .panel {min-width:0;overflow-wrap:anywhere;}
+
+/* Final dark workspace cascade: legacy handoff and global theme cannot override semantic colors. */
+html body .mentory .mentor-final{--ink:#FFFFFF!important;--muted:#9FB3C8!important;--canvas:#0A1B33!important;--surface:#123A6B!important;--brand-700:#22D3EE!important;--brand-600:#22D3EE!important;--brand-50:#123A6B!important;--border:#22D3EE66!important;--ux-muted:#9FB3C8!important;--ux-line:#22D3EE66!important;background:#0A1B33!important;color:#FFFFFF!important}
+html body .mentory .mentor-final :is(.workspace,.workspace-main){background:#0A1B33!important;color:#FFFFFF!important}
+html body .mentory .mentor-final :is(.panel,.stat,.topbar,.user-dropdown,.quick-actions a,.student-modal,.editor-card){background:#123A6B!important;color:#FFFFFF!important;border-color:#22D3EE66!important}
+html body .mentory .mentor-final :is(h1,h2,h3,h4,strong,summary,td,.user-trigger,.user-dropdown a,.user-dropdown button){color:#FFFFFF!important}
+html body .mentory .mentor-final :is(p,small,time,.muted,.data-period,.header-context,.stat>span,.quick-actions a>span,.user-dropdown strong span){color:#9FB3C8!important}
+html body .mentory .mentor-final :is(.eyebrow,.quick-actions a>strong,.quick-actions a svg,.stat>svg,.user-dropdown svg,.student-search svg,.student-avatar svg){color:#22D3EE!important}
+html body .mentory .mentor-final :is(.quick-actions a>svg,.student-avatar,.student-search,.students-table th){background:#0A1B33!important;border-color:#22D3EE66!important}
+html body .mentory .mentor-final .students-table th{color:#9FB3C8!important}
+html body .mentory .mentor-final .students-table :is(tr,td){background:#123A6B!important;border-color:#22D3EE66!important}
+html body .mentory .mentor-final .students-table tbody tr:hover td{background:#0A1B33!important}
+html body .mentory .mentor-final .student-search input{border:0!important;background:transparent!important;color:#FFFFFF!important}
+html body .mentory .mentor-final .student-search input::placeholder{color:#9FB3C8!important;opacity:1}
+html body .mentory .mentor-final :is(.user-trigger:hover,.user-trigger[aria-expanded=true],.user-dropdown a:hover,.user-dropdown button:hover){background:#0A1B33!important;color:#22D3EE!important}
+html body .mentory .mentor-final :is(.btn-primary,.student-fab){background:#C4F82A!important;color:#0A1B33!important;border-color:transparent!important}
+html body .mentory .mentor-final :is(.btn-outline,.btn-secondary){background:transparent!important;color:#22D3EE!important;border-color:#22D3EE!important}
+html body .mentory .mentor-final .student-status{background:#0A1B33!important;color:#FFFFFF!important;border:1px solid #9FB3C8}
+html body .mentory .mentor-final .student-status:is(.expired,.canceled,.pending){border-color:#F2452D!important}
+html body .mentory .mentor-final .notice{background:#0A1B33!important;color:#22D3EE!important;border-color:#22D3EE66!important}

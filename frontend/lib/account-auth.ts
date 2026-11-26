@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Role, Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/password";
 import { addMinutes, createRawToken, hashToken } from "@/lib/token";
@@ -43,50 +43,63 @@ export async function sendVerificationEmail(email: string, token: string) {
   const verificationUrl = buildUrl("/verify-email", token);
   await sendEmail({
     to: email,
-    subject: "Verifique seu email no iatron.PED",
-    text: `Acesse este link para verificar seu email no iatron.PED: ${verificationUrl}`,
-    html: `<p>Acesse este link para verificar seu email no iatron.PED:</p><p><a href="${verificationUrl}">Verificar email</a></p>`
+    subject: "Confirme seu e-mail na Pediatron",
+    text: `Confirme seu e-mail na Pediatron: ${verificationUrl}`,
+    html: `<p>Confirme seu e-mail na Pediatron:</p><p><a href="${verificationUrl}">Verificar email</a></p>`
   });
 }
 
-export async function registerUser(input: { name?: string; email: string; password: string; context?: "mentory" }) {
+export async function registerUser(input: { name?: string; email: string; password: string; context?: "mentory"; whatsapp?: string; termsAccepted?: boolean; privacyAcknowledged?: boolean; marketingConsent?: boolean }) {
   const email = normalizeEmail(input.email);
   auditAuthEvent("register_requested", { email });
   const existing = await prisma.user.findUnique({ where: { email }, include: { passwordCredential: true } });
-  if (existing?.passwordCredential) {
+  // Existing identities must use their original sign-in or recovery flow.
+  if (existing) {
     return { ok: false as const, code: "EMAIL_IN_USE" as const };
   }
 
   const passwordHash = await hashPassword(input.password);
-  const user = await prisma.user.upsert({
-    where: { email },
-    update: {
-      name: input.name?.trim() || undefined,
-      role: Role.USER,
-      passwordCredential: {
-        upsert: {
-          create: { passwordHash },
-          update: { passwordHash }
-        }
-      }
-    },
-    create: {
+  let user;
+  try {
+    user = await prisma.user.create({
+    data: {
       email,
       name: input.name?.trim() || null,
       role: Role.USER,
-      passwordCredential: {
-        create: { passwordHash }
-      }
+      whatsapp: input.whatsapp,
+      termsAcceptedAt: input.termsAccepted ? new Date() : undefined,
+      privacyAcknowledgedAt: input.privacyAcknowledged ? new Date() : undefined,
+      marketingConsentAt: input.marketingConsent ? new Date() : undefined,
+      passwordCredential: { create: { passwordHash } }
     }
-  });
+    });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") return { ok: false as const, code: "EMAIL_IN_USE" as const };
+    throw error;
+  }
 
   if (input.context === 'mentory') {
     await trackFunnelEvent({ step: 'account_created', userId: user.id, source: 'mentory_registration', scope: 'mentory' });
   }
-  const token = await createEmailVerificationToken(user.id);
-  await sendVerificationEmail(email, token);
+  let emailPending = false;
+  try {
+    const token = await createEmailVerificationToken(user.id);
+    await sendVerificationEmail(email, token);
+  } catch {
+    // The identity exists; a provider outage must never turn a successful registration into a duplicate-account trap.
+    emailPending = true;
+    auditAuthEvent("verification_email_pending", { userId: user.id });
+  }
+  if (input.context === "mentory") {
+    const communityUrl = process.env.PEDIATRON_OPEN_COMMUNITY_URL || "https://chat.whatsapp.com/IZfXGWubm5gKO9baqP2lWa";
+    await sendEmail({
+      to: email,
+      subject: "Bem-vindo à comunidade aberta da Pediatron",
+      text: `Seu cadastro na Pediatron foi criado. Participe da comunidade aberta: ${communityUrl}\n\nA venda da Ped Expert Mentory é consultiva. Para acessar a plataforma completa, confirme seu endereço de e-mail.`
+    }).catch(() => auditAuthEvent("open_community_email_pending", { userId: user.id }));
+  }
   await trackFunnelEvent({ step: "account_created", userId: user.id, source: "register", scope: "account" }).catch(() => null);
-  return { ok: true as const };
+  return { ok: true as const, emailPending };
 }
 
 export async function verifyEmailToken(token: string) {
@@ -116,15 +129,15 @@ export async function verifyEmailToken(token: string) {
   if (intent) {
     const student = await prisma.user.findUnique({ where: { id: storedToken.userId }, select: { name: true, email: true } });
     const managers = await prisma.mentoryRoleGrant.findMany({
-      where: { role: 'mentory_enrollment_manager' },
+      where: { role: { in: ['mentory_enrollment_manager', 'mentory_admin'] } },
       select: { user: { select: { email: true } } }
     });
     const { sendEmail } = await import('@/lib/email');
     const destinations = Array.from(new Set(managers.map(m => m.user.email).filter((email): email is string => Boolean(email))));
     await Promise.allSettled(destinations.map(to => sendEmail({
       to,
-      subject: 'Ped Expert Mentory — novo cadastro aguardando matrícula',
-      text: `Novo cadastro verificado: ${student?.name || 'Aluno'} (${student?.email || 'sem e-mail'}). Consulte a fila de matrículas em https://www.pediatron.com.br/mentory/admin/alunos. Verifique o pagamento antes de ativar.`
+      subject: 'Pediatron — novo cadastro verificado',
+      text: `Novo cadastro verificado: ${student?.name || 'Aluno'} (${student?.email || 'sem e-mail'}). Consulte a fila em https://www.pediatron.com.br/mentory/admin/alunos. A contratação é consultiva; não ative sem confirmação do pagamento.`
     })));
   }
   auditAuthEvent("email_verified", { userId: storedToken.userId });
