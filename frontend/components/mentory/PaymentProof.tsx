@@ -23,7 +23,7 @@ export default function PaymentProof({userId,manager=false}:{userId?:string;mana
   <span className="eyebrow"><LockKeyhole size={16}/> MATRÍCULA PENDENTE</span>
   <h2>{manager?'Comprovante de pagamento do aluno':'Envie seu comprovante de pagamento'}</h2>
   <p>{manager?'Anexe o documento recebido e confira os dados antes de ativar a matrícula.':'Sua conta está criada, mas os conteúdos permanecem bloqueados até a aprovação do pagamento pela equipe responsável.'}</p>
-  <label style={{display:'grid',gap:8,margin:'16px 0',fontWeight:600}}>Comprovante (PDF, JPG ou PNG, até 5 MB)
+  <label style={{display:'grid',gap:8,margin:'16px 0',fontWeight:600}}>Comprovante (PDF, JPG ou PNG, até 4 MB)
    <input type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" onChange={e=>setFile(e.target.files?.[0]||null)} disabled={busy}/>
   </label>
   <div style={{display:'flex',flexWrap:'wrap',gap:12}}>
