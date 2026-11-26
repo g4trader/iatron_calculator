@@ -22,16 +22,21 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Dados inválidos." }, { status: 400 });
   }
 
+  if (parsed.data.context === "mentory" && (!parsed.data.name || !parsed.data.whatsapp || !parsed.data.termsAccepted || !parsed.data.privacyAcknowledged)) {
+    return NextResponse.json({ error: "Informe nome, WhatsApp e aceite os termos e a política de privacidade." }, { status: 400 });
+  }
+
   const rateLimit = await enforceAuthRateLimit(request, "register", parsed.data.email);
   if (!rateLimit.result.allowed) return rateLimitedResponse(rateLimit.result.retryAfter);
 
   const result = await registerUser(parsed.data);
   if (!result.ok && result.code === "EMAIL_IN_USE") {
-    return NextResponse.json({ error: "Este email já possui acesso por senha." }, { status: 409 });
+    return NextResponse.json({ error: "Este email já possui uma conta. Entre ou recupere sua senha." }, { status: 409 });
   }
 
   return NextResponse.json({
     ok: true,
+    ...(parsed.data.context === "mentory" ? { communityUrl: process.env.PEDIATRON_OPEN_COMMUNITY_URL || "https://chat.whatsapp.com/IZfXGWubm5gKO9baqP2lWa" } : {}),
     message: "Cadastro criado. Verifique seu email para liberar o acesso."
   });
 }

@@ -21,13 +21,13 @@ export default async function VerifyEmailPage({ searchParams }: { searchParams?:
           <h1 className="text-3xl font-black text-white">{result.ok ? "Email verificado." : rateLimited ? "Muitas tentativas." : "Link inválido ou expirado."}</h1>
           <p className="mt-3 text-sm leading-6 text-slate-400">
             {result.ok
-              ? ('mentory' in result && ('mentory' in result && result.mentory)) ? "E-mail confirmado! Entre na Ped Expert Mentory para enviar o comprovante de pagamento. As aulas permanecem bloqueadas até a aprovação da matrícula." : "Sua conta foi liberada. Você já pode entrar na plataforma clínica."
+              ? ('mentory' in result && ('mentory' in result && result.mentory)) ? "E-mail confirmado! Entre na plataforma. A contratação da mentoria acontece com nossa equipe consultiva na comunidade aberta." : "Sua conta foi liberada. Você já pode entrar na plataforma clínica."
               : rateLimited
                 ? "Aguarde alguns minutos antes de tentar verificar novamente."
-                : "Solicite um novo cadastro ou entre em contato com o suporte quando disponível."}
+                : "Solicite um novo link de verificação."}
           </p>
           <div className="mt-8">
-            <PremiumButton href={result.ok ? (('mentory' in result && result.mentory) ? "/mentory/login" : "/login?verified=1") : "/register"}>{result.ok ? "Entrar" : "Criar conta"}</PremiumButton>
+            <PremiumButton href={result.ok ? (('mentory' in result && result.mentory) ? "/mentory/login" : "/login?verified=1") : "/resend-verification"}>{result.ok ? "Entrar" : "Reenviar verificação"}</PremiumButton>
           </div>
         </NeuralCard>
       </div>

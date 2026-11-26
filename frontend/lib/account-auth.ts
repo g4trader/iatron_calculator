@@ -115,8 +115,8 @@ export async function verifyEmailToken(token: string) {
     const destinations = Array.from(new Set(managers.map(m => m.user.email).filter((email): email is string => Boolean(email))));
     await Promise.allSettled(destinations.map(to => sendEmail({
       to,
-      subject: 'Ped Expert Mentory — novo cadastro aguardando matrícula',
-      text: `Novo cadastro verificado: ${student?.name || 'Aluno'} (${student?.email || 'sem e-mail'}). Consulte a fila de matrículas em https://www.pediatron.com.br/mentory/admin/alunos. Verifique o pagamento antes de ativar.`
+      subject: 'Pediatron — novo cadastro verificado',
+      text: `Novo cadastro verificado: ${student?.name || 'Aluno'} (${student?.email || 'sem e-mail'}). Consulte a fila em https://www.pediatron.com.br/mentory/admin/alunos. A contratação é consultiva; não ative sem confirmação do pagamento.`
     })));
   }
   auditAuthEvent("email_verified", { userId: storedToken.userId });

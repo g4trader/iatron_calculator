@@ -15,7 +15,7 @@ export default async function MentoryRegister(){
       <ul><li><CheckCircle2/> Trilha de conhecimento organizada</li><li><CheckCircle2/> Comunidade e conteúdos bônus</li><li><ShieldCheck/> Acesso protegido e individual</li></ul>
     </section>
     <section className="mentory-auth-form-panel">
-      <div className="mentory-auth-card"><span className="mentory-auth-eyebrow">CADASTRO</span><h2>Crie sua conta</h2><p>Informe seus dados e confirme seu e-mail para continuar. O acesso às aulas depende da ativação da matrícula.</p><RegisterForm mentory/><p className="mentory-auth-back"><Link href="/mentory/login">Já possui conta? Entrar</Link></p></div>
+      <div className="mentory-auth-card"><span className="mentory-auth-eyebrow">CADASTRO</span><h2>Crie sua conta</h2><p>Crie sua conta gratuita e entre na comunidade aberta. Confirme seu e-mail para acessar a plataforma. As aulas da mentoria são exclusivas para assinantes.</p><RegisterForm mentory/><p className="mentory-auth-back"><Link href="/mentory/login">Já possui conta? Entrar</Link></p></div>
     </section>
   </main>;
 }

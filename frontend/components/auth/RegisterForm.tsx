@@ -6,6 +6,7 @@ import { useState, useRef } from "react";
 export function RegisterForm({ mentory = false }: { mentory?: boolean } = {}) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [communityUrl, setCommunityUrl] = useState("");
   const [isPending, setPending] = useState(false);
   const submitting = useRef(false);
 
@@ -23,7 +24,7 @@ export function RegisterForm({ mentory = false }: { mentory?: boolean } = {}) {
           name: String(formData.get("name") ?? ""),
           email: String(formData.get("email") ?? ""),
           password: String(formData.get("password") ?? ""),
-          ...(mentory ? { context: "mentory" } : {})
+          ...(mentory ? { context: "mentory", whatsapp: (() => { const digits = String(formData.get("whatsapp") ?? "").replace(/\D/g, ""); return "+" + (digits.length <= 11 ? "55" : "") + digits; })(), termsAccepted: formData.has("terms"), privacyAcknowledged: formData.has("privacy"), marketingConsent: formData.has("marketing") } : {})
         };
 
         submitting.current = true;
@@ -39,7 +40,8 @@ export function RegisterForm({ mentory = false }: { mentory?: boolean } = {}) {
             setError(data.error ?? "Não foi possível criar a conta.");
             return;
           }
-          setSuccess(mentory ? 'Conta criada! Confira seu e-mail e confirme o endereço, para ir pra próxima etapa.' : data.message ?? 'Conta criada. Verifique seu email.');
+          setCommunityUrl(data.communityUrl ?? "");
+          setSuccess(mentory ? 'Conta criada! Entre na comunidade aberta e confirme seu e-mail para acessar a plataforma.' : data.message ?? 'Conta criada. Verifique seu email.');
           form.reset();
         } catch {
           setError("Não foi possível confirmar o cadastro. Verifique seu email antes de tentar novamente.");
@@ -61,6 +63,13 @@ export function RegisterForm({ mentory = false }: { mentory?: boolean } = {}) {
         Senha
         <input className={mentory ? "mentory-register-input" : "h-12 rounded-md border border-cyan-300/15 bg-slate-950 px-4 text-white outline-none transition focus:border-cyan-300/60"} name="password" type="password" autoComplete="new-password" minLength={10} required disabled={isPending} />
       </label>
+      {mentory && <>
+        <label className="mentory-register-field">WhatsApp com DDD<input className="mentory-register-input" name="whatsapp" type="tel" autoComplete="tel" required disabled={isPending}/></label>
+        <label><input type="checkbox" name="terms" required disabled={isPending}/> Aceito os <Link href="/mentory/termos" target="_blank">termos de uso</Link>.</label>
+        <label><input type="checkbox" name="privacy" required disabled={isPending}/> Li a <Link href="/mentory/privacidade" target="_blank">política de privacidade</Link>.</label>
+        <label><input type="checkbox" name="marketing" disabled={isPending}/> Aceito receber comunicações comerciais (opcional).</label>
+      </>}
+      {communityUrl && <a className="mentory-register-submit" href={communityUrl} target="_blank" rel="noopener noreferrer">Entrar na comunidade aberta</a>}
       <p className={mentory ? "mentory-register-help" : "text-xs leading-5 text-slate-500"}>Use pelo menos 10 caracteres. Após confirmar o e-mail, siga para a próxima etapa do cadastro.</p>
       {error ? <p className={mentory ? "mentory-register-error" : "text-sm font-semibold text-red-200"}>{error}</p> : null}
       {success ? <p className={mentory ? "mentory-register-success" : "rounded-md border border-emerald-300/20 bg-emerald-300/10 p-3 text-sm font-semibold text-emerald-100"}>{success}</p> : null}
