@@ -37,7 +37,7 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
     if (write && path.join('/') === 'community/join') return json(await openCommunity(actor, await req.json()));
     if (!write && path.join('/') === 'admin/content') return json(await adminData(actor, undefined, 'conteudo'));
     if (write && path.join('/') === 'admin/student-access') {
-      if(!actor.enrollmentManager) throw new MentoryError(403,'Apenas responsáveis por matrículas podem liberar acessos.');
+      if(!actor.admin) throw new MentoryError(403,'Apenas administradores podem liberar acessos.');
       const body=await req.json();
       const email=typeof body.email==='string'?body.email.trim().toLowerCase():'';
       const type=body.type;
@@ -45,13 +45,13 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
       const days=Number(body.days);
       if(type!=='commercial'&&(!Number.isInteger(days)||days<1||days>730))throw new MentoryError(400,'Informe de 1 a 730 dias.');
       const result=await prisma.$transaction(async tx=>{
-        const user=await tx.user.findFirst({where:{email:{equals:email,mode:'insensitive'}},select:{id:true,emailVerified:true}});
+        const user=await tx.user.findFirst({where:{email:{equals:email,mode:'insensitive'}},select:{id:true,emailVerified:true,folhaPcrBenefitUntil:true}});
         if(!user)throw new MentoryError(404,'O aluno precisa criar sua conta Pediatron antes da liberação.');
         if(type==='commercial'&&!user.emailVerified)throw new MentoryError(409,'O aluno precisa confirmar o e-mail antes da aprovação do pagamento.');
         if(type==='commercial'){
           const proofId='mentory_payment_'+createHash('sha256').update(user.id).digest('hex');
           const proof=await tx.mentoryPrivateAsset.findUnique({where:{id:proofId},select:{checksum:true}});
-          if(!proof)throw new MentoryError(409,'Anexe o comprovante de pagamento antes de aprovar a matrícula.');
+          if(!proof && !(typeof body.paymentReference==='string' && body.paymentReference.trim().length>=3 && body.paymentReference.length<=200))throw new MentoryError(409,'Informe a referência do pagamento confirmado ou anexe o comprovante.');
         }
         const now=new Date();
         const current=await tx.mentorySubscription.findFirst({where:{userId:user.id,status:'ACTIVE',expiresAt:{gt:now}},orderBy:{expiresAt:'desc'}});
@@ -63,7 +63,11 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
         if(current){await tx.mentorySubscription.update({where:{id:current.id},data:{status:'CANCELED'}});await tx.mentoryEnrollment.updateMany({where:{subscriptionId:current.id},data:{status:'CANCELED'}});}
         const subscription=await tx.mentorySubscription.create({data:{userId:user.id,startedAt:current?current.startedAt:now,expiresAt:end,status:'ACTIVE',priceCents:type==='commercial'?MENTORY_PRICE_CENTS:0,renewalPriceCents:MENTORY_PRICE_CENTS,renewalTermsVersion:'manual-'+type+'-v1'}});
         await tx.mentoryEnrollment.create({data:{userId:user.id,subscriptionId:subscription.id,status:'ACTIVE'}});
-        await tx.mentoryAuditLog.create({data:{actorId:actor.id,entityId:user.id,action:body.renew===true?'student.renew':'student.grant',metadata:{type,subscriptionId:subscription.id,expiresAt:end.toISOString(),payment:'external'}}});
+        if(type==='commercial'){
+          const base=user.folhaPcrBenefitUntil && user.folhaPcrBenefitUntil>now ? user.folhaPcrBenefitUntil : now;
+          await tx.user.update({where:{id:user.id},data:{folhaPcrBenefitUntil:sixMonthsAfter(sixMonthsAfter(base))}});
+        }
+        await tx.mentoryAuditLog.create({data:{actorId:actor.id,entityId:user.id,action:body.renew===true?'student.renew':'student.grant',metadata:{type,subscriptionId:subscription.id,expiresAt:end.toISOString(),payment:'external',paymentReference:typeof body.paymentReference==='string'?body.paymentReference.trim().slice(0,200):null}}});
         return {expiresAt:end};
       },{isolationLevel:'Serializable'});
       return json(result);
