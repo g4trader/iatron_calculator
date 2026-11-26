@@ -53,30 +53,18 @@ export async function registerUser(input: { name?: string; email: string; passwo
   const email = normalizeEmail(input.email);
   auditAuthEvent("register_requested", { email });
   const existing = await prisma.user.findUnique({ where: { email }, include: { passwordCredential: true } });
-  if (existing?.passwordCredential) {
+  // Existing identities must use their original sign-in or recovery flow.
+  if (existing) {
     return { ok: false as const, code: "EMAIL_IN_USE" as const };
   }
 
   const passwordHash = await hashPassword(input.password);
-  const user = await prisma.user.upsert({
-    where: { email },
-    update: {
-      name: input.name?.trim() || undefined,
-      role: Role.USER,
-      passwordCredential: {
-        upsert: {
-          create: { passwordHash },
-          update: { passwordHash }
-        }
-      }
-    },
-    create: {
+  const user = await prisma.user.create({
+    data: {
       email,
       name: input.name?.trim() || null,
       role: Role.USER,
-      passwordCredential: {
-        create: { passwordHash }
-      }
+      passwordCredential: { create: { passwordHash } }
     }
   });
 
