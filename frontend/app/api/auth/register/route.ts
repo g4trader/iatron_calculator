@@ -9,7 +9,11 @@ const registerSchema = z.object({
   name: z.string().trim().min(2, "Informe seu nome.").max(120).optional(),
   email: z.string().trim().email("Informe um email válido."),
   password: z.string().min(10, "A senha deve ter pelo menos 10 caracteres.").max(128),
-  context: z.enum(["mentory"]).optional()
+  context: z.enum(["mentory"]).optional(),
+  whatsapp: z.string().regex(/^\+55[1-9][0-9]{9,10}$/, "Informe um WhatsApp brasileiro válido.").optional(),
+  termsAccepted: z.boolean().optional(),
+  privacyAcknowledged: z.boolean().optional(),
+  marketingConsent: z.boolean().optional()
 });
 
 export async function POST(request: Request) {

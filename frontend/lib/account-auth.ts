@@ -49,7 +49,7 @@ export async function sendVerificationEmail(email: string, token: string) {
   });
 }
 
-export async function registerUser(input: { name?: string; email: string; password: string; context?: "mentory" }) {
+export async function registerUser(input: { name?: string; email: string; password: string; context?: "mentory"; whatsapp?: string; termsAccepted?: boolean; privacyAcknowledged?: boolean; marketingConsent?: boolean }) {
   const email = normalizeEmail(input.email);
   auditAuthEvent("register_requested", { email });
   const existing = await prisma.user.findUnique({ where: { email }, include: { passwordCredential: true } });
@@ -64,6 +64,10 @@ export async function registerUser(input: { name?: string; email: string; passwo
       email,
       name: input.name?.trim() || null,
       role: Role.USER,
+      whatsapp: input.whatsapp,
+      termsAcceptedAt: input.termsAccepted ? new Date() : undefined,
+      privacyAcknowledgedAt: input.privacyAcknowledged ? new Date() : undefined,
+      marketingConsentAt: input.marketingConsent ? new Date() : undefined,
       passwordCredential: { create: { passwordHash } }
     }
   });

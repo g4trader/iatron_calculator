@@ -277,6 +277,10 @@ model User {
   id                              String                       @id @default(cuid())
   name                            String?
   clinicalName                    String?
+  whatsapp                        String?
+  termsAcceptedAt                 DateTime?
+  privacyAcknowledgedAt           DateTime?
+  marketingConsentAt              DateTime?
   email                           String?                      @unique
   emailVerified                   DateTime?
   image                           String?
