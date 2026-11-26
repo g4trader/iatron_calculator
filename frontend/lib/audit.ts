@@ -5,6 +5,8 @@ type AuthAuditEvent =
   | "login_failed"
   | "password_reset_requested"
   | "password_reset_completed"
+  | "verification_email_pending"
+  | "open_community_email_pending"
   | "verification_resent"
   | "rate_limited";
 
