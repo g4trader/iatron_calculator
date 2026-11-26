@@ -4,6 +4,7 @@ import { beginMediaUpload, finishMediaUpload, readCaptions } from '@/lib/mentory
 import { NextRequest, NextResponse } from 'next/server';
 import { createHash } from 'node:crypto';
 import { prisma } from '@/lib/prisma';
+import { sendEmail } from '@/lib/email';
 import { identity, lessonAccess, subscriptionFor, adminData } from '@/lib/mentory/server';
 import { MentoryError, mentoryPayment, sixMonthsAfter, MENTORY_PRICE_CENTS } from '@/lib/mentory/domain';
 import { openCommunity, saveCommunity } from '@/lib/mentory/community';
@@ -51,7 +52,8 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
         if(type==='commercial'){
           const proofId='mentory_payment_'+createHash('sha256').update(user.id).digest('hex');
           const proof=await tx.mentoryPrivateAsset.findUnique({where:{id:proofId},select:{checksum:true}});
-          if(!proof && !user.commercialPaymentReference && !(typeof body.paymentReference==='string' && body.paymentReference.trim().length>=3 && body.paymentReference.length<=200))throw new MentoryError(409,'Informe a referência do pagamento confirmado ou anexe o comprovante.');
+          if(body.renew===true && !(typeof body.paymentReference==='string' && body.paymentReference.trim().length>=3 && body.paymentReference.length<=200))throw new MentoryError(409,'Informe uma nova referência de pagamento para renovar.');
+          if(!proof && !(user.commercialStage==='PAYMENT_CONFIRMED' && user.commercialPaymentReference) && !(typeof body.paymentReference==='string' && body.paymentReference.trim().length>=3 && body.paymentReference.length<=200))throw new MentoryError(409,'Informe a referência do pagamento confirmado ou anexe o comprovante.');
         }
         const now=new Date();
         const current=await tx.mentorySubscription.findFirst({where:{userId:user.id,status:'ACTIVE',expiresAt:{gt:now}},orderBy:{expiresAt:'desc'}});
@@ -68,9 +70,17 @@ async function run(req: NextRequest, context: { params: Promise<{ path?: string[
           await tx.user.update({where:{id:user.id},data:{folhaPcrBenefitUntil:sixMonthsAfter(sixMonthsAfter(base)),commercialStage:'ACTIVATED',commercialUpdatedAt:now}});
         }
         await tx.mentoryAuditLog.create({data:{actorId:actor.id,entityId:user.id,action:body.renew===true?'student.renew':'student.grant',metadata:{type,subscriptionId:subscription.id,expiresAt:end.toISOString(),payment:'external',paymentReference:typeof body.paymentReference==='string'&&body.paymentReference.trim()?body.paymentReference.trim().slice(0,200):user.commercialPaymentReference}}});
-        return {expiresAt:end};
+        return {expiresAt:end,userId:user.id};
       },{isolationLevel:'Serializable'});
-      return json(result);
+      let notificationPending=false;
+      if(type==='commercial'){
+        try{
+          const delivery=await sendEmail({to:email,subject:body.renew===true?'Pediatron — sua mentoria foi renovada':'Bem-vindo à Ped Expert Mentory!',text:'Seu acesso à mentoria está ativo até '+result.expiresAt.toLocaleDateString('pt-BR',{timeZone:'UTC'})+'. Acesse https://www.pediatron.com.br/minha-pediatron para consultar seus benefícios, aulas e comunidade exclusiva. A Folha PCR possui vigência independente.'});
+          notificationPending=!delivery.delivered;
+        }catch{notificationPending=true;}
+        if(notificationPending)await prisma.mentoryAuditLog.create({data:{actorId:actor.id,entityId:result.userId,action:'activation.email.pending',metadata:{expiresAt:result.expiresAt.toISOString()}}}).catch(()=>null);
+      }
+      return json({expiresAt:result.expiresAt,notificationPending});
     }
     if(path[0]==='modules'&&path[1]&&path[2]==='cover'&&path.length===3){
       if(write&&!actor.editor)throw new MentoryError(403,'Permissão editorial necessária.');
