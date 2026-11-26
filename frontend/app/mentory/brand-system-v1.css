@@ -28,3 +28,20 @@
 .mentory .mentor-final :focus-visible{outline:2px solid var(--brand-700);outline-offset:3px}
 .mentory .mentor-final .continue-hero::after{background:linear-gradient(90deg,#0A1B33 40%,#0A1B3300)}
 .mentory .mentor-final .header-context .brand img{max-width:140px!important}
+
+.mentory .mentor-final{font-family:var(--mentory-body),system-ui,sans-serif;--success:#22D3EE;--ux-muted:var(--muted);--ux-line:var(--border)}
+.mentory .mentor-final :is(h1,h2,h3,h4,.metric,.stat strong){font-family:var(--mentory-heading),system-ui,sans-serif}
+.mentory .mentor-final :is(.account-form,.library-tools,.editor-form,.community-settings) :is(input:not([type=checkbox]):not([type=radio]),select,textarea){background:var(--canvas);color:var(--ink);border-color:var(--border)}
+.mentory .mentor-final :is(.student-modal,.student-search,.edit-box,.lesson-side,.account-nav,.student-status,.content-status,.tag){background:var(--surface);color:var(--ink);border-color:var(--border)}
+.mentory .mentor-final .content-status.published{background:var(--canvas);color:var(--brand-700)}
+.mentory .mentor-final .content-status:not(.published){background:var(--canvas);color:#FF9183}
+.mentory .mentor-final .context-menu button{color:var(--ink)}
+.mentory .mentor-final .context-menu button:hover{background:var(--canvas)}
+.mentory .mentor-final .quick-actions a>span{color:var(--muted)}
+.mentory .mentor-final .sidebar .brand img,.mentory .mentor-final .drawer-content .brand img{width:180px;height:auto;max-width:100%}
+body[data-skin="light"] .mentory .mentor-final tbody tr{color:var(--ink)!important;background:var(--surface)}
+body[data-skin="light"] .mentory .mentor-final tbody tr:hover{background:var(--canvas)}
+body[data-skin="light"] .mentory .mentor-final :is(td,th){color:var(--ink)!important;border-color:var(--border)}
+.mentory .mentor-final .btn-primary :is(strong,span,svg){color:inherit}
+.mentory .mentor-final .message{color:var(--brand-700)}
+.mentory .mentor-final .field-error{color:#FF9183}
