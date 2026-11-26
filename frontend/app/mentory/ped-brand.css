@@ -67,3 +67,23 @@ html body .mentory.ped-portal-theme .ped-portal a:not(.btn-primary) {color:#22D3
 html body .mentory.ped-portal-theme .ped-portal .btn-primary {background:#C4F82A!important;color:#0A1B33!important;}
 html body .mentory.ped-portal-theme .ped-portal .btn-outline {background:transparent!important;color:#22D3EE!important;border-color:#22D3EE!important;}
 html body .mentory.ped-portal-theme .ped-portal .panel {min-width:0;overflow-wrap:anywhere;}
+
+/* Final dark workspace cascade: legacy handoff and global theme cannot override semantic colors. */
+html body .mentory .mentor-final{--ink:#FFFFFF!important;--muted:#9FB3C8!important;--canvas:#0A1B33!important;--surface:#123A6B!important;--brand-700:#22D3EE!important;--brand-600:#22D3EE!important;--brand-50:#123A6B!important;--border:#22D3EE66!important;--ux-muted:#9FB3C8!important;--ux-line:#22D3EE66!important;background:#0A1B33!important;color:#FFFFFF!important}
+html body .mentory .mentor-final :is(.workspace,.workspace-main){background:#0A1B33!important;color:#FFFFFF!important}
+html body .mentory .mentor-final :is(.panel,.stat,.topbar,.user-dropdown,.quick-actions a,.student-modal,.editor-card){background:#123A6B!important;color:#FFFFFF!important;border-color:#22D3EE66!important}
+html body .mentory .mentor-final :is(h1,h2,h3,h4,strong,summary,td,.user-trigger,.user-dropdown a,.user-dropdown button){color:#FFFFFF!important}
+html body .mentory .mentor-final :is(p,small,time,.muted,.data-period,.header-context,.stat>span,.quick-actions a>span,.user-dropdown strong span){color:#9FB3C8!important}
+html body .mentory .mentor-final :is(.eyebrow,.quick-actions a>strong,.quick-actions a svg,.stat>svg,.user-dropdown svg,.student-search svg,.student-avatar svg){color:#22D3EE!important}
+html body .mentory .mentor-final :is(.quick-actions a>svg,.student-avatar,.student-search,.students-table th){background:#0A1B33!important;border-color:#22D3EE66!important}
+html body .mentory .mentor-final .students-table th{color:#9FB3C8!important}
+html body .mentory .mentor-final .students-table :is(tr,td){background:#123A6B!important;border-color:#22D3EE66!important}
+html body .mentory .mentor-final .students-table tbody tr:hover td{background:#0A1B33!important}
+html body .mentory .mentor-final .student-search input{border:0!important;background:transparent!important;color:#FFFFFF!important}
+html body .mentory .mentor-final .student-search input::placeholder{color:#9FB3C8!important;opacity:1}
+html body .mentory .mentor-final :is(.user-trigger:hover,.user-trigger[aria-expanded=true],.user-dropdown a:hover,.user-dropdown button:hover){background:#0A1B33!important;color:#22D3EE!important}
+html body .mentory .mentor-final :is(.btn-primary,.student-fab){background:#C4F82A!important;color:#0A1B33!important;border-color:transparent!important}
+html body .mentory .mentor-final :is(.btn-outline,.btn-secondary){background:transparent!important;color:#22D3EE!important;border-color:#22D3EE!important}
+html body .mentory .mentor-final .student-status{background:#0A1B33!important;color:#FFFFFF!important;border:1px solid #9FB3C8}
+html body .mentory .mentor-final .student-status:is(.expired,.canceled,.pending){border-color:#F2452D!important}
+html body .mentory .mentor-final .notice{background:#0A1B33!important;color:#22D3EE!important;border-color:#22D3EE66!important}
