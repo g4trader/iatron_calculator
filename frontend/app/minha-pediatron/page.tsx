@@ -1,32 +1,23 @@
 import Link from "next/link";
 import "./portal.css";
-import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/authz";
 import { prisma } from "@/lib/prisma";
-import { SaaSPage, NeuralCard } from "@/components/saas/SaaSChrome";
 import { PasswordLoginForm } from "@/components/auth/PasswordLoginForm";
-
-export default async function MinhaPediatron() {
-  const user = await getCurrentUser();
-  if (!user) return <main className="portal-login"><section className="portal-intro"><Link href="/mentory"><img src="/mentory/brand/logo-principal.svg" alt="Ped Expert Mentory"/></Link><p className="portal-kicker">MINHA PEDIATRON</p><h1>Seu conhecimento. Sua prática.</h1><p>Acesse sua comunidade, mentoria e ferramentas clínicas em uma única conta.</p></section><section className="portal-card"><h2>Bem-vindo de volta</h2><p>Entre para acessar seus recursos.</p><PasswordLoginForm callbackUrl="/minha-pediatron"/></section></main>;
-  const now = new Date();
-  const [grant, enrollment, previous] = await Promise.all([
-    prisma.mentoryRoleGrant.findFirst({where:{userId:user.id,role:"mentory_student"}}),
-    prisma.mentoryEnrollment.findFirst({where:{userId:user.id,status:"ACTIVE",subscription:{status:"ACTIVE",startedAt:{lte:now},expiresAt:{gt:now}}},include:{subscription:true}}),
-    prisma.mentorySubscription.findFirst({where:{userId:user.id},orderBy:{expiresAt:"desc"}})
-  ]);
-  const active = Boolean(grant && enrollment);
-  const openUrl = process.env.PEDIATRON_OPEN_COMMUNITY_URL || "https://chat.whatsapp.com/IZfXGWubm5gKO9baqP2lWa";
-  const closedUrl = active ? process.env.PEDIATRON_CLOSED_COMMUNITY_URL : undefined;
-  return <main className="portal-home"><header className="portal-header"><Link href="/mentory"><img src="/mentory/brand/logo-principal.svg" alt="Ped Expert Mentory"/></Link><span>Minha Pediatron</span></header><section className="portal-content">
-    <Link href="/" className="text-cyan-200">PEDIATRON.</Link>
-    <h1 className="mt-6 text-3xl font-bold text-white">Minha Pediatron</h1>
-    <p className="mt-2 text-slate-300">Olá, {user.name || "bem-vindo"}! Seus recursos em um só lugar.</p>
-    <div className="mt-8 grid gap-4 sm:grid-cols-2">
-      <article className="portal-card"><h2 className="text-xl font-bold text-white">Comunidade aberta</h2><p className="my-3 text-slate-300">Networking e informações sobre a mentoria.</p><a className="text-cyan-200" href={openUrl} target="_blank" rel="noopener noreferrer">Entrar no WhatsApp</a></article>
-      <article className="portal-card"><h2 className="text-xl font-bold text-white"><img src="/mentory/brand/logo-curta.svg" alt="Ped Expert Mentory" className="h-auto w-48 max-w-full"/></h2><p className="my-3 text-slate-300">{active ? "Assinatura ativa até " + enrollment!.subscription.expiresAt.toLocaleDateString("pt-BR",{timeZone:"UTC"}) : previous ? "Acesso não ativo. Consulte a equipe para renovar." : "Conheça o programa e converse com nossa equipe na comunidade."}</p><Link className="text-cyan-200" href={active ? "/mentory/aprender" : "/ped-expert-mentory"}>{active ? "Acessar aulas" : "Conhecer a mentoria"}</Link>{closedUrl && <a className="mt-3 block text-cyan-200" href={closedUrl} target="_blank" rel="noopener noreferrer">Solicitar entrada no grupo fechado</a>}</article>
-      <article className="portal-card"><h2 className="text-xl font-bold text-white">Folha PCR</h2><p className="my-3 text-slate-300">{user.folhaPcrBenefitUntil && user.folhaPcrBenefitUntil > now ? "Benefício ativo até " + user.folhaPcrBenefitUntil.toLocaleDateString("pt-BR",{timeZone:"UTC"}) : "Ferramenta digital de apoio à prática clínica."}</p><Link className="text-cyan-200" href="/folha-pcr">Acessar Folha PCR</Link></article>
-      <article className="portal-card"><h2 className="text-xl font-bold text-white">Minha conta</h2><p className="my-3 text-slate-300">{user.email}</p><Link className="text-cyan-200" href="/profile">Gerenciar conta</Link></article>
-    </div>
-  </section></main>;
+import { Home, Play, Users, FileText, User, Settings, ArrowRight, GraduationCap, Layers, Monitor, Menu } from "lucide-react";
+const Logo=()=> <img className="portal-logo" src="/mentory/brand/logo-principal.svg" alt="Ped Expert Mentory"/>;
+function Login(){return <main className="portal-login"><section className="portal-intro"><Logo/><p className="portal-kicker">MINHA PEDIATRON</p><h1>Seu conhecimento.<br/><strong>Sua prática.</strong></h1><p>Acesse sua comunidade, mentoria e ferramentas clínicas em uma única conta.</p><div className="portal-benefits"><span><GraduationCap/>Mentoria especializada</span><span><Layers/>Conteúdo atualizado</span><span><Monitor/>Ferramentas clínicas</span></div></section><section className="portal-card portal-auth"><h2>Bem-vindo de volta</h2><p>Entre para acessar seus recursos.</p><i className="portal-rule"/><PasswordLoginForm callbackUrl="/minha-pediatron"/></section></main>}
+function Navigation({mentory,community}:{mentory:string;community:string}){return <nav className="portal-nav"><Link href="/minha-pediatron" aria-current="page"><Home/>Minha Pediatron</Link><Link href={mentory}><Play/><span>Mentory<small>Cursos e trilhas</small></span></Link><a href={community} target="_blank" rel="noopener noreferrer"><Users/>Comunidade</a><Link href="/folha-pcr"><FileText/>Folha PCR</Link><Link href="/profile"><Settings/>Minha conta</Link></nav>}
+function Resource({title,description,href,kind,external=false}:{title:string;description:string;href:string;kind:"community"|"pcr"|"account";external?:boolean}){const Icon=kind==="community"?Users:kind==="pcr"?FileText:User;return <a className="portal-resource" href={href} target={external?"_blank":undefined} rel={external?"noopener noreferrer":undefined}><Icon className="resource-icon"/><div><h2>{title}</h2><p>{description}</p></div><ArrowRight className="resource-arrow"/></a>}
+export default async function MinhaPediatron(){
+ const user=await getCurrentUser();if(!user)return <Login/>;
+ const now=new Date();
+ const [grant,enrollment,previous]=await Promise.all([
+ prisma.mentoryRoleGrant.findFirst({where:{userId:user.id,role:"mentory_student"}}),
+ prisma.mentoryEnrollment.findFirst({where:{userId:user.id,status:"ACTIVE",subscription:{status:"ACTIVE",startedAt:{lte:now},expiresAt:{gt:now}}},include:{subscription:true}}),
+ prisma.mentorySubscription.findFirst({where:{userId:user.id},orderBy:{expiresAt:"desc"}})]);
+ const active=Boolean(grant&&enrollment),mentory=active?"/mentory/aprender":"/ped-expert-mentory";
+ const openUrl=process.env.PEDIATRON_OPEN_COMMUNITY_URL||"https://chat.whatsapp.com/IZfXGWubm5gKO9baqP2lWa";
+ const closedUrl=active?process.env.PEDIATRON_CLOSED_COMMUNITY_URL:undefined;
+ const name=user.name||"Minha conta",initials=name.split(" ").slice(0,2).map(s=>s[0]).join("").toUpperCase();
+ return <main className="portal-home"><aside className="portal-sidebar"><Logo/><Navigation mentory={mentory} community={openUrl}/></aside><section className="portal-content"><header className="portal-header"><details className="portal-mobile-menu"><summary aria-label="Abrir menu"><Menu/></summary><Navigation mentory={mentory} community={openUrl}/></details><div><h1>Minha Pediatron</h1><p>Seu ambiente integrado de aprendizado, prática e comunidade.</p></div><Link className="portal-profile" href="/profile"><span className="portal-avatar">{initials}</span><span>{name}<small>Minha conta</small></span></Link></header><div className="portal-mobile-greeting">Olá, {name}!</div><article className="portal-hero"><div><h2>Acesse seus cursos, conteúdos e ferramentas de prática clínica.</h2><p>{active?"Assinatura ativa até "+enrollment!.subscription.expiresAt.toLocaleDateString("pt-BR",{timeZone:"UTC"}):previous?"Acesso não ativo. Consulte a equipe para renovar.":"Conheça o programa de mentoria."}</p><Link className="portal-primary" href={mentory}>{active?"Acessar Mentory":"Conhecer Mentory"}<ArrowRight/></Link>{closedUrl&&<a className="portal-closed" href={closedUrl} target="_blank" rel="noopener noreferrer">Solicitar entrada no grupo fechado</a>}</div></article><div className="portal-resources"><Resource title="Comunidade aberta" description="Networking e discussões entre profissionais." href={openUrl} kind="community" external/><Resource title="Folha PCR" description={user.folhaPcrBenefitUntil&&user.folhaPcrBenefitUntil>now?"Benefício ativo até "+user.folhaPcrBenefitUntil.toLocaleDateString("pt-BR",{timeZone:"UTC"}):"Ferramenta digital de apoio à prática clínica."} href="/folha-pcr" kind="pcr"/><Resource title="Minha conta" description="Atualize seus dados e preferências." href="/profile" kind="account"/></div></section></main>
 }
