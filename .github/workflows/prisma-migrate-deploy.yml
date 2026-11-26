@@ -41,9 +41,33 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
           cache: npm
           cache-dependency-path: frontend/package-lock.json
+
+      - name: Check database URL format without exposing credentials
+        run: |
+          node --input-type=module <<'NODE'
+          let failed = false;
+          for (const key of ['DATABASE_URL', 'DIRECT_URL']) {
+            const raw = process.env[key] || '';
+            let issue = '';
+            if (!raw) issue = 'missing secret';
+            else if (raw !== raw.trim() || /\s/.test(raw)) issue = 'whitespace in URL';
+            else if (/\[YOUR-DATABASE-PASSWORD\]|\[PASSWORD\]/i.test(raw)) issue = 'password placeholder not replaced';
+            else {
+              try {
+                const u = new URL(raw);
+                if (!['postgres:', 'postgresql:'].includes(u.protocol)) issue = 'not a PostgreSQL URL';
+                else if (!u.hostname || !u.username || !u.password) issue = 'missing host, username or password';
+                else if (key === 'DIRECT_URL' && u.port === '6543') issue = 'use session pooler or direct connection, not transaction pooler';
+              } catch { issue = 'invalid URL syntax; check password encoding and host'; }
+            }
+            console.log(key + ': ' + (issue || 'URL format valid'));
+            if (issue) failed = true;
+          }
+          if (failed) process.exit(1);
+          NODE
 
       - name: Install dependencies
         run: npm ci
@@ -52,6 +76,7 @@ jobs:
         run: npx prisma validate
 
       - name: Migration status before deploy
+        continue-on-error: true
         run: npx prisma migrate status
 
       - name: Apply migrations
