@@ -273,6 +273,7 @@ model User {
   mentoryEnrollments MentoryEnrollment[]
   mentoryProgress MentoryLessonProgress[]
   mentorySubscriptions MentorySubscription[]
+  mentoryReminderDeliveries MentoryReminderDelivery[]
   mentoryAuditLogs MentoryAuditLog[]
   id                              String                       @id @default(cuid())
   name                            String?
@@ -1229,6 +1230,7 @@ model MentorySubscription {
   paymentProviderId String? @unique
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   enrollment MentoryEnrollment?
+  reminderDeliveries MentoryReminderDelivery[]
   @@unique([id, userId])
   @@index([userId, status, expiresAt])
   @@map("mentory_subscriptions")
@@ -1251,4 +1253,22 @@ model MentoryRateBucket {
   resetAt DateTime
   @@index([resetAt])
   @@map("mentory_rate_buckets")
+}
+
+model MentoryReminderDelivery {
+  id String @id @default(cuid())
+  subscriptionId String
+  userId String
+  eventType String
+  status String @default("PENDING")
+  attempts Int @default(0)
+  nextAttemptAt DateTime @default(now())
+  sentAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  subscription MentorySubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([subscriptionId, eventType])
+  @@index([status, nextAttemptAt])
+  @@map("mentory_reminder_deliveries")
 }

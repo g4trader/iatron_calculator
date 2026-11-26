@@ -1,4 +1,12 @@
 {
   "buildCommand": "npm run build",
-  "regions": ["pdx1"]
+  "regions": [
+    "pdx1"
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/mentory-renewals",
+      "schedule": "0 12 * * *"
+    }
+  ]
 }
