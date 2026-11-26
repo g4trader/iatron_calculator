@@ -1,0 +1,61 @@
+/* Official palette, scoped to education workspace; never clinical routes. */
+.mentory .mentor-final {
+ --navy-950:#0A1B33;--navy-900:#123A6B;--canvas:#0A1B33;--surface:#123A6B;
+ --ink:#FFFFFF;--muted:#9FB3C8;--brand-700:#22D3EE;--brand-600:#22D3EE;
+ --brand-50:#0A1B33;--border:#587A9E;--line:var(--border);--blue:#22D3EE;
+ --danger:#F2452D;--action:#C4F82A;color-scheme:dark;
+ background:var(--canvas);color:var(--ink);
+}
+.mentory .mentor-final :is(.workspace,.workspace-main,.sidebar,.nav-drawer){background:var(--canvas);color:var(--ink)}
+.mentory .mentor-final :is(.panel,.module-card,.stat,.operations-stats .stat,.library-module,.editor-lesson-row,.editor-material-row,.editor-dialog,.empty-state,.publication-panel,.quick-actions a,.context-menu[open]>div,.user-dropdown,.topbar,.bottom-nav){background:var(--surface);color:var(--ink);border-color:var(--border)}
+.mentory .mentor-final :is(h1,h2,h3,h4,strong,label,summary,td,th,.content-title,.user-trigger,.user-dropdown a,.user-dropdown button){color:var(--ink)}
+.mentory .mentor-final :is(p,small,.muted,.tiny,.account-email,.stat span,.subscription-grid span,.module-count,.content-title span,.activity-list time,.lesson-nav small,.lesson-row small){color:var(--muted)}
+.mentory .mentor-final :is(.eyebrow,.module-link,.account-back,.back-link,.community-admin-link,.section-row a){color:var(--brand-700)}
+.mentory .mentor-final :is(input:not([type=checkbox]):not([type=radio]),select,textarea){background:var(--canvas);color:var(--ink);border-color:var(--border);font:inherit}
+.mentory .mentor-final :is(input,textarea)::placeholder{color:var(--muted);opacity:1}
+.mentory .mentor-final :is(input[readonly],input:disabled){background:var(--surface);color:var(--muted)}
+.mentory .mentor-final :is(.btn-primary,.continue-hero .btn-primary){background:var(--action);color:#0A1B33;border-color:var(--action)}
+.mentory .mentor-final .btn-primary:hover:not(:disabled){background:#D8FF69;color:#0A1B33}
+.mentory .mentor-final :is(.btn-outline,.icon-button,.menu-trigger,.tabs button,.drawer-close){background:var(--canvas);color:var(--brand-700);border-color:var(--border)}
+.mentory .mentor-final :is(.nav-item.active,.account-nav a[aria-current=page],.lesson-nav.selected,.tabs button.active,.user-dropdown a:hover,.user-dropdown button:hover,.user-trigger:hover,.user-trigger[aria-expanded=true]){background:var(--canvas);color:var(--brand-700)}
+.mentory .mentor-final .sidebar .nav-item.active{background:var(--surface);color:var(--brand-700)}
+.mentory .mentor-final :is(.notice,.avatar,.lesson-number,.module-number,.material-icon,.quick-actions a>svg,.module-art){background:var(--canvas);color:var(--brand-700);border-color:var(--border)}
+.mentory .mentor-final :is(.notice.warning,.field-error,.text-danger,[role=alert]){color:#FF9183}
+.mentory .mentor-final .notice.warning{border-color:var(--danger)}
+.mentory .mentor-final :is(th,tr:nth-child(even)){background:var(--canvas);color:var(--ink)}
+.mentory .mentor-final .progress{background:var(--canvas)}
+.mentory .mentor-final .progress i{background:var(--brand-700)}
+.mentory .mentor-final :focus-visible{outline:2px solid var(--brand-700);outline-offset:3px}
+.mentory .mentor-final .continue-hero::after{background:linear-gradient(90deg,#0A1B33 40%,#0A1B3300)}
+.mentory .mentor-final .header-context .brand img{max-width:140px!important}
+
+.mentory .mentor-final{font-family:var(--mentory-body),system-ui,sans-serif;--success:#22D3EE;--ux-muted:var(--muted);--ux-line:var(--border)}
+.mentory .mentor-final :is(h1,h2,h3,h4,.metric,.stat strong){font-family:var(--mentory-heading),system-ui,sans-serif}
+.mentory .mentor-final :is(.account-form,.library-tools,.editor-form,.community-settings) :is(input:not([type=checkbox]):not([type=radio]),select,textarea){background:var(--canvas);color:var(--ink);border-color:var(--border)}
+.mentory .mentor-final :is(.student-modal,.student-search,.edit-box,.lesson-side,.account-nav,.student-status,.content-status,.tag){background:var(--surface);color:var(--ink);border-color:var(--border)}
+.mentory .mentor-final .content-status.published{background:var(--canvas);color:var(--brand-700)}
+.mentory .mentor-final .content-status:not(.published){background:var(--canvas);color:#FF9183}
+.mentory .mentor-final .context-menu button{color:var(--ink)}
+.mentory .mentor-final .context-menu button:hover{background:var(--canvas)}
+.mentory .mentor-final .quick-actions a>span{color:var(--muted)}
+.mentory .mentor-final .sidebar .brand img,.mentory .mentor-final .drawer-content .brand img{width:180px;height:auto;max-width:100%}
+body[data-skin="light"] .mentory .mentor-final tbody tr{color:var(--ink)!important;background:var(--surface)}
+body[data-skin="light"] .mentory .mentor-final tbody tr:hover{background:var(--canvas)}
+body[data-skin="light"] .mentory .mentor-final :is(td,th){color:var(--ink)!important;border-color:var(--border)}
+.mentory .mentor-final .btn-primary :is(strong,span,svg){color:inherit}
+.mentory .mentor-final .message{color:var(--brand-700)}
+.mentory .mentor-final .field-error{color:#FF9183}
+
+/* Authentication shares the educational palette, not the clinical theme. */
+.mentory :is(.auth-bg,.mentory-auth-page,.mentory-auth-intro,.mentory-auth-form-panel){background:#0A1B33;color:#FFFFFF;font-family:var(--mentory-body),sans-serif;color-scheme:dark}
+.mentory :is(.auth-card,.mentory-auth-card){background:#123A6B;color:#FFFFFF;border:1px solid #587A9E}
+.mentory :is(.auth-card,.mentory-auth-page) :is(h1,h2){font-family:var(--mentory-heading),sans-serif;color:#FFFFFF}
+.mentory :is(.auth-card,.mentory-auth-page) :is(p,small){color:#9FB3C8}
+.mentory :is(.auth-card,.mentory-auth-card) label{color:#FFFFFF}
+.mentory :is(.auth-card,.mentory-auth-card) :is(input:not([type=checkbox]),select){background:#0A1B33;color:#FFFFFF;border:1px solid #587A9E}
+.mentory :is(.auth-card,.mentory-auth-card) input::placeholder{color:#9FB3C8}
+.mentory :is(.auth-card,.mentory-auth-card) button[type=submit]{background:#C4F82A;color:#0A1B33;border:0;font-weight:700}
+.mentory :is(.auth-card,.mentory-auth-page) a,.mentory .mentory-auth-eyebrow{color:#22D3EE}
+.mentory :is(.auth-card,.mentory-auth-page) :focus-visible{outline:2px solid #22D3EE;outline-offset:3px}
+.mentory :is(.auth-card,.mentory-auth-card) [role=alert]{color:#FFFFFF;border-left:3px solid #F2452D;padding-left:12px}
+.mentory :is(.auth-card,.mentory-auth-card) input:-webkit-autofill{-webkit-text-fill-color:#FFFFFF;box-shadow:0 0 0 1000px #0A1B33 inset}
