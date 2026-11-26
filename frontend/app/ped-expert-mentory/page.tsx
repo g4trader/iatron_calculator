@@ -2,6 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { MentoryIcon } from "@/components/mentory/MentoryIcon";
 import "./brand-landing.css";
+import "../mentory/ped-brand.css";
+import { pedFonts } from "../mentory/ped-fonts";
+import { PedBrand } from "@/components/mentory/PedBrand";
 
 const pageUrl = "https://pediatron.com.br/ped-expert-mentory";
 const pageTitle = "Ped Expert Mentory | Mentoria em Urgência Pediátrica";
@@ -14,7 +17,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   openGraph: { type: "website", locale: "pt_BR", siteName: "Ped Expert Mentory", url: pageUrl, title: pageTitle, description: pageDescription, images: [{ url: "/images/dr-aristoteles-pires.png", alt: "Dr. Aristóteles Pires" }] },
   twitter: { card: "summary_large_image", title: pageTitle, description: pageDescription, images: ["/images/dr-aristoteles-pires.png"] },
-  icons: { icon: "/images/mentory-favicon.png", shortcut: "/images/mentory-favicon.png", apple: "/images/mentory-favicon.png" },
+  icons: { icon: "/images/ped-wordmark-icon.svg", shortcut: "/images/ped-wordmark-icon.svg", apple: "/images/ped-wordmark-icon.svg" },
 };
 
 const structuredData = {
@@ -36,13 +39,13 @@ const benefits = [
 
 export default function PedExpertMentoryPage() {
   return (
-    <main className="mentory-landing">
+    <main className={`mentory-landing ${pedFonts}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />
       <div className="mentory-dark-shell">
         <header className="mentory-nav">
           <div className="mentory-container mentory-nav-inner">
             <Link href="/ped-expert-mentory" className="mentory-logo" aria-label="Ped Expert Mentory, início">
-              <img src="/images/mentory-logo-dark.svg" alt="Ped Expert Mentory" />
+              <PedBrand variant="full"/>
             </Link>
             <nav aria-label="Navegação principal" className="mentory-nav-links">
               <a href="#inicio" className="active">Home</a>
