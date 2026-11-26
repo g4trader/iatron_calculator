@@ -45,3 +45,17 @@ body[data-skin="light"] .mentory .mentor-final :is(td,th){color:var(--ink)!impor
 .mentory .mentor-final .btn-primary :is(strong,span,svg){color:inherit}
 .mentory .mentor-final .message{color:var(--brand-700)}
 .mentory .mentor-final .field-error{color:#FF9183}
+
+/* Authentication shares the educational palette, not the clinical theme. */
+.mentory :is(.auth-bg,.mentory-auth-page,.mentory-auth-intro,.mentory-auth-form-panel){background:#0A1B33;color:#FFFFFF;font-family:var(--mentory-body),sans-serif;color-scheme:dark}
+.mentory :is(.auth-card,.mentory-auth-card){background:#123A6B;color:#FFFFFF;border:1px solid #587A9E}
+.mentory :is(.auth-card,.mentory-auth-page) :is(h1,h2){font-family:var(--mentory-heading),sans-serif;color:#FFFFFF}
+.mentory :is(.auth-card,.mentory-auth-page) :is(p,small){color:#9FB3C8}
+.mentory :is(.auth-card,.mentory-auth-card) label{color:#FFFFFF}
+.mentory :is(.auth-card,.mentory-auth-card) :is(input:not([type=checkbox]),select){background:#0A1B33;color:#FFFFFF;border:1px solid #587A9E}
+.mentory :is(.auth-card,.mentory-auth-card) input::placeholder{color:#9FB3C8}
+.mentory :is(.auth-card,.mentory-auth-card) button[type=submit]{background:#C4F82A;color:#0A1B33;border:0;font-weight:700}
+.mentory :is(.auth-card,.mentory-auth-page) a,.mentory .mentory-auth-eyebrow{color:#22D3EE}
+.mentory :is(.auth-card,.mentory-auth-page) :focus-visible{outline:2px solid #22D3EE;outline-offset:3px}
+.mentory :is(.auth-card,.mentory-auth-card) [role=alert]{color:#FFFFFF;border-left:3px solid #F2452D;padding-left:12px}
+.mentory :is(.auth-card,.mentory-auth-card) input:-webkit-autofill{-webkit-text-fill-color:#FFFFFF;box-shadow:0 0 0 1000px #0A1B33 inset}
