@@ -27,11 +27,12 @@ export default function Admin({ data, section, admin, canManageRoles = false }: 
   const [studentUserId,setStudentUserId]=useState('');
   const [accessDays,setAccessDays]=useState('30');
   const [renew,setRenew]=useState(false);
+  const [paymentReference,setPaymentReference]=useState('');
   async function grantAccess(){
     if(lock.current)return;lock.current=true;
     setBusy(true);setMessage('');setModalError('');
     try{
-      const r=await fetch('/api/mentory/admin/student-access',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:studentEmail,type:accessType,days:Number(accessDays),renew})});
+      const r=await fetch('/api/mentory/admin/student-access',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:studentEmail,type:accessType,days:Number(accessDays),renew,paymentReference:paymentReference.trim()})});
       const d=await r.json();if(!r.ok)throw new Error(d.error);
       setMessage('Acesso liberado até '+date(d.expiresAt));setModal(false);router.refresh();
     }catch(e){setModalError(e instanceof Error?e.message:'Falha ao liberar acesso.');}finally{lock.current=false;setBusy(false);}
@@ -78,9 +79,9 @@ export default function Admin({ data, section, admin, canManageRoles = false }: 
         <p>Vincule uma conta Pediatron à mentoria e defina a vigência do acesso.</p>
         <fieldset disabled={busy}><label>E-mail da conta Pediatron<input autoFocus type="email" required value={studentEmail} readOnly={renew} onChange={e=>setStudentEmail(e.target.value)}/></label>
         <label>Tipo de acesso<select value={accessType} disabled={renew} onChange={e=>{setAccessType(e.target.value);setConfirmed(false);}}><option value="trial">Experimental</option><option value="courtesy">Cortesia</option><option value="commercial">Assinatura comercial</option></select></label>
-        {accessType==='commercial'?<div className="student-access-summary"><strong>6 meses de acesso</strong><p>{renew?'A vigência será prorrogada a partir do vencimento atual ou de hoje, se expirada.':'A vigência começa na liberação.'}</p><label className="student-confirm"><input type="checkbox" required checked={confirmed} onChange={e=>setConfirmed(e.target.checked)}/> Confirmo a contratação ou renovação realizada externamente.</label></div>:<label>Período de acesso (dias)<input type="number" min={1} max={730} required value={accessDays} onChange={e=>setAccessDays(e.target.value)}/><small>O acesso termina automaticamente após a vigência.</small></label>}
+        {accessType==='commercial'?<div className="student-access-summary"><strong>6 meses de acesso</strong><p>{renew?'A vigência será prorrogada a partir do vencimento atual ou de hoje, se expirada.':'A vigência começa na liberação.'}</p><label className="student-confirm"><input type="checkbox" required checked={confirmed} onChange={e=>setConfirmed(e.target.checked)}/> Confirmo a contratação ou renovação realizada externamente.</label><label>Referência do pagamento confirmado<input value={paymentReference} maxLength={200} onChange={e=>setPaymentReference(e.target.value)} placeholder="Identificador da transação ou referência interna"/><small>Informe a referência ou anexe o comprovante opcional.</small></label></div>:<label>Período de acesso (dias)<input type="number" min={1} max={730} required value={accessDays} onChange={e=>setAccessDays(e.target.value)}/><small>O acesso termina automaticamente após a vigência.</small></label>}
         </fieldset>
-        {accessType==='commercial'&&studentUserId?<PaymentProof userId={studentUserId} manager/>:accessType==='commercial'?<p className="notice">O aluno deve enviar o comprovante na própria conta. Para anexar pelo painel, selecione o cadastro na fila de matrículas.</p>:null}
+        {accessType==='commercial'&&studentUserId?<PaymentProof userId={studentUserId} manager/>:accessType==='commercial'?<p className="notice">Informe a referência do pagamento externo confirmado.</p>:null}
         {modalError&&<p role="alert" className="field-error">{modalError}</p>}
         <footer><button type="button" className="btn btn-outline" disabled={busy} onClick={()=>setModal(false)}>Cancelar</button><button className="btn btn-primary" disabled={busy||(accessType==='commercial'&&!confirmed)}>{busy?'Salvando…':renew?'Confirmar renovação':'Liberar acesso'}</button></footer>
       </form></EditorDialog>}
