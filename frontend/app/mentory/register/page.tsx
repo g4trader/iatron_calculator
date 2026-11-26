@@ -5,7 +5,7 @@ import { RegisterForm } from '@/components/auth/RegisterForm';
 import { GraduationCap, CheckCircle2, ShieldCheck } from 'lucide-react';
 
 export default async function MentoryRegister(){
-  if(await getCurrentUser())redirect('/mentory/aprender');
+  if(await getCurrentUser())redirect('/minha-pediatron');
   return <main className="mentory-auth-page">
     <section className="mentory-auth-intro">
       <Link href="/mentory" className="mentory-auth-brand"><img src="/images/mentory-logo-dark.svg" alt="Ped Expert Mentory" style={{width:270,maxWidth:"100%",height:"auto"}}/></Link>

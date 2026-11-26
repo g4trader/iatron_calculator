@@ -51,7 +51,7 @@ export default function PedExpertMentoryPage() {
               <a href="#conteudos">Conteúdos</a>
               <a href="#depoimentos">Depoimentos</a>
             </nav>
-            <Link href="/mentory/login" className="mentory-cta mentory-cta-nav">Acessar o sistema</Link>
+            <Link href="/minha-pediatron" className="mentory-cta mentory-cta-nav">Acessar o sistema</Link>
           </div>
         </header>
         <section id="inicio" className="mentory-hero">
@@ -61,7 +61,7 @@ export default function PedExpertMentoryPage() {
               <h1>Decisões clínicas<br/>mais seguras,<br/><em>na prática.</em></h1>
               <p className="mentory-hero-description">Mentoria para médicos que buscam atualização, raciocínio clínico e mais confiança na condução dos casos do dia a dia.</p>
               <div className="mentory-actions">
-                <a className="mentory-cta" href="#programa">Quero participar da mentoria <span aria-hidden="true">→</span></a>
+                <a className="mentory-cta" href="/cadastro">Quero participar da comunidade <span aria-hidden="true">→</span></a>
                 <a className="mentory-outline" href="#sobre"><span className="mentory-play-small">▶</span> Conheça o programa</a>
               </div>
             </div>
