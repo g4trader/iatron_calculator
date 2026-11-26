@@ -57,3 +57,13 @@
 .mentory .mentory-auth-intro li svg{color:var(--ped-identity)}
 .mentory .mentory-register-success{border:1px solid var(--ped-identity)}
 @media(max-width:480px){.mentory-landing .mentory-nav-inner{gap:10px}.mentory-landing .mentory-logo .ped-brand{font-size:16px}.mentory-landing .mentory-cta-nav{white-space:normal;text-align:center}.mentory .ped-portal .panel{padding:20px}}
+
+/* Unlayered, high-specificity portal rules override legacy global utilities. */
+html body .mentory.ped-portal-theme .ped-portal {background:#0A1B33!important;color:#FFFFFF!important;}
+html body .mentory.ped-portal-theme .ped-portal .panel {background:#123A6B!important;color:#FFFFFF!important;border:1px solid #22D3EE!important;}
+html body .mentory.ped-portal-theme .ped-portal :is(h1,h2,h3,h4,label,strong) {color:#FFFFFF!important;}
+html body .mentory.ped-portal-theme .ped-portal :is(p,.text-slate-300) {color:#9FB3C8!important;}
+html body .mentory.ped-portal-theme .ped-portal a:not(.btn-primary) {color:#22D3EE!important;}
+html body .mentory.ped-portal-theme .ped-portal .btn-primary {background:#C4F82A!important;color:#0A1B33!important;}
+html body .mentory.ped-portal-theme .ped-portal .btn-outline {background:transparent!important;color:#22D3EE!important;border-color:#22D3EE!important;}
+html body .mentory.ped-portal-theme .ped-portal .panel {min-width:0;overflow-wrap:anywhere;}
