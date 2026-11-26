@@ -64,3 +64,12 @@ body[data-skin="light"] .mentory .mentor-final :is(td,th){color:var(--ink)!impor
 .mentory .mentor-final .sidebar .brand img{filter:none}
 
 .mentory .mentory-legal{background:#0A1B33;color:#fff;min-height:100vh;padding:32px clamp(16px,5vw,64px);font-family:var(--mentory-body),system-ui,sans-serif}.mentory .mentory-legal .panel{background:#123A6B;color:#fff;border:1px solid #587A9E}.mentory .mentory-legal :is(h1,h2){color:#fff;font-family:var(--mentory-heading),system-ui,sans-serif}.mentory .mentory-legal p{color:#fff}.mentory .mentory-legal a{color:#22D3EE}.mentory .mentory-legal .brand img{width:220px;max-width:100%;height:auto}
+
+/* Explicit route boundary prevents legacy light theme from overriding education. */
+.mentory .mentor-final.mentor-final{--canvas:#0A1B33;--surface:#123A6B;--ink:#fff;--muted:#B9CBDF;--brand-700:#22D3EE;--brand-600:#22D3EE;--brand-50:#123A6B;--border:#587A9E;--navy-950:#0A1B33;--navy-900:#123A6B;background:var(--canvas);color:var(--ink)}
+.mentory .mentor-final.mentor-final :is(.workspace,.workspace-main,.sidebar,.nav-drawer){background:#0A1B33;color:#fff}
+.mentory .mentor-final.mentor-final :is(.panel,.module-card,.stat,.topbar,.bottom-nav,.user-dropdown,.lesson-side,.account-nav){background:#123A6B;color:#fff;border-color:#587A9E}
+.mentory .mentor-final.mentor-final .sidebar :is(.active,.nav-item.active){background:#123A6B;color:#22D3EE}
+.mentory .mentor-final.mentor-final :is(.btn-primary,.continue-hero .btn-primary){background:#C4F82A;color:#0A1B33}
+.mentory .mentor-final.mentor-final :is(h1,h2,h3,h4,.user-name){color:#fff}
+.mentory .mentor-final.mentor-final :is(.eyebrow,.module-link,.section-row a){color:#22D3EE}
