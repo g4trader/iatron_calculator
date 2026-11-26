@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
-    { "@type": "Organization", "@id": "https://pediatron.com.br/#mentory-organization", name: "Ped Expert Mentory", url: pageUrl, logo: "https://pediatron.com.br/images/mentory-logo-oficial.png" },
+    { "@type": "Organization", "@id": "https://pediatron.com.br/#mentory-organization", name: "Ped Expert Mentory", url: pageUrl, logo: "https://pediatron.com.br/mentory/brand/logo-principal.svg" },
     { "@type": "WebSite", "@id": "https://pediatron.com.br/#mentory-website", name: "Ped Expert Mentory", url: pageUrl, inLanguage: "pt-BR" },
     { "@type": "WebPage", "@id": pageUrl + "#webpage", url: pageUrl, name: pageTitle, description: pageDescription, inLanguage: "pt-BR", isPartOf: { "@id": "https://pediatron.com.br/#mentory-website" } },
     { "@type": "EducationalOccupationalProgram", name: "Ped Expert Mentory", description: "Mentoria em urgência pediátrica com encontros online semanais e discussão de casos reais.", url: pageUrl, educationalProgramMode: "online", provider: { "@id": "https://pediatron.com.br/#mentory-organization" } },
@@ -42,7 +42,7 @@ export default function PedExpertMentoryPage() {
         <header className="mentory-nav">
           <div className="mentory-container mentory-nav-inner">
             <Link href="/ped-expert-mentory" className="mentory-logo" aria-label="Ped Expert Mentory, início">
-              <img src="/images/mentory-logo-dark.svg" alt="Ped Expert Mentory" />
+              <img src="/mentory/brand/logo-principal.svg" alt="Ped Expert Mentory" />
             </Link>
             <nav aria-label="Navegação principal" className="mentory-nav-links">
               <a href="#inicio" className="active">Home</a>

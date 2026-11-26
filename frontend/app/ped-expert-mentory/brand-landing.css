@@ -95,3 +95,5 @@
 .mentory-landing .mentory-logo{min-width:240px;gap:0}
 .mentory-landing .mentory-logo img{width:245px;height:78px;max-width:100%;object-fit:contain;object-position:left center}
 @media(max-width:700px){.mentory-landing .mentory-logo{min-width:0}.mentory-landing .mentory-logo img{width:185px;height:60px}}
+
+.mentory-landing{background:#0A1B33;color:#fff}.mentory-landing .mentory-dark-shell,.mentory-landing .mentory-nav,.mentory-landing .mentory-hero,.mentory-landing .mentory-footer{background:#0A1B33;color:#fff}.mentory-landing .mentory-cta{background:#C4F82A;color:#0A1B33}.mentory-landing .mentory-hero h1 em,.mentory-landing .mentory-eyebrow{color:#22D3EE}.mentory-landing .mentory-logo img{object-fit:contain;width:100%;height:auto;max-height:76px}.mentory-landing .mentory-about,.mentory-landing .mentory-program,.mentory-landing .mentory-bottom-cta{background:#123A6B;color:#fff}.mentory-landing :is(.mentory-about,.mentory-program,.mentory-bottom-cta) :is(h2,h3,p,li){color:#fff}.mentory-landing .mentory-program-cards article{background:#0A1B33;color:#fff;border-color:#587A9E}
