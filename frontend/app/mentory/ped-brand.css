@@ -39,3 +39,21 @@
 .mentory-landing .mentory-cta-nav,.mentory-landing .mentory-outline{background:transparent!important;color:var(--ped-identity)!important;border:1px solid var(--ped-identity)}
 .mentory-landing .mentory-about li:before{background:var(--ped-layer);color:var(--ped-identity)}
 .mentory-landing .mentory-logo{min-width:0}.mentory-landing .mentory-logo .ped-brand{font-size:clamp(17px,2.4vw,26px)}
+
+.mentory .ped-portal{min-height:100dvh;background:var(--ped-bg)}
+.mentory .ped-portal .panel{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.mentory .ped-portal .panel p{margin:0}
+.mentory .ped-portal a:not(.btn-primary){color:var(--ped-identity)}
+.mentory .ped-portal form{width:100%}
+.mentory .ped-portal form button[type=submit]{background:var(--ped-action)!important;color:var(--ped-bg)!important}
+.mentory .ped-portal .ped-brand{margin-bottom:20px}
+.mentory .mentor-final .student-modal-form .student-access-summary,.mentory .mentor-final .community-settings textarea{background:var(--ped-bg);color:var(--ped-text)}
+.mentory .mentor-final .bottom-nav .nav-item.active{background:var(--ped-bg);color:var(--ped-identity)}
+.mentory .mentor-final .lesson-tabbar button:hover{background:var(--ped-bg)}
+.mentory .mentor-final .user-dropdown :is(a,button):hover{background:var(--ped-bg)}
+.mentory .mentor-final .sidebar .brand .ped-brand{font-size:22px}
+.mentory .mentor-final .topbar .brand .ped-brand{font-size:17px}
+.mentory .mentor-final .avatar{color:var(--ped-identity)}
+.mentory .mentory-auth-intro li svg{color:var(--ped-identity)}
+.mentory .mentory-register-success{border:1px solid var(--ped-identity)}
+@media(max-width:480px){.mentory-landing .mentory-nav-inner{gap:10px}.mentory-landing .mentory-logo .ped-brand{font-size:16px}.mentory-landing .mentory-cta-nav{white-space:normal;text-align:center}.mentory .ped-portal .panel{padding:20px}}
