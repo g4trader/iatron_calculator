@@ -1260,6 +1260,7 @@ model MentoryReminderDelivery {
   subscriptionId String
   userId String
   eventType String
+  recipientEmail String
   status String @default("PENDING")
   attempts Int @default(0)
   nextAttemptAt DateTime @default(now())
@@ -1268,7 +1269,7 @@ model MentoryReminderDelivery {
   updatedAt DateTime @updatedAt
   subscription MentorySubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  @@unique([subscriptionId, eventType])
+  @@unique([subscriptionId, eventType, recipientEmail])
   @@index([status, nextAttemptAt])
   @@map("mentory_reminder_deliveries")
 }

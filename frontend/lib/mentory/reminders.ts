@@ -19,7 +19,7 @@ export async function runMentoryReminders(now=new Date()){
   const summary={evaluated:0,sent:0,pending:0,skipped:0};
   for(const day of reminderDays){
     const subs=await prisma.mentorySubscription.findMany({
-      where:{status:'ACTIVE',expiresAt:dayRange(now,day),enrollment:{status:'ACTIVE'}},
+      where:{status:'ACTIVE',renewalTermsVersion:{startsWith:'manual-commercial-'},expiresAt:dayRange(now,day),enrollment:{status:'ACTIVE'}},
       select:{id:true,userId:true,expiresAt:true,user:{select:{email:true,name:true}}},
       take:300
     });
@@ -28,31 +28,33 @@ export async function runMentoryReminders(now=new Date()){
       const recipients=day===0?admins:day===15?commercial:day===30?Array.from(new Set([sub.user.email,...commercial].filter((v):v is string=>Boolean(v)))):sub.user.email?[sub.user.email]:[];
       if(!recipients.length){summary.skipped++;continue;}
       const eventType=`D${day}`;
-      const record=await prisma.mentoryReminderDelivery.upsert({
-        where:{subscriptionId_eventType:{subscriptionId:sub.id,eventType}},
-        create:{subscriptionId:sub.id,userId:sub.userId,eventType,nextAttemptAt:now},
-        update:{}
-      });
-      if(record.status==='SENT'||record.attempts>=6||record.nextAttemptAt>now){summary.skipped++;continue;}
-      const claim=await prisma.mentoryReminderDelivery.updateMany({
-        where:{id:record.id,status:{in:['PENDING','FAILED','SENDING']},attempts:{lt:6},nextAttemptAt:{lte:now}},
-        data:{status:'SENDING',attempts:{increment:1},nextAttemptAt:new Date(now.getTime()+30*60000)}
-      });
-      if(!claim.count){summary.skipped++;continue;}
-      const date=sub.expiresAt.toLocaleDateString('pt-BR',{timeZone:'UTC'});
       const text=day===0?
         `A mentoria de ${sub.user.name||sub.user.email||sub.userId} venceu em ${date}. Revise a matrícula e providencie a remoção manual do grupo fechado do WhatsApp, preservando a comunidade aberta e a Folha PCR conforme suas vigências.`:
         day===15?
         `Entre em contato pelo fluxo consultivo com ${sub.user.name||sub.user.email||sub.userId}. A mentoria vence em ${date}. Consulte a central comercial da Pediatron.`:
         `Olá, ${sub.user.name||'assinante'}! Sua Ped Expert Mentory vence em ${date}. Para renovar, converse com nossa equipe na comunidade aberta. Acesse https://www.pediatron.com.br/minha-pediatron. Não há cobrança automática.`;
-      try{
-        const sent=await Promise.allSettled(recipients.map(to=>sendEmail({to,subject:title(day),text})));
-        if(sent.some(s=>s.status==='rejected'||(s.status==='fulfilled'&&!s.value.delivered))) throw new Error('Email not fully delivered');
-        await prisma.mentoryReminderDelivery.update({where:{id:record.id},data:{status:'SENT',sentAt:new Date(),nextAttemptAt:new Date()}});
-        summary.sent++;
-      }catch{
-        await prisma.mentoryReminderDelivery.update({where:{id:record.id},data:{status:'FAILED',nextAttemptAt:new Date(now.getTime()+Math.min(24,2**record.attempts)*3600000)}});
-        summary.pending++;
+
+      for(const to of recipients){
+        const record=await prisma.mentoryReminderDelivery.upsert({
+          where:{subscriptionId_eventType_recipientEmail:{subscriptionId:sub.id,eventType,recipientEmail:to}},
+          create:{subscriptionId:sub.id,userId:sub.userId,eventType,recipientEmail:to,nextAttemptAt:now},
+          update:{}
+        });
+        if(record.status==='SENT'||record.attempts>=6||record.nextAttemptAt>now){summary.skipped++;continue;}
+        const claim=await prisma.mentoryReminderDelivery.updateMany({
+          where:{id:record.id,status:{in:['PENDING','FAILED','SENDING']},attempts:{lt:6},nextAttemptAt:{lte:now}},
+          data:{status:'SENDING',attempts:{increment:1},nextAttemptAt:new Date(now.getTime()+30*60000)}
+        });
+        if(!claim.count){summary.skipped++;continue;}
+        try{
+          const result=await sendEmail({to,subject:title(day),text});
+          if(!result.delivered)throw new Error('Email not delivered');
+          await prisma.mentoryReminderDelivery.update({where:{id:record.id},data:{status:'SENT',sentAt:new Date(),nextAttemptAt:new Date()}});
+          summary.sent++;
+        }catch{
+          await prisma.mentoryReminderDelivery.update({where:{id:record.id},data:{status:'FAILED',nextAttemptAt:new Date(now.getTime()+Math.min(24,2**record.attempts)*3600000)}});
+          summary.pending++;
+        }
       }
     }
   }
