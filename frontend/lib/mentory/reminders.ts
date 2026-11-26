@@ -28,6 +28,7 @@ export async function runMentoryReminders(now=new Date()){
       const recipients=day===0?admins:day===15?commercial:day===30?Array.from(new Set([sub.user.email,...commercial].filter((v):v is string=>Boolean(v)))):sub.user.email?[sub.user.email]:[];
       if(!recipients.length){summary.skipped++;continue;}
       const eventType=`D${day}`;
+      const date=sub.expiresAt.toLocaleDateString('pt-BR',{timeZone:'UTC'});
       const text=day===0?
         `A mentoria de ${sub.user.name||sub.user.email||sub.userId} venceu em ${date}. Revise a matrícula e providencie a remoção manual do grupo fechado do WhatsApp, preservando a comunidade aberta e a Folha PCR conforme suas vigências.`:
         day===15?
