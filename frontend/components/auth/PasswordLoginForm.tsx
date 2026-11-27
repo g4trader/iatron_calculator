@@ -9,9 +9,10 @@ function sameDomainDestination(resultUrl: string | null | undefined, fallbackUrl
   const rawUrl = resultUrl || fallbackUrl;
   try {
     const parsed = new URL(rawUrl, window.location.origin);
+    if(parsed.origin!==window.location.origin || !parsed.pathname.startsWith("/") || parsed.pathname.startsWith("//")) return "/minha-pediatron";
     return `${parsed.pathname}${parsed.search}${parsed.hash}`;
   } catch {
-    return fallbackUrl || "/dashboard";
+    return "/minha-pediatron";
   }
 }
 

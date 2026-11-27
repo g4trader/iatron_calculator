@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { ProfileForm } from "@/components/profile/ProfileForm";
 import { getServerSkin, skinFromPrisma } from "@/lib/skin";
 import "./portal.css";
+import { getAdminCurrentUser } from "@/lib/admin-permissions";
 import { getCurrentUser } from "@/lib/authz";
 import { requirePremiumAccess, CommercialAccessError } from "@/lib/commercial-access";
 import { prisma } from "@/lib/prisma";
@@ -16,6 +17,7 @@ function Resource({title,description,href,kind,external=false}:{title:string;des
 export async function PortalView({account=false,callbackUrl="/minha-pediatron",verified,reset}:{account?:boolean;callbackUrl?:string;verified?:string;reset?:string} = {}){
  const user=await getCurrentUser();if(!user){if(account)redirect("/minha-pediatron");return <Login callbackUrl={callbackUrl} verified={verified} reset={reset}/>;}
  if(!account&&callbackUrl!=="/minha-pediatron")redirect(callbackUrl);
+ if(!account){const admin=await getAdminCurrentUser();if(admin?.adminPermissions.includes("admin.dashboard.view"))redirect("/admin");}
  const now=new Date();
  const [grant,enrollment,previous]=await Promise.all([
  prisma.mentoryRoleGrant.findFirst({where:{userId:user.id,role:"mentory_student"}}),
