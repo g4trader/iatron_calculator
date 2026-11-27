@@ -2,7 +2,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { verifyEmailToken } from "@/lib/account-auth";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { NeuralCard, PremiumButton, SaaSPage } from "@/components/saas/SaaSChrome";
+import { PortalAuthFrame } from "../minha-pediatron/PortalAuthFrame";
 
 export default async function VerifyEmailPage({ searchParams }: { searchParams?: Promise<{ token?: string }> }) {
   const params = await searchParams;
@@ -14,10 +14,7 @@ export default async function VerifyEmailPage({ searchParams }: { searchParams?:
   const rateLimited = Boolean(rateLimit && !rateLimit.allowed);
 
   return (
-    <SaaSPage>
-      <div className="mx-auto grid min-h-screen max-w-md place-items-center px-4 py-10">
-        <NeuralCard className="w-full p-6">
-          <Link href="/" className="mb-8 block text-sm font-black text-cyan-200">iatron.PED</Link>
+    <PortalAuthFrame>
           <h1 className="text-3xl font-black text-white">{result.ok ? "Email verificado." : rateLimited ? "Muitas tentativas." : "Link inválido ou expirado."}</h1>
           <p className="mt-3 text-sm leading-6 text-slate-400">
             {result.ok
@@ -27,10 +24,8 @@ export default async function VerifyEmailPage({ searchParams }: { searchParams?:
                 : "Solicite um novo link de verificação."}
           </p>
           <div className="mt-8">
-            <PremiumButton href={result.ok ? (('mentory' in result && result.mentory) ? "/mentory/login" : "/login?verified=1") : "/resend-verification"}>{result.ok ? "Entrar" : "Reenviar verificação"}</PremiumButton>
+            <Link className="portal-primary" href={result.ok ? "/minha-pediatron?verified=1" : "/resend-verification"}>{result.ok ? "Entrar" : "Reenviar verificação"}</Link>
           </div>
-        </NeuralCard>
-      </div>
-    </SaaSPage>
+    </PortalAuthFrame>
   );
 }
