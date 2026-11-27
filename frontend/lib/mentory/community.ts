@@ -53,5 +53,5 @@ export async function openCommunity(actor: Identity, body: unknown) {
   if (!grant) throw new MentoryError(403, 'O grupo fechado exige uma licença válida.');
   if (!settings.config.enabled || !settings.config.inviteUrl) throw new MentoryError(423, 'A entrada na comunidade está temporariamente indisponível.');
   await prisma.mentoryAuditLog.create({ data: { actorId: actor.id, action: 'community.invite.opened', entityId: COMMUNITY_PRODUCT, metadata: { source: grant.source, expiresAt: grant.expiresAt.toISOString() } } });
-  return { url: settings.config.inviteUrl };
+  throw new MentoryError(403, 'A inclusão no grupo fechado é realizada manualmente pela equipe.');
 }
