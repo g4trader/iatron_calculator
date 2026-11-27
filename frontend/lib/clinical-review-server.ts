@@ -33,6 +33,7 @@ export async function recordClinicalIndexReview(input:{recordId:string;version:s
  if(!["in_review","correction_required","revoked","document_approved","clinical_homologated"].includes(input.state))throw new Error("Decisão indisponível para índice documental");
  const reference=input.reference.trim(),reason=input.reason.trim();
  if(reference.length<3||reference.length>1000||reason.length<8||reason.length>2000)throw new Error("Referência ou justificativa inválida");
+ if(input.state==="revoked")await validateAdminStepUp({admin:actor,action:"clinical.document.revoke",password:input.password,resourceType:"clinical_review",resourceId:input.recordId});
  if(input.state==="document_approved"||input.state==="clinical_homologated"){
  if(!input.confirmedFields||input.version==="index-v1")throw new Error("A aprovação exige conferência da ficha completa.");
  const source=await prisma.clinicalSourceVersion.findUnique({where:{recordId_version:{recordId:input.recordId,version:input.version}},select:{payload:true}});
@@ -54,5 +55,13 @@ export async function recordClinicalIndexReview(input:{recordId:string;version:s
  return event;
  },{isolationLevel:"Serializable"});
  }
- return prisma.clinicalReviewEvent.create({data:{recordId:input.recordId,version:input.version,state:input.state,reviewerId:actor.id,reference,reason}});
+ return prisma.$transaction(async tx=>{
+ const grant=await tx.adminPermissionGrant.findFirst({where:{userId:actor.id,permission:"clinical.document.review",status:"ACTIVE",revokedAt:null}});
+ if(!grant)throw new Error("Revisor não autorizado.");
+ const latest=await tx.clinicalReviewEvent.findFirst({where:{recordId:input.recordId,version:input.version},orderBy:[{reviewedAt:"desc"},{id:"desc"}]});
+ if(latest?.state==="clinical_homologated"&&input.state!=="revoked")throw new Error("Revogue a homologação antes de reabrir a revisão.");
+ const event=await tx.clinicalReviewEvent.create({data:{recordId:input.recordId,version:input.version,state:input.state,reviewerId:actor.id,reference,reason}});
+ await tx.adminAuditEvent.create({data:{actorUserId:actor.id,action:"clinical.document.decision",resourceType:"clinical_review",resourceId:event.id,metadata:{recordId:input.recordId,version:input.version,state:input.state,confirmedFields:input.confirmedFields===true}}});
+ return event;
+ },{isolationLevel:"Serializable"});
 }
