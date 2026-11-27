@@ -110,3 +110,6 @@ body[data-skin="light"] .mentory .mentor-final :is(td,th){color:var(--ink)!impor
 
 /* Revision 20: unify student and administrative desktop chrome. */
 @media(min-width:1000px){.mentory .mentor-final.mentor-final :is(.topbar,.sidebar){background:#0A1B33;border-color:#233B53;box-shadow:none}.mentory .mentor-final.mentor-final .sidebar .nav-item.active{background:#12304A;color:#22D3EE}.mentory .mentor-final.mentor-final .user-dropdown{background:#10243B;border-color:#30465D;box-shadow:none}}
+
+/* Shared header: identical administrative and student surface at every viewport. */
+.mentory .mentor-final.mentor-final.student-workspace .topbar{background:#0A1B33;color:#fff;border-color:#233B53;box-shadow:none}
