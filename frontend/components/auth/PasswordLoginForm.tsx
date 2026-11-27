@@ -67,7 +67,7 @@ export function PasswordLoginForm({ callbackUrl = "/dashboard" }: { callbackUrl?
         />
       </label>
       <div className="flex items-center justify-between gap-3 text-sm">
-        <Link href={callbackUrl.startsWith("/mentory") ? "/mentory/register" : "/register"} className="font-semibold text-cyan-200 hover:text-cyan-100">
+        <Link href={"/cadastro"} className="font-semibold text-cyan-200 hover:text-cyan-100">
           Criar conta
         </Link>
         <Link href="/forgot-password" className="font-semibold text-slate-300 hover:text-white">

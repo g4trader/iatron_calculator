@@ -1,2 +1,2 @@
 import { PortalView } from "./PortalView";
-export default function Page(){return <PortalView/>;}
+export default async function Page({searchParams}:{searchParams:Promise<{callbackUrl?:string;verified?:string;reset?:string}>}){const p=await searchParams;let callbackUrl="/minha-pediatron";try{const u=new URL(p.callbackUrl||callbackUrl,"https://www.pediatron.com.br");if(u.origin==="https://www.pediatron.com.br"&&!["/login","/mentory/login","/minha-pediatron"].includes(u.pathname))callbackUrl=u.pathname+u.search+u.hash;}catch{}return <PortalView callbackUrl={callbackUrl} verified={p.verified} reset={p.reset}/>;}
