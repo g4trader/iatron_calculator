@@ -1,5 +1,6 @@
 import "server-only";
 import {prisma} from "@/lib/prisma";
+import {validateAdminStepUp} from "@/lib/admin-step-up";
 import {isApprovedVersion,type ReviewState} from "@/lib/clinical-review";
 import {clinicalCatalog} from "@/lib/clinical-catalog";
 
@@ -23,13 +24,21 @@ export async function getClinicalReviewEligibility(recordId:string,version:strin
 
 import {pageIdentity} from "@/lib/mentory/server";
 export async function canReviewClinical(userId:string){return !!await prisma.adminPermissionGrant.findFirst({where:{userId,permission:"clinical.document.review",status:"ACTIVE",revokedAt:null}});}
-export async function recordClinicalIndexReview(input:{recordId:string;version:string;state:string;reference:string;reason:string}){
+export async function recordClinicalIndexReview(input:{recordId:string;version:string;state:string;reference:string;reason:string;confirmedFields?:boolean;password?:string}){
  const actor=await pageIdentity();
  const allowed=await canReviewClinical(actor.id);
  if(!actor.admin||!allowed)throw new Error("Revisor não autorizado");
  if(!await knownVersion(input.recordId,input.version))throw new Error("Ficha ou versão desconhecida");
- if(!["in_review","correction_required","revoked"].includes(input.state))throw new Error("Decisão indisponível para índice documental");
+ if(!["in_review","correction_required","revoked","document_approved"].includes(input.state))throw new Error("Decisão indisponível para índice documental");
  const reference=input.reference.trim(),reason=input.reason.trim();
  if(reference.length<3||reference.length>1000||reason.length<8||reason.length>2000)throw new Error("Referência ou justificativa inválida");
+ if(input.state==="document_approved"){
+ if(!input.confirmedFields||input.version==="index-v1")throw new Error("A aprovação exige conferência da ficha completa.");
+ const source=await prisma.clinicalSourceVersion.findUnique({where:{recordId_version:{recordId:input.recordId,version:input.version}},select:{payload:true}});
+ const payload=source?.payload;
+ const fields=payload&&typeof payload==="object"&&!Array.isArray(payload)&&"fields" in payload?payload.fields:null;
+ if(!fields||typeof fields!=="object"||Array.isArray(fields)||Object.keys(fields).length!==11)throw new Error("Ficha incompleta.");
+ await validateAdminStepUp({admin:actor,action:"clinical.document.approve",password:input.password,resourceType:"clinical_review",resourceId:input.recordId,metadata:{version:input.version}});
+ }
  return prisma.clinicalReviewEvent.create({data:{recordId:input.recordId,version:input.version,state:input.state,reviewerId:actor.id,reference,reason}});
 }
