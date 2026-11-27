@@ -1275,3 +1275,16 @@ model MentoryReminderDelivery {
   @@index([status, nextAttemptAt])
   @@map("mentory_reminder_deliveries")
 }
+
+model ClinicalReviewEvent {
+  id String @id @default(cuid())
+  recordId String
+  version String
+  state String
+  reviewerId String
+  reference String
+  reason String
+  reviewedAt DateTime @default(now())
+  @@index([recordId, version, reviewedAt])
+  @@map("clinical_review_events")
+}
