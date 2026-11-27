@@ -1,7 +1,7 @@
 import { LicenseStatus, SubscriptionOwnerType, SubscriptionStatus, type BillingCycle, type OrganizationRole, type Plan } from "@prisma/client";
 import { auditCommercialEvent } from "@/lib/commercial-audit";
 import { prisma } from "@/lib/prisma";
-import { isProductLicenseValid } from "@/lib/clinical-products";
+import { isProductLicenseValid, type ClinicalProduct } from "@/lib/clinical-products";
 
 export type CommercialFeature = "dashboard" | "calculator_complete" | "calculator_pcr" | "calculation_history" | "organization";
 
@@ -310,4 +310,14 @@ export async function requirePremiumAccess(userId: string, feature: CommercialFe
     throw new CommercialAccessError(entitlement);
   }
   return entitlement;
+}
+
+// Preserve legacy commercial bundles; individual grants only unlock their own product.
+export async function getClinicalProductEntitlement(userId:string, product:ClinicalProduct):Promise<CommercialEntitlement> {
+  const now=new Date();
+  const licenses=await prisma.license.findMany({where:{userId,clinicalProduct:product,status:LicenseStatus.ACTIVE,organizationId:null,subscriptionId:null}});
+  const license=licenses.find(l=>isProductLicenseValid(l,product,now));
+  if(license) return {...emptyEntitlement(),hasAccess:true,blockReason:null,accountType:"INDIVIDUAL",plan:"PROFESSIONAL",status:SubscriptionStatus.ACTIVE,currentPeriodEnd:license.endsAt,licenseStatus:LicenseStatus.ACTIVE,seatsPurchased:1,seatsUsed:1};
+  if(product==="pcr") {try{return await requirePremiumAccess(userId,"calculator_pcr");}catch(e){if(e instanceof CommercialAccessError)return e.entitlement;throw e;}}
+  return getCommercialEntitlement(userId);
 }

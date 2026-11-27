@@ -3,7 +3,7 @@ import { CalculatorShell, type ProductNavKey } from "@/components/CalculatorShel
 import { CommercialBlock } from "@/components/paywall/CommercialBlock";
 import { getAdminCurrentUser, hasAdminPermission } from "@/lib/admin-permissions";
 import { requireAuth } from "@/lib/authz";
-import { getCommercialEntitlement } from "@/lib/commercial-access";
+import { getClinicalProductEntitlement } from "@/lib/commercial-access";
 
 type ProductAccessGateProps = {
   active: ProductNavKey;
@@ -12,7 +12,8 @@ type ProductAccessGateProps = {
 
 export async function ProductAccessGate({ active, children }: ProductAccessGateProps) {
   const user = await requireAuth();
-  const entitlement = await getCommercialEntitlement(user.id);
+  const products = {prescription:"modelo-prescricao",doses:"doses-medicacoes",fluids:"soroterapia",intubation:"intubacao-rapida",pcr:"pcr"} as const;
+  const entitlement = await getClinicalProductEntitlement(user.id, products[active]);
 
   if (!entitlement.hasAccess) {
     const admin = await getAdminCurrentUser();
