@@ -1288,3 +1288,13 @@ model ClinicalReviewEvent {
   @@index([recordId, version, reviewedAt])
   @@map("clinical_review_events")
 }
+
+model ClinicalSourceVersion {
+  recordId String
+  version String
+  sourceSha256 String
+  payload Json
+  importedAt DateTime @default(now())
+  @@id([recordId, version])
+  @@map("clinical_source_versions")
+}

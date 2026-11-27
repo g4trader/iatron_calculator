@@ -1,0 +1,1 @@
+CREATE TABLE "clinical_source_versions" ("recordId" TEXT NOT NULL, "version" TEXT NOT NULL, "sourceSha256" TEXT NOT NULL, "payload" JSONB NOT NULL, "importedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY ("recordId","version"));
