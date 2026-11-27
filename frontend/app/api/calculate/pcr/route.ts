@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { calculatePcrLocally } from "@/lib/pcr-calculation-engine";
 
+import { getCurrentUser } from "@/lib/authz";
+import { requirePremiumAccess, CommercialAccessError } from "@/lib/commercial-access";
+
 export const runtime = "nodejs";
 
 const calculationRequestSchema = z.object({
@@ -15,6 +18,9 @@ function backendBaseUrl() {
 }
 
 export async function POST(request: Request) {
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({error:"Autenticação necessária."},{status:401});
+  try { await requirePremiumAccess(user.id,"calculator_pcr"); } catch(error) { if(error instanceof CommercialAccessError) return NextResponse.json({error:"Licença clínica necessária."},{status:error.status}); throw error; }
   const payload = calculationRequestSchema.safeParse(await request.json().catch(() => null));
   if (!payload.success) {
     return NextResponse.json({ error: "Dados inválidos para cálculo." }, { status: 400 });
