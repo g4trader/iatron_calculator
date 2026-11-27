@@ -16,7 +16,7 @@ export default async function Page({searchParams}:{searchParams:Promise<{record?
  const sourceVersions=await prisma.clinicalSourceVersion.findMany({orderBy:{importedAt:"desc"},select:{recordId:true,version:true}});
  const stateFor=(row:number)=>{const id=String(row);const v=sourceVersions.find(x=>x.recordId===id)?.version;return events.find(x=>x.recordId===id&&x.version===v)?.state??"pending_review";};
  const labels:Record<string,string>={pending_review:"Pendente",in_review:"Em revisão",correction_required:"Correção necessária",revoked:"Revogada"};
- const categories=[...new Set(clinicalCatalog.map(x=>x.category))];
+ const categories=Array.from(new Set(clinicalCatalog.map(x=>x.category)));
  const filtered=clinicalCatalog.filter(x=>(x.name+" "+x.category).toLowerCase().includes(q.toLowerCase())&&(!category||x.category===category)&&(!status||stateFor(x.row)===status));
  const selected=filtered.find(x=>String(x.row)===record)??filtered[0];
  const position=filtered.findIndex(x=>x.row===selected?.row);
