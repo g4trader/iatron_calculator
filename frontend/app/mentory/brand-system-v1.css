@@ -87,3 +87,21 @@ body[data-skin="light"] .mentory .mentor-final :is(td,th){color:var(--ink)!impor
 
 
 .mentory .mentor-final .clinical-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px}.mentory .mentor-final .clinical-card{padding:20px;display:grid;gap:10px;text-decoration:none}.mentory .mentor-final .clinical-card span{color:#22D3EE}.mentory .mentor-final .mentory-clinical{min-width:0;max-width:100%}.mentory .mentor-final .clinical-print{display:flex;justify-content:flex-end}.mentory .mentor-final .mentory-clinical .pcr-calculator-surface{padding:0;min-width:0}.mentory .mentor-final .mentory-clinical .pcr-calculator-surface>header,.mentory .mentor-final .mentory-clinical .pcr-calculator-surface>section{background:#12304A;border-color:#587A9E}@media print{.mentory .mentor-final .sidebar,.mentory .mentor-final .topbar,.mentory .mentor-final .bottom-nav,.mentory .mentor-final .no-print{display:none!important}.mentory .mentor-final .workspace,.mentory .mentor-final .workspace-main{display:block!important;width:100%!important;margin:0!important;padding:0!important;background:white!important}.mentory .mentor-final .print-report,.mentory .mentor-final .print-report *{color:black!important}}
+
+/* Administrative workspace: same restrained surfaces as student cards. */
+.mentory .mentor-final.admin-workspace{--surface:#10243B;--border:#30465D;--muted:#9FB3C8}
+.mentory .mentor-final.mentor-final.admin-workspace :is(.topbar,.sidebar,.workspace,.workspace-main){background:#0A1B33;border-color:#233B53;box-shadow:none}
+.mentory .mentor-final.mentor-final.admin-workspace :is(.panel,.stat,.student-modal,.editor-dialog,.student-search,.user-dropdown,.quick-actions a,.editor-lesson-row,.editor-material-row){background:#10243B;border-color:#30465D;box-shadow:none}
+.mentory .mentor-final.mentor-final.admin-workspace :is(input:not([type=checkbox]):not([type=radio]):not([type=hidden]),select,textarea){background:#0A1B33!important;color:#fff!important;border-color:#30465D!important;color-scheme:dark}
+.mentory .mentor-final.mentor-final.admin-workspace input::placeholder{color:#9FB3C8!important}
+.mentory .mentor-final.mentor-final.admin-workspace input:-webkit-autofill{-webkit-text-fill-color:#fff!important;box-shadow:0 0 0 1000px #0A1B33 inset!important}
+.mentory .mentor-final.mentor-final.admin-workspace .student-search input{border:0!important;background:transparent!important;min-width:0}
+.mentory .mentor-final.mentor-final.admin-workspace :is(tbody tr,tbody tr:nth-child(even)){background:#10243B!important;border-color:#233B53}
+.mentory .mentor-final.mentor-final.admin-workspace tbody tr:hover{background:#12304A!important}
+.mentory .mentor-final.mentor-final.admin-workspace th{background:#0A1B33;border-color:#233B53}
+.mentory .mentor-final.mentor-final.admin-workspace .sidebar .nav-item.active{background:#12304A;color:#22D3EE}
+.mentory .mentor-final.admin-workspace .nav-item svg{flex:none;color:inherit}
+.mentory .mentor-final.admin-workspace .page-heading h1{font-size:clamp(26px,2.2vw,34px);letter-spacing:-.025em}
+.mentory .mentor-final.admin-workspace .student-status.active{color:#C4F82A;background:#C4F82A12}
+.mentory .mentor-final.admin-workspace .student-status.expired{color:#FF9183;background:#F2452D12}
+@media(min-width:1000px){.mentory .mentor-final.mentor-final.admin-workspace .students-toolbar{display:grid!important;grid-template-columns:minmax(220px,1fr) minmax(150px,220px) auto auto;align-items:center;gap:12px}.mentory .mentor-final.admin-workspace .students-toolbar>*{min-width:0;width:auto}.mentory .mentor-final.admin-workspace .workspace-main{padding-inline:clamp(24px,4vw,64px)}}
