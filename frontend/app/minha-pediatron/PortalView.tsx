@@ -17,7 +17,7 @@ function Resource({title,description,href,kind,external=false}:{title:string;des
 export async function PortalView({account=false,callbackUrl="/minha-pediatron",verified,reset}:{account?:boolean;callbackUrl?:string;verified?:string;reset?:string} = {}){
  const user=await getCurrentUser();if(!user){if(account)redirect("/minha-pediatron");return <Login callbackUrl={callbackUrl} verified={verified} reset={reset}/>;}
  if(!account&&callbackUrl!=="/minha-pediatron")redirect(callbackUrl);
- if(!account){const admin=await getAdminCurrentUser();if(admin?.adminPermissions.includes("admin.dashboard.view"))redirect("/admin");}
+ if(!account){const roles=await prisma.mentoryRoleGrant.findMany({where:{userId:user.id},select:{role:true}});if(roles.some(g=>g.role==="mentory_admin"||g.role==="mentory_editor"))redirect("/mentory/admin");if(roles.some(g=>g.role==="mentory_enrollment_manager"))redirect("/mentory/admin/alunos");const admin=await getAdminCurrentUser();if(admin?.adminPermissions.includes("admin.dashboard.view"))redirect("/admin");}
  const now=new Date();
  const [grant,enrollment,previous]=await Promise.all([
  prisma.mentoryRoleGrant.findFirst({where:{userId:user.id,role:"mentory_student"}}),
