@@ -4,7 +4,7 @@ import GrantAccess from './GrantAccess';
 import { redirect } from 'next/navigation';
 import Shell from '@/components/mentory/Shell';
 import { pageIdentity } from '@/lib/mentory/server';
-import { getAdminCurrentUser } from '@/lib/admin-permissions';
+
 import { prisma } from '@/lib/prisma';
 import { CLINICAL_PRODUCTS } from '@/lib/clinical-products';
 import { createManualLicenseAction, extendLicenseAction, updateLicenseStatusAction } from './actions';
@@ -17,7 +17,7 @@ const presets=()=>Object.entries(LICENSE_DURATION_PRESETS).map(([k,v])=><option 
 function SecurityFields(){return <><label>Motivo<input name="reason" required minLength={8}/></label><label>Senha atual<input name="stepUpPassword" type="password" required autoComplete="current-password"/></label></>}
 export default async function AccessPage({searchParams}:{searchParams:Promise<{q?:string;user?:string;product?:string;status?:string;mode?:string;page?:string;message?:string;error?:string}>}){
  const actor=await pageIdentity();if(!actor.admin)redirect('/mentory/admin');
- const operator=await getAdminCurrentUser();const canClinical=operator?.adminPermissions.includes('admin.licenses.manage')??false;
+ const canClinical=actor.admin;
  const products=canClinical?CLINICAL_PRODUCTS.map(value=>({value,label:labels[value]})):[];const presetOptions=Object.entries(LICENSE_DURATION_PRESETS).map(([value,v])=>({value,label:v.label}));
  const params=await searchParams;const q=(params.q||'').trim().slice(0,200);const product=params.product||'';const status=['active','expired','inactive'].includes(params.status||'')?params.status!:'';const page=Math.max(1,Math.min(100000,parseInt(params.page||'1',10)||1));const now=new Date();const mode=['commercial','trial','courtesy','manual'].includes(params.mode||'')?params.mode!:'';
  const clinicalFilter:Prisma.LicenseWhereInput={clinicalProduct:{in:[...CLINICAL_PRODUCTS]},organizationId:null,subscriptionId:null};

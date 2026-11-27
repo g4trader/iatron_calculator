@@ -64,7 +64,7 @@ export function parseLicenseOrigin(value?: string | null) {
 }
 
 export async function createManualLicense(input: {
-  admin: AdminUser;
+  admin: Pick<AdminUser, 'id'>;
   clinicalProduct?: string | null;
   userEmail?: string | null;
   userId?: string | null;
@@ -116,7 +116,7 @@ export async function createManualLicense(input: {
 }
 
 export async function extendLicense(input: {
-  admin: AdminUser;
+  admin: Pick<AdminUser, 'id'>;
   licenseId: string;
   preset?: string | null;
   reason?: string | null;
@@ -153,7 +153,7 @@ export async function extendLicense(input: {
 }
 
 export async function updateLicenseStatus(input: {
-  admin: AdminUser;
+  admin: Pick<AdminUser, 'id'>;
   licenseId: string;
   action: Extract<AdminLicenseAction, "suspend" | "revoke" | "reactivate" | "convert_regular">;
   reason?: string | null;

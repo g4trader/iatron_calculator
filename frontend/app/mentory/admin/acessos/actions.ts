@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 import { pageIdentity } from "@/lib/mentory/server";
 import { prisma } from "@/lib/prisma";
 import { isClinicalProduct } from "@/lib/clinical-products";
-import { requireAdminPermission } from "@/lib/admin-permissions";
-async function requireAccessOperator(){const actor=await pageIdentity();if(!actor.admin)redirect("/mentory/admin");return requireAdminPermission("admin.licenses.manage");}
-async function requireScopedLicense(id:string){const l=await prisma.license.findUnique({where:{id}});if(!l||!l.clinicalProduct||!isClinicalProduct(l.clinicalProduct)||l.organizationId||l.subscriptionId)throw new AdminLicenseError("Licença fora do escopo clínico individual.","INVALID_SCOPE");}
+
+async function requireAccessOperator(){const actor=await pageIdentity();if(!actor.admin)redirect("/mentory/admin");return {id:actor.id};}
+async function requireScopedLicense(id:string,extend=false){const l=await prisma.license.findUnique({where:{id}});if(!l||!l.clinicalProduct||!isClinicalProduct(l.clinicalProduct)||l.organizationId||l.subscriptionId)throw new AdminLicenseError("Licença fora do escopo clínico individual.","INVALID_SCOPE");if(extend&&(l.status!=="ACTIVE"||l.revokedAt))throw new AdminLicenseError("Reative explicitamente a licença antes de renovar.","INVALID_STATUS");}
 import {
   AdminLicenseError,
   createManualLicense,
@@ -70,7 +70,7 @@ export async function extendLicenseAction(formData: FormData) {
   const licenseId = getString(formData, "licenseId") ?? "";
 
   try {
-    await requireScopedLicense(licenseId);
+    await requireScopedLicense(licenseId,true);
     await validateAdminStepUp({ admin, action: CRITICAL_ADMIN_ACTIONS.licenseExtend, password: stepUpPasswordFromForm(formData), resourceType: "license", resourceId: licenseId });
     await extendLicense({
       admin,

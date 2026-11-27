@@ -44,7 +44,7 @@ async function currentSessionId() {
 }
 
 export async function validateAdminStepUp(input: {
-  admin: AdminUser;
+  admin: Pick<AdminUser, 'id'>;
   action: string;
   password?: string | null;
   resourceType?: string;
