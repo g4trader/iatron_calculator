@@ -3,11 +3,11 @@ import { CalculatorShell } from "@/components/CalculatorShell";
 import { CommercialBlock } from "@/components/paywall/CommercialBlock";
 import { getAdminCurrentUser, hasAdminPermission } from "@/lib/admin-permissions";
 import { requireAuth } from "@/lib/authz";
-import { getCommercialEntitlement } from "@/lib/commercial-access";
+import { requirePremiumAccess, CommercialAccessError } from "@/lib/commercial-access";
 
 export default async function PcrCalculatorPage() {
   const user = await requireAuth();
-  const entitlement = await getCommercialEntitlement(user.id);
+  const entitlement = await requirePremiumAccess(user.id, "calculator_pcr").catch(error => { if (error instanceof CommercialAccessError) return error.entitlement; throw error; });
   if (!entitlement.hasAccess) {
     const admin = await getAdminCurrentUser();
     if (admin && hasAdminPermission(admin, "admin.dashboard.view")) return <PcrCalculatorApp />;

@@ -154,7 +154,7 @@ function PcrPrintReport({
   );
 }
 
-export function PcrCalculatorApp() {
+export function PcrCalculatorApp({ embedded = false }: { embedded?: boolean } = {}) {
   const [values, setValues] = useState<CalculationRequest>({ pesoKg: Number.NaN, idadeAnos: Number.NaN, idadeMeses: Number.NaN });
   const [patientName, setPatientName] = useState("");
   const [calculationDate, setCalculationDate] = useState("");
@@ -209,8 +209,8 @@ export function PcrCalculatorApp() {
     return () => window.clearTimeout(timeout);
   }, [runCalculation]);
 
-  return (
-    <CalculatorShell active="pcr" headerActions={<PrintButton iconOnly />}>
+  const content = (
+    <>
       {showCalculating ? (
         <div className="fixed inset-0 z-[100] grid place-items-center bg-slate-950/65 px-4 backdrop-blur-sm">
           <div className="w-full max-w-sm rounded-2xl border border-cyan-300/20 bg-slate-950 p-5 shadow-2xl shadow-cyan-950/40">
@@ -345,6 +345,7 @@ export function PcrCalculatorApp() {
           </div>
         ) : null}
       </div>
-    </CalculatorShell>
+    </>
   );
+  return embedded ? <div className="mentory-clinical"><div className="no-print clinical-print"><PrintButton iconOnly /></div>{content}</div> : <CalculatorShell active="pcr" headerActions={<PrintButton iconOnly />}>{content}</CalculatorShell>;
 }
