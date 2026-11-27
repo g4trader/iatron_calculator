@@ -30,6 +30,7 @@ jobs:
       ALLOW_PRODUCTION_MIGRATIONS: ${{ inputs.target == 'production' && inputs.production_confirmation == 'APPLY PRODUCTION MIGRATIONS' && 'true' || 'false' }}
     steps:
       - name: Block unsafe production run
+        working-directory: ${{ github.workspace }}
         if: ${{ inputs.target == 'production' && inputs.production_confirmation != 'APPLY PRODUCTION MIGRATIONS' }}
         run: |
           echo "Production migrations require exact confirmation."
