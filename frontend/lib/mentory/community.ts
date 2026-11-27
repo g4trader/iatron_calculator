@@ -12,13 +12,15 @@ export async function communitySettings() {
 // A separate product entitlement boundary. The only enabled source today is
 // an active Mentory enrollment; standalone sales must supply their own grant later.
 export async function communityAccess(actor: Identity) {
-  if (!actor.student) return null;
+
   const now = new Date();
+  const standalone = await prisma.license.findFirst({where:{userId:actor.id,clinicalProduct:'comunidade-fechada',organizationId:null,subscriptionId:null,status:'ACTIVE',revokedAt:null,endsAt:{gt:now},OR:[{startsAt:null},{startsAt:{lte:now}}]},orderBy:{endsAt:'desc'}});
   const enrollment = await prisma.mentoryEnrollment.findFirst({
-    where: { userId: actor.id, status: 'ACTIVE', subscription: { status: 'ACTIVE', startedAt: { lte: now }, expiresAt: { gt: now } } },
+    where: { userId: actor.id, status: 'ACTIVE', subscription: { status: 'ACTIVE', startedAt: { lte: now }, expiresAt: { gt: now }, renewalTermsVersion:{startsWith:'manual-commercial-'} } },
     orderBy: { subscription: { expiresAt: 'desc' } },
     select: { subscription: { select: { expiresAt: true } } },
   });
+  if(standalone?.endsAt&&(!enrollment||standalone.endsAt>enrollment.subscription.expiresAt))return {product:COMMUNITY_PRODUCT,source:'MANUAL_LICENSE' as const,expiresAt:standalone.endsAt};
   return enrollment ? { product: COMMUNITY_PRODUCT, source: 'MENTORY_BONUS' as const, expiresAt: enrollment.subscription.expiresAt } : null;
 }
 export async function saveCommunity(actor: Identity, body: unknown) {
@@ -48,7 +50,7 @@ export async function saveCommunity(actor: Identity, body: unknown) {
 export async function openCommunity(actor: Identity, body: unknown) {
   if (!body || typeof body !== 'object' || Object.keys(body).length !== 1 || (body as { accepted?: unknown }).accepted !== true) throw new MentoryError(400, 'Confirme as orientações para continuar.');
   const [grant, settings] = await Promise.all([communityAccess(actor), communitySettings()]);
-  if (!grant) throw new MentoryError(403, 'O bônus da comunidade exige uma matrícula ativa na mentoria.');
+  if (!grant) throw new MentoryError(403, 'O grupo fechado exige uma licença válida.');
   if (!settings.config.enabled || !settings.config.inviteUrl) throw new MentoryError(423, 'A entrada na comunidade está temporariamente indisponível.');
   await prisma.mentoryAuditLog.create({ data: { actorId: actor.id, action: 'community.invite.opened', entityId: COMMUNITY_PRODUCT, metadata: { source: grant.source, expiresAt: grant.expiresAt.toISOString() } } });
   return { url: settings.config.inviteUrl };

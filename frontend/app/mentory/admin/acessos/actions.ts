@@ -4,10 +4,10 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { pageIdentity } from "@/lib/mentory/server";
 import { prisma } from "@/lib/prisma";
-import { isClinicalProduct } from "@/lib/clinical-products";
+import { isAccessProduct } from "@/lib/clinical-products";
 
 async function requireAccessOperator(){const actor=await pageIdentity();if(!actor.admin)redirect("/mentory/admin");return {id:actor.id};}
-async function requireScopedLicense(id:string,extend=false){const l=await prisma.license.findUnique({where:{id}});if(!l||!l.clinicalProduct||!isClinicalProduct(l.clinicalProduct)||l.organizationId||l.subscriptionId)throw new AdminLicenseError("Licença fora do escopo clínico individual.","INVALID_SCOPE");if(extend&&(l.status!=="ACTIVE"||l.revokedAt))throw new AdminLicenseError("Reative explicitamente a licença antes de renovar.","INVALID_STATUS");}
+async function requireScopedLicense(id:string,extend=false){const l=await prisma.license.findUnique({where:{id}});if(!l||!l.clinicalProduct||!isAccessProduct(l.clinicalProduct)||l.organizationId||l.subscriptionId)throw new AdminLicenseError("Licença fora do escopo clínico individual.","INVALID_SCOPE");if(extend&&(l.status!=="ACTIVE"||l.revokedAt))throw new AdminLicenseError("Reative explicitamente a licença antes de renovar.","INVALID_STATUS");}
 import {
   AdminLicenseError,
   createManualLicense,
@@ -44,7 +44,7 @@ export async function createManualLicenseAction(formData: FormData) {
   const admin = await requireAccessOperator();
 
   try {
-    const product=getString(formData,"clinicalProduct");if(!product||!isClinicalProduct(product)||getString(formData,"organizationId"))throw new AdminLicenseError("Produto clínico inválido.","INVALID_PRODUCT");
+    const product=getString(formData,"clinicalProduct");if(!product||!isAccessProduct(product)||getString(formData,"organizationId"))throw new AdminLicenseError("Produto clínico inválido.","INVALID_PRODUCT");
     await validateAdminStepUp({ admin, action: CRITICAL_ADMIN_ACTIONS.licenseCreate, password: stepUpPasswordFromForm(formData), resourceType: "license" });
     await createManualLicense({
       admin,

@@ -2,7 +2,7 @@ import { randomBytes } from "crypto";
 import { LicenseOrigin, LicenseStatus } from "@prisma/client";
 import { recordAdminAuditEvent, type AdminUser } from "@/lib/admin-permissions";
 import { prisma } from "@/lib/prisma";
-import { isClinicalProduct } from "@/lib/clinical-products";
+import { isAccessProduct } from "@/lib/clinical-products";
 
 export const LICENSE_DURATION_PRESETS = {
   "24h": { label: "24h", hours: 24 },
@@ -76,7 +76,7 @@ export async function createManualLicense(input: {
 }) {
   const reason = requireLicenseReason(input.reason);
   const product = input.clinicalProduct === "legacy" ? null : input.clinicalProduct?.trim() || null;
-  if(product && (!isClinicalProduct(product) || input.organizationId?.trim())) throw new AdminLicenseError("Produto inválido ou licença individual vinculada a organização.", "INVALID_PRODUCT");
+  if(product && (!isAccessProduct(product) || input.organizationId?.trim())) throw new AdminLicenseError("Produto inválido ou licença individual vinculada a organização.", "INVALID_PRODUCT");
   const user = input.userId
     ? await prisma.user.findUnique({ where: { id: input.userId } })
     : input.userEmail
