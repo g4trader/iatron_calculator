@@ -596,6 +596,7 @@ model OrganizationInvite {
 }
 
 model License {
+  clinicalProduct String?
   id             String          @id @default(cuid())
   licenseKey     String?         @unique
   subscriptionId String?
@@ -620,6 +621,7 @@ model License {
   @@index([userId])
   @@index([status])
   @@index([origin])
+  @@index([clinicalProduct, userId, status])
   @@index([endsAt])
 }
 
