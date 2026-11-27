@@ -3,6 +3,8 @@ import { AdminPageHeader, DataTable, EmptyState, KpiCard, StatusBadge } from "@/
 import { requireAdminPermission } from "@/lib/admin-permissions";
 import { LICENSE_DURATION_PRESETS } from "@/lib/admin-licenses";
 import { prisma } from "@/lib/prisma";
+import { CLINICAL_PRODUCTS, isClinicalProduct } from "@/lib/clinical-products";
+const productLabels: Record<string,string> = {"pcr":"Folha PCR","modelo-prescricao":"Modelo de prescrição","doses-medicacoes":"Doses de medicações","soroterapia":"Soroterapia","intubacao-rapida":"Intubação rápida"};
 import { createManualLicenseAction, extendLicenseAction, updateLicenseStatusAction } from "./actions";
 
 export const runtime = "nodejs";
@@ -139,7 +141,7 @@ function LicenseActionForms({ licenseId, status, origin }: { licenseId: string; 
 export default async function AdminLicensesPage({
   searchParams
 }: {
-  searchParams?: Promise<{ q?: string; status?: string; origin?: string; organizationId?: string; message?: string; error?: string }>;
+  searchParams?: Promise<{ q?: string; clinicalProduct?: string; status?: string; origin?: string; organizationId?: string; message?: string; error?: string }>;
 }) {
   await requireAdminPermission("admin.licenses.manage");
   const params = await searchParams;
@@ -150,6 +152,7 @@ export default async function AdminLicensesPage({
   const now = new Date();
 
   const where: Prisma.LicenseWhereInput = {
+    ...(isClinicalProduct(params?.clinicalProduct) ? { clinicalProduct: params.clinicalProduct } : {}),
     ...(status ? { status } : {}),
     ...(origin ? { origin } : {}),
     ...(organizationId ? { organizationId } : {}),
@@ -221,6 +224,7 @@ export default async function AdminLicensesPage({
           <p className="mt-2 text-sm leading-6 text-slate-400">Use somente para suporte ou contingência. A licença recebe expiração por padrão e não pode ser criada sem motivo.</p>
         </div>
         <form action={createManualLicenseAction} className="grid gap-3 md:grid-cols-3 xl:grid-cols-6">
+          <label className="grid gap-1 text-xs font-bold text-slate-500">Produto<select name="clinicalProduct" required defaultValue="pcr" className="h-10 rounded-md border border-cyan-300/10 bg-slate-950 px-3 text-sm text-slate-200"><option value="legacy">Licença legada / contingência</option>{CLINICAL_PRODUCTS.map(p=><option key={p} value={p}>{productLabels[p]}</option>)}</select></label>
           {textInput("userEmail", "E-mail do usuário", "medico@hospital.com")}
           {textInput("userId", "User ID opcional", "cuid...")}
           {textInput("organizationId", "Organization ID opcional", "cuid...")}
@@ -249,6 +253,7 @@ export default async function AdminLicensesPage({
 
       <form className="grid gap-3 rounded-xl border border-cyan-300/10 bg-slate-950/75 p-4 md:grid-cols-5 md:items-end">
         {textInput("q", "Busca", "usuário, e-mail, org, chave", false)}
+        {selectInput("clinicalProduct", "Produto", CLINICAL_PRODUCTS.map(value=>({value,label:productLabels[value]})), params?.clinicalProduct)}
         {selectInput("status", "Status", Object.values(LicenseStatus).map((value) => ({ value, label: value })), status)}
         {selectInput("origin", "Origem", Object.values(LicenseOrigin).map((value) => ({ value, label: value.toLowerCase() })), origin)}
         {textInput("organizationId", "Organization ID", "cuid...", false)}
@@ -270,6 +275,7 @@ export default async function AdminLicensesPage({
               </div>
             )
           },
+          { key: "product", header: "Produto", render: (license) => license.clinicalProduct ? productLabels[license.clinicalProduct] ?? license.clinicalProduct : "Legada" },
           { key: "status", header: "Status", render: (license) => <StatusBadge status={license.status} /> },
           { key: "origin", header: "Origem", render: (license) => <StatusBadge status={license.origin.toLowerCase()} /> },
           {

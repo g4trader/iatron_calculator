@@ -42,6 +42,7 @@ export async function createManualLicenseAction(formData: FormData) {
     await validateAdminStepUp({ admin, action: CRITICAL_ADMIN_ACTIONS.licenseCreate, password: stepUpPasswordFromForm(formData), resourceType: "license" });
     await createManualLicense({
       admin,
+      clinicalProduct: getString(formData, "clinicalProduct"),
       userEmail: getString(formData, "userEmail"),
       userId: getString(formData, "userId"),
       organizationId: getString(formData, "organizationId"),

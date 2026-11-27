@@ -2,12 +2,14 @@ import { randomBytes } from "crypto";
 import { LicenseOrigin, LicenseStatus } from "@prisma/client";
 import { recordAdminAuditEvent, type AdminUser } from "@/lib/admin-permissions";
 import { prisma } from "@/lib/prisma";
+import { isClinicalProduct } from "@/lib/clinical-products";
 
 export const LICENSE_DURATION_PRESETS = {
   "24h": { label: "24h", hours: 24 },
   "72h": { label: "72h", hours: 72 },
   "7d": { label: "7 dias", hours: 24 * 7 },
-  "30d": { label: "30 dias", hours: 24 * 30 }
+  "30d": { label: "30 dias", hours: 24 * 30 },
+  "365d": { label: "365 dias", hours: 24 * 365 }
 } as const;
 
 export type LicenseDurationPreset = keyof typeof LICENSE_DURATION_PRESETS;
@@ -63,6 +65,7 @@ export function parseLicenseOrigin(value?: string | null) {
 
 export async function createManualLicense(input: {
   admin: AdminUser;
+  clinicalProduct?: string | null;
   userEmail?: string | null;
   userId?: string | null;
   organizationId?: string | null;
@@ -72,6 +75,8 @@ export async function createManualLicense(input: {
   note?: string | null;
 }) {
   const reason = requireLicenseReason(input.reason);
+  const product = input.clinicalProduct === "legacy" ? null : input.clinicalProduct?.trim() || null;
+  if(product && (!isClinicalProduct(product) || input.organizationId?.trim())) throw new AdminLicenseError("Produto inválido ou licença individual vinculada a organização.", "INVALID_PRODUCT");
   const user = input.userId
     ? await prisma.user.findUnique({ where: { id: input.userId } })
     : input.userEmail
@@ -84,6 +89,7 @@ export async function createManualLicense(input: {
   const license = await prisma.license.create({
     data: {
       userId: user.id,
+      clinicalProduct: product,
       organizationId: input.organizationId?.trim() || null,
       licenseKey: generateLicenseKey(),
       status: LicenseStatus.ACTIVE,
@@ -103,7 +109,7 @@ export async function createManualLicense(input: {
     organizationId: license.organizationId,
     targetUserId: license.userId,
     outcome: "success",
-    metadata: { reason, origin, endsAt: endsAt.toISOString(), note: input.note?.trim() || null }
+    metadata: { reason, origin, clinicalProduct: product, endsAt: endsAt.toISOString(), note: input.note?.trim() || null }
   });
 
   return license;
