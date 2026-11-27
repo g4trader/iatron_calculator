@@ -2,7 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { pageIdentity } from "@/lib/mentory/server";
+import { prisma } from "@/lib/prisma";
+import { isClinicalProduct } from "@/lib/clinical-products";
 import { requireAdminPermission } from "@/lib/admin-permissions";
+async function requireAccessOperator(){const actor=await pageIdentity();if(!actor.admin)redirect("/mentory/admin");return requireAdminPermission("admin.licenses.manage");}
+async function requireScopedLicense(id:string){const l=await prisma.license.findUnique({where:{id}});if(!l||!l.clinicalProduct||!isClinicalProduct(l.clinicalProduct)||l.organizationId||l.subscriptionId)throw new AdminLicenseError("Licença fora do escopo clínico individual.","INVALID_SCOPE");}
 import {
   AdminLicenseError,
   createManualLicense,
@@ -36,9 +41,10 @@ function handleLicenseActionError(error: unknown) {
 }
 
 export async function createManualLicenseAction(formData: FormData) {
-  const admin = await requireAdminPermission("admin.licenses.manage");
+  const admin = await requireAccessOperator();
 
   try {
+    const product=getString(formData,"clinicalProduct");if(!product||!isClinicalProduct(product)||getString(formData,"organizationId"))throw new AdminLicenseError("Produto clínico inválido.","INVALID_PRODUCT");
     await validateAdminStepUp({ admin, action: CRITICAL_ADMIN_ACTIONS.licenseCreate, password: stepUpPasswordFromForm(formData), resourceType: "license" });
     await createManualLicense({
       admin,
@@ -60,10 +66,11 @@ export async function createManualLicenseAction(formData: FormData) {
 }
 
 export async function extendLicenseAction(formData: FormData) {
-  const admin = await requireAdminPermission("admin.licenses.manage");
+  const admin = await requireAccessOperator();
   const licenseId = getString(formData, "licenseId") ?? "";
 
   try {
+    await requireScopedLicense(licenseId);
     await validateAdminStepUp({ admin, action: CRITICAL_ADMIN_ACTIONS.licenseExtend, password: stepUpPasswordFromForm(formData), resourceType: "license", resourceId: licenseId });
     await extendLicense({
       admin,
@@ -81,7 +88,7 @@ export async function extendLicenseAction(formData: FormData) {
 }
 
 export async function updateLicenseStatusAction(formData: FormData) {
-  const admin = await requireAdminPermission("admin.licenses.manage");
+  const admin = await requireAccessOperator();
   const action = getString(formData, "action");
   const licenseId = getString(formData, "licenseId") ?? "";
 
@@ -91,6 +98,7 @@ export async function updateLicenseStatusAction(formData: FormData) {
   const safeAction = action;
 
   try {
+    await requireScopedLicense(licenseId);
     await validateAdminStepUp({ admin, action: CRITICAL_ADMIN_ACTIONS.licenseStatus, password: stepUpPasswordFromForm(formData), resourceType: "license", resourceId: licenseId, metadata: { licenseAction: safeAction } });
     await updateLicenseStatus({
       admin,
