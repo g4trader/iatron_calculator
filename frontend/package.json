@@ -46,7 +46,8 @@
     "test:manual-commercial": "node --import tsx scripts/manual-commercial-flow.ts",
     "stripe:webhook:smoke": "node --import tsx scripts/stripe-webhook-smoke.ts",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:clinical-arithmetic": "node --test --import tsx tests/clinical-arithmetic.test.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.2",
