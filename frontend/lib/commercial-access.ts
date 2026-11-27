@@ -1,6 +1,7 @@
 import { LicenseStatus, SubscriptionOwnerType, SubscriptionStatus, type BillingCycle, type OrganizationRole, type Plan } from "@prisma/client";
 import { auditCommercialEvent } from "@/lib/commercial-audit";
 import { prisma } from "@/lib/prisma";
+import { isProductLicenseValid } from "@/lib/clinical-products";
 
 export type CommercialFeature = "dashboard" | "calculator_complete" | "calculator_pcr" | "calculation_history" | "organization";
 
@@ -289,6 +290,10 @@ export async function getCommercialEntitlement(userId: string): Promise<Commerci
 
 export async function requirePremiumAccess(userId: string, feature: CommercialFeature) {
   if (feature === "calculator_pcr") {
+    const now = new Date();
+    const licenses = await prisma.license.findMany({where:{userId,clinicalProduct:"pcr",status:LicenseStatus.ACTIVE,organizationId:null,subscriptionId:null}});
+    const license = licenses.find(l=>isProductLicenseValid(l,"pcr",now));
+    if(license) return {...emptyEntitlement(),hasAccess:true,blockReason:null,accountType:"INDIVIDUAL" as const,plan:"PROFESSIONAL" as const,status:SubscriptionStatus.ACTIVE,currentPeriodEnd:license.endsAt,licenseStatus:LicenseStatus.ACTIVE,seatsPurchased:1,seatsUsed:1};
     const user = await prisma.user.findUnique({where:{id:userId},select:{folhaPcrBenefitUntil:true}});
     if(user?.folhaPcrBenefitUntil && user.folhaPcrBenefitUntil > new Date()) return {...emptyEntitlement(),hasAccess:true,blockReason:null,accountType:"INDIVIDUAL" as const,plan:"PROFESSIONAL" as const,status:SubscriptionStatus.ACTIVE,currentPeriodEnd:user.folhaPcrBenefitUntil,licenseStatus:LicenseStatus.ACTIVE,seatsPurchased:1,seatsUsed:1};
   }
