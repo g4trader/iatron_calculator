@@ -15,3 +15,15 @@ export async function getClinicalReviewEligibility(recordId:string,version:strin
  const reviewValid=isApprovedVersion(latest?{recordId:latest.recordId,version:latest.version,state:latest.state as ReviewState,reviewerId:latest.reviewerId,reference:latest.reference,reviewedAt:latest.reviewedAt.toISOString()}:null,recordId,version);
  return {reviewValid,therapeuticEligible:false,reason:"Conteúdo terapêutico versionado e autorização clínica ainda indisponíveis"};
 }
+
+import {pageIdentity} from "@/lib/mentory/server";
+export async function recordClinicalIndexReview(input:{recordId:string;version:string;state:string;reference:string;reason:string}){
+ const actor=await pageIdentity();
+ const allowed=(process.env.CLINICAL_REVIEWER_IDS??"").split(",").map(x=>x.trim()).filter(Boolean);
+ if(!actor.admin||!allowed.includes(actor.id))throw new Error("Revisor não autorizado");
+ if(!clinicalCatalog.some(x=>String(x.row)===input.recordId)||input.version!=="index-v1")throw new Error("Ficha ou versão desconhecida");
+ if(!["in_review","correction_required","revoked"].includes(input.state))throw new Error("Decisão indisponível para índice documental");
+ const reference=input.reference.trim(),reason=input.reason.trim();
+ if(reference.length<3||reference.length>1000||reason.length<8||reason.length>2000)throw new Error("Referência ou justificativa inválida");
+ return prisma.clinicalReviewEvent.create({data:{recordId:input.recordId,version:input.version,state:input.state,reviewerId:actor.id,reference,reason}});
+}
