@@ -21,7 +21,7 @@ function getString(formData: FormData, key: string) {
 }
 
 function licensesRedirect(params: Record<string, string>): never {
-  const search = new URLSearchParams({view:"clinicos",...params});
+  const search = new URLSearchParams(params);
   redirect(`/mentory/admin/acessos?${search.toString()}`);
 }
 

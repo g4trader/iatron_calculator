@@ -10,10 +10,11 @@ async function AdminContent({ actor, filter, section }: { actor: Identity; filte
 }
 export default async function AdminPage({ params, searchParams }: { params: Promise<{ section?: string[] }>; searchParams: Promise<{ q?: string; status?: string; page?: string }> }) {
   const actor = await pageIdentity(); const parts = (await params).section || []; const section = parts.join('/');
+  if (section==='assinaturas'||section==='licencas') redirect('/mentory/admin/acessos');
   if (!['', 'conteudo', 'alunos', 'assinaturas'].includes(section)) notFound();
   if(!actor.editor && !(actor.enrollmentManager && section === 'alunos')) redirect('/mentory/aprender?access=denied');
   if ((section === 'assinaturas' && !actor.admin) || (section === 'alunos' && !actor.enrollmentManager)) redirect('/mentory/admin');
   const search = await searchParams;
   const filter = { query: (search.q || '').slice(0, 200), status: search.status || '', page: Math.max(1, Math.min(100000, Number.parseInt(search.page || '1', 10) || 1)) };
-  return <Shell editor admin={actor.admin} name={actor.name} email={actor.email}><div className="page-heading"><span className="eyebrow">ADMINISTRAÇÃO Ped Expert Mentory</span><h1>{{ '': 'Visão geral', conteudo: 'Gestão de conteúdo', alunos: 'Gestão de alunos', assinaturas: 'Assinaturas' }[section]}</h1><p>Organize a experiência de aprendizagem com segurança.</p></div><Suspense fallback={<div className="panel" aria-busy="true"><p role="status">Carregando dados…</p></div>}><AdminContent actor={actor} filter={filter} section={section}/></Suspense></Shell>;
+  return <Shell editor admin={actor.admin} name={actor.name} email={actor.email}><div className="page-heading"><span className="eyebrow">ADMINISTRAÇÃO Ped Expert Mentory</span><h1>{{ '': 'Visão geral', conteudo: 'Gestão de conteúdo', alunos: 'Gestão de usuários', assinaturas: 'Assinaturas' }[section]}</h1><p>Organize a experiência de aprendizagem com segurança.</p></div><Suspense fallback={<div className="panel" aria-busy="true"><p role="status">Carregando dados…</p></div>}><AdminContent actor={actor} filter={filter} section={section}/></Suspense></Shell>;
 }
