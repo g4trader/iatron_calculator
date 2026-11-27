@@ -22,10 +22,11 @@ export async function getClinicalReviewEligibility(recordId:string,version:strin
 }
 
 import {pageIdentity} from "@/lib/mentory/server";
+export async function canReviewClinical(userId:string){return !!await prisma.adminPermissionGrant.findFirst({where:{userId,permission:"clinical.document.review",status:"ACTIVE",revokedAt:null}});}
 export async function recordClinicalIndexReview(input:{recordId:string;version:string;state:string;reference:string;reason:string}){
  const actor=await pageIdentity();
- const allowed=(process.env.CLINICAL_REVIEWER_IDS??"").split(",").map(x=>x.trim()).filter(Boolean);
- if(!actor.admin||!allowed.includes(actor.id))throw new Error("Revisor não autorizado");
+ const allowed=await canReviewClinical(actor.id);
+ if(!actor.admin||!allowed)throw new Error("Revisor não autorizado");
  if(!await knownVersion(input.recordId,input.version))throw new Error("Ficha ou versão desconhecida");
  if(!["in_review","correction_required","revoked"].includes(input.state))throw new Error("Decisão indisponível para índice documental");
  const reference=input.reference.trim(),reason=input.reason.trim();
