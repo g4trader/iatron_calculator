@@ -5,8 +5,13 @@ import {clinicalCatalog} from "@/lib/clinical-catalog";
 
 // The current catalog contains identifiers only, not reviewable therapeutic payloads.
 // Approval is deliberately unavailable until versioned clinical content and reviewer authorization exist.
+async function knownVersion(recordId:string,version:string){
+ if(version==="index-v1")return clinicalCatalog.some(x=>String(x.row)===recordId);
+ if(!/^sha256:[a-f0-9]{64}$/.test(version))return false;
+ return !!await prisma.clinicalSourceVersion.findUnique({where:{recordId_version:{recordId,version}},select:{version:true}});
+}
 export async function getClinicalReviewHistory(recordId:string,version:string){
- if(!clinicalCatalog.some(x=>String(x.row)===recordId)||version!=="index-v1")throw new Error("Ficha ou versão desconhecida");
+ if(!await knownVersion(recordId,version))throw new Error("Ficha ou versão desconhecida");
  return prisma.clinicalReviewEvent.findMany({where:{recordId,version},orderBy:[{reviewedAt:"desc"},{id:"desc"}],take:100});
 }
 export async function getClinicalReviewEligibility(recordId:string,version:string){
@@ -21,7 +26,7 @@ export async function recordClinicalIndexReview(input:{recordId:string;version:s
  const actor=await pageIdentity();
  const allowed=(process.env.CLINICAL_REVIEWER_IDS??"").split(",").map(x=>x.trim()).filter(Boolean);
  if(!actor.admin||!allowed.includes(actor.id))throw new Error("Revisor não autorizado");
- if(!clinicalCatalog.some(x=>String(x.row)===input.recordId)||input.version!=="index-v1")throw new Error("Ficha ou versão desconhecida");
+ if(!await knownVersion(input.recordId,input.version))throw new Error("Ficha ou versão desconhecida");
  if(!["in_review","correction_required","revoked"].includes(input.state))throw new Error("Decisão indisponível para índice documental");
  const reference=input.reference.trim(),reason=input.reason.trim();
  if(reference.length<3||reference.length>1000||reason.length<8||reason.length>2000)throw new Error("Referência ou justificativa inválida");
