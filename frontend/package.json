@@ -47,7 +47,8 @@
     "stripe:webhook:smoke": "node --import tsx scripts/stripe-webhook-smoke.ts",
     "start": "next start",
     "lint": "next lint",
-    "test:clinical-arithmetic": "node --test --import tsx tests/clinical-arithmetic.test.ts"
+    "test:clinical-arithmetic": "node --test --import tsx tests/clinical-arithmetic.test.ts",
+    "test:clinical-review": "node --test --import tsx tests/clinical-review.test.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.2",
